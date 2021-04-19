@@ -1,9 +1,9 @@
 ﻿namespace Dispatcher.Web.ViewModels.Settings
 {
+    using AutoMapper;
+
     using Dispatcher.Data.Models;
     using Dispatcher.Services.Mapping;
-
-    using AutoMapper;
 
     public class SettingViewModel : IMapFrom<Setting>, IHaveCustomMappings
     {
