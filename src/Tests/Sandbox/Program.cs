@@ -5,6 +5,7 @@
     using System.IO;
     using System.Threading.Tasks;
 
+    using CommandLine;
     using Dispatcher.Data;
     using Dispatcher.Data.Common;
     using Dispatcher.Data.Common.Repositories;
@@ -13,9 +14,6 @@
     using Dispatcher.Data.Seeding;
     using Dispatcher.Services.Data;
     using Dispatcher.Services.Messaging;
-
-    using CommandLine;
-
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
