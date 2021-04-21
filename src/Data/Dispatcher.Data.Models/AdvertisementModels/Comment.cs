@@ -1,4 +1,4 @@
-﻿namespace Dispatcher.Data.Models
+﻿namespace Dispatcher.Data.Models.AdvertisementModels
 {
     using System;
     using System.ComponentModel.DataAnnotations;
@@ -10,10 +10,9 @@
 
         public virtual ApplicationUser ApplicationUser { get; set; }
 
-        [Required]
-        public int АdvertisementId { get; set; }
+        public int AdvertisementId { get; set; }
 
-        public virtual Аdvertisement Аdvertisement { get; set; }
+        public virtual Advertisement Advertisement { get; set; }
 
         [Required]
         [MaxLength(500)]

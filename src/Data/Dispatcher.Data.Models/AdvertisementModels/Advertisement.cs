@@ -1,19 +1,20 @@
-﻿namespace Dispatcher.Data.Models
+﻿namespace Dispatcher.Data.Models.AdvertisementModels
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     using Dispatcher.Data.Common.Models;
 
-    public class Аdvertisement : BaseDeletableModel<int>
+    public class Advertisement : BaseDeletableModel<int>
     {
-        public Аdvertisement()
+        public Advertisement()
         {
             this.Comments = new HashSet<Comment>();
         }
 
-        [Required]
-        public string АdvertisementType { get; set; }
+        public int AdvertisementTypeId { get; set; }
+
+        public virtual AdvertisementType AdvertisementType { get; set; }
 
         [Required]
         [MaxLength(100)]

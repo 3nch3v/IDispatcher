@@ -6,6 +6,7 @@ namespace Dispatcher.Data.Models
     using System.ComponentModel.DataAnnotations;
 
     using Dispatcher.Data.Common.Models;
+    using Dispatcher.Data.Models.AdvertisementModels;
     using Microsoft.AspNetCore.Identity;
 
     public class ApplicationUser : IdentityUser, IAuditInfo, IDeletableEntity
@@ -19,7 +20,7 @@ namespace Dispatcher.Data.Models
 
             this.Projects = new HashSet<Project>();
             this.CumstomerReviews = new HashSet<CustomerReview>();
-            this.Аdvertisements = new HashSet<Аdvertisement>(); 
+            this.Advertisements = new HashSet<Advertisement>();
             this.Comments = new HashSet<Comment>();
         }
 
@@ -67,7 +68,7 @@ namespace Dispatcher.Data.Models
 
         public virtual ICollection<CustomerReview> CumstomerReviews { get; set; }
 
-        public virtual ICollection<Аdvertisement> Аdvertisements { get; set; }
+        public virtual ICollection<Advertisement> Advertisements { get; set; }
 
         public virtual ICollection<Comment> Comments { get; set; }
     }
