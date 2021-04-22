@@ -4,14 +4,16 @@ using Dispatcher.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Dispatcher.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210422185717_DbModelsGroupAndUserGroup")]
+    partial class DbModelsGroupAndUserGroup
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -341,70 +343,6 @@ namespace Dispatcher.Data.Migrations
                     b.ToTable("Groups");
                 });
 
-            modelBuilder.Entity("Dispatcher.Data.Models.MessengerModels.Message", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<string>("ApplicationUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Body")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.HasIndex("IsDeleted");
-
-                    b.ToTable("Messages");
-                });
-
-            modelBuilder.Entity("Dispatcher.Data.Models.MessengerModels.MessageRecipient", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("MessageId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("UserGroupId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.HasIndex("MessageId");
-
-                    b.HasIndex("UserGroupId");
-
-                    b.ToTable("MessagesRecipients");
-                });
-
             modelBuilder.Entity("Dispatcher.Data.Models.MessengerModels.UserGroup", b =>
                 {
                     b.Property<int>("Id")
@@ -677,40 +615,6 @@ namespace Dispatcher.Data.Migrations
                     b.Navigation("ApplicationUser");
                 });
 
-            modelBuilder.Entity("Dispatcher.Data.Models.MessengerModels.Message", b =>
-                {
-                    b.HasOne("Dispatcher.Data.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany("Messages")
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("ApplicationUser");
-                });
-
-            modelBuilder.Entity("Dispatcher.Data.Models.MessengerModels.MessageRecipient", b =>
-                {
-                    b.HasOne("Dispatcher.Data.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany("MessagesRecipients")
-                        .HasForeignKey("ApplicationUserId");
-
-                    b.HasOne("Dispatcher.Data.Models.MessengerModels.Message", "Message")
-                        .WithMany()
-                        .HasForeignKey("MessageId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Dispatcher.Data.Models.MessengerModels.UserGroup", "UserGroup")
-                        .WithMany()
-                        .HasForeignKey("UserGroupId");
-
-                    b.Navigation("ApplicationUser");
-
-                    b.Navigation("Message");
-
-                    b.Navigation("UserGroup");
-                });
-
             modelBuilder.Entity("Dispatcher.Data.Models.MessengerModels.UserGroup", b =>
                 {
                     b.HasOne("Dispatcher.Data.Models.ApplicationUser", "ApplicationUser")
@@ -808,10 +712,6 @@ namespace Dispatcher.Data.Migrations
                     b.Navigation("CumstomerReviews");
 
                     b.Navigation("Logins");
-
-                    b.Navigation("Messages");
-
-                    b.Navigation("MessagesRecipients");
 
                     b.Navigation("Projects");
 

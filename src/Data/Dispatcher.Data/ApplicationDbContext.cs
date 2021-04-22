@@ -9,6 +9,7 @@
     using Dispatcher.Data.Common.Models;
     using Dispatcher.Data.Models;
     using Dispatcher.Data.Models.AdvertisementModels;
+    using Dispatcher.Data.Models.MessengerModels;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
 
@@ -32,7 +33,17 @@
 
         public DbSet<Advertisement> Advertisements { get; set; }
 
+        public DbSet<AdvertisementType> AdvertisementTypes { get; set; }
+
         public DbSet<Comment> Comments { get; set; }
+
+        public DbSet<Group> Groups { get; set; }
+
+        public DbSet<UserGroup> UsersGroups { get; set; }
+
+        public DbSet<Message> Messages { get; set; }
+
+        public DbSet<MessageRecipient> MessagesRecipients { get; set; }
 
         public override int SaveChanges() => this.SaveChanges(true);
 

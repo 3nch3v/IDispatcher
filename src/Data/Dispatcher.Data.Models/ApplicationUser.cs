@@ -7,6 +7,7 @@ namespace Dispatcher.Data.Models
 
     using Dispatcher.Data.Common.Models;
     using Dispatcher.Data.Models.AdvertisementModels;
+    using Dispatcher.Data.Models.MessengerModels;
     using Microsoft.AspNetCore.Identity;
 
     public class ApplicationUser : IdentityUser, IAuditInfo, IDeletableEntity
@@ -22,6 +23,9 @@ namespace Dispatcher.Data.Models
             this.CumstomerReviews = new HashSet<CustomerReview>();
             this.Advertisements = new HashSet<Advertisement>();
             this.Comments = new HashSet<Comment>();
+            this.UsersGroups = new HashSet<UserGroup>();
+            this.Messages = new HashSet<Message>();
+            this.MessagesRecipients = new HashSet<MessageRecipient>();
         }
 
         [Required]
@@ -33,20 +37,14 @@ namespace Dispatcher.Data.Models
         [MaxLength(2048)]
         public string ProfilePictureUrl { get; set; }
 
-        [MaxLength(100)]
+        [MaxLength(200)]
         public string Education { get; set; }
 
-        [MaxLength(500)]
+        [MaxLength(1000)]
         public string Interests { get; set; }
 
         [MaxLength(2000)]
         public string Contacts { get; set; }
-
-        [MaxLength(2048)]
-        public string GitHubUrl { get; set; }
-
-        [MaxLength(2048)]
-        public string LinkedInUrl { get; set; }
 
         // Audit info
         public DateTime CreatedOn { get; set; }
@@ -71,5 +69,11 @@ namespace Dispatcher.Data.Models
         public virtual ICollection<Advertisement> Advertisements { get; set; }
 
         public virtual ICollection<Comment> Comments { get; set; }
+
+        public virtual ICollection<UserGroup> UsersGroups { get; set; }
+
+        public virtual ICollection<Message> Messages { get; set; }
+
+        public virtual ICollection<MessageRecipient> MessagesRecipients { get; set; }
     }
 }
