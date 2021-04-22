@@ -8,6 +8,7 @@ namespace Dispatcher.Data.Models
     using Dispatcher.Data.Common.Models;
     using Dispatcher.Data.Models.AdvertisementModels;
     using Dispatcher.Data.Models.MessengerModels;
+    using Dispatcher.Data.Models.UserInfoModels;
     using Microsoft.AspNetCore.Identity;
 
     public class ApplicationUser : IdentityUser, IAuditInfo, IDeletableEntity
@@ -26,6 +27,7 @@ namespace Dispatcher.Data.Models
             this.UsersGroups = new HashSet<UserGroup>();
             this.Messages = new HashSet<Message>();
             this.MessagesRecipients = new HashSet<MessageRecipient>();
+            this.Jobs = new HashSet<Job>();
         }
 
         [Required]
@@ -75,5 +77,7 @@ namespace Dispatcher.Data.Models
         public virtual ICollection<Message> Messages { get; set; }
 
         public virtual ICollection<MessageRecipient> MessagesRecipients { get; set; }
+
+        public virtual ICollection<Job> Jobs { get; set; }
     }
 }

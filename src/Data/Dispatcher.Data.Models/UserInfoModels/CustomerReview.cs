@@ -1,4 +1,4 @@
-﻿namespace Dispatcher.Data.Models
+﻿namespace Dispatcher.Data.Models.UserInfoModels
 {
     using System.ComponentModel.DataAnnotations;
 

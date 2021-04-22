@@ -10,6 +10,7 @@
     using Dispatcher.Data.Models;
     using Dispatcher.Data.Models.AdvertisementModels;
     using Dispatcher.Data.Models.MessengerModels;
+    using Dispatcher.Data.Models.UserInfoModels;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
 

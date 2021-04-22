@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     using Dispatcher.Data.Common.Models;
 
@@ -12,6 +13,7 @@
             this.Comments = new HashSet<Comment>();
         }
 
+        [ForeignKey(nameof(AdvertisementType))]
         public int AdvertisementTypeId { get; set; }
 
         public virtual AdvertisementType AdvertisementType { get; set; }
@@ -28,11 +30,17 @@
         [MaxLength(50)]
         public string Compensation { get; set; }
 
+        [MaxLength(2048)]
+        public string PictureUrl { get; set; }
+
         public int Like { get; set; }
+
+        public int Dislike { get; set; }
 
         public bool IsActive { get; set; }
 
         [Required]
+        [ForeignKey(nameof(ApplicationUser))]
         public string ApplicationUserId { get; set; }
 
         public virtual ApplicationUser ApplicationUser { get; set; }
