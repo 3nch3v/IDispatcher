@@ -9,6 +9,7 @@
     using Dispatcher.Data.Common.Models;
     using Dispatcher.Data.Models;
     using Dispatcher.Data.Models.AdvertisementModels;
+    using Dispatcher.Data.Models.ForumModels;
     using Dispatcher.Data.Models.MessengerModels;
     using Dispatcher.Data.Models.UserInfoModels;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -34,6 +35,8 @@
 
         public DbSet<Advertisement> Advertisements { get; set; }
 
+        public DbSet<Job> Jobs { get; set; }
+
         public DbSet<AdvertisementType> AdvertisementTypes { get; set; }
 
         public DbSet<Comment> Comments { get; set; }
@@ -45,6 +48,12 @@
         public DbSet<Message> Messages { get; set; }
 
         public DbSet<MessageRecipient> MessagesRecipients { get; set; }
+
+        public DbSet<Discussion> Discussions { get; set; }
+
+        public DbSet<UserDiscussion> UsersDiscussions { get; set; }
+
+        public DbSet<Post> Posts { get; set; }
 
         public override int SaveChanges() => this.SaveChanges(true);
 

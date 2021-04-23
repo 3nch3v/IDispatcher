@@ -7,6 +7,7 @@ namespace Dispatcher.Data.Models
 
     using Dispatcher.Data.Common.Models;
     using Dispatcher.Data.Models.AdvertisementModels;
+    using Dispatcher.Data.Models.ForumModels;
     using Dispatcher.Data.Models.MessengerModels;
     using Dispatcher.Data.Models.UserInfoModels;
     using Microsoft.AspNetCore.Identity;
@@ -28,6 +29,8 @@ namespace Dispatcher.Data.Models
             this.Messages = new HashSet<Message>();
             this.MessagesRecipients = new HashSet<MessageRecipient>();
             this.Jobs = new HashSet<Job>();
+            this.UserDiscussions = new HashSet<UserDiscussion>();
+            this.Posts = new HashSet<Post>();
         }
 
         [Required]
@@ -79,5 +82,9 @@ namespace Dispatcher.Data.Models
         public virtual ICollection<MessageRecipient> MessagesRecipients { get; set; }
 
         public virtual ICollection<Job> Jobs { get; set; }
+
+        public virtual ICollection<UserDiscussion> UserDiscussions { get; set; }
+
+        public virtual ICollection<Post> Posts { get; set; }
     }
 }

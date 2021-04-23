@@ -4,14 +4,16 @@ using Dispatcher.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Dispatcher.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210423190316_AddDiscussionModelToDb")]
+    partial class AddDiscussionModelToDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -345,10 +347,8 @@ namespace Dispatcher.Data.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                    b.Property<int?>("CommentsCount")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
@@ -372,54 +372,6 @@ namespace Dispatcher.Data.Migrations
                     b.HasIndex("IsDeleted");
 
                     b.ToTable("Discussions");
-                });
-
-            modelBuilder.Entity("Dispatcher.Data.Models.ForumModels.Post", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<string>("ApplicationUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasMaxLength(5000)
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("DiscussionId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("DislikeCount")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<int?>("LikeCount")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.HasIndex("DiscussionId");
-
-                    b.HasIndex("IsDeleted");
-
-                    b.ToTable("Posts");
                 });
 
             modelBuilder.Entity("Dispatcher.Data.Models.ForumModels.UserDiscussion", b =>
@@ -844,25 +796,6 @@ namespace Dispatcher.Data.Migrations
                     b.Navigation("ApplicationUser");
                 });
 
-            modelBuilder.Entity("Dispatcher.Data.Models.ForumModels.Post", b =>
-                {
-                    b.HasOne("Dispatcher.Data.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany("Posts")
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Dispatcher.Data.Models.ForumModels.Discussion", "Discussion")
-                        .WithMany("Posts")
-                        .HasForeignKey("DiscussionId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("ApplicationUser");
-
-                    b.Navigation("Discussion");
-                });
-
             modelBuilder.Entity("Dispatcher.Data.Models.ForumModels.UserDiscussion", b =>
                 {
                     b.HasOne("Dispatcher.Data.Models.ApplicationUser", "ApplicationUser")
@@ -1031,8 +964,6 @@ namespace Dispatcher.Data.Migrations
 
                     b.Navigation("MessagesRecipients");
 
-                    b.Navigation("Posts");
-
                     b.Navigation("Projects");
 
                     b.Navigation("Roles");
@@ -1044,8 +975,6 @@ namespace Dispatcher.Data.Migrations
 
             modelBuilder.Entity("Dispatcher.Data.Models.ForumModels.Discussion", b =>
                 {
-                    b.Navigation("Posts");
-
                     b.Navigation("UserDiscussions");
                 });
 
