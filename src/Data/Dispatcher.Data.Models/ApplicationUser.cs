@@ -7,6 +7,7 @@ namespace Dispatcher.Data.Models
 
     using Dispatcher.Data.Common.Models;
     using Dispatcher.Data.Models.AdvertisementModels;
+    using Dispatcher.Data.Models.BlogModels;
     using Dispatcher.Data.Models.ForumModels;
     using Dispatcher.Data.Models.MessengerModels;
     using Dispatcher.Data.Models.UserInfoModels;
@@ -31,6 +32,7 @@ namespace Dispatcher.Data.Models
             this.Jobs = new HashSet<Job>();
             this.UserDiscussions = new HashSet<UserDiscussion>();
             this.Posts = new HashSet<Post>();
+            this.Blogs = new HashSet<Blog>();
         }
 
         [Required]
@@ -86,5 +88,7 @@ namespace Dispatcher.Data.Models
         public virtual ICollection<UserDiscussion> UserDiscussions { get; set; }
 
         public virtual ICollection<Post> Posts { get; set; }
+
+        public virtual ICollection<Blog> Blogs { get; set; }
     }
 }
