@@ -6,10 +6,10 @@
     {
         public int Id { get; set; }
 
-        [ForeignKey(nameof(ApplicationUser))]
-        public string ApplicationUserId { get; set; }
+        [ForeignKey(nameof(User))]
+        public string UserId { get; set; }
 
-        public virtual ApplicationUser ApplicationUser { get; set; }
+        public virtual ApplicationUser User { get; set; }
 
         [ForeignKey(nameof(Message))]
         public int MessageId { get; set; }

@@ -1,0 +1,22 @@
+﻿@using Dispatcher.Common
+@model Dispatcher.Web.ViewModels.BlogModels.AllBlogPostsViewModel
+
+@{ 
+    this.ViewData["Title"] = "Recent Posts";
+}
+
+<h1>@this.ViewData["Title"]</h1>
+
+<div class="row">
+    @foreach (var post in Model.Posts)
+    {
+        <div class="card" style="width: 18rem;">
+            <img src="@post.PictureUrl" class="card-img-top" alt="@post.Title">
+            <div class="card-body">
+                <h5 class="card-title">@post.Title</h5>
+                <p class="card-text">@post.Body.Substring(0, 85)...</p>
+                <a href="#" class="btn btn-primary">Read more</a>
+            </div>
+        </div>
+     }
+</div>

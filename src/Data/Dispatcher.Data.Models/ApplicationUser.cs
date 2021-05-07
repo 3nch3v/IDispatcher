@@ -35,23 +35,23 @@ namespace Dispatcher.Data.Models
             this.Blogs = new HashSet<Blog>();
         }
 
-        [Required]
-        public string FirstName { get; set; }
+        ////[Required]
+        ////public string FirstName { get; set; }
 
-        [Required]
-        public string LastName { get; set; }
+        ////[Required]
+        ////public string LastName { get; set; }
 
-        [MaxLength(2048)]
-        public string ProfilePictureUrl { get; set; }
+        ////[MaxLength(2048)]
+        ////public string ProfilePictureUrl { get; set; }
 
-        [MaxLength(200)]
-        public string Education { get; set; }
+        ////[MaxLength(200)]
+        ////public string Education { get; set; }
 
-        [MaxLength(1000)]
-        public string Interests { get; set; }
+        ////[MaxLength(1000)]
+        ////public string Interests { get; set; }
 
-        [MaxLength(2000)]
-        public string Contacts { get; set; }
+        ////[MaxLength(2000)]
+        ////public string Contacts { get; set; }
 
         // Audit info
         public DateTime CreatedOn { get; set; }

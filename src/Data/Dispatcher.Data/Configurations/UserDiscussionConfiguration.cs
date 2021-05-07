@@ -9,7 +9,7 @@
         public void Configure(EntityTypeBuilder<UserDiscussion> userDiscussion)
         {
             userDiscussion
-                .HasKey(k => new { k.ApplicationUserId, k.DiscussionId });
+                .HasKey(k => new { k.UserId, k.DiscussionId });
         }
     }
 }

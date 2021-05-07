@@ -9,6 +9,7 @@
     using Dispatcher.Data.Common.Models;
     using Dispatcher.Data.Models;
     using Dispatcher.Data.Models.AdvertisementModels;
+    using Dispatcher.Data.Models.BlogModels;
     using Dispatcher.Data.Models.ForumModels;
     using Dispatcher.Data.Models.MessengerModels;
     using Dispatcher.Data.Models.UserInfoModels;
@@ -54,6 +55,8 @@
         public DbSet<UserDiscussion> UsersDiscussions { get; set; }
 
         public DbSet<Post> Posts { get; set; }
+
+        public DbSet<Blog> Blogs { get; set; }
 
         public override int SaveChanges() => this.SaveChanges(true);
 

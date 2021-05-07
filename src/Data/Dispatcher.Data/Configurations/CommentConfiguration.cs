@@ -9,7 +9,7 @@
         public void Configure(EntityTypeBuilder<Comment> comment)
         {
             comment
-                .HasKey(k => new { k.ApplicationUserId, k.AdvertisementId });
+                .HasKey(k => new { k.UserId, k.AdvertisementId });
         }
     }
 }

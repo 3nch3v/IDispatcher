@@ -40,10 +40,10 @@
         public bool IsActive { get; set; }
 
         [Required]
-        [ForeignKey(nameof(ApplicationUser))]
-        public string ApplicationUserId { get; set; }
+        [ForeignKey(nameof(User))]
+        public string UserId { get; set; }
 
-        public virtual ApplicationUser ApplicationUser { get; set; }
+        public virtual ApplicationUser User { get; set; }
 
         public virtual ICollection<Comment> Comments { get; set; }
     }

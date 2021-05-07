@@ -9,6 +9,7 @@
     using Dispatcher.Data.Repositories;
     using Dispatcher.Data.Seeding;
     using Dispatcher.Services.Data;
+    using Dispatcher.Services.Data.Contracts;
     using Dispatcher.Services.Mapping;
     using Dispatcher.Services.Messaging;
     using Dispatcher.Web.ViewModels;
@@ -65,6 +66,7 @@
             // Application services
             services.AddTransient<IEmailSender, NullMessageSender>();
             services.AddTransient<ISettingsService, SettingsService>();
+            services.AddTransient<IBlogService, BlogService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
