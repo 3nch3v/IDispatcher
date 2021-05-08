@@ -12,5 +12,9 @@
         Task CreatPostAsync(BlogInputModel inputModel, string id);
 
         T GetPost<T>(int id);
+
+        Task UpdatePostAsync(int id, EditBlogPostInputmodel input);
+
+        Task DeleteAsync(int id);
     }
 }

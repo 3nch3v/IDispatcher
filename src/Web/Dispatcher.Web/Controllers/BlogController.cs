@@ -51,5 +51,32 @@
             var post = this.blogServie.GetPost<BlogPostViewModel>(id);
             return this.View(post);
         }
+
+        [Authorize]
+        public IActionResult Edit(int id)
+        {
+            var editPost = this.blogServie.GetPost<EditBlogPostInputmodel>(id);
+            return this.View(editPost);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Edit(int id, EditBlogPostInputmodel input)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(input);
+            }
+
+            await this.blogServie.UpdatePostAsync(id, input);
+            return this.RedirectToAction(nameof(this.Post), new { id });
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await this.blogServie.DeleteAsync(id);
+            return this.RedirectToAction(nameof(this.AllPosts));
+        }
     }
 }

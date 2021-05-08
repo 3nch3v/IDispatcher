@@ -1,5 +1,6 @@
 ﻿namespace Dispatcher.Services.Data
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -33,6 +34,13 @@
             await this.blogsRepository.SaveChangesAsync();
         }
 
+        public async Task DeleteAsync(int id)
+        {
+            var deletePost = this.blogsRepository.All().FirstOrDefault(p => p.Id == id);
+            this.blogsRepository.Delete(deletePost);
+            await this.blogsRepository.SaveChangesAsync();
+        }
+
         public IEnumerable<T> GetAllBlogPosts<T>()
         {
             var posts = this.blogsRepository
@@ -52,6 +60,17 @@
                 .FirstOrDefault();
 
             return post;
+        }
+
+        public async Task UpdatePostAsync(int id, EditBlogPostInputmodel input)
+        {
+            var post = this.blogsRepository.All().FirstOrDefault(p => p.Id == id);
+            post.Title = input.Title;
+            post.Body = input.Body;
+            post.RemotePictureUrl = input.RemotePictureUrl;
+            post.ModifiedOn = DateTime.UtcNow;
+
+            await this.blogsRepository.SaveChangesAsync();
         }
     }
 }

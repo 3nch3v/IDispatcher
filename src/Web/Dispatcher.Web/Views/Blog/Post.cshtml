@@ -4,7 +4,15 @@
     this.ViewData["Title"] = Model.Title;
 }
 
-@if (Model.RemotePictureUrl != null) {<img src="@Model.RemotePictureUrl" alt="@Model.Title" class="card-img-top">}
+<a asp-controller="Blog" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Edit</a>
+
+<a asp-controller="Blog" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Delete</a>
+
+
+@if (Model.RemotePictureUrl != null)
+{
+    <img src="@Model.RemotePictureUrl" alt="@Model.Title" class="card-img-top">
+}
 
 <div>@Model.Title</div>
 
