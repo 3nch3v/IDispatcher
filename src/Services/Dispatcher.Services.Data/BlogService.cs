@@ -25,7 +25,7 @@
             {
                 Title = inputModel.Title,
                 Body = inputModel.Body,
-                PictureUrl = inputModel.PictureUrl,
+                RemotePictureUrl = inputModel.RemotePictureUrl,
                 UserId = id,
             };
 
@@ -42,6 +42,16 @@
                 .ToList();
 
             return posts;
+        }
+
+        public T GetPost<T>(int id)
+        {
+            var post = this.blogsRepository.AllAsNoTracking()
+                .Where(b => b.Id == id)
+                .To<T>()
+                .FirstOrDefault();
+
+            return post;
         }
     }
 }

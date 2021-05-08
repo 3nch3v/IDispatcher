@@ -5,6 +5,7 @@
     using Dispatcher.Data.Models;
     using Dispatcher.Services.Data.Contracts;
     using Dispatcher.Web.ViewModels.BlogModels;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
@@ -31,6 +32,7 @@
             return this.View(posts);
         }
 
+        [Authorize]
         public async Task<IActionResult> Create(BlogInputModel input)
         {
             if (!this.ModelState.IsValid)
@@ -41,12 +43,13 @@
             var user = await this.userManager.GetUserAsync(this.User);
             await this.blogServie.CreatPostAsync(input, user.Id);
 
-            return this.Redirect("/");
+            return this.Redirect("/Blog/AllPosts");
         }
 
-        public IActionResult Post()
+        public IActionResult Post(int id)
         {
-            return this.View();
+            var post = this.blogServie.GetPost<BlogPostViewModel>(id);
+            return this.View(post);
         }
     }
 }

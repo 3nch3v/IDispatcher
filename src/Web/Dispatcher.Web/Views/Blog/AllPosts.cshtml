@@ -2,21 +2,25 @@
 @model Dispatcher.Web.ViewModels.BlogModels.AllBlogPostsViewModel
 
 @{ 
-    this.ViewData["Title"] = "Recent Posts";
+    this.ViewData["Title"] = "Blog Posts";
 }
 
 <h1>@this.ViewData["Title"]</h1>
 
-<div class="row">
+<a href="/Blog/Create" class="btn btn-secondary" >Creat New Post</a>
+<br><br />
+
+<div class="row justify-content-center">
     @foreach (var post in Model.Posts)
     {
-        <div class="card" style="width: 18rem;">
-            <img src="@post.PictureUrl" class="card-img-top" alt="@post.Title">
-            <div class="card-body">
-                <h5 class="card-title">@post.Title</h5>
-                <p class="card-text">@post.Body.Substring(0, 85)...</p>
-                <a href="#" class="btn btn-primary">Read more</a>
-            </div>
+    <div class="card" style="width: 18rem;">
+        @if (post.RemotePictureUrl != null) {<img src="@post.RemotePictureUrl" class="card-img-top" alt="@post.Title">}
+        else { <img src="https://st4.depositphotos.com/14953852/22772/v/600/depositphotos_227724992-stock-illustration-image-available-icon-flat-vector.jpg" alt="@post.Title"> }
+        <div class="card-body">
+            <h5 class="card-title">@post.Title</h5>
+            <p class="card-text">@post.Body.Substring(0, 85)...</p>
+            <a asp-action="Post" asp-route-id="@post.Id" class="btn btn-outline-secondary">Read more</a>
         </div>
+    </div>
      }
 </div>

@@ -4,6 +4,7 @@
 
     using Dispatcher.Data.Models.BlogModels;
     using Dispatcher.Services.Mapping;
+    using Microsoft.AspNetCore.Http;
 
     public class BlogInputModel : IMapTo<Blog>
     {
@@ -16,6 +17,6 @@
         public string Body { get; set; }
 
         [MaxLength(2048)]
-        public string PictureUrl { get; set; }
+        public string RemotePictureUrl { get; set; }
     }
 }

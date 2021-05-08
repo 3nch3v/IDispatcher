@@ -10,5 +10,7 @@
         IEnumerable<T> GetAllBlogPosts<T>();
 
         Task CreatPostAsync(BlogInputModel inputModel, string id);
+
+        T GetPost<T>(int id);
     }
 }

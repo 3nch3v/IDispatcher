@@ -15,7 +15,7 @@
         public string Body { get; set; }
 
         [MaxLength(2048)]
-        public string PictureUrl { get; set; }
+        public string RemotePictureUrl { get; set; }
 
         public string UserId { get; set; }
 
