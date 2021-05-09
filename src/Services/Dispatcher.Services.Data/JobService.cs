@@ -8,6 +8,7 @@
     using Dispatcher.Data.Models.AdvertisementModels;
     using Dispatcher.Services.Data.Contracts;
     using Dispatcher.Services.Mapping;
+    using Dispatcher.Web.ViewModels.JobModels;
 
     public class JobService : IJobService
     {
@@ -18,9 +19,21 @@
             this.jobRepository = jobRepository;
         }
 
-        public Task CreateAsync()
+        public async Task CreateAsync(JobInputModel input, string userId)
         {
-            throw new System.NotImplementedException();
+            var job = new Job
+            {
+                Title = input.Title,
+                JobBody = input.JobBody,
+                CompanyName = input.CompanyName,
+                Contact = input.Contact,
+                Location = input.Location,
+                LogoUrl = input.LogoUrl,
+                UserId = userId,
+            };
+
+            await this.jobRepository.AddAsync(job);
+            await this.jobRepository.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)

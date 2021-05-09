@@ -43,7 +43,7 @@
             var user = await this.userManager.GetUserAsync(this.User);
             await this.blogServie.CreatPostAsync(input, user.Id);
 
-            return this.Redirect("/Blog/AllPosts");
+            return this.RedirectToAction(nameof(this.AllPosts));
         }
 
         public IActionResult Post(int id)
