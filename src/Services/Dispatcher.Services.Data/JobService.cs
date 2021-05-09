@@ -23,9 +23,11 @@
             throw new System.NotImplementedException();
         }
 
-        public Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
-            throw new System.NotImplementedException();
+            var job = this.jobRepository.All().FirstOrDefault(j => j.Id == id);
+            this.jobRepository.Delete(job);
+            await this.jobRepository.SaveChangesAsync();
         }
 
         public Task EditAsync()
@@ -46,7 +48,13 @@
 
         public T GetJob<T>(int id)
         {
-            throw new System.NotImplementedException();
+            var job = this.jobRepository
+                .AllAsNoTracking()
+                .Where(j => j.Id == id)
+                .To<T>()
+                .FirstOrDefault();
+
+            return job;
         }
     }
 }

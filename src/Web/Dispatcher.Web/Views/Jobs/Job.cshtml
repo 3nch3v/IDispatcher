@@ -1,0 +1,27 @@
+﻿@model Dispatcher.Web.ViewModels.JobModels.SigleJobViewModel
+
+@{
+    this.ViewData["Title"] = this.Model.Title;
+}
+
+<a asp-controller="Jobs" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Edit</a>
+<a asp-controller="Jobs" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Delete</a>
+
+<h1>@this.ViewData["Title"]</h1>
+
+@if (this.Model.LogoUrl != null)
+{
+    <img src="@this.Model.LogoUrl" alt="@this.Model.LogoUrl" class="card-img-top">
+}
+
+<p>@this.Model.Title</p>
+
+<p>@this.Model.JobBody</p>
+
+<p>@this.Model.CompanyName</p>
+
+<p>@this.Model.Location</p>
+
+<p>@this.Model.Contact</p>
+
+<p>@this.Model.CreatedOn</p>

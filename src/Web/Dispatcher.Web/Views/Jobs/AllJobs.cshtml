@@ -20,8 +20,7 @@
                 <p class="card-text">@job.JobBody.Substring(0, 85)...</p>
                 <p class="card-text">@job.CompanyName</p>
                 <p class="card-text">@job.Location</p>
-
-                <a asp-action="Post" asp-route-id="@job.Id" class="btn btn-outline-secondary">Read more</a>
+                <a asp-action="Job" asp-route-id="@job.Id" class="btn btn-outline-secondary">Read more</a>
             </div>
         </div>
      }

@@ -21,7 +21,20 @@
             {
                 Jobs = this.jobService.GetAllAsync<SigleJobViewModel>(),
             };
+
             return this.View(jobs);
+        }
+
+        public IActionResult Job(int id)
+        {
+            var job = this.jobService.GetJob<SigleJobViewModel>(id);
+            return this.View(job);
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            await this.jobService.DeleteAsync(id);
+            return this.RedirectToAction(nameof(this.AllJobs));
         }
     }
 }
