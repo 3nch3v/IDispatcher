@@ -1,0 +1,28 @@
+﻿@model Dispatcher.Web.ViewModels.JobModels.AllJobsViewModel
+@using Dispatcher.Common
+
+@{
+    this.ViewData["Title"] = "Jobs";
+}
+
+<h1>@this.ViewData["Title"]</h1>
+
+<div class="row justify-content-center">
+    @foreach (var job in Model.Jobs)
+    {
+        <div class="card" style="width: 18rem;">
+            @if (job.LogoUrl != null)
+            {<img src="@job.LogoUrl " class="card-img-top" alt="@job.Title">}
+            else
+            { <img src="https://st4.depositphotos.com/14953852/22772/v/600/depositphotos_227724992-stock-illustration-image-available-icon-flat-vector.jpg" alt="@job.Title">}
+            <div class="card-body">
+                <h5 class="card-title">@job.Title </h5>
+                <p class="card-text">@job.JobBody.Substring(0, 85)...</p>
+                <p class="card-text">@job.CompanyName</p>
+                <p class="card-text">@job.Location</p>
+
+                <a asp-action="Post" asp-route-id="@job.Id" class="btn btn-outline-secondary">Read more</a>
+            </div>
+        </div>
+     }
+</div>
