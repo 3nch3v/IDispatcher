@@ -3,7 +3,8 @@
     using Dispatcher.Data.Models.AdvertisementModels;
     using Dispatcher.Services.Mapping;
 
-    public class JobInputModel : BaseJobInputModel, IMapTo<Job>
+    public class EditJobInputModel : BaseJobInputModel, IMapFrom<Job>
     {
+        public int Id { get; set; }
     }
 }

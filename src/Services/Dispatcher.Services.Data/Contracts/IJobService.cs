@@ -15,6 +15,6 @@
 
         Task DeleteAsync(int id);
 
-        Task EditAsync();
+        Task UpdateAsync(EditJobInputModel input, int id);
     }
 }

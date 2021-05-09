@@ -43,11 +43,6 @@
             await this.jobRepository.SaveChangesAsync();
         }
 
-        public Task EditAsync()
-        {
-            throw new System.NotImplementedException();
-        }
-
         public IEnumerable<T> GetAllAsync<T>()
         {
              var jobs = this.jobRepository
@@ -68,6 +63,19 @@
                 .FirstOrDefault();
 
             return job;
+        }
+
+        public async Task UpdateAsync(EditJobInputModel input, int id)
+        {
+            var job = this.jobRepository.All().FirstOrDefault(j => j.Id == id);
+            job.Title = input.Title;
+            job.JobBody = input.JobBody;
+            job.CompanyName = input.CompanyName;
+            job.Location = input.Location;
+            job.Contact = input.Contact;
+            job.LogoUrl = input.LogoUrl;
+
+            await this.jobRepository.SaveChangesAsync();
         }
     }
 }
