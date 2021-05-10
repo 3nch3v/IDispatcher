@@ -1,5 +1,6 @@
 ﻿namespace Dispatcher.Services.Data
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -63,6 +64,18 @@
                 .FirstOrDefault();
 
             return job;
+        }
+
+        public IEnumerable<T> GetRandomJobs<T>()
+        {
+            var jobs = this.jobRepository
+               .AllAsNoTracking()
+               .OrderByDescending(j => Guid.NewGuid())
+               .To<T>()
+               .Take(3)
+               .ToList();
+
+            return jobs;
         }
 
         public async Task UpdateAsync(EditJobInputModel input, int id)

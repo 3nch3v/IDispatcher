@@ -11,6 +11,8 @@
 
         IEnumerable<T> GetAllAsync<T>();
 
+        IEnumerable<T> GetRandomJobs<T>();
+
         Task CreateAsync(JobInputModel input, string userId);
 
         Task DeleteAsync(int id);

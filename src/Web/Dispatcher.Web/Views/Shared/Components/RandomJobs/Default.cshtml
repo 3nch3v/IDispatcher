@@ -1,0 +1,17 @@
+﻿@model Dispatcher.Web.ViewModels.ViewComponents.RandomJobsModel
+
+<div class="row justify-content-md-center" >
+    @foreach (var job in Model.Jobs)
+    {
+        <div class="col-sm-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">@job.Title</h5>
+                    <p class="card-text">@job.JobBody.Substring(0, 80) ...</p>
+                    <p class="card-text">@job.Location ...</p>
+                    <a asp-controller="Jobs" asp-action="Job" asp-route-id="@job.Id" class="btn btn-outline-secondary">Read more</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
