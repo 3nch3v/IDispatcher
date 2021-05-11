@@ -20,7 +20,7 @@
         {
             var jobs = new RandomJobsModel
             {
-                Jobs = this.jobService.GetRandomJobs<SigleJobViewModel>(),
+                Jobs = this.jobService.GetRandomJobs<SingelRandomJobViewModel>(),
             };
 
             return this.View(jobs);

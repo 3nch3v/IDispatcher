@@ -1,8 +1,9 @@
 ﻿namespace Dispatcher.Web.ViewModels.ViewComponents
 {
-    using Dispatcher.Web.ViewModels.JobModels;
+    using System.Collections.Generic;
 
-    public class RandomJobsModel : AllJobsViewModel
+    public class RandomJobsModel
     {
+        public IEnumerable<SingelRandomJobViewModel> Jobs { get; set; }
     }
 }

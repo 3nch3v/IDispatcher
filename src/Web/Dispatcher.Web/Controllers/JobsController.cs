@@ -45,6 +45,13 @@
         }
 
         [Authorize]
+        public IActionResult Create()
+        {
+            return this.View();
+        }
+
+        [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Create(JobInputModel input)
         {
             if (!this.ModelState.IsValid)

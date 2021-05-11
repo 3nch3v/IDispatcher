@@ -7,8 +7,9 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">@job.Title</h5>
-                    <p class="card-text">@job.JobBody.Substring(0, 80) ...</p>
-                    <p class="card-text">@job.Location ...</p>
+                    <p class="card-text">@job.JobBody.Substring(0, 50) ...</p>
+                    <p class="card-text">@job.Location</p>
+                    <p class="card-text">@job.CreatedOn.ToString("dd-MM-yyyy")</p>
                     <a asp-controller="Jobs" asp-action="Job" asp-route-id="@job.Id" class="btn btn-outline-secondary">Read more</a>
                 </div>
             </div>

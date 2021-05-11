@@ -68,6 +68,7 @@
             services.AddTransient<ISettingsService, SettingsService>();
             services.AddTransient<IBlogService, BlogService>();
             services.AddTransient<IJobService, JobService>();
+            services.AddTransient<IAdService, AdService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
