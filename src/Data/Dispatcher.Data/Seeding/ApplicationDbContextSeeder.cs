@@ -29,6 +29,7 @@
                               new SettingsSeeder(),
                               new BlogSeeder(),
                               new JobSeeder(),
+                              new AdvertisementTypesSeeder(),
                           };
 
             foreach (var seeder in seeders)

@@ -11,7 +11,7 @@
         public string Title { get; set; }
 
         [Required]
-        [MaxLength(50000)]
+        [MaxLength(5000)]
         public string JobBody { get; set; }
 
         [Required]

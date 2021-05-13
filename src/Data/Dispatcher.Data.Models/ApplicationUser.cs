@@ -4,6 +4,7 @@ namespace Dispatcher.Data.Models
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     using Dispatcher.Data.Common.Models;
     using Dispatcher.Data.Models.AdvertisementModels;
@@ -25,12 +26,11 @@ namespace Dispatcher.Data.Models
             this.Projects = new HashSet<Project>();
             this.CumstomerReviews = new HashSet<CustomerReview>();
             this.Advertisements = new HashSet<Advertisement>();
-            this.Comments = new HashSet<Comment>();
             this.UsersGroups = new HashSet<UserGroup>();
             this.Messages = new HashSet<Message>();
             this.MessagesRecipients = new HashSet<MessageRecipient>();
             this.Jobs = new HashSet<Job>();
-            this.UserDiscussions = new HashSet<UserDiscussion>();
+            this.Discussions = new HashSet<Discussion>();
             this.Posts = new HashSet<Post>();
             this.Blogs = new HashSet<Blog>();
         }
@@ -71,11 +71,13 @@ namespace Dispatcher.Data.Models
 
         public virtual ICollection<Project> Projects { get; set; }
 
+        [InverseProperty("User")]
         public virtual ICollection<CustomerReview> CumstomerReviews { get; set; }
 
-        public virtual ICollection<Advertisement> Advertisements { get; set; }
+        [InverseProperty("Appraiser")]
+        public virtual ICollection<CustomerReview> Appraisers { get; set; }
 
-        public virtual ICollection<Comment> Comments { get; set; }
+        public virtual ICollection<Advertisement> Advertisements { get; set; }
 
         public virtual ICollection<UserGroup> UsersGroups { get; set; }
 
@@ -85,7 +87,7 @@ namespace Dispatcher.Data.Models
 
         public virtual ICollection<Job> Jobs { get; set; }
 
-        public virtual ICollection<UserDiscussion> UserDiscussions { get; set; }
+        public virtual ICollection<Discussion> Discussions { get; set; }
 
         public virtual ICollection<Post> Posts { get; set; }
 

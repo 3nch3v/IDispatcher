@@ -9,7 +9,6 @@
     {
         public Discussion()
         {
-            this.UserDiscussions = new HashSet<UserDiscussion>();
             this.Posts = new HashSet<Post>();
         }
 
@@ -18,10 +17,21 @@
         public string Title { get; set; }
 
         [Required]
-        [MaxLength(100)]
-        public string Category { get; set; }
+        [MaxLength(5000)]
+        public string Description { get; set; }
 
-        public virtual ICollection<UserDiscussion> UserDiscussions { get; set; }
+        public int LikesCount { get; set; }
+
+        public bool IsSolved { get; set; }
+
+        public int CategoryId { get; set; }
+
+        public virtual Category Category { get; set; }
+
+        [Required]
+        public string UserId { get; set; }
+
+        public virtual ApplicationUser User { get; set; }
 
         public virtual ICollection<Post> Posts { get; set; }
     }

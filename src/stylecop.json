@@ -6,7 +6,7 @@
     },
     "namingRules": {
       "allowCommonHungarianPrefixes": true,
-      "allowedHungarianPrefixes": [ "db", "at", "or", "up", "it", "un", "x", "y", "id", "ip", "bg" ]
+      "allowedHungarianPrefixes": [ "ad", "db", "at", "or", "up", "it", "un", "x", "y", "id", "ip", "bg" ]
     },
     "documentationRules": {
       "companyName": "Dispatcher",

@@ -22,8 +22,6 @@
         [MaxLength(5000)]
         public string Content { get; set; }
 
-        public int? LikesCount { get; set; }
-
-        public int? DislikesCount { get; set; }
+        public int LikesCount { get; set; }
     }
 }

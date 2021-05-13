@@ -1,6 +1,5 @@
 ﻿namespace Dispatcher.Data.Models.AdvertisementModels
 {
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
@@ -8,11 +7,6 @@
 
     public class Advertisement : BaseDeletableModel<int>
     {
-        public Advertisement()
-        {
-            this.Comments = new HashSet<Comment>();
-        }
-
         [ForeignKey(nameof(AdvertisementType))]
         public int AdvertisementTypeId { get; set; }
 
@@ -23,7 +17,7 @@
         public string Title { get; set; }
 
         [Required]
-        [MaxLength(2000)]
+        [MaxLength(5000)]
         public string Description { get; set; }
 
         [Required]
@@ -33,10 +27,6 @@
         [MaxLength(2048)]
         public string PictureUrl { get; set; }
 
-        public int Like { get; set; }
-
-        public int Dislike { get; set; }
-
         public bool IsActive { get; set; }
 
         [Required]
@@ -44,7 +34,5 @@
         public string UserId { get; set; }
 
         public virtual ApplicationUser User { get; set; }
-
-        public virtual ICollection<Comment> Comments { get; set; }
     }
 }

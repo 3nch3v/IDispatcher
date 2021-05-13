@@ -24,7 +24,7 @@
                 Body = $"As you explore more with strings, you'll find that strings are more than a collection of letters. " +
                 $"You can find the length of a string using Length. Length is a property of a string and it returns the number" +
                 $" of characters in that string. Add the following code at the bottom of the interactive window:",
-                UserId = "b89ddf98-f0e1-419c-b9a9-815eb400713b",
+                UserId = "047db664-5b3a-467d-99b0-81da4692c63c",
                 RemotePictureUrl = "https://writtent.com/blog/wp-content/uploads/2013/03/picture-citing-lion-noble.jpg",
             });
 
@@ -36,7 +36,7 @@
                $"Experiment in the interactive window. The window has a feature called IntelliSense that makes" +
                $" suggestions for what you can do. Type a . after the d in firstFriend. You'll see a list of suggestions " +
                $"for properties and methods you can use.",
-                UserId = "b89ddf98-f0e1-419c-b9a9-815eb400713b",
+                UserId = "047db664-5b3a-467d-99b0-81da4692c63c",
                 RemotePictureUrl = "https://media.nature.com/w1172/magazine-assets/d41586-017-08492-y/d41586-017-08492-y_15320844.jpg",
             });
 
@@ -53,7 +53,7 @@
                 $" Replace method takes two parameters. These are the strings between the parentheses. The first string is the" +
                 $" text to search for. The second string is the text to replace it with. Try it for yourself. Add this code." +
                 $" Type it in to see the hints as you start typing .Re after the sayHello variable:",
-                UserId = "b89ddf98-f0e1-419c-b9a9-815eb400713b",
+                UserId = "047db664-5b3a-467d-99b0-81da4692c63c",
                 RemotePictureUrl = "https://www.rd.com/wp-content/uploads/2018/12/50-Funny-Animal-Pictures-That-You-Need-In-Your-Life-45.jpg?resize=768,510",
             });
 
@@ -65,7 +65,7 @@
                $"Experiment in the interactive window. The window has a feature called IntelliSense that makes" +
                $" suggestions for what you can do. Type a . after the d in firstFriend. You'll see a list of suggestions " +
                $"for properties and methods you can use.",
-                UserId = "b89ddf98-f0e1-419c-b9a9-815eb400713b",
+                UserId = "047db664-5b3a-467d-99b0-81da4692c63c",
                 RemotePictureUrl = "https://www.rd.com/wp-content/uploads/2018/12/50-Funny-Animal-Pictures-That-You-Need-In-Your-Life-2.jpg?resize=768,512",
             });
 
@@ -76,7 +76,7 @@
                $"Experiment in the interactive window. The window has a feature called IntelliSense that makes" +
                $" suggestions for what you can do. Type a . after the d in firstFriend. You'll see a list of suggestions " +
                $"for properties and methods you can use.",
-                UserId = "b89ddf98-f0e1-419c-b9a9-815eb400713b",
+                UserId = "047db664-5b3a-467d-99b0-81da4692c63c",
                 RemotePictureUrl = "https://www.rd.com/wp-content/uploads/2018/12/50-Funny-Animal-Pictures-That-You-Need-In-Your-Life-4.jpg?resize=768,508",
             });
 
@@ -88,7 +88,7 @@
                $"Experiment in the interactive window. The window has a feature called IntelliSense that makes" +
                $" suggestions for what you can do. Type a . after the d in firstFriend. You'll see a list of suggestions " +
                $"for properties and methods you can use.",
-                UserId = "b89ddf98-f0e1-419c-b9a9-815eb400713b",
+                UserId = "047db664-5b3a-467d-99b0-81da4692c63c",
                 RemotePictureUrl = "https://writtent.com/blog/wp-content/uploads/2013/03/picture-citing-lion-noble.jpg",
             });
 
@@ -100,7 +100,7 @@
                 $"trailing spaces that you don't want to display. You want to trim the spaces from the strings. " +
                 $"The Trim method and related methods TrimStart and TrimEnd do that work. You can just use those" +
                 $" methods to remove leading and trailing spaces. Try the following code:",
-                UserId = "b89ddf98-f0e1-419c-b9a9-815eb400713b",
+                UserId = "047db664-5b3a-467d-99b0-81da4692c63c",
                 RemotePictureUrl = "https://www.rd.com/wp-content/uploads/2018/12/50-Funny-Animal-Pictures-That-You-Need-In-Your-Life-6.jpg?resize=768,512",
             });
 
@@ -112,7 +112,7 @@
                $"Experiment in the interactive window. The window has a feature called IntelliSense that makes" +
                $" suggestions for what you can do. Type a . after the d in firstFriend. You'll see a list of suggestions " +
                $"for properties and methods you can use.",
-                UserId = "b89ddf98-f0e1-419c-b9a9-815eb400713b",
+                UserId = "047db664-5b3a-467d-99b0-81da4692c63c",
                 RemotePictureUrl = "https://writtent.com/blog/wp-content/uploads/2013/03/picture-citing-lion-noble.jpg",
             });
 
@@ -124,7 +124,7 @@
                $"Experiment in the interactive window. " +
                $" suggestions for what you can do. Type a . after the d in firstFriend. You'll see a list of suggestions " +
                $"for properties and methods you can use.",
-                UserId = "b89ddf98-f0e1-419c-b9a9-815eb400713b",
+                UserId = "047db664-5b3a-467d-99b0-81da4692c63c",
                 RemotePictureUrl = "https://writtent.com/blog/wp-content/uploads/2013/03/picture-citing-lion-noble.jpg",
             });
 
@@ -136,7 +136,7 @@
                $"Experiment in the interactive window. The window has a feature called IntelliSense that makes" +
                $" suggestions for what you can do. Type a . after the d in firstFriend. You'll see a list of suggestions " +
                $"for properties and methods you can use.",
-                UserId = "b89ddf98-f0e1-419c-b9a9-815eb400713b",
+                UserId = "047db664-5b3a-467d-99b0-81da4692c63c",
                 RemotePictureUrl = "https://writtent.com/blog/wp-content/uploads/2013/03/picture-citing-lion-noble.jpg",
             });
 

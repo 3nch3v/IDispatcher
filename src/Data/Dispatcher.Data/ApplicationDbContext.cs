@@ -40,8 +40,6 @@
 
         public DbSet<AdvertisementType> AdvertisementTypes { get; set; }
 
-        public DbSet<Comment> Comments { get; set; }
-
         public DbSet<Group> Groups { get; set; }
 
         public DbSet<UserGroup> UsersGroups { get; set; }
@@ -51,8 +49,6 @@
         public DbSet<MessageRecipient> MessagesRecipients { get; set; }
 
         public DbSet<Discussion> Discussions { get; set; }
-
-        public DbSet<UserDiscussion> UsersDiscussions { get; set; }
 
         public DbSet<Post> Posts { get; set; }
 
