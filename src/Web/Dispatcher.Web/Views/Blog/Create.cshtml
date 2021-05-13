@@ -14,7 +14,7 @@
     </div>
     <div class="form-group">
         <label asp-for="Body">Text</label>
-        <textarea asp-for="Body" class="form-control" rows="10"></textarea>
+        <textarea asp-for="Body" class="form-control" rows="15"></textarea>
         <span asp-validation-for="Body" class="text-danger"></span>
     </div>
     <div class="form-group">
@@ -24,3 +24,16 @@
     </div>
     <input type="submit" class="btn btn-primary" />
 </form>
+
+@section Scripts
+{
+    <script src="~/lib/tinymce/tinymce.min.js"></script>
+    <script type="text/javascript">
+        tinymce.init({
+            selector: "textarea",
+            plugins: [
+                "image paste table link code media fullscreen wordcount searchreplace lists"
+            ]
+        });
+    </script>    
+}

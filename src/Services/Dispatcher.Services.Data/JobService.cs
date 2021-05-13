@@ -22,16 +22,8 @@
 
         public async Task CreateAsync(JobInputModel input, string userId)
         {
-            var job = new Job
-            {
-                Title = input.Title,
-                JobBody = input.JobBody,
-                CompanyName = input.CompanyName,
-                Contact = input.Contact,
-                Location = input.Location,
-                LogoUrl = input.LogoUrl,
-                UserId = userId,
-            };
+            var job = AutoMapperConfig.MapperInstance.Map<Job>(input);
+            job.UserId = userId;
 
             await this.jobRepository.AddAsync(job);
             await this.jobRepository.SaveChangesAsync();

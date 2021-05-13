@@ -11,17 +11,17 @@
 
 @if (this.Model.LogoUrl != null)
 {
-    <img src="@this.Model.LogoUrl" alt="@this.Model.LogoUrl" class="card-img-top">
+    <img src="@Model.LogoUrl" alt="@Model.LogoUrl" class="card-img-top">
 }
 
-<p>@this.Model.Title</p>
+<p>@Model.Title</p>
 
-<p>@this.Model.JobBody</p>
+<p>@Html.Raw(Model.SanitizedBody)</p>
 
-<p>@this.Model.CompanyName</p>
+<p>@Model.CompanyName</p>
 
-<p>@this.Model.Location</p>
+<p>@Model.Location</p>
 
-<p>@this.Model.Contact</p>
+<p>@Model.Contact</p>
 
-<p>@this.Model.CreatedOn</p>
+<p>@Model.CreatedOn</p>

@@ -5,5 +5,6 @@
 
     public class BlogInputModel : BaseBlogPostInputModel, IMapTo<Blog>
     {
+        public string UserId { get; set; }
     }
 }

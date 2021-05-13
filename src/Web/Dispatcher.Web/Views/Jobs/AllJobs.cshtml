@@ -19,7 +19,7 @@
             { <img src="https://st4.depositphotos.com/14953852/22772/v/600/depositphotos_227724992-stock-illustration-image-available-icon-flat-vector.jpg" alt="@job.Title">}
             <div class="card-body">
                 <h5 class="card-title">@job.Title </h5>
-                <p class="card-text">@job.JobBody.Substring(0, 85)...</p>
+                <p class="card-text">@job.ClearBody.Substring(0, 85)...</p>
                 <p class="card-text">@job.CompanyName</p>
                 <p class="card-text">@job.Location</p>
                 <a asp-action="Job" asp-route-id="@job.Id" class="btn btn-outline-secondary">Read more</a>

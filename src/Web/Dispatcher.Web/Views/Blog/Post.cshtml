@@ -14,4 +14,8 @@
 
 <div>@Model.Title</div>
 
-<div>@Model.Body</div>
+<div>@Html.Raw(Model.SanitizedBody)</div>
+
+<div>@Model.CreatedOn</div>
+
+<div>@Model.UserUsername</div>

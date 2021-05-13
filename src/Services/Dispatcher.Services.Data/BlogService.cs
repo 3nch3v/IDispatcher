@@ -20,15 +20,9 @@
             this.blogsRepository = blogsRepository;
         }
 
-        public async Task CreatPostAsync(BlogInputModel inputModel, string id)
+        public async Task CreatPostAsync(BlogInputModel inputModel)
         {
-            Blog post = new Blog
-            {
-                Title = inputModel.Title,
-                Body = inputModel.Body,
-                RemotePictureUrl = inputModel.RemotePictureUrl,
-                UserId = id,
-            };
+            Blog post = AutoMapperConfig.MapperInstance.Map<Blog>(inputModel);
 
             await this.blogsRepository.AddAsync(post);
             await this.blogsRepository.SaveChangesAsync();
