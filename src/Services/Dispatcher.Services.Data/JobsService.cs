@@ -11,11 +11,11 @@
     using Dispatcher.Services.Mapping;
     using Dispatcher.Web.ViewModels.JobModels;
 
-    public class JobService : IJobService
+    public class JobsService : IJobService
     {
         private readonly IDeletableEntityRepository<Job> jobRepository;
 
-        public JobService(IDeletableEntityRepository<Job> jobRepository)
+        public JobsService(IDeletableEntityRepository<Job> jobRepository)
         {
             this.jobRepository = jobRepository;
         }

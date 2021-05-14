@@ -4,6 +4,6 @@
 
     public class AllAdsViewModel
     {
-        public IEnumerable<SingleAdViewModel> Ads { get; set; }
+        public IEnumerable<AdsViewModel> Ads { get; set; }
     }
 }

@@ -1,9 +1,9 @@
-﻿@model Dispatcher.Web.ViewModels.BlogModels.BlogInputModel
+﻿@model Dispatcher.Web.ViewModels.BlogModels.EditBlogPostInputmodel
 @{
-    this.ViewData["Title"] = "New Post";
+    this.ViewData["Title"] = "Edit Post";
 }
 
-<h1>Create new Post</h1>
+<h1>@this.ViewData["Title"]</h1>
 
 <form method="post" class="col-md-8 offser-md-6">
 
@@ -12,17 +12,20 @@
         <input asp-for="Title" class="form-control" />
         <span asp-validation-for="Title" class="text-danger"></span>
     </div>
+
     <div class="form-group">
         <label asp-for="Body">Text</label>
-        <textarea asp-for="Body" class="form-control" rows="15"></textarea>
+        <textarea asp-for="Body" class="form-control" rows="10"></textarea>
         <span asp-validation-for="Body" class="text-danger"></span>
     </div>
+
     <div class="form-group">
         <label asp-for="RemotePictureUrl">Add Picture From Url</label>
         <input asp-for="RemotePictureUrl" class="form-control" />
         <span asp-validation-for="RemotePictureUrl" class="text-danger"></span>
     </div>
-    <input type="submit" class="btn btn-primary" />
+    <input type="hidden" asp-for="Id" />
+    <input type="submit" class="btn btn-primary" value="Save" />
 </form>
 
 @section Scripts
@@ -35,5 +38,5 @@
                 "image paste table link code media fullscreen wordcount searchreplace lists"
             ]
         });
-    </script>    
+    </script>
 }

@@ -11,11 +11,11 @@
     using Dispatcher.Services.Mapping;
     using Dispatcher.Web.ViewModels.BlogModels;
 
-    public class BlogService : IBlogService
+    public class BlogsService : IBlogService
     {
         private readonly IDeletableEntityRepository<Blog> blogsRepository;
 
-        public BlogService(IDeletableEntityRepository<Blog> blogsRepository)
+        public BlogsService(IDeletableEntityRepository<Blog> blogsRepository)
         {
             this.blogsRepository = blogsRepository;
         }

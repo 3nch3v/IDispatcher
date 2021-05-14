@@ -5,7 +5,7 @@
     using Dispatcher.Data.Models.AdvertisementModels;
     using Dispatcher.Services.Mapping;
 
-    public class SingleAdViewModel : IMapFrom<Advertisement>
+    public class AdsViewModel : IMapFrom<Advertisement>
     {
         public int Id { get; set; }
 
@@ -15,14 +15,8 @@
 
         public string Description { get; set; }
 
-        public string Compensation { get; set; }
-
-        public string PictureUrl { get; set; }
-
         public string UserUsername { get; set; }
 
-        public DateTime CreatedOn { get; set; }
-
-        public bool IsActive { get; set; }
+        public string PictureUrl { get; set; }
     }
 }

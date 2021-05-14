@@ -1,0 +1,24 @@
+﻿@model Dispatcher.Web.ViewModels.AdModels.SingleAdViewModel
+
+@{ 
+    this.ViewData["Title"] = "Ad Info";
+}
+
+<h1>@this.ViewData["Title"]</h1>
+
+@if (this.Model.PictureUrl != null)
+{
+    <img src="@Model.PictureUrl" alt="@Model.PictureUrl" class="card-img-top">
+}
+
+<p>@Model.Title</p>
+
+<p>@Model.AdvertisementTypeType</p>
+
+<p>@Model.Description</p>
+
+<p>@Model.Compensation</p>
+
+<p>@Model.UserUsername</p>
+
+<p>@Model.CreatedOn</p>

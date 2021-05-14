@@ -9,12 +9,12 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
-    public class BlogController : Controller
+    public class BlogsController : Controller
     {
         private readonly IBlogService blogServie;
         private readonly UserManager<ApplicationUser> userManager;
 
-        public BlogController(
+        public BlogsController(
              IBlogService blogServie,
              UserManager<ApplicationUser> userManager)
         {

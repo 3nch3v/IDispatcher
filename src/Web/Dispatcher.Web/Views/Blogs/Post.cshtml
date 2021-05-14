@@ -4,8 +4,8 @@
     this.ViewData["Title"] = Model.Title;
 }
 
-<a asp-controller="Blog" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Edit</a>
-<a asp-controller="Blog" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Delete</a>
+<a asp-controller="Blogs" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Edit</a>
+<a asp-controller="Blogs" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Delete</a>
 
 @if (Model.RemotePictureUrl != null)
 {

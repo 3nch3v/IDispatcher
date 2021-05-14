@@ -1,8 +1,9 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace Dispatcher.Data.Migrations
+﻿namespace Dispatcher.Data.Migrations
 {
+    using System;
+
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     public partial class ChageDbModels : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -56,7 +57,7 @@ namespace Dispatcher.Data.Migrations
                 type: "nvarchar(max)",
                 maxLength: 5000,
                 nullable: false,
-                defaultValue: "");
+                defaultValue: string.Empty);
 
             migrationBuilder.AddColumn<bool>(
                 name: "IsSolved",
@@ -77,14 +78,14 @@ namespace Dispatcher.Data.Migrations
                 table: "Discussions",
                 type: "nvarchar(450)",
                 nullable: false,
-                defaultValue: "");
+                defaultValue: string.Empty);
 
             migrationBuilder.AddColumn<string>(
                 name: "AppraiserId",
                 table: "CustomersReviews",
                 type: "nvarchar(450)",
                 nullable: false,
-                defaultValue: "");
+                defaultValue: string.Empty);
 
             migrationBuilder.AlterColumn<string>(
                 name: "Description",
@@ -106,7 +107,7 @@ namespace Dispatcher.Data.Migrations
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -231,7 +232,7 @@ namespace Dispatcher.Data.Migrations
                 type: "nvarchar(100)",
                 maxLength: 100,
                 nullable: false,
-                defaultValue: "");
+                defaultValue: string.Empty);
 
             migrationBuilder.AddColumn<string>(
                 name: "Image",
@@ -273,7 +274,7 @@ namespace Dispatcher.Data.Migrations
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    Like = table.Column<int>(type: "int", nullable: false)
+                    Like = table.Column<int>(type: "int", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -297,7 +298,7 @@ namespace Dispatcher.Data.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    DiscussionId = table.Column<int>(type: "int", nullable: false)
+                    DiscussionId = table.Column<int>(type: "int", nullable: false),
                 },
                 constraints: table =>
                 {

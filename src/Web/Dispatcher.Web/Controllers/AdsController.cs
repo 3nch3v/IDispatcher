@@ -4,11 +4,11 @@
     using Dispatcher.Web.ViewModels.AdModels;
     using Microsoft.AspNetCore.Mvc;
 
-    public class AdvertisementController : Controller
+    public class AdsController : Controller
     {
-        private readonly IAdService adsService;
+        private readonly IAdsService adsService;
 
-        public AdvertisementController(IAdService adsService)
+        public AdsController(IAdsService adsService)
         {
             this.adsService = adsService;
         }
@@ -17,10 +17,17 @@
         {
             var ads = new AllAdsViewModel
             {
-                Ads = this.adsService.GetAllAds<SingleAdViewModel>(),
+                Ads = this.adsService.GetAllAds<AdsViewModel>(),
             };
 
-            return this.View();
+            return this.View(ads);
+        }
+
+        public IActionResult Ad(int id)
+        {
+            var ad = this.adsService.GetAd<SingleAdViewModel>(id);
+
+            return this.View(ad);
         }
 
         /*

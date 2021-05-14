@@ -1,0 +1,29 @@
+﻿@using Dispatcher.Web.ViewModels.AdModels
+@model AllAdsViewModel
+
+@{
+    this.ViewData["Title"] = "The Talents";
+}
+
+<h1>@this.ViewData["Title"]</h1>
+
+<div class="row row-cols-md-1 row-cols-md-2">
+    @foreach (var ad in Model.Ads)
+    {
+        <div class="card mb-3" style="max-width: 540px;">
+            <div class="row no-gutters">
+                <div class="col-md-4">
+                    <a asp-action="Ad" asp-route-id="@ad.Id"><img src="@ad.PictureUrl" alt="@ad.Title" width="200"></a>
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">@ad.Title  <=> @ad.AdvertisementTypeType</h5>
+                        <p class="card-text">@ad.Description.Substring(0, 80) ...</p>
+                        <p class="card-text"><small class="text-muted">@ad.UserUsername</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+

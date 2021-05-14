@@ -9,13 +9,24 @@
     using Dispatcher.Services.Data.Contracts;
     using Dispatcher.Services.Mapping;
 
-    public class AdService : IAdService
+    public class AdsService : IAdsService
     {
         private readonly IDeletableEntityRepository<Advertisement> advertisementRepository;
 
-        public AdService(IDeletableEntityRepository<Advertisement> advertisementRepository)
+        public AdsService(IDeletableEntityRepository<Advertisement> advertisementRepository)
         {
             this.advertisementRepository = advertisementRepository;
+        }
+
+        public T GetAd<T>(int id)
+        {
+            var ad = this.advertisementRepository
+                .AllAsNoTracking()
+                .Where(a => a.Id == id)
+                .To<T>()
+                .FirstOrDefault();
+
+            return ad;
         }
 
         public IEnumerable<T> GetAllAds<T>()
