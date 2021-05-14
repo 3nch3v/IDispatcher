@@ -45,6 +45,7 @@
             {
                 AdTypes = adTypes,
             };
+
             return this.View(adInputModel);
         }
 
@@ -64,6 +65,37 @@
 
             var user = await this.userManager.GetUserAsync(this.User);
             await this.adsService.CreateAsync(input, user.Id);
+
+            return this.RedirectToAction(nameof(this.AllAds));
+        }
+
+        public IActionResult Edit(int id)
+        {
+            var ad = this.adsService.GetAd<EditAdViewModel>(id);
+            ad.AdTypes = this.adsService.GetAllAdTypes<AdTypesDropDownViewModel>();
+
+            return this.View(ad);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(AdInputModel input, int id)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                var ad = this.adsService.GetAd<EditAdViewModel>(id);
+                ad.AdTypes = this.adsService.GetAllAdTypes<AdTypesDropDownViewModel>();
+                return this.View(ad);
+            }
+
+            await this.adsService.UpdateAsync(input, id);
+
+            return this.RedirectToAction(nameof(this.AllAds));
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            await this.adsService.DeleteAsync(id);
+
             return this.RedirectToAction(nameof(this.AllAds));
         }
     }

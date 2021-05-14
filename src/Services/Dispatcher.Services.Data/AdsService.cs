@@ -31,6 +31,13 @@
             await this.advertisementRepository.SaveChangesAsync();
         }
 
+        public async Task DeleteAsync(int id)
+        {
+            var ad = this.advertisementRepository.All().FirstOrDefault(a => a.Id == id);
+            this.advertisementRepository.Delete(ad);
+            await this.advertisementRepository.SaveChangesAsync();
+        }
+
         public T GetAd<T>(int id)
         {
             var ad = this.advertisementRepository
@@ -59,6 +66,19 @@
                 .ToList();
 
             return adTypes;
+        }
+
+        public async Task UpdateAsync(AdInputModel input, int id)
+        {
+            var ad = this.advertisementRepository.All().FirstOrDefault(a => a.Id == id);
+            ad.Title = input.Title;
+            ad.Description = input.Description;
+            ad.AdvertisementTypeId = input.AdvertisementTypeId;
+            ad.Title = input.Title;
+            ad.Compensation = input.Compensation;
+            ad.PictureUrl = input.PictureUrl;
+
+            await this.advertisementRepository.SaveChangesAsync();
         }
     }
 }

@@ -1,15 +1,15 @@
 ﻿@model Dispatcher.Web.ViewModels.AdModels.SingleAdViewModel
 
-@{ 
+@{
     this.ViewData["Title"] = "Ad Info";
 }
 
 <h1>@this.ViewData["Title"]</h1>
 
-@if (this.Model.PictureUrl != null)
-{
-    <img src="@Model.PictureUrl" alt="@Model.PictureUrl" class="card-img-top">
-}
+<a asp-controller="Ads" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Edit</a>
+<a asp-controller="Ads" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Delete</a>
+
+<img src="@Model.PictureUrl" alt="@Model.Title" class="card-img-top">
 
 <p>@Model.Title</p>
 

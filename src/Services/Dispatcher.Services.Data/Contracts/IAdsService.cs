@@ -14,5 +14,9 @@
         Task CreateAsync(AdInputModel input, string userId);
 
         IEnumerable<T> GetAllAdTypes<T>();
+
+        Task UpdateAsync(AdInputModel input, int id);
+
+        Task DeleteAsync(int id);
     }
 }
