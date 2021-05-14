@@ -7,6 +7,9 @@
 
 <h1>@this.ViewData["Title"]</h1>
 
+<br>
+<a asp-controller="Ads" asp-action="Create" type="button" class="btn btn-secondary">Create Ad</a>
+<hr>
 <div class="row row-cols-md-1 row-cols-md-2">
     @foreach (var ad in Model.Ads)
     {
@@ -18,7 +21,7 @@
                 <div class="col-md-8">
                     <div class="card-body">
                         <h5 class="card-title">@ad.Title  <=> @ad.AdvertisementTypeType</h5>
-                        <p class="card-text">@ad.Description.Substring(0, 80) ...</p>
+                        <p class="card-text">@ad.ClearDescription.Substring(0, 80) ...</p>
                         <p class="card-text"><small class="text-muted">@ad.UserUsername</small></p>
                     </div>
                 </div>

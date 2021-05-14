@@ -3,14 +3,14 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    public class AdvertisementType
+    using Dispatcher.Data.Common.Models;
+
+    public class AdvertisementType : BaseDeletableModel<int>
     {
         public AdvertisementType()
         {
             this.Advertisements = new HashSet<Advertisement>();
         }
-
-        public int Id { get; set; }
 
         [Required]
         [MaxLength(100)]

@@ -1,16 +1,23 @@
 ﻿namespace Dispatcher.Web.Controllers
 {
+    using System.Threading.Tasks;
+
+    using Dispatcher.Data.Models;
     using Dispatcher.Services.Data.Contracts;
     using Dispatcher.Web.ViewModels.AdModels;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
     public class AdsController : Controller
     {
         private readonly IAdsService adsService;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public AdsController(IAdsService adsService)
+        public AdsController(IAdsService adsService, UserManager<ApplicationUser> userManager)
         {
             this.adsService = adsService;
+            this.userManager = userManager;
         }
 
         public IActionResult AllAds()
@@ -30,11 +37,15 @@
             return this.View(ad);
         }
 
-        /*
         [Authorize]
         public IActionResult Create()
         {
-            return this.View();
+            var adTypes = this.adsService.GetAllAdTypes<AdTypesDropDownViewModel>();
+            var adInputModel = new AdInputModel
+            {
+                AdTypes = adTypes,
+            };
+            return this.View(adInputModel);
         }
 
         [HttpPost]
@@ -43,10 +54,17 @@
         {
             if (!this.ModelState.IsValid)
             {
-                return this.View();
+                var adTypes = this.adsService.GetAllAdTypes<AdTypesDropDownViewModel>();
+                var adInputModel = new AdInputModel
+                {
+                    AdTypes = adTypes,
+                };
+                return this.View(adInputModel);
             }
 
-            return this.RedirectToAction(nameof(this.All));
-        } */
+            var user = await this.userManager.GetUserAsync(this.User);
+            await this.adsService.CreateAsync(input, user.Id);
+            return this.RedirectToAction(nameof(this.AllAds));
+        }
     }
 }

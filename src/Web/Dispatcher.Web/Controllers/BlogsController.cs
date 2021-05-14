@@ -48,9 +48,7 @@
             }
 
             var user = await this.userManager.GetUserAsync(this.User);
-            input.UserId = user.Id;
-            await this.blogServie.CreatPostAsync(input);
-
+            await this.blogServie.CreatPostAsync(input, user.Id);
             return this.RedirectToAction(nameof(this.AllPosts));
         }
 

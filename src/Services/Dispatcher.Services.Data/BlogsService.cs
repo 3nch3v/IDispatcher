@@ -20,10 +20,10 @@
             this.blogsRepository = blogsRepository;
         }
 
-        public async Task CreatPostAsync(BlogInputModel inputModel)
+        public async Task CreatPostAsync(BlogInputModel inputModel, string userId)
         {
             Blog post = AutoMapperConfig.MapperInstance.Map<Blog>(inputModel);
-
+            post.UserId = userId;
             await this.blogsRepository.AddAsync(post);
             await this.blogsRepository.SaveChangesAsync();
         }
