@@ -1,0 +1,18 @@
+﻿@using Dispatcher.Web.ViewModels.ViewComponents
+@model RandomAdsModel
+
+<div class="card-deck">
+    @foreach (var ad in Model.Ads)
+    {
+        <div class="card">
+            <img class="width: 100% \12;" src="@ad.PictureUrl" width="100" alt="@ad.Title">
+            <div class="card-body">
+                <h5 class="card-title">@ad.Title</h5>
+                <p class="card-text">@ad.SanitizedDescription.Substring(0, 85) ...</p>
+            </div>
+            <div class="card-footer">
+                <small class="text-muted">@ad.UserUsername  -------------- @ad.Compensation</small>
+            </div>
+        </div>
+    }
+</div>

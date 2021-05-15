@@ -1,5 +1,6 @@
 ﻿namespace Dispatcher.Services.Data
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -79,6 +80,17 @@
             ad.PictureUrl = input.PictureUrl;
 
             await this.advertisementRepository.SaveChangesAsync();
+        }
+
+        public IEnumerable<T> RandomAds<T>()
+        {
+            var randomAds = this.advertisementRepository.AllAsNoTracking()
+                .OrderBy(a => Guid.NewGuid())
+                .To<T>()
+                .Take(3)
+                .ToList();
+
+            return randomAds;
         }
     }
 }

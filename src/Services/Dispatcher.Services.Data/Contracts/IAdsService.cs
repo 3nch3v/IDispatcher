@@ -18,5 +18,7 @@
         Task UpdateAsync(AdInputModel input, int id);
 
         Task DeleteAsync(int id);
+
+        IEnumerable<T> RandomAds<T>();
     }
 }
