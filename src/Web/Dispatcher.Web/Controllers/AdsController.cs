@@ -69,6 +69,7 @@
             return this.RedirectToAction(nameof(this.AllAds));
         }
 
+        [Authorize]
         public IActionResult Edit(int id)
         {
             var ad = this.adsService.GetAd<EditAdViewModel>(id);
@@ -78,6 +79,7 @@
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Edit(AdInputModel input, int id)
         {
             if (!this.ModelState.IsValid)
@@ -92,6 +94,7 @@
             return this.RedirectToAction(nameof(this.AllAds));
         }
 
+        [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
             await this.adsService.DeleteAsync(id);

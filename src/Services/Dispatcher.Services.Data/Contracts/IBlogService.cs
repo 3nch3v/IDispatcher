@@ -16,5 +16,7 @@
         Task UpdatePostAsync(int id, EditBlogPostInputmodel input);
 
         Task DeleteAsync(int id);
+
+        T RandomBlogPost<T>();
     }
 }

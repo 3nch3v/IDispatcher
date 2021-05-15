@@ -87,7 +87,7 @@
             var randomAds = this.advertisementRepository.AllAsNoTracking()
                 .OrderBy(a => Guid.NewGuid())
                 .To<T>()
-                .Take(3)
+                .Take(4)
                 .ToList();
 
             return randomAds;

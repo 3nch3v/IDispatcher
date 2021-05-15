@@ -36,4 +36,10 @@
     <ProjectReference Include="..\..\Services\Dispatcher.Services\Dispatcher.Services.csproj" />
     <ProjectReference Include="..\Dispatcher.Web.Infrastructure\Dispatcher.Web.Infrastructure.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\img\tm-home-img.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 </Project>

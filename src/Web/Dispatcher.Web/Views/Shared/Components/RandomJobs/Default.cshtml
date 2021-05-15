@@ -1,17 +1,17 @@
 ﻿@model Dispatcher.Web.ViewModels.ViewComponents.RandomJobsModel
 
-<div class="row justify-content-md-center">
-    @foreach (var job in Model.Jobs)
-    {
-        <div class="col-sm-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title"><a asp-controller="Jobs" asp-action="Job" asp-route-id="@job.Id">@job.Title</a></h5>
-                    <p class="card-text">@job.JobBody.Substring(0, 50) ...</p>
-                    <p class="card-text">@job.Location</p>
-                    @job.CreatedOn.ToString("dd-MM-yyyy")
-                </div>
-            </div>
+@foreach (var job in Model.Jobs)
+{
+    <div class="media tm-related-post">
+        <div class="media-left media-middle">
+            <a asp-controller="Jobs" asp-action="Job" asp-route-id="@job.Id">
+                <img class="media-object" src="@job.LogoUrl" alt="Generic placeholder image" width="80" height="80">
+            </a>
         </div>
-    }
-</div>
+        <div class="media-body">
+            <a asp-controller="Jobs" asp-action="Job" asp-route-id="@job.Id"><h4 class="media-heading tm-gold-text tm-margin-b-15">@job.Title</h4></a>
+            <p class="tm-small-font tm-media-description">@Html.Raw(job.SanitizedJobBody.Substring(0, 100))</p>
+            <p class="tm-small-font tm-media-description">@job.Location  @job.CreatedOn.ToString("dd-MM-yyyy")</p>
+        </div>
+    </div>
+}

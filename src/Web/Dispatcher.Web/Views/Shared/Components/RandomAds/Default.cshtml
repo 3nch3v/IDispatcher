@@ -1,18 +1,15 @@
 ﻿@using Dispatcher.Web.ViewModels.ViewComponents
 @model RandomAdsModel
 
-<div class="card-deck">
-    @foreach (var ad in Model.Ads)
-    {
-        <div class="card">
-            <a asp-controller="Ads" asp-action="Ad" asp-route-id="@ad.Id"><img class="width: 100% \12;" src="@ad.PictureUrl" width="100" alt="@ad.Title"></a>
-            <div class="card-body">
-                <h5 class="card-title">@ad.Title</h5>
-                <p class="card-text">@ad.SanitizedDescription.Substring(0, 85) ...</p>
-            </div>
-            <div class="card-footer">
-                <small class="text-muted">@ad.UserUsername  -------------- @ad.Compensation</small>
-            </div>
+@foreach (var ad in Model.Ads)
+{
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 col-xl-3">
+
+        <div class="tm-content-box">
+            <img src="@ad.PictureUrl" alt="@ad.Title" class="tm-margin-b-20 img-fluid">
+            <h4 class="tm-margin-b-20 tm-gold-text">@ad.Title</h4>
+            <p class="tm-margin-b-20">@Html.Raw(ad.SanitizedDescription.Substring(0, 100))</p>
+            <a asp-controller="Ads" asp-action="Ad" asp-route-id="@ad.Id" class="tm-btn text-uppercase">READ MORE</a>
         </div>
-    }
-</div>
+    </div>
+}

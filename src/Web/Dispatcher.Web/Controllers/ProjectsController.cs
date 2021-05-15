@@ -53,6 +53,7 @@
             return this.RedirectToAction(nameof(this.AllProjects)); ////TODO redicetc to User Profile
         }
 
+        [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
             await this.projectServices.Delete(id);

@@ -56,6 +56,16 @@
             return post;
         }
 
+        public T RandomBlogPost<T>()
+        {
+            var blogPost = this.blogsRepository.AllAsNoTracking()
+                .OrderBy(x => Guid.NewGuid())
+                .To<T>()
+                .FirstOrDefault();
+
+            return blogPost;
+        }
+
         public async Task UpdatePostAsync(int id, EditBlogPostInputmodel input)
         {
             var post = this.blogsRepository.All().FirstOrDefault(p => p.Id == id);

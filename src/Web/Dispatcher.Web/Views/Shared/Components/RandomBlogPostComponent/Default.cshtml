@@ -1,0 +1,21 @@
+﻿@using Dispatcher.Web.ViewModels.ViewComponents
+@model SingleRandomBlogPostModel
+
+@functions {
+    public static string PostBody(string body)
+    {
+        if (body.Length > 500)
+        {
+            return body.Substring(0, 450);
+        }
+
+        return body;
+    }
+}
+
+<div class="tm-2-col-left">
+    <h3 class="tm-gold-text tm-title">@Model.Title</h3>
+    <img src="@Model.RemotePictureUrl" alt="Image" class="tm-margin-b-40 img-fluid">
+    <p>@Html.Raw(PostBody(Model.SanitizedBody)))</p>
+    <a asp-controller="Blogs" asp-action="Post" asp-route-id="@Model.Id" class="tm-btn text-uppercase">Read More</a>
+</div>
