@@ -24,8 +24,12 @@
 
         public IActionResult AllProjects()
         {
-            ////TODO
-            return this.View();
+            var projects = new AllProjectsViewModel
+            {
+                Projects = this.projectServices.GetAllProjects<SingleProjectViewModel>(),
+            };
+
+            return this.View(projects);  ////TODO use it into User Profile
         }
 
         [Authorize]
@@ -46,6 +50,12 @@
             var user = await this.userManager.GetUserAsync(this.User);
             await this.projectServices.AddProjectAsync(input, user.Id);
 
+            return this.RedirectToAction(nameof(this.AllProjects)); ////TODO redicetc to User Profile
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            await this.projectServices.Delete(id);
             return this.RedirectToAction(nameof(this.AllProjects)); ////TODO redicetc to User Profile
         }
     }

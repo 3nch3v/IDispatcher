@@ -1,5 +1,7 @@
 ﻿namespace Dispatcher.Services.Data
 {
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using Dispatcher.Data.Common.Repositories;
@@ -23,6 +25,23 @@
 
             await this.projectRepository.AddAsync(project);
             await this.projectRepository.SaveChangesAsync();
+        }
+
+        public async Task Delete(int id)
+        {
+            var project = this.projectRepository.All().FirstOrDefault(p => p.Id == id);
+            this.projectRepository.Delete(project);
+            await this.projectRepository.SaveChangesAsync();
+        }
+
+        public IEnumerable<T> GetAllProjects<T>()
+        {
+            var projects = this.projectRepository.AllAsNoTracking()
+                .OrderByDescending(p => p.CreatedOn)
+                .To<T>()
+                .ToList();
+
+            return projects;
         }
     }
 }
