@@ -1,10 +1,11 @@
-﻿namespace Dispatcher.Data.Models.UserInfoModels
+﻿namespace Dispatcher.Web.ViewModels.ProjectModels
 {
     using System.ComponentModel.DataAnnotations;
 
-    using Dispatcher.Data.Common.Models;
+    using Dispatcher.Data.Models.UserInfoModels;
+    using Dispatcher.Services.Mapping;
 
-    public class Project : BaseDeletableModel<int>
+    public class ProjectInputmodel : IMapTo<Project>
     {
         [Required]
         [MinLength(3)]
@@ -21,10 +22,5 @@
 
         [MaxLength(500)]
         public string Description { get; set; }
-
-        [Required]
-        public string UserId { get; set; }
-
-        public virtual ApplicationUser User { get; set; }
     }
 }

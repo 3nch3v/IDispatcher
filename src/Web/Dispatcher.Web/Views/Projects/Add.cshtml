@@ -1,0 +1,32 @@
+﻿@using Dispatcher.Web.ViewModels.ProjectModels
+@model ProjectInputmodel
+
+@{ 
+    this.ViewData["Title"] = "Add new Project";
+}
+
+<h1>@this.ViewData["Title"]</h1>
+
+<form method="post">
+    <div class="form-group">
+        <label asp-for="Name">Project Name</label>
+        <input asp-for="Name" class="form-control">
+        <span asp-validation-for="Name"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="UserRole">Our Role</label>
+        <input asp-for="UserRole" class="form-control">
+        <span asp-validation-for="UserRole"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Description">Project Description</label>
+        <textarea asp-for="Description" class="form-control" rows="5"></textarea>
+        <span asp-validation-for="Description"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Url">Project's URL</label>
+        <input asp-for="Url" class="form-control">
+        <span asp-validation-for="Url"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Add</button>
+</form>

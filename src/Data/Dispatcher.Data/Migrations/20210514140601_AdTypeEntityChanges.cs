@@ -1,8 +1,9 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace Dispatcher.Data.Migrations
+﻿namespace Dispatcher.Data.Migrations
 {
+    using System;
+
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     public partial class AdTypeEntityChanges : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -12,7 +13,7 @@ namespace Dispatcher.Data.Migrations
                 table: "Blogs",
                 type: "nvarchar(450)",
                 nullable: false,
-                defaultValue: "",
+                defaultValue: string.Empty,
                 oldClrType: typeof(string),
                 oldType: "nvarchar(450)",
                 oldNullable: true);

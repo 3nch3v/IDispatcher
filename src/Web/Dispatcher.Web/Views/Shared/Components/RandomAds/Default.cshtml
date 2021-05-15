@@ -5,7 +5,7 @@
     @foreach (var ad in Model.Ads)
     {
         <div class="card">
-            <img class="width: 100% \12;" src="@ad.PictureUrl" width="100" alt="@ad.Title">
+            <a asp-controller="Ads" asp-action="Ad" asp-route-id="@ad.Id"><img class="width: 100% \12;" src="@ad.PictureUrl" width="100" alt="@ad.Title"></a>
             <div class="card-body">
                 <h5 class="card-title">@ad.Title</h5>
                 <p class="card-text">@ad.SanitizedDescription.Substring(0, 85) ...</p>
