@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Data\Dispatcher.Data.Models\Dispatcher.Data.Models.csproj" />
+    <ProjectReference Include="..\..\Dispatcher.Common\Dispatcher.Common.csproj" />
     <ProjectReference Include="..\..\Services\Dispatcher.Services.Mapping\Dispatcher.Services.Mapping.csproj" />
   </ItemGroup>
 

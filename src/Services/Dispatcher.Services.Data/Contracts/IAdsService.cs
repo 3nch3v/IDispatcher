@@ -3,11 +3,12 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
+    using Dispatcher.Common;
     using Dispatcher.Web.ViewModels.AdModels;
 
     public interface IAdsService
     {
-        IEnumerable<T> GetAllAds<T>();
+        IEnumerable<T> GetAllAds<T>(int page, int pageEntitiesCount = GlobalConstants.PageEntitiesCount);
 
         T GetAd<T>(int id);
 
@@ -19,6 +20,8 @@
 
         Task DeleteAsync(int id);
 
-        IEnumerable<T> RandomAds<T>();
+        IEnumerable<T> RandomAds<T>(int adsCount);
+
+        int AdsCount();
     }
 }

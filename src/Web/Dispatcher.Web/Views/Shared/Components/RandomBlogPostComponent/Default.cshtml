@@ -13,9 +13,19 @@
     }
 }
 
-<div class="tm-2-col-left">
-    <h3 class="tm-gold-text tm-title">@Model.Title</h3>
-    <img src="@Model.RemotePictureUrl" alt="Image" class="tm-margin-b-40 img-fluid">
-    <p>@Html.Raw(PostBody(Model.SanitizedBody)))</p>
-    <a asp-controller="Blogs" asp-action="Post" asp-route-id="@Model.Id" class="tm-btn text-uppercase">Read More</a>
-</div>
+@if (Model.IsWithPicture == false)
+{
+    <div class="tm-content-box tm-margin-t-small">
+        <a asp-controller="Blogs" asp-action="Post" asp-route-id="@Model.Id" class="tm-text-link"><h4 class="tm-margin-b-20 tm-thin-font">@Model.Title</h4></a>
+        <p class="tm-margin-b-30">@Html.Raw(PostBody(Model.SanitizedBody)))</p>
+    </div>
+}
+else
+{
+    <div class="tm-2-col-left">
+        <h3 class="tm-gold-text tm-title">@Model.Title</h3>
+        <img src="@Model.RemotePictureUrl" alt="Image" class="tm-margin-b-40 img-fluid">
+        <p>@Html.Raw(PostBody(Model.SanitizedBody)))</p>
+        <a asp-controller="Blogs" asp-action="Post" asp-route-id="@Model.Id" class="tm-btn text-uppercase">Read More</a>
+    </div>
+}

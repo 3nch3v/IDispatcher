@@ -13,10 +13,10 @@
             this.blogService = blogService;
         }
 
-        public IViewComponentResult Invoke()
+        public IViewComponentResult Invoke(bool isWithPicture)
         {
             var blogPost = this.blogService.RandomBlogPost<SingleRandomBlogPostModel>();
-
+            blogPost.IsWithPicture = isWithPicture;
             return this.View(blogPost);
         }
     }

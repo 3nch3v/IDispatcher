@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Threading.Tasks;
 
+    using Dispatcher.Common;
     using Dispatcher.Data.Common.Repositories;
     using Dispatcher.Data.Models.AdvertisementModels;
     using Dispatcher.Services.Data.Contracts;
@@ -50,10 +51,12 @@
             return ad;
         }
 
-        public IEnumerable<T> GetAllAds<T>()
+        public IEnumerable<T> GetAllAds<T>(int page, int pageEntitiesCount)
         {
             var ads = this.advertisementRepository.AllAsNoTracking()
                 .OrderByDescending(x => x.CreatedOn)
+                .Skip((page - 1) * pageEntitiesCount)
+                .Take(pageEntitiesCount)
                 .To<T>()
                 .ToList();
 
@@ -82,15 +85,20 @@
             await this.advertisementRepository.SaveChangesAsync();
         }
 
-        public IEnumerable<T> RandomAds<T>()
+        public IEnumerable<T> RandomAds<T>(int adsCount)
         {
             var randomAds = this.advertisementRepository.AllAsNoTracking()
                 .OrderBy(a => Guid.NewGuid())
                 .To<T>()
-                .Take(4)
+                .Take(adsCount)
                 .ToList();
 
             return randomAds;
+        }
+
+        public int AdsCount()
+        {
+            return this.advertisementRepository.AllAsNoTracking().Count();
         }
     }
 }

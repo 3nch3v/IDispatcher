@@ -13,11 +13,11 @@
             this.adServices = adServices;
         }
 
-        public IViewComponentResult Invoke()
+        public IViewComponentResult Invoke(int adsCount)
         {
             var ads = new RandomAdsModel
             {
-                Ads = this.adServices.RandomAds<SigleRandomAdViewModel>(),
+                Ads = this.adServices.RandomAds<SigleRandomAdViewModel>(adsCount),
             };
 
             return this.View(ads);

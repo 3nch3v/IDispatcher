@@ -4,14 +4,14 @@
     this.ViewData["Title"] = "Ad Info";
 }
 
-<div class="d-flex justify-content-center">
+<div class="d-flex justify-content-end">
     <span><a asp-controller="Ads" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Edit</a></span>
+    <text>&nbsp;&nbsp;&nbsp;&nbsp;</text>
     <span><a asp-controller="Ads" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Delete</a></span>
 </div>
 
 <div class="container-fluid">
     <div class="row">
-
         <div class="col-xs-12 col-sm-12 col-md-8 col-lg-9 col-xl-9">
             <div class="tm-blog-post">
                 <h3 class="tm-gold-text">@Model.Title</h3>
@@ -24,56 +24,45 @@
                     <span>36 comments</span>
                     <span>by @Model.UserUsername</span>
                 </div>
-
                 <br>
                 <div class="d-flex justify-content-between">
                     <span>@Model.Compensation</span>
                     <span>@Model.CreatedOn.ToString("d")</span>
                 </div>
-            </div>
-
-            <div class="row tm-margin-t-big">
-                <vc:random-ads></vc:random-ads>
-            </div>
-
-        </div>
-
-        <aside class="col-xs-12 col-sm-12 col-md-4 col-lg-3 col-xl-3 tm-aside-r">
-
-            <div class="tm-aside-container">
-                <h3 class="tm-gold-text tm-title">
-                    Categories
-                </h3>
-                <nav>
-                    <ul class="nav">
-                        <li><a href="#" class="tm-text-link">Lorem ipsum dolor sit</a></li>
-                        <li><a href="#" class="tm-text-link">Tincidunt non faucibus placerat</a></li>
-                        <li><a href="#" class="tm-text-link">Vestibulum tempor ac lectus</a></li>
-                        <li><a href="#" class="tm-text-link">Elementum egestas dui</a></li>
-                        <li><a href="#" class="tm-text-link">Nam in augue consectetur</a></li>
-                        <li><a href="#" class="tm-text-link">Fusce non turpis euismod</a></li>
-                        <li><a href="#" class="tm-text-link">Text Link Color #006699</a></li>
-                    </ul>
-                </nav>
                 <hr class="tm-margin-t-small">
+            </div>
+
+            <div class="row tm-margin-t-small">
+                <vc:random-ads ads-count="3"></vc:random-ads>
+            </div>
+        </div>
+        
+        <aside class="col-xs-12 col-sm-12 col-md-4 col-lg-3 col-xl-3 tm-aside-r">
+            <div class="tm-aside-container">
+
                 <h3 class="tm-gold-text tm-title tm-margin-t-small">
                     Useful Links
                 </h3>
+                <hr class="tm-margin-t-small">
                 <nav>
                     <ul class="nav">
-                        <li><a href="#" class="tm-text-link">Suspendisse sed dui nulla</a></li>
-                        <li><a href="#" class="tm-text-link">Lorem ipsum dolor sit</a></li>
-                        <li><a href="#" class="tm-text-link">Duiss nec purus et eros</a></li>
-                        <li><a href="#" class="tm-text-link">Etiam pulvinar et ligula sed</a></li>
-                        <li><a href="#" class="tm-text-link">Proin egestas eu felis et iaculis</a></li>
+                        <li><a href="https://github.com/" class="tm-text-link">github.com</a></li>
+                        <li><a href="https://stackoverflow.com/" class="tm-text-link">stackoverflow.com</a></li>
+                        <li><a href="https://azure.microsoft.com/" class="tm-text-link">azure.microsoft.com</a></li>
+                        <li><a href="https://www.hackerrank.com/" class="tm-text-link">www.hackerrank.com</a></li>
+                        <li><a href="https://softuni.bg/" class="tm-text-link">softuni.bg</a></li>
                     </ul>
                 </nav>
                 <hr class="tm-margin-t-small">
 
-                <div class="tm-content-box tm-margin-t-small">
-                    <a href="#" class="tm-text-link"><h4 class="tm-margin-b-20 tm-thin-font">Duis sit amet tristique #1</h4></a>
-                    <p class="tm-margin-b-30">Vestibulum arcu erat, lobortis sit amet tellus ut, semper tristique nibh. Nunc in molestie elit.</p>
-                </div>
+                <h3 class="tm-gold-text tm-title">
+                    Blog Post
+                </h3>
+
+                <hr class="tm-margin-t-small">
+
+                <vc:random-blog-post-component is-with-picture="false"></vc:random-blog-post-component>
+
                 <hr class="tm-margin-t-small">
             </div>
         </aside>

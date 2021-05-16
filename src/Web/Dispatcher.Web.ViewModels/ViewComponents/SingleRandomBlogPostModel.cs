@@ -15,5 +15,7 @@
         public string SanitizedBody => new HtmlSanitizer().Sanitize(this.Body);
 
         public string RemotePictureUrl { get; set; }
-    }
+
+        public bool IsWithPicture { get; set; }
+}
 }

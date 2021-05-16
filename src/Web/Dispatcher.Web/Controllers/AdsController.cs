@@ -2,6 +2,7 @@
 {
     using System.Threading.Tasks;
 
+    using Dispatcher.Common;
     using Dispatcher.Data.Models;
     using Dispatcher.Services.Data.Contracts;
     using Dispatcher.Web.ViewModels.AdModels;
@@ -20,11 +21,13 @@
             this.userManager = userManager;
         }
 
-        public IActionResult AllAds()
+        public IActionResult AllAds(int page = GlobalConstants.DefaultPageNumber)
         {
             var ads = new AllAdsViewModel
             {
-                Ads = this.adsService.GetAllAds<AdsViewModel>(),
+                Ads = this.adsService.GetAllAds<AdsViewModel>(page, GlobalConstants.PageEntitiesCount),
+                AdsCount = this.adsService.AdsCount(),
+                Page = page,
             };
 
             return this.View(ads);
@@ -100,6 +103,11 @@
             await this.adsService.DeleteAsync(id);
 
             return this.RedirectToAction(nameof(this.AllAds));
+        }
+
+        public IActionResult Search(string parameters)
+        {
+            return this.View();
         }
     }
 }
