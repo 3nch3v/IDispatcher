@@ -4,29 +4,48 @@
 @{
     this.ViewData["Title"] = "The Talents";
 }
+<div class="container-fluid">
+    <nav class="navbar navbar-light bg-transparent justify-content-between">
+        <div class="navbar-brand"><h3 class="tm-gold-text">@this.ViewData["Title"]</h3></div>
+        <form class="form-inline">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-secondary my-2 my-sm-0 tm-gold-text" type="submit">Search</button>
+        </form>
+        <span><a asp-controller="Ads" asp-action="Create" type="button" class="btn btn-secondary">Create Ad</a></span>
+    </nav>
 
-<h1>@this.ViewData["Title"]</h1>
-
-<br>
-<a asp-controller="Ads" asp-action="Create" type="button" class="btn btn-secondary">Create Ad</a>
-<hr>
-<div class="row row-cols-md-1 row-cols-md-2">
-    @foreach (var ad in Model.Ads)
-    {
-        <div class="card mb-3" style="max-width: 540px;">
-            <div class="row no-gutters">
-                <div class="col-md-4">
-                    <a asp-action="Ad" asp-route-id="@ad.Id"><img src="@ad.PictureUrl" alt="@ad.Title" width="200"></a>
-                </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <h5 class="card-title">@ad.Title  <=> @ad.AdvertisementTypeType</h5>
-                        <p class="card-text">@ad.ClearDescription.Substring(0, 80) ...</p>
-                        <p class="card-text"><small class="text-muted">@ad.UserUsername</small></p>
+    <div class="row tm-row">
+        @foreach (var ad in Model.Ads)
+        {
+            <article class="col-12 col-md-4 tm-post">
+                <hr class="tm-hr-primary">
+                <a asp-controller="Ads" asp-action="Ad" asp-route-id="@ad.Id" class="effect-lily tm-post-link tm-pt-60">
+                    <div class="tm-post-link-inner">
+                        <img src="@ad.PictureUrl" alt="@ad.Title" class="img-fluid">
                     </div>
+                    <h2 class="tm-margin-b-10 tm-gold-text" >@ad.Title</h2>
+                </a>
+                <p>@ad.ClearDescription.Substring(0, 80)</p>
+                <div class="d-flex justify-content-between tm-pt-45">
+                    <span class="tm-color-primary">For: @ad.AdvertisementTypeType</span>
+                    <span class="tm-color-primary">! June 24, 2020 !</span>
                 </div>
-            </div>
-        </div>
-    }
+                <hr>
+                <div class="d-flex justify-content-between">
+                    <span>36 comments</span>
+                    <span>by @ad.UserUsername</span>
+                </div>
+            </article>
+        }
+    </div>
+    <br>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+        </ul>
+    </nav>
 </div>
-

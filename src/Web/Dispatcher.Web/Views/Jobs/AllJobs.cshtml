@@ -5,25 +5,76 @@
     this.ViewData["Title"] = "Jobs";
 }
 
-<h1>@this.ViewData["Title"]</h1>
+<div class="d-flex justify-content-between">
+    <h2 class="tm-gold-text">@this.ViewData["Title"]</h2>
+</div>
+<br>
+<div class="container-fluid">
+    <div class="row">
 
-<a asp-controller="Jobs" asp-action="Create"  class="btn btn-secondary">Post a Job</a>
-
-<div class="row justify-content-center">
-    @foreach (var job in Model.Jobs)
-    {
-        <div class="card" style="width: 18rem;">
-            @if (job.LogoUrl != null)
-            {<img src="@job.LogoUrl " class="card-img-top" alt="@job.Title">}
-            else
-            { <img src="https://st4.depositphotos.com/14953852/22772/v/600/depositphotos_227724992-stock-illustration-image-available-icon-flat-vector.jpg" alt="@job.Title">}
-            <div class="card-body">
-                <h5 class="card-title">@job.Title </h5>
-                <p class="card-text">@job.ClearBody.Substring(0, 85)...</p>
-                <p class="card-text">@job.CompanyName</p>
-                <p class="card-text">@job.Location</p>
-                <a asp-action="Job" asp-route-id="@job.Id" class="btn btn-outline-secondary">Read more</a>
-            </div>
+        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-9 col-xl-9">
+            @foreach (var job in Model.Jobs)
+            {
+                <div class="media tm-related-post">
+                    <div class="media-left media-middle">
+                        <a asp-controller="Jobs" asp-action="Job" asp-route-id="@job.Id">
+                            <img class="media-object" src="@job.LogoUrl" alt="Generic placeholder image" width="80" height="80">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <a asp-controller="Jobs" asp-action="Job" asp-route-id="@job.Id"><h4 class="media-heading tm-gold-text tm-margin-b-15">@job.Title</h4></a>
+                        <p class="tm-small-font tm-media-description">@Html.Raw(job.ClearBody.Substring(0, 100))</p>
+                        <p class="tm-small-font tm-media-description">@job.Location  @job.CreatedOn.ToString("dd-MM-yyyy")</p>
+                    </div>
+                </div>
+            }
         </div>
-     }
+
+        <aside class="col-xs-12 col-sm-12 col-md-4 col-lg-3 col-xl-3 tm-aside-r">
+            <div class="tm-aside-container">
+                <span>
+                    <a asp-controller="Jobs" asp-action="Create" class="btn btn-secondary">Post a Job</a>
+                </span>
+                <br>
+                <br>
+                <br>
+                <h3 class="tm-gold-text tm-title">
+                    Categories
+                </h3>
+                <nav>
+                    <ul class="nav">
+                        <li><a href="#" class="tm-text-link">Lorem ipsum dolor sit</a></li>
+                        <li><a href="#" class="tm-text-link">Tincidunt non faucibus placerat</a></li>
+                        <li><a href="#" class="tm-text-link">Vestibulum tempor ac lectus</a></li>
+                        <li><a href="#" class="tm-text-link">Elementum egestas dui</a></li>
+                        <li><a href="#" class="tm-text-link">Nam in augue consectetur</a></li>
+                        <li><a href="#" class="tm-text-link">Fusce non turpis euismod</a></li>
+                        <li><a href="#" class="tm-text-link">Text Link Color #006699</a></li>
+                    </ul>
+                </nav>
+                <hr class="tm-margin-t-small">
+                <h3 class="tm-gold-text tm-title tm-margin-t-small">
+                    Useful Links
+                </h3>
+                <nav>
+                    <ul class="nav">
+                        <li><a href="#" class="tm-text-link">Suspendisse sed dui nulla</a></li>
+                        <li><a href="#" class="tm-text-link">Lorem ipsum dolor sit</a></li>
+                        <li><a href="#" class="tm-text-link">Duiss nec purus et eros</a></li>
+                        <li><a href="#" class="tm-text-link">Etiam pulvinar et ligula sed</a></li>
+                        <li><a href="#" class="tm-text-link">Proin egestas eu felis et iaculis</a></li>
+                    </ul>
+                </nav>
+                <hr class="tm-margin-t-small">
+
+                <div class="tm-content-box tm-margin-t-small">
+                    <a href="#" class="tm-text-link">
+                        <h4 class="tm-margin-b-20 tm-thin-font">Duis sit amet tristique #1</h4>
+                    </a>
+                    <p class="tm-margin-b-30">Vestibulum arcu erat, lobortis sit amet tellus ut, semper tristique nibh. Nunc in molestie elit.</p>
+                </div>
+                <hr class="tm-margin-t-small">
+            </div>
+        </aside>
+    </div>
 </div>

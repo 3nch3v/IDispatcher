@@ -5,12 +5,12 @@
     this.ViewData["Title"] = "Create new Ad";
 }
 
-<h5>@this.ViewData["Title"]</h5>
-
+<h3>@this.ViewData["Title"]</h3>
+<br>
 <form method="post" asp-controller="Ads" asp-action="Create" class="col-md-8 offser-md-6">
     <div class="form-group">
         <label asp-for="AdvertisementTypeId">Looking for:</label>
-        <select class="form-control" asp-for="AdvertisementTypeId" asp-items="Model.AdTypes.Select(t => new SelectListItem(t.Type, t.Id.ToString()))" ></select>
+        <select class="form-control-sm" asp-for="AdvertisementTypeId" asp-items="Model.AdTypes.Select(t => new SelectListItem(t.Type, t.Id.ToString()))" ></select>
         <span asp-validation-for="AdvertisementTypeId" class="text-danger"></span>
     </div>
     <div class="form-group">
