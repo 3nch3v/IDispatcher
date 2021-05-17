@@ -29,13 +29,20 @@
                 Projects = this.projectServices.GetAllProjects<SingleProjectViewModel>(),
             };
 
-            return this.View(projects);  ////TODO use it into User Profile
+            return this.View(projects);  ////TODO use it into User Profile // view component into User Profile
         }
 
         [Authorize]
         public IActionResult Add()
         {
             return this.View();
+        }
+
+        public IActionResult Project(int id)
+        {
+            var project = this.projectServices.GetProject<SingleProjectViewModel>(id);
+
+            return this.View(project);
         }
 
         [HttpPost]
@@ -57,6 +64,27 @@
         public async Task<IActionResult> Delete(int id)
         {
             await this.projectServices.Delete(id);
+            return this.RedirectToAction(nameof(this.AllProjects)); ////TODO redicetc to User Profile
+        }
+
+        [Authorize]
+        public IActionResult Edit(int id)
+        {
+            var project = this.projectServices.GetProject<EditProjectInputModul>(id);
+            return this.View(project);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, ProjectInputmodel input)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                var project = this.projectServices.GetProject<EditProjectInputModul>(id);
+                return this.View(project);
+            }
+
+            await this.projectServices.UpdateAsync(input, id);
             return this.RedirectToAction(nameof(this.AllProjects)); ////TODO redicetc to User Profile
         }
     }

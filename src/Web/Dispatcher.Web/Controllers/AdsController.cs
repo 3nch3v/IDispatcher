@@ -95,7 +95,6 @@
             }
 
             await this.adsService.UpdateAsync(input, id);
-
             return this.RedirectToAction(nameof(this.AllAds));
         }
 

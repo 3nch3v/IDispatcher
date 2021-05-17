@@ -20,6 +20,8 @@
         [MaxLength(100)]
         public string UserRole { get; set; }
 
+        [Required]
+        [MinLength(3)]
         [MaxLength(500)]
         public string Description { get; set; }
     }
