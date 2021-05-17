@@ -9,11 +9,13 @@
     {
         T GetJob<T>(int id);
 
-        IEnumerable<T> GetAllAsync<T>();
+        IEnumerable<T> GetAll<T>(int page, int pageEntitiesCount);
 
         IEnumerable<T> GetRandomJobs<T>();
 
-        Task CreateAsync(JobInputModel input, string userId);
+        int JobsCount();
+
+        Task CreateAsync<T>(T input, string userId);
 
         Task DeleteAsync(int id);
 

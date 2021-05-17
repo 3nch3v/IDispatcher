@@ -3,12 +3,12 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    using Dispatcher.Common;
+    using Dispatcher.Data.Models.AdvertisementModels;
     using Dispatcher.Web.ViewModels.AdModels;
 
     public interface IAdsService
     {
-        IEnumerable<T> GetAllAds<T>(int page, int pageEntitiesCount = GlobalConstants.PageEntitiesCount);
+        IEnumerable<T> GetAllAds<T>(int page, int pageEntitiesCount);
 
         T GetAd<T>(int id);
 
@@ -23,5 +23,9 @@
         IEnumerable<T> RandomAds<T>(int adsCount);
 
         int AdsCount();
+
+        IEnumerable<T> SearchResults<T>(int page, int pageEntitiesCount, string searchParams);
+
+        int SearchCount();
     }
 }

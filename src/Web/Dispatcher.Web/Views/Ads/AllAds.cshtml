@@ -7,10 +7,12 @@
 <div class="container-fluid">
     <nav class="navbar navbar-light bg-transparent justify-content-between">
         <div class="navbar-brand"><h3 class="tm-gold-text">@this.ViewData["Title"]</h3></div>
-        <form method="post" class="form-inline" asp-controller="Ads" asp-action="Search">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+
+        <form asp-controller="Ads" asp-action="Search" method="get" class="form-inline" >
+            <input name="keyWords"  class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-secondary my-2 my-sm-0 tm-gold-text" type="submit">Search</button>
         </form>
+
         <span><a asp-controller="Ads" asp-action="Create" type="button" class="btn btn-outline-secondary">Create Ad</a></span>
     </nav>
 

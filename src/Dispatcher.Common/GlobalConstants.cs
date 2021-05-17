@@ -6,8 +6,10 @@
 
         public const string AdministratorRoleName = "Administrator";
 
-        public const int PageEntitiesCount = 15;
+        public const int AdsPageEntitiesCount = 9;
 
         public const int DefaultPageNumber = 1;
+
+        public const int JobsPageEntitiesCount = 10;
     }
 }

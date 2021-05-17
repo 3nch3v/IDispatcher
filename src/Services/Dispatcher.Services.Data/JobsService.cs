@@ -20,7 +20,7 @@
             this.jobRepository = jobRepository;
         }
 
-        public async Task CreateAsync(JobInputModel input, string userId)
+        public async Task CreateAsync<T>(T input, string userId)
         {
             var job = AutoMapperConfig.MapperInstance.Map<Job>(input);
             job.UserId = userId;
@@ -36,11 +36,13 @@
             await this.jobRepository.SaveChangesAsync();
         }
 
-        public IEnumerable<T> GetAllAsync<T>()
+        public IEnumerable<T> GetAll<T>(int page, int pageEntitiesCount)
         {
              var jobs = this.jobRepository
                 .AllAsNoTracking()
                 .OrderByDescending(j => j.CreatedOn)
+                .Skip((page - 1) * pageEntitiesCount)
+                .Take(pageEntitiesCount)
                 .To<T>()
                 .ToList();
 
@@ -68,6 +70,11 @@
                .ToList();
 
             return jobs;
+        }
+
+        public int JobsCount()
+        {
+            return this.jobRepository.AllAsNoTracking().Count();
         }
 
         public async Task UpdateAsync(EditJobInputModel input, int id)

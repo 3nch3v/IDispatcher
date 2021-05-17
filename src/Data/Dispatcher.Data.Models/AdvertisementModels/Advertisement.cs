@@ -4,6 +4,7 @@
     using System.ComponentModel.DataAnnotations.Schema;
 
     using Dispatcher.Data.Common.Models;
+    using Dispatcher.Services.Mapping;
 
     public class Advertisement : BaseDeletableModel<int>
     {

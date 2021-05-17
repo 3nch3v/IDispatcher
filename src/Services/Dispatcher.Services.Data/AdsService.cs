@@ -16,6 +16,7 @@
     {
         private readonly IDeletableEntityRepository<Advertisement> advertisementRepository;
         private readonly IDeletableEntityRepository<AdvertisementType> adTypesRepository;
+        private int searchResultCount;
 
         public AdsService(
             IDeletableEntityRepository<Advertisement> advertisementRepository,
@@ -99,6 +100,38 @@
         public int AdsCount()
         {
             return this.advertisementRepository.AllAsNoTracking().Count();
+        }
+
+        public IEnumerable<T> SearchResults<T>(int page, int pageEntitiesCount, string keyWords)
+        {
+            string[] searchingKeyWords = keyWords.ToLower().Split(' ', StringSplitOptions.RemoveEmptyEntries).ToArray();
+
+            var query = this.advertisementRepository.All().AsQueryable();
+
+            foreach (var word in searchingKeyWords)
+            {
+                query = query.Where(a => a.Title.ToLower().Contains(word)
+                || a.Description.ToLower().Contains(word)
+                || searchingKeyWords.Contains(a.AdvertisementType.Type));
+            }
+
+            this.searchResultCount = query
+                .To<T>()
+                .ToList().Count();
+
+            var result = query
+                .OrderByDescending(x => x.CreatedOn)
+                .Skip((page - 1) * pageEntitiesCount)
+                .Take(pageEntitiesCount)
+                .To<T>()
+                .ToList();
+
+            return result;
+        }
+
+        public int SearchCount()
+        {
+            return this.searchResultCount;
         }
     }
 }

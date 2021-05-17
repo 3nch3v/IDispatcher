@@ -2,6 +2,7 @@
 {
     using System.Threading.Tasks;
 
+    using Dispatcher.Common;
     using Dispatcher.Data.Models;
     using Dispatcher.Services.Data.Contracts;
     using Dispatcher.Web.ViewModels.JobModels;
@@ -22,11 +23,13 @@
             this.userManager = userManager;
         }
 
-        public IActionResult AllJobs()
+        public IActionResult AllJobs(int page = GlobalConstants.DefaultPageNumber)
         {
             var jobs = new AllJobsViewModel
             {
-                Jobs = this.jobService.GetAllAsync<SigleJobViewModel>(),
+                Jobs = this.jobService.GetAll<SigleJobViewModel>(page, GlobalConstants.JobsPageEntitiesCount),
+                Page = page,
+                JobsCount = this.jobService.JobsCount(),
             };
 
             return this.View(jobs);

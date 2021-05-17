@@ -11,7 +11,7 @@
 
         public int AdsCount { get; set; }
 
-        public int PageEntitiesCount => GlobalConstants.PageEntitiesCount;
+        public int PageEntitiesCount => GlobalConstants.AdsPageEntitiesCount;
 
         public int PagesCount => (int)Math.Ceiling(this.AdsCount * 1.0 / this.PageEntitiesCount);
 

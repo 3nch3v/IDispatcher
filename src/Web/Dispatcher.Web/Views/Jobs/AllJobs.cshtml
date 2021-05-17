@@ -23,7 +23,7 @@
                     </div>
                     <div class="media-body">
                         <a asp-controller="Jobs" asp-action="Job" asp-route-id="@job.Id"><h4 class="media-heading tm-gold-text tm-margin-b-15">@job.Title</h4></a>
-                        <p class="tm-small-font tm-media-description">@Html.Raw(job.ClearBody.Substring(0, 100))</p>
+                        <p class="tm-small-font tm-media-description">@Html.Raw(job.SanitizedBody.Substring(0, 100))</p>
                         <p class="tm-small-font tm-media-description">@job.Location  @job.CreatedOn.ToString("dd-MM-yyyy")</p>
                     </div>
                 </div>
@@ -77,4 +77,35 @@
             </div>
         </aside>
     </div>
+
+    <br>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item @if (!Model.HasPreviousPage) { <text> disabled </text> }">
+                <a asp-controller="Jobs" asp-action="AllJobs" asp-route-page="@Model.PreviousPage" class="page-link tm-gold-text">Previous</a>
+            </li>
+
+            @if (Model.HasPreviousPage)
+            {
+                <li class="page-item">
+                    <a asp-controller="Jobs" asp-action="AllJobs" asp-route-page="@(Model.Page - 1)" class="page-link tm-gold-text">@(Model.Page - 1)</a>
+                </li>
+            }
+
+            <li class="page-item">
+                <a asp-controller="Jobs" asp-action="AllJobs" asp-route-page="@Model.Page" class="page-link tm-gold-text">@Model.Page</a>
+            </li>
+
+            @if (Model.HasNextPage)
+            {
+                <li class="page-item">
+                    <a asp-controller="Jobs" asp-action="AllJobs" asp-route-page="@(Model.Page + 1)" class="page-link tm-gold-text">@(Model.Page + 1)</a>
+                </li>
+            }
+
+            <li class="page-item  @if (!Model.HasNextPage) { <text> disabled </text> }">
+                <a asp-controller="Jobs" asp-action="AllJobs" asp-route-page="@Model.NextPage" class="page-link tm-gold-text">Next</a>
+            </li>
+        </ul>
+    </nav>
 </div>

@@ -5,7 +5,7 @@
     this.ViewData["Title"] = "Edit";
 }
 
-<form method="post" asp-controller="Ads" asp-action="Create" class="col-md-8 offser-md-6">
+<form method="post" asp-controller="Ads" asp-action="Edit" class="col-md-8 offser-md-6">
     <div class="form-group">
         <label asp-for="AdvertisementTypeId">Looking for</label>
         <p><select class="form-control-sm" asp-for="AdvertisementTypeId" asp-items="Model.AdTypes.Select(t => new SelectListItem(t.Type, t.Id.ToString()))"></select></p>

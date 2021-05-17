@@ -1,9 +1,11 @@
 ﻿namespace Dispatcher.Web.Controllers
 {
+    using System.ComponentModel.DataAnnotations;
     using System.Threading.Tasks;
 
     using Dispatcher.Common;
     using Dispatcher.Data.Models;
+    using Dispatcher.Data.Models.AdvertisementModels;
     using Dispatcher.Services.Data.Contracts;
     using Dispatcher.Web.ViewModels.AdModels;
     using Microsoft.AspNetCore.Authorization;
@@ -25,7 +27,7 @@
         {
             var ads = new AllAdsViewModel
             {
-                Ads = this.adsService.GetAllAds<AdsViewModel>(page, GlobalConstants.PageEntitiesCount),
+                Ads = this.adsService.GetAllAds<AdsViewModel>(page, GlobalConstants.AdsPageEntitiesCount),
                 AdsCount = this.adsService.AdsCount(),
                 Page = page,
             };
@@ -105,9 +107,24 @@
             return this.RedirectToAction(nameof(this.AllAds));
         }
 
-        public IActionResult Search(string parameters)
+        ////TODO Paging doesn't work !!! I have to keep the keywords, but how ?????
+
+        [HttpGet]
+        public IActionResult Search(string keyWords, int page = GlobalConstants.DefaultPageNumber)
         {
-            return this.View();
+            if (string.IsNullOrWhiteSpace(keyWords))
+            {
+                return this.RedirectToAction(nameof(this.AllAds));
+            }
+
+            var ads = new AllAdsViewModel
+            {
+                Ads = this.adsService.SearchResults<AdsViewModel>(page, GlobalConstants.AdsPageEntitiesCount, keyWords),
+                Page = page,
+                AdsCount = this.adsService.SearchCount(),
+            };
+
+            return this.View(ads);
         }
     }
 }
