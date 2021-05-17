@@ -13,10 +13,12 @@
         }
 
         [Required]
+        [MinLength(3)]
         [MaxLength(100)]
         public string Title { get; set; }
 
         [Required]
+        [MinLength(50)]
         [MaxLength(5000)]
         public string Description { get; set; }
 

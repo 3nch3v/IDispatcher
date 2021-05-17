@@ -30,6 +30,7 @@
                               new JobSeeder(),
                               new AdvertisementTypesSeeder(),
                               new AdvertisementSeeder(),
+                              new CategoriesSeeder(),
                           };
 
             foreach (var seeder in seeders)

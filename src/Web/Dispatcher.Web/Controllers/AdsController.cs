@@ -1,11 +1,9 @@
 ﻿namespace Dispatcher.Web.Controllers
 {
-    using System.ComponentModel.DataAnnotations;
     using System.Threading.Tasks;
 
     using Dispatcher.Common;
     using Dispatcher.Data.Models;
-    using Dispatcher.Data.Models.AdvertisementModels;
     using Dispatcher.Services.Data.Contracts;
     using Dispatcher.Web.ViewModels.AdModels;
     using Microsoft.AspNetCore.Authorization;
@@ -65,6 +63,7 @@
                 {
                     AdTypes = adTypes,
                 };
+
                 return this.View(adInputModel);
             }
 
