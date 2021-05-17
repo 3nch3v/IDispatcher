@@ -87,5 +87,25 @@
             await this.jobService.UpdateAsync(input, id);
             return this.RedirectToAction(nameof(this.Job), new { id });
         }
+
+        ////TODO Paging doesn't work !!! I have to keep the keywords, but how ?????
+
+        [HttpGet]
+        public IActionResult Search(string keyWords, int page = GlobalConstants.DefaultPageNumber)
+        {
+            if (string.IsNullOrWhiteSpace(keyWords))
+            {
+                return this.RedirectToAction(nameof(this.AllJobs));
+            }
+
+            var jobs = new AllJobsViewModel
+            {
+                Jobs = this.jobService.SearchResults<SigleJobViewModel>(page, GlobalConstants.JobsPageEntitiesCount, keyWords),
+                Page = page,
+                JobsCount = this.jobService.SearchCount(),
+            };
+
+            return this.View(jobs);
+        }
     }
 }

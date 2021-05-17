@@ -14,6 +14,7 @@
     public class JobsService : IJobService
     {
         private readonly IDeletableEntityRepository<Job> jobRepository;
+        private int searchResultCount;
 
         public JobsService(IDeletableEntityRepository<Job> jobRepository)
         {
@@ -75,6 +76,38 @@
         public int JobsCount()
         {
             return this.jobRepository.AllAsNoTracking().Count();
+        }
+
+        public int SearchCount()
+        {
+            return this.searchResultCount;
+        }
+
+        public IEnumerable<T> SearchResults<T>(int page, int pageEntitiesCount, string keyWords)
+        {
+            string[] searchingKeyWords = keyWords.ToLower().Split(' ', StringSplitOptions.RemoveEmptyEntries).ToArray();
+
+            var query = this.jobRepository.All().AsQueryable();
+
+            foreach (var word in searchingKeyWords)
+            {
+                query = query.Where(j => j.Title.ToLower().Contains(word)
+                                    || j.JobBody.ToLower().Contains(word)
+                                    || j.Location.ToLower().Contains(word));
+            }
+
+            this.searchResultCount = query
+                .To<T>()
+                .ToList().Count();
+
+            var result = query
+                .OrderByDescending(x => x.CreatedOn)
+                .Skip((page - 1) * pageEntitiesCount)
+                .Take(pageEntitiesCount)
+                .To<T>()
+                .ToList();
+
+            return result;
         }
 
         public async Task UpdateAsync(EditJobInputModel input, int id)

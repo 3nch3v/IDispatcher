@@ -20,5 +20,9 @@
         Task DeleteAsync(int id);
 
         Task UpdateAsync(EditJobInputModel input, int id);
+
+        IEnumerable<T> SearchResults<T>(int page, int pageEntitiesCount, string keyWords);
+
+        int SearchCount();
     }
 }
