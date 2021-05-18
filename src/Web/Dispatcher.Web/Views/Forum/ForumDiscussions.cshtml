@@ -5,21 +5,16 @@
     this.ViewData["Title"] = "Forum Discussions";
 }
 
-
 <nav class="navbar navbar-light bg-transparent justify-content-between">
     <div class="navbar-brand"><h3 class="tm-gold-text">@this.ViewData["Title"]</h3></div>
     <a asp-controller="Forum" asp-action="Create" type="button" class="btn btn-outline-secondary">Start Discussion</a>
 </nav>
 
-@*<div class="tm-blog-img-container">
-
-    </div>*@
-
 <section class="tm-section">
     <div class="container-fluid">
         <div class="row">
 
-            <aside class="col-xs-12 col-sm-12 col-md-4 col-lg-3 col-xl-3 tm-aside-l">
+            <aside class="col-xs-12 col-sm-12 col-md-4 col-lg-3 col-xl-3 tm-aside-r">
 
                 <div class="tm-aside-container">
                     <h3 class="tm-gold-text tm-title">
@@ -58,9 +53,9 @@
 
                 @foreach (var forumDiscussion in Model.AllForumDiscussions)
                 {
-                    <div class="row tm-margin-t-small">
-                        <div class="card mb-2">
+                        <div class="card mb-1 col-md-12 offser-md-6">
                             <div class="card-body p-2 p-sm-3">
+
                                 <div class="media forum-item">
 
                                     <a asp-controller="Forum" asp-action="ForumDiscussion" asp-route-id="@forumDiscussion.Id">
@@ -80,34 +75,36 @@
                                         <a asp-controller="Forum" asp-action="ForumDiscussion" asp-route-id="@forumDiscussion.Id">
                                             <p><span class="text-secondary font-weight-bold">@forumDiscussion.Posts.Count() replies</span></p>
                                         </a>
-                                        <p>
-                                            <span>@forumDiscussion.CreatedOn.ToString("d")</span>
+                                        <div class="d-flex flex-row justify-content-between">
+                                            <span>@forumDiscussion.CreatedOn.ToString("g")</span>
+
+                                            <div class="text-muted small text-center align-self-center">
+                                                <span class="d-none d-sm-inline-block">
+                                                    <i class="fa fa-thumbs-up" aria-hidden="true"></i> @forumDiscussion.LikesCount
+                                                </span>
+                                                <span>
+                                                    <i class="fa fa-thumbs-down" aria-hidden="true"></i> 3 @*dislikes*@
+                                                </span>
+                                            </div>
+
                                             <span>
-                                                @if (forumDiscussion.IsSolved) {<text>Solved</text> }
-                                                else { <text>In Progress</text>}
+                                                @if (forumDiscussion.IsSolved)
+                                                {<text>Solved</text> }
+                                            else
+                                            { <text>In Progress</text>}
                                             </span>
-                                        </p>
+                                        </div>
                                     </div>
 
-                                    <div class="text-muted small text-center align-self-center">
-                                        <span class="d-none d-sm-inline-block">
-                                            <i class="fa fa-thumbs-up" aria-hidden="true"></i> @forumDiscussion.LikesCount
-                                        </span>
-                                        <span>
-                                            <i class="fa fa-thumbs-down" aria-hidden="true"></i> 3 @*dislikes*@
-                                        </span>
-                                    </div>
+                                   
 
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                        </div>    
                 }
 
             </div>
-
         </div>
-
     </div>
 
     <br>

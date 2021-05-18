@@ -14,13 +14,24 @@
     {
         private readonly IDeletableEntityRepository<Discussion> forumRepository;
         private readonly IDeletableEntityRepository<Category> categoriesRepository;
+        private readonly IDeletableEntityRepository<Post> postsRepository;
 
         public ForumService(
             IDeletableEntityRepository<Discussion> forumRepository,
-            IDeletableEntityRepository<Category> categoriesRepository)
+            IDeletableEntityRepository<Category> categoriesRepository,
+            IDeletableEntityRepository<Post> postsRepository)
         {
             this.forumRepository = forumRepository;
             this.categoriesRepository = categoriesRepository;
+            this.postsRepository = postsRepository;
+        }
+
+        public async Task AddCommentAsync<T>(T input)
+        {
+            var comment = AutoMapperConfig.MapperInstance.Map<Post>(input);
+
+            await this.postsRepository.AddAsync(comment);
+            await this.postsRepository.SaveChangesAsync();
         }
 
         public async Task CreateAsync<T>(T input, string id)

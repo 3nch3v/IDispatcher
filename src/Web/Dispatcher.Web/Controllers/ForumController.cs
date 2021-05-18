@@ -71,5 +71,15 @@
 
             return this.View(discussion);
         }
+
+        public async Task<IActionResult> Comment(PostInputViewModel input)
+        {
+            var user = await this.userManager.GetUserAsync(this.User);
+            input.UserId = user.Id;
+
+            await this.forumService.AddCommentAsync<PostInputViewModel>(input);
+
+            return this.RedirectToAction(nameof(this.ForumDiscussion), new { id = input.DiscussionId });
+        }
     }
 }

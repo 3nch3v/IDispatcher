@@ -6,7 +6,7 @@
     using Dispatcher.Services.Mapping;
     using Ganss.XSS;
 
-    public class SinglePostViewModel : IMapFrom<Post>
+    public class SinglePostViewModel : IMapFrom<Post>, IMapTo<Post>
     {
         public int Id { get; set; }
 

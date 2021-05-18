@@ -14,5 +14,7 @@
         int ForumDiscussionsCount();
 
         T GetDiscussion<T>(int id);
+
+        Task AddCommentAsync<T>(T input);
     }
 }
