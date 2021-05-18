@@ -1,0 +1,137 @@
+﻿@using Dispatcher.Web.ViewModels.ForumModels
+@model SingleForumDiscussionsViewModel
+
+@{
+    this.ViewData["Title"] = "Forum Discussions";
+}
+
+
+<nav class="navbar navbar-light bg-transparent justify-content-between">
+    <div class="navbar-brand"><h3 class="tm-gold-text">@this.ViewData["Title"]</h3></div>
+    <a asp-controller="Forum" asp-action="Create" type="button" class="btn btn-outline-secondary">Start Discussion</a>
+</nav>
+
+@*<div class="tm-blog-img-container">
+
+    </div>*@
+
+<section class="tm-section">
+    <div class="container-fluid">
+        <div class="row">
+
+            <aside class="col-xs-12 col-sm-12 col-md-4 col-lg-3 col-xl-3 tm-aside-l">
+
+                <div class="tm-aside-container">
+                    <h3 class="tm-gold-text tm-title">
+                        Categories
+                    </h3>
+                    <nav>
+                        <ul class="nav">
+                            <li><a href="#" class="tm-text-link">Lorem ipsum dolor sit</a></li>
+                            <li><a href="#" class="tm-text-link">Tincidunt non faucibus placerat</a></li>
+                            <li><a href="#" class="tm-text-link">Vestibulum tempor ac lectus</a></li>
+                            <li><a href="#" class="tm-text-link">Elementum egestas dui</a></li>
+                            <li><a href="#" class="tm-text-link">Nam in augue consectetur</a></li>
+                            <li><a href="#" class="tm-text-link">Fusce non turpis euismod</a></li>
+                            <li><a href="#" class="tm-text-link">Text Link Color #006699</a></li>
+                        </ul>
+                    </nav>
+                    <hr class="tm-margin-t-small">
+                    <h3 class="tm-gold-text tm-title tm-margin-t-small">
+                        Useful Links
+                    </h3>
+                    <nav>
+                        <ul class="nav">
+                            <li><a href="#" class="tm-text-link">Suspendisse sed dui nulla</a></li>
+                            <li><a href="#" class="tm-text-link">Lorem ipsum dolor sit</a></li>
+                            <li><a href="#" class="tm-text-link">Duiss nec purus et eros</a></li>
+                            <li><a href="#" class="tm-text-link">Etiam pulvinar et ligula sed</a></li>
+                            <li><a href="#" class="tm-text-link">Proin egestas eu felis et iaculis</a></li>
+                        </ul>
+                    </nav>
+                    <hr class="tm-margin-t-small">
+
+                </div>
+            </aside>
+
+            <div class="col-xs-12 col-sm-12 col-md-8 col-lg-9 col-xl-9">
+
+                <div class="row tm-margin-t-small">
+                    <div class="card mb-2">
+                        <div class="card-body p-2 p-sm-3">
+                            <div class="media forum-item">
+
+                                @*<a asp-controller="USer" asp-action="UserProfile" asp-route-id="@Model.UserId">*@
+                                <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="mr-3 rounded-circle" width="50" alt="User" />
+                                @*</a>*@
+
+                            <div class="media-body">
+                                <h6><strong>@Model.Title</strong></h6>
+                                <p class="text-secondary">@Html.Raw(Model.SanitizedDescription)</p>
+                                <p><span class="text-secondary font-weight-bold">@Model.Posts.Count() replies</span></p>
+
+                                <p>
+                                    <span>@Model.CreatedOn.ToString("d")</span>
+                                    <span>
+                                        @if (Model.IsSolved)
+                                        {<text>Solved</text> }
+                                    else
+                                    { <text>In Progress</text>}
+                                    </span>
+                                </p>
+                            </div>
+
+
+
+                                <div class="text-muted small text-center align-self-center">
+                                    <span class="d-none d-sm-inline-block">
+                                        <i class="fa fa-thumbs-up" aria-hidden="true"></i> @Model.LikesCount
+                                    </span>
+                                    <span>
+                                        <i class="fa fa-thumbs-down" aria-hidden="true"></i> 3 @*dislikes*@
+                                    </span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @foreach (var post in Model.Posts)
+                {
+                    <div class="row tm-margin-t-small">
+                        <div class="card mb-2">
+                            <div class="card-body p-2 p-sm-3">
+                                <div class="media forum-item">
+
+                                    @*<a asp-controller="USer" asp-action="UserProfile" asp-route-id="@Model.UserId">*@
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="mr-3 rounded-circle" width="50" alt="User" />
+                                    @*</a>*@
+
+                                <div class="media-body">
+                                    <p class="text-secondary">@Html.Raw(post.SanitizedContent)</p>
+                                    <span>@post.CreatedOn.ToString("d")</span>
+                                </div>
+
+                                    <div class="text-muted small text-center align-self-center">
+                                        <span class="d-none d-sm-inline-block">
+                                            <i class="fa fa-thumbs-up" aria-hidden="true"></i> @post.LikesCount
+                                        </span>
+                                        <span>
+                                            <i class="fa fa-thumbs-down" aria-hidden="true"></i> 3 @*dislikes*@
+                                        </span>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>

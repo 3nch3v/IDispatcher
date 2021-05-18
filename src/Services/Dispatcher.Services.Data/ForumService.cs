@@ -32,6 +32,23 @@
             await this.forumRepository.SaveChangesAsync();
         }
 
+        public int ForumDiscussionsCount()
+        {
+            return this.forumRepository.All().Count();
+        }
+
+        public IEnumerable<T> GetAllForumDiscussions<T>(int page, int pageEntitiesCount)
+        {
+            var forumPosts = this.forumRepository.AllAsNoTracking()
+                .OrderByDescending(p => p.CreatedOn)
+                .Skip((page - 1) * pageEntitiesCount)
+                .Take(pageEntitiesCount)
+                .To<T>()
+                .ToList();
+
+            return forumPosts;
+        }
+
         public IEnumerable<T> GetCategories<T>()
         {
             var categories = this.categoriesRepository.AllAsNoTracking()
@@ -39,6 +56,16 @@
                 .ToList();
 
             return categories;
+        }
+
+        public T GetDiscussion<T>(int id)
+        {
+            var discussion = this.forumRepository.AllAsNoTracking()
+                .Where(d => d.Id == id)
+                .To<T>()
+                .FirstOrDefault();
+
+            return discussion;
         }
     }
 }

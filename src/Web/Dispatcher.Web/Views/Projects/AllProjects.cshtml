@@ -14,7 +14,7 @@
             </div>*@
             <div class="media-body">
                 <a asp-controller="Projects" asp-action="Project" asp-route-id="@project.Id"><h4 class="media-heading tm-gold-text tm-margin-b-15">@project.Name</h4></a>
-                <p class="tm-small-font tm-media-description">@project.Description</p>
+                <p class="tm-small-font tm-media-description">@project.SanitizedDescription</p>
                 <p class="tm-small-font tm-media-description">@project.UserRole</p>
                 <p class="tm-small-font tm-media-description">@project.Url</p>
             </div>

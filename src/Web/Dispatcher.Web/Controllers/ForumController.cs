@@ -2,6 +2,7 @@
 {
     using System.Threading.Tasks;
 
+    using Dispatcher.Common;
     using Dispatcher.Data.Models;
     using Dispatcher.Services.Data.Contracts;
     using Dispatcher.Web.ViewModels.ForumModels;
@@ -49,7 +50,26 @@
             var user = await this.userManager.GetUserAsync(this.User);
             await this.forumService.CreateAsync<DiscussionInputModel>(input, user.Id);
 
-            return this.RedirectToAction("/Index"); //// to all posts
+            return this.RedirectToAction(nameof(this.ForumDiscussions));
+        }
+
+        public IActionResult ForumDiscussions(int page = GlobalConstants.DefaultPageNumber)
+        {
+            var forumPosts = new AllForumDiscussionsViewModel
+            {
+                AllForumDiscussions = this.forumService.GetAllForumDiscussions<SingleForumDiscussionsViewModel>(page, GlobalConstants.ForumPageEntitiesCount),
+                ForumDiscussionsCount = this.forumService.ForumDiscussionsCount(),
+                Page = page,
+            };
+
+            return this.View(forumPosts);
+        }
+
+        public IActionResult ForumDiscussion(int id)
+        {
+            var discussion = this.forumService.GetDiscussion<SingleForumDiscussionsViewModel>(id);
+
+            return this.View(discussion);
         }
     }
 }

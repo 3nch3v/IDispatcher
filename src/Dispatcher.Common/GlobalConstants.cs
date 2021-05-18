@@ -11,5 +11,7 @@
         public const int DefaultPageNumber = 1;
 
         public const int JobsPageEntitiesCount = 10;
+
+        public const int ForumPageEntitiesCount = 5;
     }
 }

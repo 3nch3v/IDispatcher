@@ -2,6 +2,7 @@
 {
     using Dispatcher.Data.Models.UserInfoModels;
     using Dispatcher.Services.Mapping;
+    using Ganss.XSS;
 
     public class SingleProjectViewModel : IMapFrom<Project>
     {
@@ -14,5 +15,7 @@
         public string UserRole { get; set; }
 
         public string Description { get; set; }
+
+        public string SanitizedDescription => new HtmlSanitizer().Sanitize(this.Description);
     }
 }
