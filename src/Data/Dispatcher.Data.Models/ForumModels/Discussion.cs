@@ -22,10 +22,6 @@
         [MaxLength(5000)]
         public string Description { get; set; }
 
-        public int LikesCount { get; set; }
-
-        public int DislikesCount { get; set; }
-
         public bool IsSolved { get; set; }
 
         public int CategoryId { get; set; }

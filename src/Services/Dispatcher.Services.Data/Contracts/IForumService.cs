@@ -11,7 +11,11 @@
 
         IEnumerable<T> GetAllForumDiscussions<T>(int page, int pageEntitiesCount);
 
+        IEnumerable<T> GetAllForumDiscussions<T>(int page, int pageEntitiesCount, string category);
+
         int ForumDiscussionsCount();
+
+        int ForumDiscussionsPerCategoryCount();
 
         T GetDiscussion<T>(int id);
 

@@ -55,10 +55,22 @@
 
         public IActionResult ForumDiscussions(int page = GlobalConstants.DefaultPageNumber)
         {
-            var forumPosts = new AllForumDiscussionsViewModel
+            var forumDiscussions = new AllForumDiscussionsViewModel
             {
                 AllForumDiscussions = this.forumService.GetAllForumDiscussions<SingleForumDiscussionsViewModel>(page, GlobalConstants.ForumPageEntitiesCount),
                 ForumDiscussionsCount = this.forumService.ForumDiscussionsCount(),
+                Page = page,
+            };
+
+            return this.View(forumDiscussions);
+        }
+
+        public IActionResult GetDiscussionsPerCategory(string category, int page = GlobalConstants.DefaultPageNumber)
+        {
+            var forumPosts = new AllForumDiscussionsViewModel
+            {
+                AllForumDiscussions = this.forumService.GetAllForumDiscussions<SingleForumDiscussionsViewModel>(page, GlobalConstants.ForumPageEntitiesCount, category),
+                ForumDiscussionsCount = this.forumService.ForumDiscussionsPerCategoryCount(),
                 Page = page,
             };
 

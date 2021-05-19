@@ -15,6 +15,7 @@
         private readonly IDeletableEntityRepository<Discussion> forumRepository;
         private readonly IDeletableEntityRepository<Category> categoriesRepository;
         private readonly IDeletableEntityRepository<Post> postsRepository;
+        private int forumDiscussionsPerCategoryCount;
 
         public ForumService(
             IDeletableEntityRepository<Discussion> forumRepository,
@@ -58,6 +59,26 @@
                 .ToList();
 
             return forumPosts;
+        }
+
+        public IEnumerable<T> GetAllForumDiscussions<T>(int page, int pageEntitiesCount, string category)
+        {
+            var forumPosts = this.forumRepository.AllAsNoTracking()
+                .Where(d => d.Category.Name == category)
+                .OrderByDescending(p => p.CreatedOn)
+                .Skip((page - 1) * pageEntitiesCount)
+                .Take(pageEntitiesCount)
+                .To<T>()
+                .ToList();
+
+            this.forumDiscussionsPerCategoryCount = forumPosts.Count();
+
+            return forumPosts;
+        }
+
+        public int ForumDiscussionsPerCategoryCount()
+        {
+            return this.forumDiscussionsPerCategoryCount;
         }
 
         public IEnumerable<T> GetCategories<T>()
