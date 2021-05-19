@@ -115,9 +115,11 @@
                 return this.RedirectToAction(nameof(this.AllAds));
             }
 
+            this.TempData["keyWords"] = keyWords;
+
             var ads = new AllAdsViewModel
             {
-                Ads = this.adsService.SearchResults<AdsViewModel>(page, GlobalConstants.AdsPageEntitiesCount, keyWords),
+                Ads = this.adsService.SearchResults<AdsViewModel>(page, GlobalConstants.AdsPageEntitiesCount, this.TempData["KeyWords"].ToString()),
                 Page = page,
                 AdsCount = this.adsService.SearchCount(),
             };

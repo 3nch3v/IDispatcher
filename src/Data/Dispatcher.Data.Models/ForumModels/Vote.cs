@@ -11,12 +11,16 @@
 
         public virtual ApplicationUser User { get; set; }
 
-        public int DiscussionId { get; set; }
+        public int? DiscussionId { get; set; }
 
         public virtual Discussion Discussion { get; set; }
 
-        public int LikesCount { get; set; }
+        public int? PostId { get; set; }
 
-        public int DislikesCount { get; set; }
+        public virtual Post Post { get; set; }
+
+        public int Like { get; set; }
+
+        public int Dislike { get; set; }
     }
 }

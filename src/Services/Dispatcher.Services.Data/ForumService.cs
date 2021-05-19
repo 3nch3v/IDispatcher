@@ -1,6 +1,5 @@
 ﻿namespace Dispatcher.Services.Data
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -9,6 +8,8 @@
     using Dispatcher.Data.Models.ForumModels;
     using Dispatcher.Services.Data.Contracts;
     using Dispatcher.Services.Mapping;
+    using Dispatcher.Web.ViewModels.ForumModels;
+    using Microsoft.EntityFrameworkCore;
 
     public class ForumService : IForumService
     {
@@ -52,6 +53,7 @@
         public IEnumerable<T> GetAllForumDiscussions<T>(int page, int pageEntitiesCount)
         {
             var forumPosts = this.forumRepository.AllAsNoTracking()
+                .Include(x => x.Votes)
                 .OrderByDescending(p => p.CreatedOn)
                 .Skip((page - 1) * pageEntitiesCount)
                 .Take(pageEntitiesCount)
@@ -90,14 +92,21 @@
             return categories;
         }
 
-        public T GetDiscussion<T>(int id)
+        public SingleForumDiscussionsViewModel GetDiscussion(int id)
         {
             var discussion = this.forumRepository.AllAsNoTracking()
+                .Include(x => x.Votes)
                 .Where(d => d.Id == id)
-                .To<T>()
                 .FirstOrDefault();
 
-            return discussion;
+            var likes = discussion.Votes.Sum(x => x.Like);
+            var dislikes = discussion.Votes.Sum(x => x.Dislike);
+
+            var discussionViewModel = AutoMapperConfig.MapperInstance.Map<SingleForumDiscussionsViewModel>(discussion);
+            discussionViewModel.Likes = likes;
+            discussionViewModel.Dislikes = dislikes;
+
+            return discussionViewModel;
         }
     }
 }

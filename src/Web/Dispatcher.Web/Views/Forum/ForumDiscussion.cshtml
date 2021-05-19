@@ -18,7 +18,7 @@
             <aside class="col-xs-12 col-sm-12 col-md-4 col-lg-3 col-xl-3 tm-aside-r">
                 <vc:forum-side-bar></vc:forum-side-bar>
             </aside>
-         
+
             <div class="col-xs-12 col-sm-12 col-md-8 col-lg-9 col-xl-9">
 
                 <div>
@@ -40,13 +40,32 @@
                                     <div class="d-flex flex-row justify-content-between">
                                         <span>@Model.CreatedOn.ToString("g")</span>
 
+                                        <!--<div class="text-muted small text-center align-self-center">
+                                        <span class="d-none d-sm-inline-block">
+                                            <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+                                        </span>
+                                        <span>
+                                            <i class="fa fa-thumbs-down" aria-hidden="true"></i> 3-->
+                                        @*dislikes*@
+                                        <!--</span>
+                                        </div>-->
+
+                                        <form id="votesForm" method="post"></form>
+
                                         <div class="text-muted small text-center align-self-center">
                                             <span class="d-none d-sm-inline-block">
-                                                <i class="fa fa-thumbs-up" aria-hidden="true"></i> @Model.LikesCount
+                                                <a href="#votesForm" onclick="like(@Model.Id)">
+                                                    <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+                                                </a>
                                             </span>
+                                            <span id="likesCount">@Model.Likes</span>
+
                                             <span>
-                                                <i class="fa fa-thumbs-down" aria-hidden="true"></i> 3 @*dislikes*@
+                                                <a href="#votesForm"  onclick="dislike(@Model.Id)">
+                                                <i class="fa fa-thumbs-down" aria-hidden="true"></i>
+                                                </a>
                                             </span>
+                                            <span id="dislikesCount">@Model.Dislikes</span>
                                         </div>
 
                                         <span>
@@ -79,14 +98,14 @@
                                         <span>@post.CreatedOn.ToString("g")</span>
                                     </div>
 
-                                    <div class="text-muted small text-center align-self-center">
+                                    <!--<div class="text-muted small text-center align-self-center">
                                         <span class="d-none d-sm-inline-block">
-                                            <i class="fa fa-thumbs-up" aria-hidden="true"></i> @post.LikesCount
+                                            <i class="fa fa-thumbs-up" aria-hidden="true"></i>
                                         </span>
                                         <span>
-                                            <i class="fa fa-thumbs-down" aria-hidden="true"></i> 3 @*dislikes*@
-                                        </span>
-                                    </div>
+                                            <i class="fa fa-thumbs-down" aria-hidden="true"></i> 3--> @*dislikes*@
+                                        <!--</span>
+                                    </div>-->
 
                                 </div>
                             </div>
@@ -113,3 +132,40 @@
     </div>
 
 </section>
+
+@section Scripts {
+    <script>
+
+        function like(DiscussionId) {
+            var token = $("#votesForm input[name=__RequestVerificationToken]").val();
+            var json = { DiscussionId: DiscussionId, VoteType: "Like" };
+            $.ajax({
+                url: "/api/votes",
+                type: "POST",
+                data: JSON.stringify(json),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                headers: { 'X-CSRF-TOKEN': token },
+                success: function (data) {
+                    $("#likesCount").html(data.likesCount);
+                }
+            });
+        }
+
+        function dislike(DiscussionId) {
+            var token = $("#votesForm input[name=__RequestVerificationToken]").val();
+            var json = { DiscussionId: DiscussionId, VoteType: "Dislike" };
+            $.ajax({
+                url: "/api/votes",
+                type: "POST",
+                data: JSON.stringify(json),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                headers: { 'X-CSRF-TOKEN': token },
+                success: function (data) {
+                    $("#dislikesCount").html(data.dislikeCount);
+                }
+            });
+        }
+    </script>
+}

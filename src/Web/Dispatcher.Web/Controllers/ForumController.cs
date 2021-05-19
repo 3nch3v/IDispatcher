@@ -79,7 +79,7 @@
 
         public IActionResult ForumDiscussion(int id)
         {
-            var discussion = this.forumService.GetDiscussion<SingleForumDiscussionsViewModel>(id);
+            var discussion = this.forumService.GetDiscussion(id);
 
             return this.View(discussion);
         }

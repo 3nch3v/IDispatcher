@@ -6,6 +6,10 @@
 
         public const string AdministratorRoleName = "Administrator";
 
+        public const string Like = "Like";
+
+        public const string Dislike = "Dislike";
+
         public const int AdsPageEntitiesCount = 9;
 
         public const int DefaultPageNumber = 1;

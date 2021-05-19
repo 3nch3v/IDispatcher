@@ -4,14 +4,16 @@ using Dispatcher.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Dispatcher.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210519105708_DbChanges")]
+    partial class DbChanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -469,13 +471,13 @@ namespace Dispatcher.Data.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("DiscussionId")
+                    b.Property<int>("DiscussionId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Dislike")
+                    b.Property<int>("DislikesCount")
                         .HasColumnType("int");
 
-                    b.Property<int>("Like")
+                    b.Property<int>("LikesCount")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("ModifiedOn")
@@ -947,9 +949,11 @@ namespace Dispatcher.Data.Migrations
                 {
                     b.HasOne("Dispatcher.Data.Models.ForumModels.Discussion", "Discussion")
                         .WithMany("Votes")
-                        .HasForeignKey("DiscussionId");
+                        .HasForeignKey("DiscussionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
-                    b.HasOne("Dispatcher.Data.Models.ForumModels.Post", "Post")
+                    b.HasOne("Dispatcher.Data.Models.ForumModels.Post", null)
                         .WithMany("Votes")
                         .HasForeignKey("PostId");
 
@@ -960,8 +964,6 @@ namespace Dispatcher.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Discussion");
-
-                    b.Navigation("Post");
 
                     b.Navigation("User");
                 });

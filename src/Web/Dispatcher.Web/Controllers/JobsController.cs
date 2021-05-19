@@ -98,6 +98,8 @@
                 return this.RedirectToAction(nameof(this.AllJobs));
             }
 
+            this.TempData["keyWords"] = keyWords;
+
             var jobs = new AllJobsViewModel
             {
                 Jobs = this.jobService.SearchResults<SigleJobViewModel>(page, GlobalConstants.JobsPageEntitiesCount, keyWords),

@@ -1,8 +1,9 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace Dispatcher.Data.Migrations
+﻿namespace Dispatcher.Data.Migrations
 {
+    using System;
+
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     public partial class VoteDbEntity : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -26,7 +27,7 @@ namespace Dispatcher.Data.Migrations
                     LikesCount = table.Column<int>(type: "int", nullable: false),
                     DislikesCount = table.Column<int>(type: "int", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                 },
                 constraints: table =>
                 {

@@ -10,6 +10,7 @@
         public Discussion()
         {
             this.Posts = new HashSet<Post>();
+            this.Votes = new HashSet<Vote>();
         }
 
         [Required]
@@ -34,5 +35,7 @@
         public virtual ApplicationUser User { get; set; }
 
         public virtual ICollection<Post> Posts { get; set; }
+
+        public virtual ICollection<Vote> Votes { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿namespace Dispatcher.Data.Models.ForumModels
 {
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
@@ -7,6 +8,11 @@
 
     public class Post : BaseDeletableModel<int>
     {
+        public Post()
+        {
+            this.Votes = new HashSet<Vote>();
+        }
+
         [Required]
         [ForeignKey(nameof(User))]
         public string UserId { get; set; }
@@ -22,8 +28,6 @@
         [MaxLength(5000)]
         public string Content { get; set; }
 
-        public int LikesCount { get; set; }
-
-        public int DislikesCount { get; set; }
+        public virtual ICollection<Vote> Votes { get; set; }
     }
 }

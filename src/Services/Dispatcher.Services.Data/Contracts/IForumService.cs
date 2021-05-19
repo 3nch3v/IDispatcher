@@ -3,6 +3,8 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
+    using Dispatcher.Web.ViewModels.ForumModels;
+
     public interface IForumService
     {
         Task CreateAsync<T>(T input, string id);
@@ -17,7 +19,7 @@
 
         int ForumDiscussionsPerCategoryCount();
 
-        T GetDiscussion<T>(int id);
+        SingleForumDiscussionsViewModel GetDiscussion(int id);
 
         Task AddCommentAsync<T>(T input);
     }
