@@ -18,6 +18,10 @@
         </form>
     }
 
+    <span>
+        <a asp-controller="Forum" asp-action="GetUnsolvedDiscussions" class="tm-text-link" style="text-decoration: none">Unsolved (@Model.UnsolvedCount)</a>
+    </span>
+    <br>
 
     <hr class="tm-margin-t-small">
 </div>

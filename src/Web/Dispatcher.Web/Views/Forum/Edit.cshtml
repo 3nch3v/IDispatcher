@@ -1,12 +1,12 @@
 ﻿@using Dispatcher.Web.ViewModels.ForumModels
-@model DiscussionInputModel
+@model EditDiscussionViewModel
 
 @{
     this.ViewData["Title"] = "Start new Discussion";
 }
 
 
-<form method="post" asp-controller="Forum" asp-action="Create" class="col-md-8 offser-md-6">
+<form method="post" asp-controller="Forum" asp-action="Edit" class="col-md-8 offser-md-6">
 
     <h5>@this.ViewData["Title"]</h5>
     <br>
@@ -29,7 +29,7 @@
         <span asp-validation-for="Description" class="text-danger"></span>
     </div>
 
-    <button type="submit" class="btn btn-secondary">Create</button>
+    <button type="submit" class="btn btn-secondary">Save Changes</button>
 </form>
 
 @section Scripts

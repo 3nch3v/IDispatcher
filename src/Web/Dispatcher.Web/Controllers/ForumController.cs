@@ -21,6 +21,7 @@
             this.userManager = userManager;
         }
 
+        [Authorize]
         public IActionResult Create()
         {
             var categories = this.forumService.GetCategories<CategoryDropDownViewModel>();
@@ -53,6 +54,38 @@
             return this.RedirectToAction(nameof(this.ForumDiscussions));
         }
 
+        [Authorize]
+        public IActionResult Edit(int id)
+        {
+            var discussion = this.forumService.GetDiscussion<EditDiscussionViewModel>(id);
+            var categories = this.forumService.GetCategories<CategoryDropDownViewModel>();
+            discussion.Categories = categories;
+            return this.View(discussion);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> Edit(DiscussionInputModel input, int id)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                var discussion = this.forumService.GetDiscussion<EditDiscussionViewModel>(id);
+                var categories = this.forumService.GetCategories<CategoryDropDownViewModel>();
+                discussion.Categories = categories;
+                return this.View(discussion);
+            }
+
+            await this.forumService.Edit(input, id);
+            return this.RedirectToAction(nameof(this.ForumDiscussion), new { id = id });
+        }
+
+        public IActionResult ForumDiscussion(int id)
+        {
+            var discussion = this.forumService.GetDiscussion<SingleForumDiscussionsViewModel>(id);
+
+            return this.View(discussion);
+        }
+
         public IActionResult ForumDiscussions(int page = GlobalConstants.DefaultPageNumber)
         {
             var forumDiscussions = new AllForumDiscussionsViewModel
@@ -67,6 +100,8 @@
 
         public IActionResult GetDiscussionsPerCategory(string category, int page = GlobalConstants.DefaultPageNumber)
         {
+            this.TempData["Category"] = category;
+
             var forumPosts = new AllForumDiscussionsViewModel
             {
                 AllForumDiscussions = this.forumService.GetAllForumDiscussions<SingleForumDiscussionsViewModel>(page, GlobalConstants.ForumPageEntitiesCount, category),
@@ -77,13 +112,33 @@
             return this.View(forumPosts);
         }
 
-        public IActionResult ForumDiscussion(int id)
+        public IActionResult GetUnsolvedDiscussions(int page = GlobalConstants.DefaultPageNumber)
         {
-            var discussion = this.forumService.GetDiscussion(id);
+            var unsolvedDiscussions = new AllForumDiscussionsViewModel
+            {
+                AllForumDiscussions = this.forumService.GetUnsolvedDiscussions<SingleForumDiscussionsViewModel>(page, GlobalConstants.ForumPageEntitiesCount),
+                Page = page,
+                ForumDiscussionsCount = this.forumService.GetUnsolvedCount(),
+            };
 
-            return this.View(discussion);
+            return this.View(unsolvedDiscussions);
         }
 
+        [Authorize]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await this.forumService.DeleteAsync(id);
+            return this.RedirectToAction(nameof(this.ForumDiscussions));
+        }
+
+        [Authorize]
+        public async Task<IActionResult> SetToSolved(int id)
+        {
+            await this.forumService.SetToSolved(id);
+            return this.RedirectToAction(nameof(this.ForumDiscussion), new { id = id });
+        }
+
+        [Authorize]
         public async Task<IActionResult> Comment(PostInputViewModel input)
         {
             var user = await this.userManager.GetUserAsync(this.User);
@@ -92,6 +147,13 @@
             await this.forumService.AddCommentAsync<PostInputViewModel>(input);
 
             return this.RedirectToAction(nameof(this.ForumDiscussion), new { id = input.DiscussionId });
+        }
+
+        [Authorize]
+        public async Task<IActionResult> DeleteComment(int id, int discussionId)
+        {
+            await this.forumService.DeleteCommentAsync(id);
+            return this.RedirectToAction(nameof(this.ForumDiscussion), new { id = discussionId });
         }
     }
 }

@@ -18,6 +18,7 @@
             var categories = new CategoriesWithDiscussionsCountViewModel
             {
                 Categories = this.forumServices.GetCategories<SingleCategoryViewModel>(),
+                UnsolvedCount = this.forumServices.GetUnsolvedCount(),
             };
 
             return this.View(categories);

@@ -78,6 +78,21 @@
             return forumPosts;
         }
 
+        public IEnumerable<T> GetUnsolvedDiscussions<T>(int page, int pageEntitiesCount)
+        {
+            var forumPosts = this.forumRepository.AllAsNoTracking()
+                .Where(d => d.IsSolved == false)
+                .OrderByDescending(p => p.CreatedOn)
+                .Skip((page - 1) * pageEntitiesCount)
+                .Take(pageEntitiesCount)
+                .To<T>()
+                .ToList();
+
+            this.forumDiscussionsPerCategoryCount = forumPosts.Count();
+
+            return forumPosts;
+        }
+
         public int ForumDiscussionsPerCategoryCount()
         {
             return this.forumDiscussionsPerCategoryCount;
@@ -92,21 +107,56 @@
             return categories;
         }
 
-        public SingleForumDiscussionsViewModel GetDiscussion(int id)
+        public T GetDiscussion<T>(int id)
         {
             var discussion = this.forumRepository.AllAsNoTracking()
                 .Include(x => x.Votes)
                 .Where(d => d.Id == id)
+                .To<T>()
                 .FirstOrDefault();
 
-            var likes = discussion.Votes.Sum(x => x.Like);
-            var dislikes = discussion.Votes.Sum(x => x.Dislike);
+            return discussion;
+        }
 
-            var discussionViewModel = AutoMapperConfig.MapperInstance.Map<SingleForumDiscussionsViewModel>(discussion);
-            discussionViewModel.Likes = likes;
-            discussionViewModel.Dislikes = dislikes;
+        public int GetUnsolvedCount()
+        {
+            int unsolvedCount = this.forumRepository
+                .AllAsNoTracking()
+                .Where(d => d.IsSolved == false)
+                .Count();
 
-            return discussionViewModel;
+            return unsolvedCount;
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var discussion = this.forumRepository.All().FirstOrDefault(d => d.Id == id);
+            this.forumRepository.Delete(discussion);
+            await this.forumRepository.SaveChangesAsync();
+        }
+
+        public async Task SetToSolved(int id)
+        {
+            var discussion = this.forumRepository.All().FirstOrDefault(d => d.Id == id);
+            discussion.IsSolved = true;
+            await this.forumRepository.SaveChangesAsync();
+        }
+
+        public async Task Edit(DiscussionInputModel input, int id)
+        {
+            var discussion = this.forumRepository.All().FirstOrDefault(d => d.Id == id);
+            discussion.Title = input.Title;
+            discussion.Description = input.Description;
+            discussion.CategoryId = input.CategoryId;
+
+            await this.forumRepository.SaveChangesAsync();
+        }
+
+        public async Task DeleteCommentAsync(int id)
+        {
+            var commment = this.postsRepository.All().FirstOrDefault(c => c.Id == id);
+            this.postsRepository.Delete(commment);
+            await this.postsRepository.SaveChangesAsync();
         }
     }
 }

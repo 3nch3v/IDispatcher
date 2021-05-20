@@ -40,9 +40,7 @@
             configuration.CreateMap<Discussion, SingleForumDiscussionsViewModel>()
                 .ForMember(
                     x => x.Likes,
-                    opts => opts.MapFrom(src => src.Votes.Sum(x => x.Like)));
-
-            configuration.CreateMap<Discussion, SingleForumDiscussionsViewModel>()
+                    opts => opts.MapFrom(src => src.Votes.Sum(x => x.Like)))
                 .ForMember(
                     x => x.Dislikes,
                     opts => opts.MapFrom(src => src.Votes.Sum(x => x.Dislike)));
