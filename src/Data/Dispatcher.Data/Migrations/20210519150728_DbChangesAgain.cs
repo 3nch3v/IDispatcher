@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace Dispatcher.Data.Migrations
+﻿namespace Dispatcher.Data.Migrations
 {
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     public partial class DbChangesAgain : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)

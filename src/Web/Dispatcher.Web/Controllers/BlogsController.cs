@@ -6,6 +6,7 @@
     using Dispatcher.Services.Data.Contracts;
     using Dispatcher.Web.ViewModels.BlogModels;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
@@ -13,23 +14,16 @@
     {
         private readonly IBlogService blogServie;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly IWebHostEnvironment environment;
 
         public BlogsController(
              IBlogService blogServie,
-             UserManager<ApplicationUser> userManager)
+             UserManager<ApplicationUser> userManager,
+             IWebHostEnvironment environment)
         {
             this.blogServie = blogServie;
             this.userManager = userManager;
-        }
-
-        public IActionResult AllPosts()
-        {
-            var posts = new AllBlogPostsViewModel()
-            {
-                Posts = this.blogServie.GetAllBlogPosts<BlogPostViewModel>(),
-            };
-
-            return this.View(posts);
+            this.environment = environment;
         }
 
         [Authorize]
@@ -47,15 +41,11 @@
                 return this.View();
             }
 
+            string imgPath = $"{this.environment.WebRootPath}/img/{input.Picture.FileName}";
             var user = await this.userManager.GetUserAsync(this.User);
-            await this.blogServie.CreatPostAsync(input, user.Id);
-            return this.RedirectToAction(nameof(this.AllPosts));
-        }
+            await this.blogServie.CreatPostAsync(input, user.Id, imgPath);
 
-        public IActionResult Post(int id)
-        {
-            var post = this.blogServie.GetPost<BlogPostViewModel>(id);
-            return this.View(post);
+            return this.RedirectToAction(nameof(this.AllPosts));
         }
 
         [Authorize]
@@ -83,6 +73,22 @@
         {
             await this.blogServie.DeleteAsync(id);
             return this.RedirectToAction(nameof(this.AllPosts));
+        }
+
+        public IActionResult AllPosts()
+        {
+            var posts = new AllBlogPostsViewModel()
+            {
+                Posts = this.blogServie.GetAllBlogPosts<BlogPostViewModel>(),
+            };
+
+            return this.View(posts);
+        }
+
+        public IActionResult Post(int id)
+        {
+            var post = this.blogServie.GetPost<BlogPostViewModel>(id);
+            return this.View(post);
         }
     }
 }

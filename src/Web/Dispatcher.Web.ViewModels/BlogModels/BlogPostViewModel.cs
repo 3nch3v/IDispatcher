@@ -20,7 +20,9 @@
 
         public string ClearBody => WebUtility.HtmlDecode(Regex.Replace(new HtmlSanitizer().Sanitize(this.Body), "<[^>]+>", string.Empty));
 
-        public string RemotePictureUrl { get; set; }
+        public string PictureFileName { get; set; }
+
+        public string VideoLink { get; set; }
 
         public DateTime CreatedOn { get; set; }
 

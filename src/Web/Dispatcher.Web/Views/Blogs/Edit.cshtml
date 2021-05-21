@@ -20,10 +20,17 @@
     </div>
 
     <div class="form-group">
-        <label asp-for="RemotePictureUrl">Add Picture From Url</label>
-        <input asp-for="RemotePictureUrl" class="form-control" />
-        <span asp-validation-for="RemotePictureUrl" class="text-danger"></span>
+        <label asp-for="VideoLink">Add Picture From Url</label>
+        <input asp-for="VideoLink" class="form-control" />
+        <span asp-validation-for="VideoLink" class="text-danger"></span>
     </div>
+
+    <div class="form-group">
+        <label asp-for="Picture">Add Picture</label>
+        <input asp-for="Picture" type="file" class="form-control-file"/>
+        <span asp-validation-for="Picture" class="text-danger"></span>
+    </div>
+
     <input type="hidden" asp-for="Id" />
     <input type="submit" class="btn btn-primary" value="Save" />
 </form>

@@ -2,6 +2,8 @@
 {
     using System.ComponentModel.DataAnnotations;
 
+    using Microsoft.AspNetCore.Http;
+
     public abstract class BaseBlogPostInputModel
     {
         [Required]
@@ -13,6 +15,8 @@
         public string Body { get; set; }
 
         [MaxLength(2048)]
-        public string RemotePictureUrl { get; set; }
+        public string VideoLink { get; set; }
+
+        public IFormFile Picture { get; set; }
     }
 }

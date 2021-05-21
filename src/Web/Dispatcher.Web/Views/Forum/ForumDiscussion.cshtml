@@ -35,7 +35,6 @@
                                 <div class="media-body">
                                     <h6><strong>@Model.Title</strong></h6>
                                     <p class="text-secondary">@Html.Raw(Model.SanitizedDescription)</p>
-                                    <p><span class="text-secondary font-weight-bold">@Model.Posts.Count() replies</span></p>
 
                                     <div class="d-flex flex-row justify-content-between">
                                         <span>@Model.CreatedOn.ToString("g")</span>
@@ -45,19 +44,24 @@
 
                                         <div class="text-muted small text-center align-self-center">
                                             <span id="click" class="d-none d-sm-inline-block">
-                                                <a href="click" onclick="like(@Model.Id)">
+                                                <a href="#click" onclick="like(@Model.Id)">
                                                     <i class="fa fa-thumbs-up" aria-hidden="true"></i>
                                                 </a>
                                             </span>
                                             <span id="likesCount">@Model.Likes</span>
 
                                             <span id="click" class="d-none d-sm-inline-block">
-                                                <a href="click" onclick="dislike(@Model.Id)">
+                                                <a href="#click" onclick="dislike(@Model.Id)">
                                                     <i class="fa fa-thumbs-down" aria-hidden="true"></i>
                                                 </a>
                                             </span>
                                             <span id="dislikesCount">@Model.Dislikes</span>
                                         </div>
+
+
+
+
+
 
                                         <span>
                                             @if (Model.IsSolved)
@@ -146,6 +150,7 @@
     </div>
 
 </section>
+
 
 @section Scripts {
     <script>

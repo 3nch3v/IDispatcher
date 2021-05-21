@@ -6,16 +6,42 @@
 
 <a asp-controller="Blogs" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Edit</a>
 <a asp-controller="Blogs" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Delete</a>
+<br>
+<br>
+<div>
+    <div>
+        <div></div>
+        <div">
 
-@if (Model.RemotePictureUrl != null)
-{
-    <img src="@Model.RemotePictureUrl" alt="@Model.Title" class="card-img-top">
-}
+            <h2>@Model.Title</h2>
+            <br>
 
-<div>@Model.Title</div>
+            @if (Model.VideoLink != null)
+            {
+                @Html.Raw(Model.VideoLink)
+            }
+            else
+            {
+                <div>
+                    <img src="~/img/@Model.PictureFileName" alt="Image">
+                </div>
+            }
 
-<div>@Html.Raw(Model.SanitizedBody)</div>
+            <div>
+                <img src="~/img/@Model.PictureFileName" alt="Image">
+            </div>
 
-<div>@Model.CreatedOn</div>
 
-<div>@Model.UserUsername</div>
+            <p align="justify">@Html.Raw(Model.SanitizedBody)</p>
+
+</div>
+    <br>
+    <div class="d-flex flex-row justify-content-between">
+        <span>@Model.CreatedOn.ToString("g")</span>
+        <span>@Model.UserUsername </span>
+    </div>
+</div>
+
+
+
+

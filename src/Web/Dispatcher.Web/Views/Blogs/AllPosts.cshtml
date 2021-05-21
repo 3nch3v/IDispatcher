@@ -14,7 +14,7 @@
     @foreach (var post in Model.Posts)
     {
     <div class="card" style="width: 18rem;">
-        @if (post.RemotePictureUrl != null) {<img src="@post.RemotePictureUrl" class="card-img-top" alt="@post.Title">}
+        @if (post.PictureFileName != null) {<img src="~/img/@post.PictureFileName" class="card-img-top" alt="@post.Title">}
         else { <img src="https://st4.depositphotos.com/14953852/22772/v/600/depositphotos_227724992-stock-illustration-image-available-icon-flat-vector.jpg" alt="@post.Title"> }
         <div class="card-body">
             <h5 class="card-title">@post.Title</h5>

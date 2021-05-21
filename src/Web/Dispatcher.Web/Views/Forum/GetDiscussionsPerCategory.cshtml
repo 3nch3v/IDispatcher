@@ -142,7 +142,8 @@
                 dataType: "json",
                 headers: { 'X-CSRF-TOKEN': token },
                 success: function (data) {
-                    $("#likesCount").html(data.likesCount);
+                    $('#likesCount').html(data.likes);
+                    $('#dislikesCount').html(data.dislikes);
                 }
             });
         }
@@ -158,7 +159,8 @@
                 dataType: "json",
                 headers: { 'X-CSRF-TOKEN': token },
                 success: function (data) {
-                    $("#dislikesCount").html(data.dislikeCount);
+                    $('#likesCount').html(data.likes);
+                    $('#dislikesCount').html(data.dislikes);
                 }
             });
         }

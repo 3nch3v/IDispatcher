@@ -27,7 +27,7 @@
                             $"You can find the length of a string using Length. Length is a property of a string and it returns the number" +
                             $" of characters in that string. Add the following code at the bottom of the interactive window:",
                     UserId = "567fdf86-35bf-45e7-9e5b-d2849ec6124e",
-                    RemotePictureUrl = "https://writtent.com/blog/wp-content/uploads/2013/03/picture-citing-lion-noble.jpg",
+                    PictureFileName = "https://writtent.com/blog/wp-content/uploads/2013/03/picture-citing-lion-noble.jpg",
                 });
             }
 

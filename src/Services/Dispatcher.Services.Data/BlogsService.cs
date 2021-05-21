@@ -2,9 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
 
+    using Dispatcher.Common;
     using Dispatcher.Data.Common.Repositories;
     using Dispatcher.Data.Models.BlogModels;
     using Dispatcher.Services.Data.Contracts;
@@ -20,10 +22,15 @@
             this.blogsRepository = blogsRepository;
         }
 
-        public async Task CreatPostAsync(BlogInputModel inputModel, string userId)
+        public async Task CreatPostAsync(BlogInputModel inputModel, string userId, string imgPath)
         {
             Blog post = AutoMapperConfig.MapperInstance.Map<Blog>(inputModel);
             post.UserId = userId;
+            post.PictureFileName = inputModel.Picture.FileName;
+
+            using var fileStream = new FileStream(imgPath, FileMode.Create);
+            await inputModel.Picture.CopyToAsync(fileStream);
+
             await this.blogsRepository.AddAsync(post);
             await this.blogsRepository.SaveChangesAsync();
         }
@@ -71,7 +78,7 @@
             var post = this.blogsRepository.All().FirstOrDefault(p => p.Id == id);
             post.Title = input.Title;
             post.Body = input.Body;
-            post.RemotePictureUrl = input.RemotePictureUrl;
+            post.VideoLink = input.VideoLink;
             post.ModifiedOn = DateTime.UtcNow;
 
             await this.blogsRepository.SaveChangesAsync();

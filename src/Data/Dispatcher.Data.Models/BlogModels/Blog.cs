@@ -15,7 +15,10 @@
         public string Body { get; set; }
 
         [MaxLength(2048)]
-        public string RemotePictureUrl { get; set; }
+        public string PictureFileName { get; set; }
+
+        [MaxLength(2048)]
+        public string VideoLink { get; set; }
 
         [Required]
         public string UserId { get; set; }
