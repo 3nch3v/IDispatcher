@@ -24,7 +24,7 @@ else
 {
     <div class="tm-2-col-left">
         <h3 class="tm-gold-text tm-title">@Model.Title</h3>
-        <img src="@Model.RemotePictureUrl" alt="Image" class="tm-margin-b-40 img-fluid">
+        <img src="~/img/@Model.PictureFileName" alt="Image" class="tm-margin-b-40 img-fluid" width="500">
         <p>@Html.Raw(PostBody(Model.SanitizedBody)))</p>
         <a asp-controller="Blogs" asp-action="Post" asp-route-id="@Model.Id" class="tm-btn text-uppercase">Read More</a>
     </div>
