@@ -4,35 +4,36 @@
 @{
     this.ViewData["Title"] = "Edit";
 }
-
-<form method="post" asp-controller="Ads" asp-action="Edit" class="col-md-8 offser-md-6">
-    <div class="form-group">
-        <label asp-for="AdvertisementTypeId">Looking for</label>
-        <p><select class="form-control-sm" asp-for="AdvertisementTypeId" asp-items="Model.AdTypes.Select(t => new SelectListItem(t.Type, t.Id.ToString()))"></select></p>
-        <span asp-validation-for="AdvertisementTypeId" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Title">Title</label>
-        <input asp-for="Title" class="form-control">
-        <span asp-validation-for="Title" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Description">Description</label>
-        <textarea asp-for="Description" class="form-control" rows="10"></textarea>
-        <span asp-validation-for="Description" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Compensation">Compensation</label>
-        <input asp-for="Compensation" class="form-control">
-        <span asp-validation-for="Compensation" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="PictureUrl">Picture URL</label>
-        <input asp-for="PictureUrl" class="form-control">
-        <span asp-validation-for="PictureUrl" class="text-danger"></span>
-    </div>
-    <button type="submit" class="btn btn-secondary">Save</button>
-</form>
+<div>
+    <form method="post" asp-controller="Ads" asp-action="Edit" class="col-md-12 offser-md-8">
+        <div class="form-group">
+            <label asp-for="AdvertisementTypeId">Looking for</label>
+            <p><select class="form-control-sm" asp-for="AdvertisementTypeId" asp-items="Model.AdTypes.Select(t => new SelectListItem(t.Type, t.Id.ToString()))"></select></p>
+            <span asp-validation-for="AdvertisementTypeId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Title">Title</label>
+            <input asp-for="Title" class="form-control">
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Description">Description</label>
+            <textarea asp-for="Description" class="form-control" rows="12"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Compensation">Compensation</label>
+            <input asp-for="Compensation" class="form-control">
+            <span asp-validation-for="Compensation" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="PictureUrl">Picture URL</label>
+            <input asp-for="PictureUrl" class="form-control">
+            <span asp-validation-for="PictureUrl" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-secondary">Save</button>
+    </form>
+</div>
 
 @section Scripts
 {

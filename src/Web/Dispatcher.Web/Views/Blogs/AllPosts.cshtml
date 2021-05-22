@@ -1,12 +1,10 @@
 ﻿@using Dispatcher.Common
 @model Dispatcher.Web.ViewModels.BlogModels.AllBlogPostsViewModel
 
-@{ 
-    this.ViewData["Title"] = "Blog Posts";
-}
+@{ this.ViewData["Title"] = "Blog Posts"; }
 
 <nav class="navbar navbar-light bg-transparent justify-content-between">
-    <div class="navbar-brand"><h3 class="tm-gold-text">@this.ViewData["Title"]</h3></div>
+    <div class="navbar-brand"><h3 class="tm-gold-text"><a class="tm-gold-text" asp-controller="Blogs" asp-action="AllPosts">@this.ViewData["Title"]</a></h3></div>
     <a asp-controller="Blogs" asp-action="Create" type="button" class="btn btn-outline-secondary">Creat New Post</a>
 </nav>
 <br>
@@ -18,21 +16,53 @@
 
             @foreach (var post in Model.Posts)
             {
-                <div class="item mb-5">
-                    <div class="media">
-                        <img class="mr-3 img-fluid post-thumb d-none d-md-flex" src="~/img/@post.PictureFileName" alt="image" width="250">
-                        <div class="media-body">
+    <div class="item mb-5">
+        <div class="media">
+            <img class="mr-3 img-fluid post-thumb d-none d-md-flex" src="~/img/@post.PictureFileName" alt="image" width="250">
+            <div class="media-body">
 
-                            <h3 class="title mb-1"><a asp-action="Post" asp-route-id="@post.Id">@post.Title</a></h3>
-                            <div class="meta mb-1"><span class="date">@post.CreatedOn.ToString("g")</span></div>
+                <h3 class="title mb-1"><a asp-action="Post" asp-route-id="@post.Id">@post.Title</a></h3>
+                <div class="meta mb-1"><span class="date">@post.CreatedOn.ToString("g")</span></div>
 
-                            <div class="intro">@post.ClearBody.Substring(0, 300) ...</div>
-                            <a asp-action="Post" asp-route-id="@post.Id" class="more-link">Read more →</a>
-                        </div>
-                    </div>
-                </div>
-            }
+                <div class="intro">@post.ClearBody.Substring(0, 300) ...</div>
+                <a asp-action="Post" asp-route-id="@post.Id" class="more-link">Read more →</a>
+            </div>
+        </div>
+    </div>      }
 
         </div>
+
+
+        <br>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <li class="page-item @if (!Model.HasPreviousPage) { <text> disabled </text> }">
+                    <a asp-controller="Blogs" asp-action="AllPosts" asp-route-page="@Model.PreviousPage" class="page-link tm-gold-text">Previous</a>
+                </li>
+
+                @if (Model.HasPreviousPage)
+                {
+    <li class="page-item">
+        <a asp-controller="Blogs" asp-action="AllPosts" asp-route-page="@(Model.Page - 1)" class="page-link tm-gold-text">@(Model.Page - 1)</a>
+    </li>}
+
+                <li class="page-item">
+                    <a asp-controller="Blogs" asp-action="AllPosts" asp-route-page="@Model.Page" class="page-link tm-gold-text">@Model.Page</a>
+                </li>
+
+                @if (Model.HasNextPage)
+                {
+    <li class="page-item">
+        <a asp-controller="Blogs" asp-action="AllPosts" asp-route-page="@(Model.Page + 1)" class="page-link tm-gold-text">@(Model.Page + 1)</a>
+    </li>}
+
+                <li class="page-item  @if (!Model.HasNextPage) { <text> disabled </text> }">
+                    <a asp-controller="Blogs" asp-action="AllPosts" asp-route-page="@Model.NextPage" class="page-link tm-gold-text">Next</a>
+                </li>
+            </ul>
+        </nav>
+
     </section>
+
+   
 </div>

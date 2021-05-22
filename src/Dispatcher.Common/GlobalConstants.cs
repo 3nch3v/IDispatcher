@@ -16,6 +16,8 @@
 
         public const int JobsPageEntitiesCount = 10;
 
+        public const int BlogPageEntitiesCount = 10;
+
         public const int ForumPageEntitiesCount = 5;
 
         public static readonly string[] AllowedPictureTypes = { ".jpg", ".jpeg", ".png", ".gif", ".bmp" };

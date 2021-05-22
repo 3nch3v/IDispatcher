@@ -6,7 +6,7 @@
 }
 <div class="container-fluid">
     <nav class="navbar navbar-light bg-transparent justify-content-between">
-        <div class="navbar-brand"><h3 class="tm-gold-text">@this.ViewData["Title"]</h3></div>
+        <div class="navbar-brand"><h3><a asp-controller="Ads" asp-action="AllAds" class="tm-gold-text">@this.ViewData["Title"]</a></h3></div>
 
         <form asp-controller="Ads" asp-action="Search" method="get" class="form-inline" >
             <input name="keyWords"  class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">

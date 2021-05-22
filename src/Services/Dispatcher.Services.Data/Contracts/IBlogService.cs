@@ -9,7 +9,7 @@
     {
         T GetPost<T>(int id);
 
-        IEnumerable<T> GetAllBlogPosts<T>();
+        IEnumerable<T> GetAllBlogPosts<T>(int page, int pageEntitiesCount);
 
         Task CreatPostAsync(BlogInputModel inputModel, string userId, string imgPath);
 
@@ -18,5 +18,7 @@
         Task DeleteAsync(int id);
 
         T RandomBlogPost<T>();
+
+        int BlogPostsCount();
     }
 }

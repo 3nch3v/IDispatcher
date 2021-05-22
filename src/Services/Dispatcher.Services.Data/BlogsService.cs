@@ -22,6 +22,11 @@
             this.blogsRepository = blogsRepository;
         }
 
+        public int BlogPostsCount()
+        {
+            return this.blogsRepository.All().Count();
+        }
+
         public async Task CreatPostAsync(BlogInputModel inputModel, string userId, string imgPath)
         {
             Blog post = AutoMapperConfig.MapperInstance.Map<Blog>(inputModel);
@@ -42,11 +47,13 @@
             await this.blogsRepository.SaveChangesAsync();
         }
 
-        public IEnumerable<T> GetAllBlogPosts<T>()
+        public IEnumerable<T> GetAllBlogPosts<T>(int page, int pageEntitiesCount)
         {
             var posts = this.blogsRepository
                 .AllAsNoTracking()
-                .OrderByDescending(x => x.CreatedOn)
+                .OrderByDescending(j => j.CreatedOn)
+                .Skip((page - 1) * pageEntitiesCount)
+                .Take(pageEntitiesCount)
                 .To<T>()
                 .ToList();
 

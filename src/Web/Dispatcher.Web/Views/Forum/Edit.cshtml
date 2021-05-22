@@ -6,9 +6,9 @@
 }
 
 
-<form method="post" asp-controller="Forum" asp-action="Edit" class="col-md-8 offser-md-6">
+<form method="post" asp-controller="Forum" asp-action="Edit" class="col-md-12 offser-md-8">
 
-    <h5>@this.ViewData["Title"]</h5>
+    <h3>@this.ViewData["Title"]</h3>
     <br>
 
     <div class="form-group">
@@ -25,7 +25,7 @@
 
     <div class="form-group">
         <label asp-for="Description">Description</label>
-        <textarea asp-for="Description" class="form-control" rows="10"></textarea>
+        <textarea asp-for="Description" class="form-control" rows="12"></textarea>
         <span asp-validation-for="Description" class="text-danger"></span>
     </div>
 

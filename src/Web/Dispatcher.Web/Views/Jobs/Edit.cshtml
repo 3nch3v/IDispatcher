@@ -3,9 +3,9 @@
     this.ViewData["Title"] = "Edit Job Ad";
 }
 
-<h1>Edit new Job Ad</h1>
-
-<form method="post" class="col-md-8 offser-md-6">
+<h3>Edit new Job Ad</h3>
+<br>
+<form method="post" class="col-md-12 offser-md-8">
     <div class="form-group">
         <label asp-for="Title">Job Title:</label>
         <input asp-for="Title" class="form-control" />
@@ -13,7 +13,7 @@
     </div>
     <div class="form-group">
         <label asp-for="JobBody">Job Description:</label>
-        <textarea asp-for="JobBody" class="form-control" rows="10"></textarea>
+        <textarea asp-for="JobBody" class="form-control" rows="12"></textarea>
         <span asp-validation-for="JobBody" class="text-danger"></span>
     </div>
     <div class="form-group">
@@ -32,7 +32,7 @@
         <span asp-validation-for="Location" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="LogoUrl">Company's Logo:</label>
+        <label asp-for="LogoUrl">Company's Logo ULR:</label>
         <input asp-for="LogoUrl" class="form-control" />
         <span asp-validation-for="LogoUrl" class="text-danger"></span>
     </div>

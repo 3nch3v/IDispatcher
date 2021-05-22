@@ -2,6 +2,7 @@
 {
     using System.Threading.Tasks;
 
+    using Dispatcher.Common;
     using Dispatcher.Data.Models;
     using Dispatcher.Services.Data.Contracts;
     using Dispatcher.Web.ViewModels.BlogModels;
@@ -75,11 +76,13 @@
             return this.RedirectToAction(nameof(this.AllPosts));
         }
 
-        public IActionResult AllPosts()
+        public IActionResult AllPosts(int page = GlobalConstants.DefaultPageNumber)
         {
             var posts = new AllBlogPostsViewModel()
             {
-                Posts = this.blogServie.GetAllBlogPosts<BlogPostViewModel>(),
+                Posts = this.blogServie.GetAllBlogPosts<BlogPostViewModel>(page, GlobalConstants.BlogPageEntitiesCount),
+                Page = page,
+                BlogPostsCount = this.blogServie.BlogPostsCount(),
             };
 
             return this.View(posts);
