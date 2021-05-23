@@ -22,16 +22,6 @@
             this.userManager = userManager;
         }
 
-        public IActionResult AllProjects()
-        {
-            var projects = new AllProjectsViewModel
-            {
-                Projects = this.projectServices.GetAllProjects<SingleProjectViewModel>(),
-            };
-
-            return this.View(projects);  ////TODO use it into User Profile // view component into User Profile
-        }
-
         public IActionResult Project(int id)
         {
             var project = this.projectServices.GetProject<SingleProjectViewModel>(id);
@@ -57,7 +47,7 @@
             var user = await this.userManager.GetUserAsync(this.User);
             await this.projectServices.AddProjectAsync(input, user.Id);
 
-            return this.RedirectToAction(nameof(this.AllProjects)); ////TODO redicetc to User Profile
+            return this.RedirectToAction(nameof(ProfilesController.Profile), "Profiles");
         }
 
         [Authorize]
@@ -78,14 +68,14 @@
             }
 
             await this.projectServices.UpdateAsync(input, id);
-            return this.RedirectToAction(nameof(this.AllProjects)); ////TODO redicetc to User Profile
+            return this.RedirectToAction(nameof(ProfilesController.Profile), "Profiles");
         }
 
         [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
             await this.projectServices.Delete(id);
-            return this.RedirectToAction(nameof(this.AllProjects)); ////TODO redicetc to User Profile
+            return this.RedirectToAction(nameof(ProfilesController.Profile), "Profiles");
         }
     }
 }

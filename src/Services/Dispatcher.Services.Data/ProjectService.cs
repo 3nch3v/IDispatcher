@@ -1,6 +1,5 @@
 ﻿namespace Dispatcher.Services.Data
 {
-    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -33,16 +32,6 @@
             var project = this.projectRepository.All().FirstOrDefault(p => p.Id == id);
             this.projectRepository.Delete(project);
             await this.projectRepository.SaveChangesAsync();
-        }
-
-        public IEnumerable<T> GetAllProjects<T>()
-        {
-            var projects = this.projectRepository.AllAsNoTracking()
-                .OrderByDescending(p => p.CreatedOn)
-                .To<T>()
-                .ToList();
-
-            return projects;
         }
 
         public T GetProject<T>(int id)
