@@ -4,6 +4,7 @@
     using System.Threading.Tasks;
 
     using Dispatcher.Data.Models;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -44,6 +45,7 @@
         public async Task<IActionResult> OnPostAsync()
         {
             var user = await this.userManager.GetUserAsync(this.User);
+
             if (user == null)
             {
                 return this.NotFound($"Unable to load user with ID '{this.userManager.GetUserId(this.User)}'.");
@@ -66,6 +68,69 @@
                 }
             }
 
+            var firstName = user.FirstName;
+            var lastName = user.LastName;
+            var education = user.Education;
+            var companyName = user.ComponyName;
+            var interests = user.Interests;
+            var contacts = user.Contacts;
+            var websiteUrl = user.WebsiteUrl;
+            var githubUrl = user.GithubUrl;
+            var facebookUrl = user.FacebookUrl;
+            var instagramUrl = user.InstagramUrl;
+
+            if (this.Input.FirstName != firstName)
+            {
+                user.FirstName = this.Input.FirstName;
+            }
+
+            if (this.Input.LastName != lastName)
+            {
+                user.LastName = this.Input.LastName;
+            }
+
+            if (this.Input.Education != education)
+            {
+                user.Education = this.Input.Education;
+            }
+
+            if (this.Input.ComponyName != companyName)
+            {
+                user.ComponyName = this.Input.ComponyName;
+            }
+
+            if (this.Input.Interests != interests)
+            {
+                user.Interests = this.Input.Interests;
+            }
+
+            if (this.Input.Contacts != contacts)
+            {
+                user.Contacts = this.Input.Contacts;
+            }
+
+            if (this.Input.WebsiteUrl != websiteUrl)
+            {
+                user.WebsiteUrl = this.Input.WebsiteUrl;
+            }
+
+            if (this.Input.GithubUrl != githubUrl)
+            {
+                user.GithubUrl = this.Input.GithubUrl;
+            }
+
+            if (this.Input.FacebookUrl != facebookUrl)
+            {
+                user.FacebookUrl = this.Input.FacebookUrl;
+            }
+
+            if (this.Input.InstagramUrl != instagramUrl)
+            {
+                user.InstagramUrl = this.Input.InstagramUrl;
+            }
+
+            await this.userManager.UpdateAsync(user);
+
             await this.signInManager.RefreshSignInAsync(user);
             this.StatusMessage = "Your profile has been updated";
             return this.RedirectToPage();
@@ -76,11 +141,32 @@
             var userName = await this.userManager.GetUserNameAsync(user);
             var phoneNumber = await this.userManager.GetPhoneNumberAsync(user);
 
+            var firstName = user.FirstName;
+            var lastName = user.LastName;
+            var education = user.Education;
+            var companyName = user.ComponyName;
+            var interests = user.Interests;
+            var contacts = user.Contacts;
+            var websiteUrl = user.WebsiteUrl;
+            var githubUrl = user.GithubUrl;
+            var facebookUrl = user.FacebookUrl;
+            var instagramUrl = user.InstagramUrl;
+
             this.Username = userName;
 
             this.Input = new InputModel
             {
                 PhoneNumber = phoneNumber,
+                FirstName = firstName,
+                LastName = lastName,
+                Education = education,
+                ComponyName = companyName,
+                Interests = interests,
+                Contacts = contacts,
+                WebsiteUrl = websiteUrl,
+                GithubUrl = githubUrl,
+                FacebookUrl = facebookUrl,
+                InstagramUrl = instagramUrl,
             };
         }
 
@@ -89,6 +175,46 @@
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
+            [Display(Name = "First name")]
+            [StringLength(50, MinimumLength = 2)]
+            public string FirstName { get; set; }
+
+            [Display(Name = "Last name")]
+            [StringLength(50, MinimumLength = 2)]
+            public string LastName { get; set; }
+
+            [StringLength(50, MinimumLength = 2)]
+            public string Education { get; set; }
+
+            [Display(Name = "Company name")]
+            [StringLength(50, MinimumLength = 2)]
+            public string ComponyName { get; set; }
+
+            [StringLength(1000, MinimumLength = 2)]
+            public string Interests { get; set; }
+
+            [StringLength(200, MinimumLength = 6)]
+            public string Contacts { get; set; }
+
+            [Display(Name = "Website URL")]
+            [MaxLength(2048)]
+            public string WebsiteUrl { get; set; }
+
+            [Display(Name = "Github")]
+            [MaxLength(2048)]
+            public string GithubUrl { get; set; }
+
+            [Display(Name = "Facebook")]
+            [MaxLength(2048)]
+            public string FacebookUrl { get; set; }
+
+            [Display(Name = "Instagram")]
+            [MaxLength(2048)]
+            public string InstagramUrl { get; set; }
+
+            [Display(Name = "Profile picture")]
+            public IFormFile ProfilePicture { get; set; }
         }
     }
 }

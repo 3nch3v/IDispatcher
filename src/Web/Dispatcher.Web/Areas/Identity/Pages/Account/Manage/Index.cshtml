@@ -15,11 +15,65 @@
                 <label asp-for="Username"></label>
                 <input asp-for="Username" class="form-control" disabled />
             </div>
+
+            <div class="form-group">
+                <label asp-for="Input.FirstName"></label>
+                <input asp-for="Input.FirstName" class="form-control"/>
+                <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.LastName"></label>
+                <input asp-for="Input.LastName" class="form-control"/>
+                <span asp-validation-for="Input.LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.Education"></label>
+                <input asp-for="Input.Education" class="form-control"/>
+                <span asp-validation-for="Input.Education" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.ComponyName"></label>
+                <input asp-for="Input.ComponyName" class="form-control"/>
+                <span asp-validation-for="Input.ComponyName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.Interests"></label>
+                <textarea asp-for="Input.Interests" class="form-control" rows="2"></textarea>
+                <span asp-validation-for="Input.Interests" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.Contacts"></label>
+                <textarea asp-for="Input.Contacts" class="form-control" rows="2"></textarea>
+                <span asp-validation-for="Input.Contacts" class="text-danger"></span>
+            </div>
+
             <div class="form-group">
                 <label asp-for="Input.PhoneNumber"></label>
                 <input asp-for="Input.PhoneNumber" class="form-control" />
                 <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
             </div>
+
+            <div class="form-group">
+                <label asp-for="Input.WebsiteUrl"></label>
+                <input asp-for="Input.WebsiteUrl" class="form-control" rows="3" />
+                <span asp-validation-for="Input.WebsiteUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.GithubUrl"></label>
+                <input asp-for="Input.GithubUrl" class="form-control" rows="3" />
+                <span asp-validation-for="Input.GithubUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.FacebookUrl"></label>
+                <input asp-for="Input.FacebookUrl" class="form-control" rows="3" />
+                <span asp-validation-for="Input.FacebookUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.InstagramUrl"></label>
+                <input asp-for="Input.InstagramUrl" class="form-control" rows="3" />
+                <span asp-validation-for="Input.InstagramUrl" class="text-danger"></span>
+            </div>
+
             <button id="update-profile-button" type="submit" class="btn btn-primary">Save</button>
         </form>
     </div>
