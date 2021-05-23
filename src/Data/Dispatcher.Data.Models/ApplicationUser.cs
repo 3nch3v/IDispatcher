@@ -33,25 +33,38 @@ namespace Dispatcher.Data.Models
             this.Discussions = new HashSet<Discussion>();
             this.Posts = new HashSet<Post>();
             this.Blogs = new HashSet<Blog>();
+            this.ProfilePictures = new HashSet<ProfilePicture>();
         }
 
-        ////[Required]
-        ////public string FirstName { get; set; }
+        [StringLength(50, MinimumLength = 2)]
+        public string FirstName { get; set; }
 
-        ////[Required]
-        ////public string LastName { get; set; }
+        [StringLength(50, MinimumLength = 2)]
+        public string LastName { get; set; }
 
-        ////[MaxLength(2048)]
-        ////public string ProfilePictureUrl { get; set; }
+        [StringLength(50, MinimumLength = 2)]
+        public string Education { get; set; }
 
-        ////[MaxLength(200)]
-        ////public string Education { get; set; }
+        [StringLength(50, MinimumLength = 2)]
+        public string ComponyName { get; set; }
 
-        ////[MaxLength(1000)]
-        ////public string Interests { get; set; }
+        [StringLength(1000, MinimumLength = 2)]
+        public string Interests { get; set; }
 
-        ////[MaxLength(2000)]
-        ////public string Contacts { get; set; }
+        [StringLength(200, MinimumLength = 6)]
+        public string Contacts { get; set; }
+
+        [MaxLength(2048)]
+        public string WebsiteUrl { get; set; }
+
+        [MaxLength(2048)]
+        public string GithubUrl { get; set; }
+
+        [MaxLength(2048)]
+        public string FacebookUrl { get; set; }
+
+        [MaxLength(2048)]
+        public string InstagramUrl { get; set; }
 
         // Audit info
         public DateTime CreatedOn { get; set; }
@@ -92,5 +105,7 @@ namespace Dispatcher.Data.Models
         public virtual ICollection<Post> Posts { get; set; }
 
         public virtual ICollection<Blog> Blogs { get; set; }
+
+        public ICollection<ProfilePicture> ProfilePictures { get; set; }
     }
 }

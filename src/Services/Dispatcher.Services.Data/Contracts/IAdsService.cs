@@ -3,7 +3,6 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    using Dispatcher.Data.Models.AdvertisementModels;
     using Dispatcher.Web.ViewModels.AdModels;
 
     public interface IAdsService
