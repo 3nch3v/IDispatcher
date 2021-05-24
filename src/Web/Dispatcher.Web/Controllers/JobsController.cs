@@ -88,8 +88,6 @@
             return this.RedirectToAction(nameof(this.Job), new { id });
         }
 
-        ////TODO Paging doesn't work !!! I have to keep the keywords, but how ?????
-
         [HttpGet]
         public IActionResult Search(string keyWords, int page = GlobalConstants.DefaultPageNumber)
         {

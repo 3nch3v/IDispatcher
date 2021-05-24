@@ -7,5 +7,10 @@
         public CustomersReviewsController()
         {
         }
+
+        public IActionResult AllCustomersReviews(string id)
+        {
+            return this.View();
+        }
     }
 }

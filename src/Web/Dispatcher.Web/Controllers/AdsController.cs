@@ -105,8 +105,6 @@
             return this.RedirectToAction(nameof(this.AllAds));
         }
 
-        ////TODO Paging doesn't work !!! I have to keep the keywords, but how ?????
-
         [HttpGet]
         public IActionResult Search(string keyWords, int page = GlobalConstants.DefaultPageNumber)
         {

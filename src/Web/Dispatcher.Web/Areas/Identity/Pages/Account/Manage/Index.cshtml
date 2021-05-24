@@ -18,22 +18,22 @@
 
             <div class="form-group">
                 <label asp-for="Input.FirstName"></label>
-                <input asp-for="Input.FirstName" class="form-control"/>
+                <input asp-for="Input.FirstName" class="form-control" />
                 <span asp-validation-for="Input.FirstName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Input.LastName"></label>
-                <input asp-for="Input.LastName" class="form-control"/>
+                <input asp-for="Input.LastName" class="form-control" />
                 <span asp-validation-for="Input.LastName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Input.Education"></label>
-                <input asp-for="Input.Education" class="form-control"/>
+                <input asp-for="Input.Education" class="form-control" />
                 <span asp-validation-for="Input.Education" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Input.ComponyName"></label>
-                <input asp-for="Input.ComponyName" class="form-control"/>
+                <input asp-for="Input.ComponyName" class="form-control" />
                 <span asp-validation-for="Input.ComponyName" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -76,6 +76,10 @@
 
             <button id="update-profile-button" type="submit" class="btn btn-primary">Save</button>
         </form>
+        <br>
+        <p class="nav-item">
+            This is what your profile looks like to the people <a class="btn btn-primary" asp-area="Controllers" asp-controller="Profiles" asp-action="Profile">Profile</a>
+        </p>
     </div>
 </div>
 
