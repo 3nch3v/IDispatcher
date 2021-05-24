@@ -1,1 +1,57 @@
-﻿
+﻿@using Dispatcher.Web.ViewModels.ProfileModels
+@model AllCommentsViewModel
+
+@{
+    this.ViewData["Title"] = "Customers reviews";
+}
+
+<section class="tm-section">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-8 col-lg-9 col-xl-9">
+                <div>
+
+                    @foreach (var comment in Model.Comments)
+                    {
+
+                        <div class="card mb-1 col-md-12 offser-md-6">
+                            <div class="card-body p-2 p-sm-3">
+                                <div class="media forum-item">
+
+                                    <div class="media-body">
+                                        <p class="text-secondary">@comment.Comment</p>
+                                        <span>@comment.StarsCount</span>
+                                        <span>@comment.AppraiserUsername</span>
+                                        <span>@comment.CreatedOn.ToString("g")</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+
+                <div class="form-control-plaintext">
+                    <form method="post" asp-controller="CustomersReviews" asp-action="Comment" class="col-md-12 offser-md-6">
+
+                        <input name="UserId" value="@Model.Comments.FirstOrDefault().UserId" type="hidden">
+                        <input name="StarsCount" value="4" type="hidden"> @*remove it !!!!!!!!!!!!!!!!!*@
+
+                    <div class="form-group">
+                        <label for="Comment">Comment</label>
+                        <textarea name="Comment" class="form-control" rows="3"></textarea>
+                    </div>
+
+
+
+                        <button type="submit" class="btn btn-outline-secondary" style="float: right;">Comment</button>
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>

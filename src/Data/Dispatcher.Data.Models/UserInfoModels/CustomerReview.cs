@@ -7,6 +7,7 @@
 
     public class CustomerReview : BaseDeletableModel<int>
     {
+        [Range(1, 5)]
         public int StarsCount { get; set; }
 
         [Required]
