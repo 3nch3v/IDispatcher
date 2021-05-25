@@ -2,6 +2,8 @@
 {
     using System.ComponentModel.DataAnnotations;
 
+    using Dispatcher.Common;
+    using Dispatcher.Data.Common.CustomAttributes;
     using Microsoft.AspNetCore.Http;
 
     public abstract class BaseBlogPostInputModel
@@ -17,6 +19,8 @@
         [MaxLength(2048)]
         public string VideoLink { get; set; }
 
+        [MaxFileSize(5 * 1024 * 1024)]
+        [AllowedExtensions(new[] { ".jpg", ".jpeg", ".png", ".gif", ".bmp" })]
         public IFormFile Picture { get; set; }
     }
 }
