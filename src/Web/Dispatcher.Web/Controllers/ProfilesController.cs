@@ -4,6 +4,7 @@
     using Dispatcher.Services.Data.Contracts;
     using Dispatcher.Web.ViewModels.ProfileModels;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
@@ -11,13 +12,16 @@
     {
         private readonly IProfileService profileService;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly IWebHostEnvironment environment;
 
         public ProfilesController(
             IProfileService profileService,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            IWebHostEnvironment environment)
         {
             this.profileService = profileService;
             this.userManager = userManager;
+            this.environment = environment;
         }
 
         [Authorize]

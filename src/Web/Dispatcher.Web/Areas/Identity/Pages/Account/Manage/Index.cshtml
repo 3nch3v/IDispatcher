@@ -7,9 +7,11 @@
 
 <h4>@ViewData["Title"]</h4>
 <partial name="_StatusMessage" model="Model.StatusMessage" />
-<div class="row">
-    <div class="col-md-6">
-        <form id="profile-form" method="post" enctype="multipart/form-data">
+
+<form id="profile-form" method="post" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-md-6">
+
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Username"></label>
@@ -74,32 +76,34 @@
                 <span asp-validation-for="Input.InstagramUrl" class="text-danger"></span>
             </div>
 
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label asp-for="Input.ProfilePicture" style="width: 100%;"></label>
-
-                    @if (Model.Input.ProfilePicture != null)
-                    {
-                        <img id="profilePicture" style="width:350px;height:350px; object-fit:cover" src="">
-                    }
-                    else
-                    {
-                        <img id="profilePicture" style="width:350px;height:350px; object-fit:cover" src="">
-                    }
-
-                    <input type="file" asp-for="Input.ProfilePicture" class="hidden"
-                           style="border:0px!important;padding: 0px;padding-top: 20px;padding-bottom: 60px;" />
-                    <span asp-validation-for="Input.ProfilePicture" class="text-danger"></span>
-                </div>
-            </div>
-
             <button id="update-profile-button" type="submit" class="btn btn-primary">Save</button>
-        </form>
-        <br>
-        <p class="nav-item">
-            This is what your profile looks like to the people <a class="btn btn-primary" asp-area="Controllers" asp-controller="Profiles" asp-action="Profile">Profile</a>
-        </p>
+        </div>
+
+        <div class="col-md-6">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Input.UploadPicture" style="width: 100%;"></label>
+                <img id="profilePicture" style="width:350px;height:350px; object-fit:cover" src="@Model.Input.ProfilePicture">
+                <input type="file"
+                       accept=".jpg,.jpeg,.png,.gif,.bmp" 
+                       asp-for="Input.UploadPicture"
+                       class="form-control"
+                       style="border:0px!important;padding: 0px;padding-top: 10px;padding-bottom: 30px;"
+                       onchange="document.getElementById('profilePicture').src = window.URL.createObjectURL(this.files[0])" />
+                <span asp-validation-for="Input.UploadPicture" class="text-danger"></span>
+            </div>
+        </div>
+
     </div>
+
+</form>
+
+<div>
+    <br>
+    <p class="nav-item">
+        <a class="btn btn-primary" asp-area="Controllers" asp-controller="Profiles" asp-action="Profile">Profile Review</a> This is what your profile looks like to the people
+    </p>
 </div>
 
 @section Scripts {

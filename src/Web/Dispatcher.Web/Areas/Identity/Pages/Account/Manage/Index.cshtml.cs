@@ -1,10 +1,15 @@
 ﻿namespace Dispatcher.Web.Areas.Identity.Pages.Account.Manage
 {
     using System.ComponentModel.DataAnnotations;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using Dispatcher.Data.Common.CustomAttributes;
     using Dispatcher.Data.Models;
+    using Dispatcher.Data.Models.UserInfoModels;
+    using Dispatcher.Services.Data.Contracts;
+    using Dispatcher.Web.ViewModels.ProfileModels;
+    using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
@@ -14,13 +19,19 @@
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly IProfileService profileServices;
+        private readonly IWebHostEnvironment environment;
 
         public IndexModel(
             UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager)
+            SignInManager<ApplicationUser> signInManager,
+            IProfileService profileServices,
+            IWebHostEnvironment environment)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.profileServices = profileServices;
+            this.environment = environment;
         }
 
         public string Username { get; set; }
@@ -130,6 +141,9 @@
                 user.InstagramUrl = this.Input.InstagramUrl;
             }
 
+            string pictureDirectory = $"{this.environment.WebRootPath}/img/profile-pictures";
+            await this.profileServices.SavePictureAsync(new ProfilePictureInputModel { UserId = user.Id, Picture = this.Input.UploadPicture }, pictureDirectory);
+
             await this.userManager.UpdateAsync(user);
 
             await this.signInManager.RefreshSignInAsync(user);
@@ -141,7 +155,6 @@
         {
             var userName = await this.userManager.GetUserNameAsync(user);
             var phoneNumber = await this.userManager.GetPhoneNumberAsync(user);
-
             var firstName = user.FirstName;
             var lastName = user.LastName;
             var education = user.Education;
@@ -152,7 +165,7 @@
             var githubUrl = user.GithubUrl;
             var facebookUrl = user.FacebookUrl;
             var instagramUrl = user.InstagramUrl;
-
+            var picture = this.profileServices.GetProfilePicturePath(user.Id);
             this.Username = userName;
 
             this.Input = new InputModel
@@ -168,6 +181,7 @@
                 GithubUrl = githubUrl,
                 FacebookUrl = facebookUrl,
                 InstagramUrl = instagramUrl,
+                ProfilePicture = picture,
             };
         }
 
@@ -214,11 +228,11 @@
             [MaxLength(2048)]
             public string InstagramUrl { get; set; }
 
-            [Display(Name = "Profile picture")]
-
             [MaxFileSize(5 * 1024 * 1024)]
             [AllowedExtensions(new[] { ".jpg", ".jpeg", ".png", ".gif", ".bmp" })]
-            public IFormFile ProfilePicture { get; set; }
+            public IFormFile UploadPicture { get; set; }
+
+            public string ProfilePicture { get; set; }
         }
     }
 }

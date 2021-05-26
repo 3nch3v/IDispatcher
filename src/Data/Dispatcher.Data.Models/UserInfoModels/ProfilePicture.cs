@@ -17,6 +17,10 @@
         public string FilePath { get; set; }
 
         [Required]
+        [MaxLength(2048)]
+        public string PhysicalFilePath { get; set; }
+
+        [Required]
         [MaxLength(5)]
         public string Extension { get; set; }
 

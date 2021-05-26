@@ -43,7 +43,8 @@
                 <div class="form-control-plaintext">
 
                     <form method="post" asp-controller="CustomersReviews" asp-action="Comment" class="col-md-12 offser-md-6">
-                        <input name="UserId" value="@Model.Comments.FirstOrDefault().UserId" type="hidden">
+                        <input name="UserId" value="" type="hidden">
+                        @*value="" @Model.Comments.FirstOrDefault().UserId*@
                         <div class="form-group justify-content-between">
                             <label for="Comment" class="justify-content-end">Comment and </label>
                             <select name="StarsCount" class="star-rating">

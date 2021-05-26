@@ -39,7 +39,7 @@
                     CompanyName = "Softuni",
                     Contact = "0902300934909034, ivan.Enchev@haha.bg",
                     LogoUrl = "https://w7.pngwing.com/pngs/269/405/png-transparent-career-development-job-application-for-employment-business-career-miscellaneous-trademark-logo.png",
-                    UserId = "567fdf86-35bf-45e7-9e5b-d2849ec6124e",
+                    UserId = "b74947e2-05e2-4279-adc6-a86ca3f1e4cf",
                 });
             }
 

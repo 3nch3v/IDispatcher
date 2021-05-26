@@ -52,4 +52,8 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\img\profile-pictures\" />
+  </ItemGroup>
 </Project>

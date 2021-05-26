@@ -12,6 +12,7 @@
     using Dispatcher.Services.Data.Contracts;
     using Dispatcher.Services.Mapping;
     using Dispatcher.Services.Messaging;
+    using Dispatcher.Web.Controllers;
     using Dispatcher.Web.ViewModels;
 
     using Microsoft.AspNetCore.Builder;

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dispatcher.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210521101102_AddVideoPropIntoBlog")]
-    partial class AddVideoPropIntoBlog
+    [Migration("20210526124739_InitialCreat")]
+    partial class InitialCreat
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -221,15 +221,27 @@ namespace Dispatcher.Data.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<string>("ComponyName")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Contacts")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Education")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -238,8 +250,32 @@ namespace Dispatcher.Data.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("FacebookUrl")
+                        .HasMaxLength(2048)
+                        .HasColumnType("nvarchar(2048)");
+
+                    b.Property<string>("FirstName")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("GithubUrl")
+                        .HasMaxLength(2048)
+                        .HasColumnType("nvarchar(2048)");
+
+                    b.Property<string>("InstagramUrl")
+                        .HasMaxLength(2048)
+                        .HasColumnType("nvarchar(2048)");
+
+                    b.Property<string>("Interests")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
+
+                    b.Property<string>("LastName")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -276,6 +312,10 @@ namespace Dispatcher.Data.Migrations
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("WebsiteUrl")
+                        .HasMaxLength(2048)
+                        .HasColumnType("nvarchar(2048)");
 
                     b.HasKey("Id");
 
@@ -715,6 +755,46 @@ namespace Dispatcher.Data.Migrations
                     b.ToTable("CustomersReviews");
                 });
 
+            modelBuilder.Entity("Dispatcher.Data.Models.UserInfoModels.ProfilePicture", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Extension")
+                        .IsRequired()
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasMaxLength(2048)
+                        .HasColumnType("nvarchar(2048)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ProfilesPictures");
+                });
+
             modelBuilder.Entity("Dispatcher.Data.Models.UserInfoModels.Project", b =>
                 {
                     b.Property<int>("Id")
@@ -1044,6 +1124,17 @@ namespace Dispatcher.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Dispatcher.Data.Models.UserInfoModels.ProfilePicture", b =>
+                {
+                    b.HasOne("Dispatcher.Data.Models.ApplicationUser", "User")
+                        .WithMany("ProfilePictures")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Dispatcher.Data.Models.UserInfoModels.Project", b =>
                 {
                     b.HasOne("Dispatcher.Data.Models.ApplicationUser", "User")
@@ -1134,6 +1225,8 @@ namespace Dispatcher.Data.Migrations
                     b.Navigation("MessagesRecipients");
 
                     b.Navigation("Posts");
+
+                    b.Navigation("ProfilePictures");
 
                     b.Navigation("Projects");
 
