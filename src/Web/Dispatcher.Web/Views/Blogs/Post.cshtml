@@ -19,10 +19,8 @@
 
 <div>
     <div>
-
         <h2>@Model.Title</h2>
         <br>
-
 
         @if (Model.VideoLink != null)
         {
@@ -39,15 +37,12 @@
 
         <br>
         <p align="justify">@Html.Raw(Model.SanitizedBody)</p>
-
     </div>
-
     <br>
     <div class="d-flex flex-row justify-content-between">
         <span>Created on @Model.CreatedOn.ToString("g")</span>
         <span>Created by <a class="tm-gold-text" asp-controller="Profiles" asp-action="Profile" asp-route-userId="@Model.UserId">@Model.UserUsername</a></span>
     </div>
-
 </div>
 
 

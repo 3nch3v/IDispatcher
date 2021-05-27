@@ -11,7 +11,7 @@
 
         IEnumerable<T> GetAllBlogPosts<T>(int page, int pageEntitiesCount);
 
-        Task CreatPostAsync(BlogInputModel inputModel, string userId, string pictureDirectory);
+        Task CreatPostAsync(BlogInputModel input, string userId, string pictureDirectory);
 
         Task UpdatePostAsync(int id, EditBlogPostInputmodel input, string pictureDirectory);
 

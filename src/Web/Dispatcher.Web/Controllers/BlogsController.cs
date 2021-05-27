@@ -1,5 +1,8 @@
 ﻿namespace Dispatcher.Web.Controllers
 {
+    using System.Net;
+    using System.Text;
+    using System.Text.RegularExpressions;
     using System.Threading.Tasks;
 
     using Dispatcher.Common;
@@ -18,9 +21,9 @@
         private readonly IWebHostEnvironment environment;
 
         public BlogsController(
-             IBlogService blogServie,
-             UserManager<ApplicationUser> userManager,
-             IWebHostEnvironment environment)
+            UserManager<ApplicationUser> userManager,
+            IBlogService blogServie,
+            IWebHostEnvironment environment)
         {
             this.blogServie = blogServie;
             this.userManager = userManager;
@@ -37,7 +40,7 @@
         [Authorize]
         public async Task<IActionResult> Create(BlogInputModel input)
         {
-            if (!this.ModelState.IsValid)
+            if (!this.ModelState.IsValid || !this.IsStringValidDecoded(input))
             {
                 return this.View();
             }
@@ -60,9 +63,10 @@
         [Authorize]
         public async Task<IActionResult> Edit(int id, EditBlogPostInputmodel input)
         {
-            if (!this.ModelState.IsValid)
+            if (!this.ModelState.IsValid || !this.IsStringValidDecoded(input))
             {
-                return this.View(input);
+                var editPost = this.blogServie.GetPost<EditBlogPostInputmodel>(id);
+                return this.View(editPost);
             }
 
             string pictureDirectory = $"{this.environment.WebRootPath}/img/blog-pictures";
@@ -70,11 +74,10 @@
             return this.RedirectToAction(nameof(this.Post), new { id });
         }
 
-        [Authorize]
-        public async Task<IActionResult> Delete(int id)
+        public IActionResult Post(int id)
         {
-            await this.blogServie.DeleteAsync(id);
-            return this.RedirectToAction(nameof(this.AllPosts));
+            var post = this.blogServie.GetPost<BlogPostViewModel>(id);
+            return this.View(post);
         }
 
         public IActionResult AllPosts(int page = GlobalConstants.DefaultPageNumber)
@@ -89,10 +92,36 @@
             return this.View(posts);
         }
 
-        public IActionResult Post(int id)
+        [Authorize]
+        public async Task<IActionResult> Delete(int id)
         {
-            var post = this.blogServie.GetPost<BlogPostViewModel>(id);
-            return this.View(post);
+            await this.blogServie.DeleteAsync(id);
+            return this.RedirectToAction(nameof(this.AllPosts));
+        }
+
+        private bool IsStringValidDecoded(BaseBlogPostInputModel input)
+        {
+            string blogTitleHtmlDecoded = this.HtmlDecoder(input.Body);
+            string blogBodyHtmlDecoded = this.HtmlDecoder(input.Title);
+
+            if (string.IsNullOrWhiteSpace(blogTitleHtmlDecoded)
+               || string.IsNullOrWhiteSpace(blogBodyHtmlDecoded)
+               || blogBodyHtmlDecoded.Length < 100
+               || blogTitleHtmlDecoded.Length < 2)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private string HtmlDecoder(string input)
+        {
+            var result = WebUtility.HtmlDecode(Regex.Replace(input, "<[^>]+>", string.Empty)).Trim();
+            byte[] bytes = Encoding.Default.GetBytes(result);
+            result = Encoding.UTF8.GetString(bytes);
+
+            return result;
         }
     }
 }

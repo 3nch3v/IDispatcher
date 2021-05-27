@@ -21,29 +21,25 @@
             this.blogsRepository = blogsRepository;
         }
 
-        public int BlogPostsCount()
+        public async Task CreatPostAsync(BlogInputModel input, string userId, string pictureDirectory)
         {
-            return this.blogsRepository.All().Count();
-        }
-
-        public async Task CreatPostAsync(BlogInputModel inputModel, string userId, string pictureDirectory)
-        {
-            Blog post = AutoMapperConfig.MapperInstance.Map<Blog>(inputModel);
+            Blog post = AutoMapperConfig.MapperInstance.Map<Blog>(input);
             post.UserId = userId;
 
-            if (inputModel.Picture != null)
-            {
-                string filePath = $"/img/blog-pictures/{inputModel.Picture.FileName}";
-                string physicalFilePath = $"{pictureDirectory}/{inputModel.Picture.FileName}";
-
-                post.FilePath = filePath;
-                post.PhysicalFilePath = physicalFilePath;
-
-                using var fileStream = new FileStream(physicalFilePath, FileMode.Create);
-                await inputModel.Picture.CopyToAsync(fileStream);
-            }
-
+            await this.FileSaverAsync(post, input, pictureDirectory);
             await this.blogsRepository.AddAsync(post);
+            await this.blogsRepository.SaveChangesAsync();
+        }
+
+        public async Task UpdatePostAsync(int id, EditBlogPostInputmodel input, string pictureDirectory)
+        {
+            Blog post = this.blogsRepository.All().FirstOrDefault(p => p.Id == id);
+            post.Title = input.Title;
+            post.Body = input.Body;
+            post.VideoLink = input.VideoLink;
+            post.ModifiedOn = DateTime.UtcNow;
+
+            await this.FileSaverAsync(post, input, pictureDirectory);
             await this.blogsRepository.SaveChangesAsync();
         }
 
@@ -87,25 +83,24 @@
             return blogPost;
         }
 
-        public async Task UpdatePostAsync(int id, EditBlogPostInputmodel input, string pictureDirectory)
+        public int BlogPostsCount()
         {
-            var post = this.blogsRepository.All().FirstOrDefault(p => p.Id == id);
-            post.Title = input.Title;
-            post.Body = input.Body;
-            post.VideoLink = input.VideoLink;
-            post.ModifiedOn = DateTime.UtcNow;
+            return this.blogsRepository.All().Count();
+        }
 
+        private async Task FileSaverAsync(Blog post, BaseBlogPostInputModel input, string pictureDirectory)
+        {
             if (input.Picture != null)
             {
                 string filePath = $"/img/blog-pictures/{input.Picture.FileName}";
                 string physicalFilePath = $"{pictureDirectory}/{input.Picture.FileName}";
+
                 post.FilePath = filePath;
                 post.PhysicalFilePath = physicalFilePath;
+
                 using var fileStream = new FileStream(physicalFilePath, FileMode.Create);
                 await input.Picture.CopyToAsync(fileStream);
             }
-
-            await this.blogsRepository.SaveChangesAsync();
         }
     }
 }
