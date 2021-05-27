@@ -15,26 +15,27 @@
         </span>
     </div>
 </div>
-
 <br>
 
 <div>
-
     <div>
 
         <h2>@Model.Title</h2>
         <br>
-        <img src="/@Model.FilePath" class="card-img-top" alt="@Model.Title">
-        <div>
-            @if (Model.VideoLink != null)
-            {
+
+
+        @if (Model.VideoLink != null)
+        {
+            <div class="embed-responsive embed-responsive-16by9">
                 @Html.Raw(Model.VideoLink)
-            }
-            else
-            {
+            </div>
+        }
+        else if (!string.IsNullOrWhiteSpace(Model.FilePath))
+        {
+            <div>
                 <img src="@Model.FilePath" class="card-img-top" alt="@Model.Title">
-            }
-        </div>
+            </div>
+        }
 
         <br>
         <p align="justify">@Html.Raw(Model.SanitizedBody)</p>
@@ -43,8 +44,8 @@
 
     <br>
     <div class="d-flex flex-row justify-content-between">
-        <span>@Model.CreatedOn.ToString("g")</span>
-        <span>@Model.UserUsername </span>
+        <span>Created on @Model.CreatedOn.ToString("g")</span>
+        <span>Created by <a class="tm-gold-text" asp-controller="Profiles" asp-action="Profile" asp-route-userId="@Model.UserId">@Model.UserUsername</a></span>
     </div>
 
 </div>

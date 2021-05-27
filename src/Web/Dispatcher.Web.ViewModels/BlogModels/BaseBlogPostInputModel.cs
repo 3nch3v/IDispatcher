@@ -17,6 +17,7 @@
         public string Body { get; set; }
 
         [MaxLength(2048)]
+        [RegularExpression(GlobalConstants.YouTubeRegexPattern, ErrorMessage = "Please enter valid YouTube embed code!")]
         public string VideoLink { get; set; }
 
         [MaxFileSize(5 * 1024 * 1024)]

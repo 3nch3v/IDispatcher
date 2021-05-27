@@ -28,16 +28,20 @@
 
         public async Task CreatPostAsync(BlogInputModel inputModel, string userId, string pictureDirectory)
         {
-            string filePath = $"/img/profile-pictures/{inputModel.Picture.FileName}";
-            string physicalFilePath = $"{pictureDirectory}/{inputModel.Picture.FileName}";
-
             Blog post = AutoMapperConfig.MapperInstance.Map<Blog>(inputModel);
             post.UserId = userId;
-            post.FilePath = filePath;
-            post.PhysicalFilePath = physicalFilePath;
 
-            using var fileStream = new FileStream(physicalFilePath, FileMode.Create);
-            await inputModel.Picture.CopyToAsync(fileStream);
+            if (inputModel.Picture != null)
+            {
+                string filePath = $"/img/blog-pictures/{inputModel.Picture.FileName}";
+                string physicalFilePath = $"{pictureDirectory}/{inputModel.Picture.FileName}";
+
+                post.FilePath = filePath;
+                post.PhysicalFilePath = physicalFilePath;
+
+                using var fileStream = new FileStream(physicalFilePath, FileMode.Create);
+                await inputModel.Picture.CopyToAsync(fileStream);
+            }
 
             await this.blogsRepository.AddAsync(post);
             await this.blogsRepository.SaveChangesAsync();
@@ -85,19 +89,21 @@
 
         public async Task UpdatePostAsync(int id, EditBlogPostInputmodel input, string pictureDirectory)
         {
-            string filePath = $"/img/profile-pictures/{input.Picture.FileName}";
-            string physicalFilePath = $"{pictureDirectory}/{input.Picture.FileName}";
-
             var post = this.blogsRepository.All().FirstOrDefault(p => p.Id == id);
             post.Title = input.Title;
             post.Body = input.Body;
             post.VideoLink = input.VideoLink;
             post.ModifiedOn = DateTime.UtcNow;
-            post.FilePath = filePath;
-            post.PhysicalFilePath = physicalFilePath;
 
-            using var fileStream = new FileStream(physicalFilePath, FileMode.Create);
-            await input.Picture.CopyToAsync(fileStream);
+            if (input.Picture != null)
+            {
+                string filePath = $"/img/blog-pictures/{input.Picture.FileName}";
+                string physicalFilePath = $"{pictureDirectory}/{input.Picture.FileName}";
+                post.FilePath = filePath;
+                post.PhysicalFilePath = physicalFilePath;
+                using var fileStream = new FileStream(physicalFilePath, FileMode.Create);
+                await input.Picture.CopyToAsync(fileStream);
+            }
 
             await this.blogsRepository.SaveChangesAsync();
         }

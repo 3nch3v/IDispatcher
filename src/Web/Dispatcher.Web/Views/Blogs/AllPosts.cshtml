@@ -16,22 +16,31 @@
 
             @foreach (var post in Model.Posts)
             {
-    <div class="item mb-5">
-        <div class="media">                                        
-            <img class="mr-3 img-fluid post-thumb d-none d-md-flex" src="@post.FilePath" alt="image" width="250">
-            <div class="media-body">
+                <div class="item mb-5">
+                    <div class="media">
+                        @if (!string.IsNullOrWhiteSpace(post.FilePath))
+                        {
+                            <img class="mr-4 img-fluid post-thumb d-none d-md-flex" src="@Url.Content(post.FilePath)" alt="image" width="250"> 
+                        }
+                        else
+                        {
+                            <img class="mr-4 img-fluid post-thumb d-none d-md-flex" src="~/img/blog-pictures/blog-post-default-pic.jpg" alt="image" width="250">
+                        }
+                
+                    <div class="media-body">
 
-                <h3 class="title mb-1"><a asp-action="Post" asp-route-id="@post.Id">@post.Title</a></h3>
-                <div class="meta mb-1"><span class="date">@post.CreatedOn.ToString("g")</span></div>
+                        <h3 class="title mb-1"><a class="tm-gold-text" asp-action="Post" asp-route-id="@post.Id">@post.Title</a></h3>
+                        <div class="meta mb-1"><span class="date">@post.CreatedOn.ToString("g")</span></div>
 
-                <div class="intro">@post.ClearBody.Substring(0, 300) ...</div>
-                <a asp-action="Post" asp-route-id="@post.Id" class="more-link">Read more →</a>
-            </div>
+                        @if (post.ClearBody.Length > 300) { <div class="intro">@post.ClearBody.Substring(0, 300) ...</div> }
+                        else { <div class="intro">@post.ClearBody</div> }
+
+                        <a asp-action="Post" asp-route-id="@post.Id" class="tm-gold-text">Read more →</a>
+                    </div>
+                    </div>
+                </div>     
+             }
         </div>
-    </div>      }
-
-        </div>
-
 
         <br>
         <nav aria-label="Page navigation example">
@@ -44,7 +53,8 @@
                 {
     <li class="page-item">
         <a asp-controller="Blogs" asp-action="AllPosts" asp-route-page="@(Model.Page - 1)" class="page-link tm-gold-text">@(Model.Page - 1)</a>
-    </li>}
+    </li>
+}
 
                 <li class="page-item">
                     <a asp-controller="Blogs" asp-action="AllPosts" asp-route-page="@Model.Page" class="page-link tm-gold-text">@Model.Page</a>
@@ -54,7 +64,8 @@
                 {
     <li class="page-item">
         <a asp-controller="Blogs" asp-action="AllPosts" asp-route-page="@(Model.Page + 1)" class="page-link tm-gold-text">@(Model.Page + 1)</a>
-    </li>}
+    </li>
+}
 
                 <li class="page-item  @if (!Model.HasNextPage) { <text> disabled </text> }">
                     <a asp-controller="Blogs" asp-action="AllPosts" asp-route-page="@Model.NextPage" class="page-link tm-gold-text">Next</a>
@@ -64,5 +75,5 @@
 
     </section>
 
-   
+
 </div>

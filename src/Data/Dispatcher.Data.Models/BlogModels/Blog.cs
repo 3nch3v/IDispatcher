@@ -14,11 +14,9 @@
         [StringLength(100000, MinimumLength = 100)]
         public string Body { get; set; }
 
-        [Required]
         [MaxLength(2048)]
         public string FilePath { get; set; }
 
-        [Required]
         [MaxLength(2048)]
         public string PhysicalFilePath { get; set; }
 
