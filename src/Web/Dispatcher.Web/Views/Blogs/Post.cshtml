@@ -24,7 +24,7 @@
 
         <h2>@Model.Title</h2>
         <br>
-
+        <img src="/@Model.FilePath" class="card-img-top" alt="@Model.Title">
         <div>
             @if (Model.VideoLink != null)
             {
@@ -32,7 +32,7 @@
             }
             else
             {
-                <img src="~/img/@Model.PictureFileName" class="card-img-top" alt="@Model.Title">
+                <img src="@Model.FilePath" class="card-img-top" alt="@Model.Title">
             }
         </div>
 

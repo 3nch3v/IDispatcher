@@ -17,8 +17,8 @@
             @foreach (var post in Model.Posts)
             {
     <div class="item mb-5">
-        <div class="media">
-            <img class="mr-3 img-fluid post-thumb d-none d-md-flex" src="~/img/@post.PictureFileName" alt="image" width="250">
+        <div class="media">                                        
+            <img class="mr-3 img-fluid post-thumb d-none d-md-flex" src="@post.FilePath" alt="image" width="250">
             <div class="media-body">
 
                 <h3 class="title mb-1"><a asp-action="Post" asp-route-id="@post.Id">@post.Title</a></h3>

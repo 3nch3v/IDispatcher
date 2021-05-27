@@ -20,12 +20,16 @@
 
         public string ClearBody => WebUtility.HtmlDecode(Regex.Replace(new HtmlSanitizer().Sanitize(this.Body), "<[^>]+>", string.Empty));
 
-        public string PictureFileName { get; set; }
+        public string FilePath { get; set; }
+
+        public string PhysicalFilePath { get; set; }
 
         public string VideoLink { get; set; }
 
         public DateTime CreatedOn { get; set; }
 
         public string UserUsername { get; set; }
+
+        public string UserId { get; set; }
     }
 }

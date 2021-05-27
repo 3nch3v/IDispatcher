@@ -42,9 +42,9 @@
                 return this.View();
             }
 
-            string imgPath = $"{this.environment.WebRootPath}/img/{input.Picture.FileName}";
+            string pictureDirectory = $"{this.environment.WebRootPath}/img/blog-pictures";
             var user = await this.userManager.GetUserAsync(this.User);
-            await this.blogServie.CreatPostAsync(input, user.Id, imgPath);
+            await this.blogServie.CreatPostAsync(input, user.Id, pictureDirectory);
 
             return this.RedirectToAction(nameof(this.AllPosts));
         }
@@ -65,7 +65,8 @@
                 return this.View(input);
             }
 
-            await this.blogServie.UpdatePostAsync(id, input);
+            string pictureDirectory = $"{this.environment.WebRootPath}/img/blog-pictures";
+            await this.blogServie.UpdatePostAsync(id, input, pictureDirectory);
             return this.RedirectToAction(nameof(this.Post), new { id });
         }
 

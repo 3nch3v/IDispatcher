@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace Dispatcher.Data.Migrations
+﻿namespace Dispatcher.Data.Migrations
 {
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     public partial class ProfilePictureNewProperty : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -12,7 +12,7 @@ namespace Dispatcher.Data.Migrations
                 type: "nvarchar(2048)",
                 maxLength: 2048,
                 nullable: false,
-                defaultValue: "");
+                defaultValue: string.Empty);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

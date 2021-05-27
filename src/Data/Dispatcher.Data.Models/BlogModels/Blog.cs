@@ -14,8 +14,13 @@
         [StringLength(100000, MinimumLength = 100)]
         public string Body { get; set; }
 
+        [Required]
         [MaxLength(2048)]
-        public string PictureFileName { get; set; }
+        public string FilePath { get; set; }
+
+        [Required]
+        [MaxLength(2048)]
+        public string PhysicalFilePath { get; set; }
 
         [MaxLength(2048)]
         public string VideoLink { get; set; }

@@ -81,10 +81,11 @@
 
         <div class="col-md-6">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
             <div class="form-group">
                 <label asp-for="Input.UploadPicture" style="width: 100%;"></label>
-                <img id="profilePicture" style="width:350px;height:350px; object-fit:cover" src="@Model.Input.ProfilePicture">
+                <img src="@Model.Input.ProfilePicture" id="profilePicture" 
+                     style="width:350px;height:350px; 
+                     object-fit:cover">
                 <input type="file"
                        accept=".jpg,.jpeg,.png,.gif,.bmp" 
                        asp-for="Input.UploadPicture"
