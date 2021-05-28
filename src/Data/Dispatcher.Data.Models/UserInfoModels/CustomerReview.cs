@@ -11,7 +11,7 @@
         public int StarsCount { get; set; }
 
         [Required]
-        [MaxLength(500)]
+        [StringLength(500, MinimumLength = 3)]
         public string Comment { get; set; }
 
         [Required]

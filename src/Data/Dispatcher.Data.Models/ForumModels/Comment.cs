@@ -6,9 +6,9 @@
 
     using Dispatcher.Data.Common.Models;
 
-    public class Post : BaseDeletableModel<int>
+    public class Comment : BaseDeletableModel<int>
     {
-        public Post()
+        public Comment()
         {
             this.Votes = new HashSet<Vote>();
         }
@@ -25,7 +25,7 @@
         public virtual Discussion Discussion { get; set; }
 
         [Required]
-        [MaxLength(5000)]
+        [StringLength(5000, MinimumLength = 2)]
         public string Content { get; set; }
 
         public virtual ICollection<Vote> Votes { get; set; }

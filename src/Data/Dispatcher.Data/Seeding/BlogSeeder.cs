@@ -26,7 +26,7 @@
                     Body = $"As you explore more with strings, you'll find that strings are more than a collection of letters. " +
                             $"You can find the length of a string using Length. Length is a property of a string and it returns the number" +
                             $" of characters in that string. Add the following code at the bottom of the interactive window:",
-                    UserId = "b74947e2-05e2-4279-adc6-a86ca3f1e4cf",
+                    UserId = "6b4f487f-5cde-4509-825b-103b69220131",
                     FilePath = "/img/blog-pictures/swimlane-cross-platform.png",
                     PhysicalFilePath = @"D:\GitHub Repository\IDispatcher Project\IDispatcher\src\Web\Dispatcher.Web\wwwroot/img/blog-pictures/swimlane-cross-platform.png",
                 });

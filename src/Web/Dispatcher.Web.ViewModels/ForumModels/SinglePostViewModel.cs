@@ -6,17 +6,21 @@
     using Dispatcher.Services.Mapping;
     using Ganss.XSS;
 
-    public class SinglePostViewModel : IMapFrom<Post>, IMapTo<Post>
+    public class SinglePostViewModel : IMapFrom<Comment>, IMapTo<Comment>
     {
         public int Id { get; set; }
 
         public string UserUsername { get; set; }
+
+        public string UserId { get; set; }
 
         public string Content { get; set; }
 
         public string SanitizedContent => new HtmlSanitizer().Sanitize(this.Content);
 
         public int LikesCount { get; set; }
+
+        public string ProfilePicture { get; set; }
 
         public DateTime CreatedOn { get; set; }
     }

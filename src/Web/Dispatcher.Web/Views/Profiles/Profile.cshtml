@@ -3,7 +3,7 @@
 
 @{
     this.ViewData["Title"] = "Profile";
-    string path = Model.ProfilePictures.OrderByDescending(x => x.CreatedOn).FirstOrDefault().FilePath;
+    var path = Model.ProfilePictures.OrderByDescending(x => x.CreatedOn).FirstOrDefault()?.FilePath;
 }
 <div class="container">
     <div class="main-body">
@@ -12,8 +12,8 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex flex-column align-items-center text-center">
-
-                            <img src="@path" alt="Admin" class="rounded-circle" width="150" />
+                            @if (path != null) { <img src="@path" alt="Admin" class="rounded-circle" width="150" /> }
+                            else { <img src="~/img/3_avatar-512.png" alt="Admin" class="rounded-circle" width="150" /> }
                             <div class="mt-3">
                                 <h4>@Model.FullName</h4>
                                 @if (@Model.CumstomerReviews.Any())

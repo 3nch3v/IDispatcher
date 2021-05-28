@@ -1,5 +1,6 @@
 ﻿namespace Dispatcher.Web.Controllers
 {
+    using System.Linq;
     using System.Threading.Tasks;
 
     using Dispatcher.Common;
@@ -14,11 +15,16 @@
     {
         private readonly IForumService forumService;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly IProfileService profileService;
 
-        public ForumController(IForumService forumService, UserManager<ApplicationUser> userManager)
+        public ForumController(
+            IForumService forumService,
+            UserManager<ApplicationUser> userManager,
+            IProfileService profileService)
         {
             this.forumService = forumService;
             this.userManager = userManager;
+            this.profileService = profileService;
         }
 
         [Authorize]
@@ -81,7 +87,7 @@
 
         public IActionResult ForumDiscussion(int id)
         {
-            var discussion = this.forumService.GetDiscussion<SingleForumDiscussionsViewModel>(id);
+            var discussion = this.forumService.GetDiscussion(id);
 
             return this.View(discussion);
         }

@@ -50,7 +50,7 @@
 
         public DbSet<Discussion> Discussions { get; set; }
 
-        public DbSet<Post> Posts { get; set; }
+        public DbSet<Comment> Posts { get; set; }
 
         public DbSet<Blog> Blogs { get; set; }
 

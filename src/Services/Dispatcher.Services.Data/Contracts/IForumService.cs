@@ -34,5 +34,7 @@
         T GetDiscussion<T>(int id);
 
         Task DeleteCommentAsync(int id);
+
+        SingleForumDiscussionsViewModel GetDiscussion(int id);
     }
 }

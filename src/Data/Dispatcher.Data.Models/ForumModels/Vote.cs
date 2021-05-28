@@ -17,7 +17,7 @@
 
         public int? PostId { get; set; }
 
-        public virtual Post Post { get; set; }
+        public virtual Comment Post { get; set; }
 
         public int Like { get; set; }
 

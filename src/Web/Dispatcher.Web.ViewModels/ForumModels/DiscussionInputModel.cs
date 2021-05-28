@@ -9,18 +9,12 @@
     public class DiscussionInputModel : IMapTo<Discussion>
     {
         [Required]
-        [MinLength(3)]
-        [MaxLength(100)]
+        [StringLength(100, MinimumLength =3)]
         public string Title { get; set; }
 
         [Required]
-        [MinLength(50)]
-        [MaxLength(5000)]
+        [StringLength(5000, MinimumLength = 50)]
         public string Description { get; set; }
-
-        public int LikesCount { get; set; }
-
-        public bool IsSolved { get; set; }
 
         public int CategoryId { get; set; }
 

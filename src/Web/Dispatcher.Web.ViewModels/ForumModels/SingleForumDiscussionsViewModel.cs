@@ -31,6 +31,8 @@
 
         public string UserUsername { get; set; }
 
+        public string ProfilePicture { get; set; }
+
         public DateTime CreatedOn { get; set; }
 
         public virtual IEnumerable<SinglePostViewModel> Posts { get; set; }

@@ -15,22 +15,25 @@
     {
         private readonly IDeletableEntityRepository<Discussion> forumRepository;
         private readonly IDeletableEntityRepository<Category> categoriesRepository;
-        private readonly IDeletableEntityRepository<Post> postsRepository;
+        private readonly IDeletableEntityRepository<Comment> postsRepository;
+        private readonly IProfileService profileService;
         private int forumDiscussionsPerCategoryCount;
 
         public ForumService(
             IDeletableEntityRepository<Discussion> forumRepository,
             IDeletableEntityRepository<Category> categoriesRepository,
-            IDeletableEntityRepository<Post> postsRepository)
+            IDeletableEntityRepository<Comment> postsRepository,
+            IProfileService profileService)
         {
             this.forumRepository = forumRepository;
             this.categoriesRepository = categoriesRepository;
             this.postsRepository = postsRepository;
+            this.profileService = profileService;
         }
 
         public async Task AddCommentAsync<T>(T input)
         {
-            var comment = AutoMapperConfig.MapperInstance.Map<Post>(input);
+            var comment = AutoMapperConfig.MapperInstance.Map<Comment>(input);
 
             await this.postsRepository.AddAsync(comment);
             await this.postsRepository.SaveChangesAsync();
@@ -114,6 +117,28 @@
                 .Where(d => d.Id == id)
                 .To<T>()
                 .FirstOrDefault();
+
+            return discussion;
+        }
+
+        public SingleForumDiscussionsViewModel GetDiscussion(int id)
+        {
+            var discussion = this.forumRepository.AllAsNoTracking()
+                .Include(x => x.Votes)
+                .Where(d => d.Id == id)
+                .To<SingleForumDiscussionsViewModel>()
+                .FirstOrDefault();
+
+            discussion.ProfilePicture = this.profileService.GetProfilePicturePath(discussion.UserId);
+            var result = discussion.Posts.Select(x => new SinglePostViewModel
+            {
+                Id = x.Id,
+                Content = x.Content,
+                UserId = x.UserId,
+                UserUsername = x.UserUsername,
+                ProfilePicture = this.profileService.GetProfilePicturePath(x.UserId),
+            });
+            discussion.Posts = result;
 
             return discussion;
         }

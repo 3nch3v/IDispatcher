@@ -28,9 +28,9 @@
                         <div class="card-body p-2 p-sm-3">
                             <div class="media forum-item">
 
-                                @*<a asp-controller="USer" asp-action="UserProfile" asp-route-id="@Model.UserId">*@
-                                <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="mr-3 rounded-circle" width="50" alt="User" />
-                                @*</a>*@
+                                <a asp-controller="Profiles" asp-action="Profile" asp-route-id="@Model.UserId">
+                                    <img src="@Model.ProfilePicture" class="mr-3 rounded-circle" width="50" alt="User" />
+                                </a>
 
                                 <div class="media-body">
                                     <h6><strong>@Model.Title</strong></h6>
@@ -57,9 +57,6 @@
                                             </span>
                                             <span id="dislikesCount">@Model.Dislikes</span>
                                         </div>
-
-
-
 
 
 
@@ -109,9 +106,9 @@
                             <div class="card-body p-2 p-sm-3">
                                 <div class="media forum-item">
 
-                                    @*<a asp-controller="USer" asp-action="UserProfile" asp-route-id="@Model.UserId">*@
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="mr-3 rounded-circle" width="50" alt="User" />
-                                    @*</a>*@
+                                    <a asp-controller="Profiles" asp-action="Profile" asp-route-id="@Model.UserId">
+                                        <img src="@post.ProfilePicture" class="mr-3 rounded-circle" width="50" alt="User" />
+                                    </a>
 
                                     <div class="media-body">
                                         <p class="text-secondary">@Html.Raw(post.SanitizedContent)</p>

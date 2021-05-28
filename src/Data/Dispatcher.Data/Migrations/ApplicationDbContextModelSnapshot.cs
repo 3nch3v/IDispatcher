@@ -137,7 +137,7 @@ namespace Dispatcher.Data.Migrations
 
                     b.Property<string>("JobBody")
                         .IsRequired()
-                        .HasMaxLength(5000)
+                        .HasMaxLength(50000)
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Location")
@@ -415,6 +415,48 @@ namespace Dispatcher.Data.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("Dispatcher.Data.Models.ForumModels.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(5000)
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DiscussionId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DiscussionId");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Posts");
+                });
+
             modelBuilder.Entity("Dispatcher.Data.Models.ForumModels.Discussion", b =>
                 {
                     b.Property<int>("Id")
@@ -463,48 +505,6 @@ namespace Dispatcher.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Discussions");
-                });
-
-            modelBuilder.Entity("Dispatcher.Data.Models.ForumModels.Post", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasMaxLength(5000)
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("DiscussionId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DiscussionId");
-
-                    b.HasIndex("IsDeleted");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Posts");
                 });
 
             modelBuilder.Entity("Dispatcher.Data.Models.ForumModels.Vote", b =>
@@ -998,6 +998,25 @@ namespace Dispatcher.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Dispatcher.Data.Models.ForumModels.Comment", b =>
+                {
+                    b.HasOne("Dispatcher.Data.Models.ForumModels.Discussion", "Discussion")
+                        .WithMany("Posts")
+                        .HasForeignKey("DiscussionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Dispatcher.Data.Models.ApplicationUser", "User")
+                        .WithMany("Posts")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Discussion");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Dispatcher.Data.Models.ForumModels.Discussion", b =>
                 {
                     b.HasOne("Dispatcher.Data.Models.ForumModels.Category", "Category")
@@ -1017,32 +1036,13 @@ namespace Dispatcher.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Dispatcher.Data.Models.ForumModels.Post", b =>
-                {
-                    b.HasOne("Dispatcher.Data.Models.ForumModels.Discussion", "Discussion")
-                        .WithMany("Posts")
-                        .HasForeignKey("DiscussionId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Dispatcher.Data.Models.ApplicationUser", "User")
-                        .WithMany("Posts")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Discussion");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Dispatcher.Data.Models.ForumModels.Vote", b =>
                 {
                     b.HasOne("Dispatcher.Data.Models.ForumModels.Discussion", "Discussion")
                         .WithMany("Votes")
                         .HasForeignKey("DiscussionId");
 
-                    b.HasOne("Dispatcher.Data.Models.ForumModels.Post", "Post")
+                    b.HasOne("Dispatcher.Data.Models.ForumModels.Comment", "Post")
                         .WithMany("Votes")
                         .HasForeignKey("PostId");
 
@@ -1247,15 +1247,15 @@ namespace Dispatcher.Data.Migrations
                     b.Navigation("Discussions");
                 });
 
+            modelBuilder.Entity("Dispatcher.Data.Models.ForumModels.Comment", b =>
+                {
+                    b.Navigation("Votes");
+                });
+
             modelBuilder.Entity("Dispatcher.Data.Models.ForumModels.Discussion", b =>
                 {
                     b.Navigation("Posts");
 
-                    b.Navigation("Votes");
-                });
-
-            modelBuilder.Entity("Dispatcher.Data.Models.ForumModels.Post", b =>
-                {
                     b.Navigation("Votes");
                 });
 

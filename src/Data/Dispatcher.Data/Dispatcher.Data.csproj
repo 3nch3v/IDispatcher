@@ -44,8 +44,4 @@
     <ProjectReference Include="..\Dispatcher.Data.Models\Dispatcher.Data.Models.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Migrations\" />
-  </ItemGroup>
-
 </Project>

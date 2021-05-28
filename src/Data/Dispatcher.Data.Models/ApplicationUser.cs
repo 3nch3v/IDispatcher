@@ -31,7 +31,7 @@ namespace Dispatcher.Data.Models
             this.MessagesRecipients = new HashSet<MessageRecipient>();
             this.Jobs = new HashSet<Job>();
             this.Discussions = new HashSet<Discussion>();
-            this.Posts = new HashSet<Post>();
+            this.Posts = new HashSet<Comment>();
             this.Blogs = new HashSet<Blog>();
             this.ProfilePictures = new HashSet<ProfilePicture>();
         }
@@ -102,7 +102,7 @@ namespace Dispatcher.Data.Models
 
         public virtual ICollection<Discussion> Discussions { get; set; }
 
-        public virtual ICollection<Post> Posts { get; set; }
+        public virtual ICollection<Comment> Posts { get; set; }
 
         public virtual ICollection<Blog> Blogs { get; set; }
 

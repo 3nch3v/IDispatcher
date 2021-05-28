@@ -141,8 +141,11 @@
                 user.InstagramUrl = this.Input.InstagramUrl;
             }
 
-            string pictureDirectory = $"{this.environment.WebRootPath}/img/profile-pictures";
-            await this.profileServices.SavePictureAsync(new ProfilePictureInputModel { UserId = user.Id, Picture = this.Input.UploadPicture }, pictureDirectory);
+            if (this.Input.UploadPicture != null)
+            {
+                string pictureDirectory = $"{this.environment.WebRootPath}/img/profile-pictures";
+                await this.profileServices.SavePictureAsync(new ProfilePictureInputModel { UserId = user.Id, Picture = this.Input.UploadPicture }, pictureDirectory);
+            }
 
             await this.userManager.UpdateAsync(user);
 

@@ -7,28 +7,23 @@
     public class Job : BaseDeletableModel<int>
     {
         [Required]
-        [MinLength(3)]
-        [MaxLength(150)]
+        [StringLength(150, MinimumLength = 3)]
         public string Title { get; set; }
 
         [Required]
-        [MinLength(100)]
-        [MaxLength(5000)]
+        [StringLength(50000, MinimumLength = 100)]
         public string JobBody { get; set; }
 
         [Required]
-        [MinLength(2)]
-        [MaxLength(50)]
+        [StringLength(50, MinimumLength = 2)]
         public string CompanyName { get; set; }
 
         [Required]
-        [MinLength(3)]
-        [MaxLength(50)]
+        [StringLength(50, MinimumLength = 3)]
         public string Location { get; set; }
 
         [Required]
-        [MinLength(6)]
-        [MaxLength(250)]
+        [StringLength(250, MinimumLength = 6)]
         public string Contact { get; set; }
 
         [MaxLength(2048)]

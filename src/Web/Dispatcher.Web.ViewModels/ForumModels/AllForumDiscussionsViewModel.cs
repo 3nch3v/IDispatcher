@@ -7,8 +7,6 @@
 
     public class AllForumDiscussionsViewModel
     {
-        public IEnumerable<SingleForumDiscussionsViewModel> AllForumDiscussions { get; set; }
-
         public int ForumDiscussionsCount { get; set; }
 
         public int PageEntitiesCount => GlobalConstants.ForumPageEntitiesCount;
@@ -24,5 +22,7 @@
         public bool HasNextPage => this.Page < this.PagesCount;
 
         public int NextPage => this.Page + 1;
+
+        public IEnumerable<SingleForumDiscussionsViewModel> AllForumDiscussions { get; set; }
     }
 }
