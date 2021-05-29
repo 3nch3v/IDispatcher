@@ -11,30 +11,26 @@
 
         Task AddCommentAsync<T>(T input);
 
-        Task DeleteAsync(int id);
+        Task DeleteDiscussionAsync(int id);
 
-        Task SetToSolved(int id);
+        Task SetDiscussionToSolvedAsync(int id);
 
-        Task Edit(DiscussionInputModel input, int id);
-
-        IEnumerable<T> GetCategories<T>();
-
-        IEnumerable<T> GetAllForumDiscussions<T>(int page, int pageEntitiesCount);
-
-        IEnumerable<T> GetAllForumDiscussions<T>(int page, int pageEntitiesCount, string category);
-
-        IEnumerable<T> GetUnsolvedDiscussions<T>(int page, int pageEntitiesCount);
-
-        int ForumDiscussionsCount();
-
-        int ForumDiscussionsPerCategoryCount();
-
-        int GetUnsolvedCount();
-
-        T GetDiscussion<T>(int id);
+        Task EditDiscussionAsync(DiscussionInputModel input, int id);
 
         Task DeleteCommentAsync(int id);
 
+        int ForumDiscussionsCount();
+
+        int GetDiscussionsCountPerCategory(string category);
+
+        int GetUnsolvedDiscussionsCount();
+
+        T GetDiscussion<T>(int id);
+
+        IEnumerable<T> GetCategories<T>();
+
         SingleForumDiscussionsViewModel GetDiscussion(int id);
+
+        IEnumerable<SingleForumDiscussionsViewModel> GetAllForumDiscussions(int page, int pageEntitiesCount, string category);
     }
 }

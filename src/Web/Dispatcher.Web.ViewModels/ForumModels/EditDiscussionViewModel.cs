@@ -9,13 +9,14 @@
     public class EditDiscussionViewModel : IMapFrom<Discussion>
     {
         [Required]
-        [StringLength(100, MinimumLength = 3)]
         public int Id { get; set; }
 
         [Required]
         [StringLength(100, MinimumLength = 3)]
         public string Title { get; set; }
 
+        [Required]
+        [StringLength(5000, MinimumLength = 50)]
         public string Description { get; set; }
 
         public int CategoryId { get; set; }

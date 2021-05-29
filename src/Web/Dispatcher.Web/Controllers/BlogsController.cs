@@ -1,12 +1,10 @@
 ﻿namespace Dispatcher.Web.Controllers
 {
-    using System.Net;
-    using System.Text;
-    using System.Text.RegularExpressions;
     using System.Threading.Tasks;
 
     using Dispatcher.Common;
     using Dispatcher.Data.Models;
+    using Dispatcher.Services.Contracts;
     using Dispatcher.Services.Data.Contracts;
     using Dispatcher.Web.ViewModels.BlogModels;
     using Microsoft.AspNetCore.Authorization;
@@ -19,15 +17,18 @@
         private readonly IBlogService blogServie;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IWebHostEnvironment environment;
+        private readonly IStringValidatorService stringValidatorService;
 
         public BlogsController(
             UserManager<ApplicationUser> userManager,
             IBlogService blogServie,
-            IWebHostEnvironment environment)
+            IWebHostEnvironment environment,
+            IStringValidatorService stringValidatorService)
         {
             this.blogServie = blogServie;
             this.userManager = userManager;
             this.environment = environment;
+            this.stringValidatorService = stringValidatorService;
         }
 
         [Authorize]
@@ -40,7 +41,8 @@
         [Authorize]
         public async Task<IActionResult> Create(BlogInputModel input)
         {
-            if (!this.ModelState.IsValid || !this.IsStringValidDecoded(input))
+            if (!this.ModelState.IsValid
+                || !this.stringValidatorService.IsStringValidDecoded(input.Body, GlobalConstants.BlogBodyMinLength))
             {
                 return this.View();
             }
@@ -63,7 +65,8 @@
         [Authorize]
         public async Task<IActionResult> Edit(int id, EditBlogPostInputmodel input)
         {
-            if (!this.ModelState.IsValid || !this.IsStringValidDecoded(input))
+            if (!this.ModelState.IsValid
+                || !this.stringValidatorService.IsStringValidDecoded(input.Body, GlobalConstants.BlogBodyMinLength))
             {
                 var editPost = this.blogServie.GetPost<EditBlogPostInputmodel>(id);
                 return this.View(editPost);
@@ -97,31 +100,6 @@
         {
             await this.blogServie.DeleteAsync(id);
             return this.RedirectToAction(nameof(this.AllPosts));
-        }
-
-        private bool IsStringValidDecoded(BaseBlogPostInputModel input)
-        {
-            string blogTitleHtmlDecoded = this.HtmlDecoder(input.Body);
-            string blogBodyHtmlDecoded = this.HtmlDecoder(input.Title);
-
-            if (string.IsNullOrWhiteSpace(blogTitleHtmlDecoded)
-               || string.IsNullOrWhiteSpace(blogBodyHtmlDecoded)
-               || blogBodyHtmlDecoded.Length < 100
-               || blogTitleHtmlDecoded.Length < 2)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        private string HtmlDecoder(string input)
-        {
-            var result = WebUtility.HtmlDecode(Regex.Replace(input, "<[^>]+>", string.Empty)).Trim();
-            byte[] bytes = Encoding.Default.GetBytes(result);
-            result = Encoding.UTF8.GetString(bytes);
-
-            return result;
         }
     }
 }

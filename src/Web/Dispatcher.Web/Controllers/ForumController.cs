@@ -1,10 +1,10 @@
 ﻿namespace Dispatcher.Web.Controllers
 {
-    using System.Linq;
     using System.Threading.Tasks;
 
     using Dispatcher.Common;
     using Dispatcher.Data.Models;
+    using Dispatcher.Services.Contracts;
     using Dispatcher.Services.Data.Contracts;
     using Dispatcher.Web.ViewModels.ForumModels;
     using Microsoft.AspNetCore.Authorization;
@@ -13,18 +13,23 @@
 
     public class ForumController : Controller
     {
-        private readonly IForumService forumService;
+        private const string UnsolvedDiscussions = "unsolved";
+
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly IForumService forumService;
         private readonly IProfileService profileService;
+        private readonly IStringValidatorService stringValidatorService;
 
         public ForumController(
-            IForumService forumService,
             UserManager<ApplicationUser> userManager,
-            IProfileService profileService)
+            IForumService forumService,
+            IProfileService profileService,
+            IStringValidatorService stringValidatorService)
         {
             this.forumService = forumService;
             this.userManager = userManager;
             this.profileService = profileService;
+            this.stringValidatorService = stringValidatorService;
         }
 
         [Authorize]
@@ -43,7 +48,8 @@
         [Authorize]
         public async Task<IActionResult> Create(DiscussionInputModel input)
         {
-            if (!this.ModelState.IsValid)
+            if (!this.ModelState.IsValid
+                || !this.stringValidatorService.IsStringValidDecoded(input.Description, GlobalConstants.DiscussionDescriptionMinLength))
             {
                 var categories = this.forumService.GetCategories<CategoryDropDownViewModel>();
                 var discussionInput = new DiscussionInputModel
@@ -73,7 +79,8 @@
         [HttpPost]
         public async Task<IActionResult> Edit(DiscussionInputModel input, int id)
         {
-            if (!this.ModelState.IsValid)
+            if (!this.ModelState.IsValid
+                || !this.stringValidatorService.IsStringValidDecoded(input.Description, GlobalConstants.DiscussionDescriptionMinLength))
             {
                 var discussion = this.forumService.GetDiscussion<EditDiscussionViewModel>(id);
                 var categories = this.forumService.GetCategories<CategoryDropDownViewModel>();
@@ -81,14 +88,13 @@
                 return this.View(discussion);
             }
 
-            await this.forumService.Edit(input, id);
+            await this.forumService.EditDiscussionAsync(input, id);
             return this.RedirectToAction(nameof(this.ForumDiscussion), new { id = id });
         }
 
         public IActionResult ForumDiscussion(int id)
         {
             var discussion = this.forumService.GetDiscussion(id);
-
             return this.View(discussion);
         }
 
@@ -96,7 +102,7 @@
         {
             var forumDiscussions = new AllForumDiscussionsViewModel
             {
-                AllForumDiscussions = this.forumService.GetAllForumDiscussions<SingleForumDiscussionsViewModel>(page, GlobalConstants.ForumPageEntitiesCount),
+                AllForumDiscussions = this.forumService.GetAllForumDiscussions(page, GlobalConstants.ForumPageEntitiesCount, null),
                 ForumDiscussionsCount = this.forumService.ForumDiscussionsCount(),
                 Page = page,
             };
@@ -110,8 +116,8 @@
 
             var forumPosts = new AllForumDiscussionsViewModel
             {
-                AllForumDiscussions = this.forumService.GetAllForumDiscussions<SingleForumDiscussionsViewModel>(page, GlobalConstants.ForumPageEntitiesCount, category),
-                ForumDiscussionsCount = this.forumService.ForumDiscussionsPerCategoryCount(),
+                AllForumDiscussions = this.forumService.GetAllForumDiscussions(page, GlobalConstants.ForumPageEntitiesCount, category),
+                ForumDiscussionsCount = this.forumService.GetDiscussionsCountPerCategory(category),
                 Page = page,
             };
 
@@ -122,9 +128,9 @@
         {
             var unsolvedDiscussions = new AllForumDiscussionsViewModel
             {
-                AllForumDiscussions = this.forumService.GetUnsolvedDiscussions<SingleForumDiscussionsViewModel>(page, GlobalConstants.ForumPageEntitiesCount),
+                AllForumDiscussions = this.forumService.GetAllForumDiscussions(page, GlobalConstants.ForumPageEntitiesCount, UnsolvedDiscussions),
+                ForumDiscussionsCount = this.forumService.GetUnsolvedDiscussionsCount(),
                 Page = page,
-                ForumDiscussionsCount = this.forumService.GetUnsolvedCount(),
             };
 
             return this.View(unsolvedDiscussions);
@@ -133,14 +139,14 @@
         [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
-            await this.forumService.DeleteAsync(id);
+            await this.forumService.DeleteDiscussionAsync(id);
             return this.RedirectToAction(nameof(this.ForumDiscussions));
         }
 
         [Authorize]
         public async Task<IActionResult> SetToSolved(int id)
         {
-            await this.forumService.SetToSolved(id);
+            await this.forumService.SetDiscussionToSolvedAsync(id);
             return this.RedirectToAction(nameof(this.ForumDiscussion), new { id = id });
         }
 
@@ -151,7 +157,6 @@
             {
                 var user = await this.userManager.GetUserAsync(this.User);
                 input.UserId = user.Id;
-
                 await this.forumService.AddCommentAsync<PostInputViewModel>(input);
             }
 

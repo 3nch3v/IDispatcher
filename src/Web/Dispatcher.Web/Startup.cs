@@ -8,11 +8,12 @@
     using Dispatcher.Data.Models;
     using Dispatcher.Data.Repositories;
     using Dispatcher.Data.Seeding;
+    using Dispatcher.Services;
+    using Dispatcher.Services.Contracts;
     using Dispatcher.Services.Data;
     using Dispatcher.Services.Data.Contracts;
     using Dispatcher.Services.Mapping;
     using Dispatcher.Services.Messaging;
-    using Dispatcher.Web.Controllers;
     using Dispatcher.Web.ViewModels;
 
     using Microsoft.AspNetCore.Builder;
@@ -78,6 +79,7 @@
             services.AddTransient<IForumService, ForumService>();
             services.AddTransient<IVoteService, VoteService>();
             services.AddTransient<IProfileService, ProfileService>();
+            services.AddTransient<IStringValidatorService, StringValidatorService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

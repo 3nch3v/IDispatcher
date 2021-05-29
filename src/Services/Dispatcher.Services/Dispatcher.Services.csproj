@@ -18,4 +18,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Web\Dispatcher.Web.ViewModels\Dispatcher.Web.ViewModels.csproj" />
+  </ItemGroup>
+
 </Project>

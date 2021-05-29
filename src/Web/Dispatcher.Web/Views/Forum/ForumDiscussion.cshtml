@@ -28,7 +28,7 @@
                         <div class="card-body p-2 p-sm-3">
                             <div class="media forum-item">
 
-                                <a asp-controller="Profiles" asp-action="Profile" asp-route-id="@Model.UserId">
+                                <a asp-controller="Profiles" asp-action="Profile" asp-route-userId="@Model.UserId">
                                     <img src="@Model.ProfilePicture" class="mr-3 rounded-circle" width="50" alt="User" />
                                 </a>
 
@@ -58,18 +58,13 @@
                                             <span id="dislikesCount">@Model.Dislikes</span>
                                         </div>
 
-
-
                                         <span>
-                                            @if (Model.IsSolved)
-                                            {<text>Solved</text> }
-                                        else
-                                        { <text>Unsolved</text>}
+                                            @if (Model.IsSolved) {<text>Solved</text> }
+                                            else { <text>Unsolved</text>}
                                         </span>
                                     </div>
 
                                 </div>
-
 
 
                                 <div>
@@ -93,7 +88,6 @@
                                 </div>
 
 
-
                             </div>
                         </div>
                     </div>
@@ -106,7 +100,7 @@
                             <div class="card-body p-2 p-sm-3">
                                 <div class="media forum-item">
 
-                                    <a asp-controller="Profiles" asp-action="Profile" asp-route-id="@Model.UserId">
+                                    <a asp-controller="Profiles" asp-action="Profile" asp-route-userId="@post.UserId">
                                         <img src="@post.ProfilePicture" class="mr-3 rounded-circle" width="50" alt="User" />
                                     </a>
 
