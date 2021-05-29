@@ -10,6 +10,8 @@
 
         public const string Dislike = "Dislike";
 
+        public const int JobBodyMinLength = 100;
+
         public const int AdsPageEntitiesCount = 9;
 
         public const int DefaultPageNumber = 1;

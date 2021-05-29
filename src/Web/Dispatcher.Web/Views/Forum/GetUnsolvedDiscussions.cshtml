@@ -3,6 +3,7 @@
 
 @{
     this.ViewData["Title"] = "Forum Discussions";
+    int currRowId = 1;
 }
 
 <nav class="navbar navbar-light bg-transparent justify-content-between">
@@ -60,19 +61,20 @@
 
                                         <div class="text-muted small text-center align-self-center">
                                             <span id="click" class="d-none d-sm-inline-block">
-                                                <a href="#a" onclick="like(@forumDiscussion.Id)">
+                                                <a href="#a" onclick="like(@forumDiscussion.Id, @currRowId)">
                                                     <i class="fa fa-thumbs-up" aria-hidden="true"></i>
                                                 </a>
                                             </span>
-                                            <span id="likesCount">@forumDiscussion.Likes</span>
+                                            <span id="likesCount_@(currRowId)">@forumDiscussion.Likes</span>
 
                                             <span id="click" class="d-none d-sm-inline-block">
-                                                <a href="#a" onclick="dislike(@forumDiscussion.Id)">
+                                                <a href="#a" onclick="dislike(@forumDiscussion.Id, @currRowId)">
                                                     <i class="fa fa-thumbs-down" aria-hidden="true"></i>
                                                 </a>
                                             </span>
-                                            <span id="dislikesCount">@forumDiscussion.Dislikes</span>
+                                            <span id="dislikesCount_@(currRowId)">@forumDiscussion.Dislikes</span>
                                         </div>
+                                        <text hidden>@(currRowId++)</text>
 
                                         <span>
                                             @if (forumDiscussion.IsSolved)
@@ -130,8 +132,7 @@
 
 @section Scripts {
     <script>
-
-        function like(DiscussionId) {
+        function like(DiscussionId, currRowId) {
             var token = $("#votesForm input[name=__RequestVerificationToken]").val();
             var json = { DiscussionId: DiscussionId, VoteType: "Like" };
             $.ajax({
@@ -142,13 +143,13 @@
                 dataType: "json",
                 headers: { 'X-CSRF-TOKEN': token },
                 success: function (data) {
-                    $('#likesCount').html(data.likes);
-                    $('#dislikesCount').html(data.dislikes);
+                    $('#likesCount_' + currRowId).html(data.likes);
+                    $('#dislikesCount_' + currRowId).html(data.dislikes);
                 }
             });
         }
 
-        function dislike(DiscussionId) {
+        function dislike(DiscussionId, currRowId) {
             var token = $("#votesForm input[name=__RequestVerificationToken]").val();
             var json = { DiscussionId: DiscussionId, VoteType: "Dislike" };
             $.ajax({
@@ -159,8 +160,8 @@
                 dataType: "json",
                 headers: { 'X-CSRF-TOKEN': token },
                 success: function (data) {
-                    $('#likesCount').html(data.likes);
-                    $('#dislikesCount').html(data.dislikes);
+                    $('#likesCount_' + currRowId).html(data.likes);
+                    $('#dislikesCount_' + currRowId).html(data.dislikes);
                 }
             });
         }

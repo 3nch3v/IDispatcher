@@ -13,7 +13,7 @@
         <div class="navbar-brand"><h3 class="tm-gold-text">@this.ViewData["Title"]</h3></div>
 
         <form asp-controller="Jobs" asp-action="Search" method="get" class="form-inline">
-            <input name="keyWords" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <input name="keyWords" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" required minlength="2">
             <button class="btn btn-outline-secondary my-2 my-sm-0 tm-gold-text" type="submit">Search</button>
         </form>
 

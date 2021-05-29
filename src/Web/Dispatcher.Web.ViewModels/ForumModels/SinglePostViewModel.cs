@@ -18,8 +18,6 @@
 
         public string SanitizedContent => new HtmlSanitizer().Sanitize(this.Content);
 
-        public int LikesCount { get; set; }
-
         public string ProfilePicture { get; set; }
 
         public DateTime CreatedOn { get; set; }

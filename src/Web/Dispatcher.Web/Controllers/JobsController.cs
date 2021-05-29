@@ -4,6 +4,7 @@
 
     using Dispatcher.Common;
     using Dispatcher.Data.Models;
+    using Dispatcher.Services.Contracts;
     using Dispatcher.Services.Data.Contracts;
     using Dispatcher.Web.ViewModels.JobModels;
     using Microsoft.AspNetCore.Authorization;
@@ -13,14 +14,60 @@
     public class JobsController : Controller
     {
         private readonly IJobService jobService;
+        private readonly IStringValidatorService stringValidatorService;
         private readonly UserManager<ApplicationUser> userManager;
 
         public JobsController(
             IJobService jobService,
+            IStringValidatorService stringValidatorService,
             UserManager<ApplicationUser> userManager)
         {
             this.jobService = jobService;
+            this.stringValidatorService = stringValidatorService;
             this.userManager = userManager;
+        }
+
+        [Authorize]
+        public IActionResult Create()
+        {
+            return this.View();
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Create(JobInputModel input)
+        {
+            if (!this.ModelState.IsValid
+                || !this.stringValidatorService.IsStringValidDecoded(input.JobBody, GlobalConstants.JobBodyMinLength))
+            {
+                return this.View();
+            }
+
+            var user = await this.userManager.GetUserAsync(this.User);
+            await this.jobService.CreateAsync(input, user.Id);
+
+            return this.RedirectToAction(nameof(this.AllJobs));
+        }
+
+        [Authorize]
+        public IActionResult Edit(int id)
+        {
+            var job = this.jobService.GetJob<EditJobInputModel>(id);
+            return this.View(job);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Edit(EditJobInputModel input, int id)
+        {
+            if (!this.ModelState.IsValid
+                || !this.stringValidatorService.IsStringValidDecoded(input.JobBody, GlobalConstants.JobBodyMinLength))
+            {
+                return this.View(input);
+            }
+
+            await this.jobService.UpdateAsync(input, id);
+            return this.RedirectToAction(nameof(this.Job), new { id = id });
         }
 
         public IActionResult AllJobs(int page = GlobalConstants.DefaultPageNumber)
@@ -45,47 +92,6 @@
         {
             await this.jobService.DeleteAsync(id);
             return this.RedirectToAction(nameof(this.AllJobs));
-        }
-
-        [Authorize]
-        public IActionResult Create()
-        {
-            return this.View();
-        }
-
-        [HttpPost]
-        [Authorize]
-        public async Task<IActionResult> Create(JobInputModel input)
-        {
-            if (!this.ModelState.IsValid)
-            {
-                return this.View();
-            }
-
-            var user = await this.userManager.GetUserAsync(this.User);
-            await this.jobService.CreateAsync(input, user.Id);
-
-            return this.RedirectToAction(nameof(this.AllJobs));
-        }
-
-        [Authorize]
-        public IActionResult Edit(int id)
-        {
-            var job = this.jobService.GetJob<EditJobInputModel>(id);
-            return this.View(job);
-        }
-
-        [HttpPost]
-        [Authorize]
-        public async Task<IActionResult> Edit(EditJobInputModel input, int id)
-        {
-            if (!this.ModelState.IsValid)
-            {
-                return this.View(input);
-            }
-
-            await this.jobService.UpdateAsync(input, id);
-            return this.RedirectToAction(nameof(this.Job), new { id });
         }
 
         [HttpGet]

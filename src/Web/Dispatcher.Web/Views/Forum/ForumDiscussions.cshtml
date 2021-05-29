@@ -3,6 +3,7 @@
 
 @{
     this.ViewData["Title"] = "Forum Discussions";
+    int currRowId = 1;
 }
 
 <nav class="navbar navbar-light bg-transparent justify-content-between">
@@ -13,41 +14,26 @@
 <section class="tm-section">
     <div class="container-fluid">
         <div class="row">
-
             <aside class="col-xs-12 col-sm-12 col-md-4 col-lg-3 col-xl-3 tm-aside-r">
                 <vc:forum-side-bar></vc:forum-side-bar>
-
             </aside>
-
             <div class="col-xs-12 col-sm-12 col-md-8 col-lg-9 col-xl-9">
 
                 @foreach (var forumDiscussion in Model.AllForumDiscussions)
                 {
                     <div class="card mb-1 col-md-12 offser-md-6">
                         <div class="card-body p-2 p-sm-3">
-
                             <div class="media forum-item">
-
                                 <a asp-controller="Forum" asp-action="ForumDiscussion" asp-route-id="@forumDiscussion.Id">
                                     <img src="@forumDiscussion.ProfilePicture" class="mr-3 rounded-circle" width="50" alt="User" />
                                 </a>
-
                                 <div class="media-body">
-
-                                    <h6>
-                                        <a asp-controller="Forum" asp-action="ForumDiscussion" asp-route-id="@forumDiscussion.Id" class="text-body"><strong>@forumDiscussion.Title</strong></a>
-                                    </h6>
-
+                                    <h6><a asp-controller="Forum" asp-action="ForumDiscussion" asp-route-id="@forumDiscussion.Id" class="text-body"><strong>@forumDiscussion.Title</strong></a></h6>
                                     <p class="text-secondary">
                                         @if (forumDiscussion.SanitizedDescription.Length > 200)
-                                        {
-                                            @Html.Raw(forumDiscussion.SanitizedDescription.Substring(0, 200))
-                                        }
-                                        else
-                                        {
-                                            @Html.Raw(forumDiscussion.SanitizedDescription)
-                                        }
-
+                                        {@Html.Raw(forumDiscussion.SanitizedDescription.Substring(0, 200)) }
+                                    else
+                                    { @Html.Raw(forumDiscussion.SanitizedDescription)}
                                     </p>
 
                                     <a asp-controller="Forum" asp-action="ForumDiscussion" asp-route-id="@forumDiscussion.Id">
@@ -55,31 +41,27 @@
                                     </a>
                                     <div class="d-flex flex-row justify-content-between">
                                         <span>@forumDiscussion.CreatedOn.ToString("g")</span>
-
                                         <div class="text-muted small text-center align-self-center">
-
 
                                             <form id="votesForm" method="post"></form>
 
                                             <div class="text-muted small text-center align-self-center">
                                                 <span id="click" class="d-none d-sm-inline-block">
-                                                    <a href="#a" onclick="like(@forumDiscussion.Id)">
+                                                    <a href="#a" onclick="like(@forumDiscussion.Id, @currRowId)">
                                                         <i class="fa fa-thumbs-up" aria-hidden="true"></i>
                                                     </a>
                                                 </span>
-                                                <span id="likesCount">@forumDiscussion.Likes</span>
+                                                <span id="likesCount_@(currRowId)">@forumDiscussion.Likes</span>
 
                                                 <span id="click" class="d-none d-sm-inline-block">
-                                                    <a href="#a" onclick="dislike(@forumDiscussion.Id)">
+                                                    <a href="#a" onclick="dislike(@forumDiscussion.Id, @currRowId)">
                                                         <i class="fa fa-thumbs-down" aria-hidden="true"></i>
                                                     </a>
                                                 </span>
-                                                <span id="dislikesCount">@forumDiscussion.Dislikes</span>
+                                                <span id="dislikesCount_@(currRowId)">@forumDiscussion.Dislikes</span>
                                             </div>
-
-
+                                            <text hidden>@(currRowId++)</text>
                                         </div>
-
                                         <span>
                                             @if (forumDiscussion.IsSolved)
                                             {<text>Solved</text> }
@@ -89,11 +71,11 @@
                                     </div>
                                 </div>
 
-
-
                             </div>
                         </div>
                     </div>
+
+
                 }
 
             </div>
@@ -138,8 +120,7 @@
 
 @section Scripts {
     <script>
-
-        function like(DiscussionId) {
+        function like(DiscussionId, currRowId) {
             var token = $("#votesForm input[name=__RequestVerificationToken]").val();
             var json = { DiscussionId: DiscussionId, VoteType: "Like" };
             $.ajax({
@@ -150,13 +131,13 @@
                 dataType: "json",
                 headers: { 'X-CSRF-TOKEN': token },
                 success: function (data) {
-                    $('#likesCount').html(data.likes);
-                    $('#dislikesCount').html(data.dislikes);
+                    $('#likesCount_' + currRowId).html(data.likes);
+                    $('#dislikesCount_' + currRowId).html(data.dislikes);
                 }
             });
         }
 
-        function dislike(DiscussionId) {
+        function dislike(DiscussionId, currRowId) {
             var token = $("#votesForm input[name=__RequestVerificationToken]").val();
             var json = { DiscussionId: DiscussionId, VoteType: "Dislike" };
             $.ajax({
@@ -167,8 +148,8 @@
                 dataType: "json",
                 headers: { 'X-CSRF-TOKEN': token },
                 success: function (data) {
-                    $('#likesCount').html(data.likes);
-                    $('#dislikesCount').html(data.dislikes);
+                    $('#likesCount_' + currRowId).html(data.likes);
+                    $('#dislikesCount_' + currRowId).html(data.dislikes);
                 }
             });
         }
