@@ -8,8 +8,10 @@
 
     public class CommentInputModel : IMapTo<CustomerReview>
     {
+        [Required]
         public string UserId { get; set; }
 
+        [Required]
         [Range(1, 5)]
         public int StarsCount { get; set; }
 

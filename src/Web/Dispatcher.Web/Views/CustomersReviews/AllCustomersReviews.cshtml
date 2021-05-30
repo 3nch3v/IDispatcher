@@ -1,53 +1,56 @@
 ﻿@using Dispatcher.Web.ViewModels.ProfileModels
+@using Dispatcher.Data.Models
+@using Microsoft.AspNetCore.Identity;
+@inject UserManager<ApplicationUser> userManager
 @model AllCommentsViewModel
 
 @{
     this.ViewData["Title"] = "Customers reviews";
+    string currUserId = this.userManager.GetUserId(this.User);
 }
 
-<section class="tm-section">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-8 col-lg-9 col-xl-9">
-                <div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-9 col-xl-9">
+            <div>
 
-                    @foreach (var comment in Model.Comments)
-                    {
+                @foreach (var comment in Model.Comments)
+                {
 
-                        <div class="card mb-1 col-md-12 offser-md-6">
-                            <div class="card-body p-2 p-sm-3">
-                                @for (int i = 0; i < comment.StarsCount; i++)
-                                {
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                }
-                                @for (int i = 0; i < 5 - comment.StarsCount; i++)
-                                {
-                                    <i class="fa fa-star-o" aria-hidden="true"></i>
-                                }
-                                <div class="media forum-item">
+                    <div class="card mb-1 col-md-12 offser-md-6">
+                        <div class="card-body p-2 p-sm-3">
+                            @for (int i = 0; i < comment.StarsCount; i++)
+                            {
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                            }
+                            @for (int i = 0; i < 5 - comment.StarsCount; i++)
+                            {
+                                <i class="fa fa-star-o" aria-hidden="true"></i>
+                            }
+                            <div class="media forum-item">
 
-                                    <div class="media-body">
-                                        <p class="text-secondary">@comment.Comment</p>
+                                <div class="media-body">
+                                    <p class="text-secondary">@comment.Comment</p>
 
-                                        <div class="justify-content-sm-end">
-                                            <span>@comment.CreatedOn.ToString("g")</span>
-                                        </div>
+                                    <div class="d-flex flex-row justify-content-between">
+                                        <span>@comment.CreatedOn.ToString("g")</span>
+                                        <span>@comment.AppraiserUsername</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    }
+                    </div>
+                }
+            </div>
 
-                </div>
-
+            @if (Model.UserId != currUserId)
+            {
                 <div class="form-control-plaintext">
-
                     <form method="post" asp-controller="CustomersReviews" asp-action="Comment" class="col-md-12 offser-md-6">
-                        <input name="UserId" value="" type="hidden">
-                        @*value="" @Model.Comments.FirstOrDefault().UserId*@
+                        <input name="userId" value="@Model.UserId" type="hidden">
                         <div class="form-group justify-content-between">
                             <label for="Comment" class="justify-content-end">Comment and </label>
-                            <select name="StarsCount" class="star-rating">
+                            <select name="StarsCount" class="star-rating" pattern="[1-5]" required>
                                 <option value="">Select a rating</option>
                                 <option value="5">Excellent</option>
                                 <option value="4">Very Good</option>
@@ -55,17 +58,15 @@
                                 <option value="2">Poor</option>
                                 <option value="1">Terrible</option>
                             </select>
-                            <textarea name="Comment" class="form-control" rows="3" required minlength="2"></textarea>
+                            <textarea name="Comment" class="form-control" rows="3" required minlength="2" pattern=".*\S+.*" title="This field is required"></textarea>
                         </div>
                         <button type="submit" class="btn btn-outline-secondary" style="float: right;">Comment</button>
                     </form>
 
                 </div>
-
-            </div>
-
+            }
         </div>
 
     </div>
 
-</section>
+</div>

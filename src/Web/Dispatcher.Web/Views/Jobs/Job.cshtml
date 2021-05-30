@@ -1,20 +1,27 @@
 ﻿@model Dispatcher.Web.ViewModels.JobModels.SigleJobViewModel
+@using Dispatcher.Data.Models
+@using Microsoft.AspNetCore.Identity;
+@inject UserManager<ApplicationUser> userManager
 
 @{
     this.ViewData["Title"] = this.Model.Title;
+    string currUserId = this.userManager.GetUserId(this.User);
 }
-
 
 <div class="d-flex justify-content-between">
     <div class="navbar-brand"><h3 class="tm-gold-text"><a class="tm-gold-text" asp-controller="Jobs" asp-action="AllJobs"><i class="fa fa-arrow-left"></i> Back to Blog Posts</a></h3></div>
-    <div>
-        <span>
-            <a asp-controller="Jobs" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Edit</a>
-        </span><text>&nbsp;&nbsp;&nbsp;</text>
-        <span>
-            <a asp-controller="Jobs" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Delete</a>
-        </span>
-    </div>
+    @if (currUserId == Model.UserId)
+    {
+        <div>
+            <span>
+                <a asp-controller="Jobs" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Edit</a>
+            </span><text>&nbsp;&nbsp;&nbsp;</text>
+            <span>
+                <a asp-controller="Jobs" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Delete</a>
+            </span>
+        </div>
+    }
+
 </div>
 
 <div class="d-flex justify-content-lg-end"></div>
@@ -26,7 +33,7 @@
             <div class="tm-blog-post">
                 <div class="col-xs-12 col-sm-12 col-md-8 col-lg-9 col-xl-9">
                     <div>
-                       <h3 class="tm-gold-text">@Model.Title</h3>
+                        <h3 class="tm-gold-text">@Model.Title</h3>
                     </div>
                     @if (!string.IsNullOrWhiteSpace(Model.LogoUrl))
                     {
@@ -35,13 +42,13 @@
                 </div>
 
                 <br>
-                <div >
+                <div>
                     <p>@Html.Raw(Model.SanitizedBody)</p>
                 </div>
                 <hr>
                 <div class="d-flex justify-content-between">
                     <span>@Model.CompanyName</span>
-                    <span>@Model.Contact</span>     
+                    <span>@Model.Contact</span>
                 </div>
                 <div class="d-flex justify-content-between">
                     <span>@Model.Location</span>

@@ -1,19 +1,27 @@
-﻿@model Dispatcher.Web.ViewModels.BlogModels.BlogPostViewModel
+﻿@using Dispatcher.Data.Models
+@using Microsoft.AspNetCore.Identity;
+@model Dispatcher.Web.ViewModels.BlogModels.BlogPostViewModel
+@inject UserManager<ApplicationUser> userManager
+
 
 @{
     this.ViewData["Title"] = Model.Title;
+    string currUserId = this.userManager.GetUserId(this.User);
 }
 
 <div class="d-flex justify-content-between">
     <div class="navbar-brand"><h3 class="tm-gold-text"><a class="tm-gold-text" asp-controller="Blogs" asp-action="AllPosts"><i class="fa fa-arrow-left"></i> Back to Blog Posts</a></h3></div>
-    <div>
-        <span>
-            <a asp-controller="Blogs" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Edit</a>
-        </span><text>&nbsp;&nbsp;&nbsp;</text>
-        <span>
-            <a asp-controller="Blogs" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Delete</a>
-        </span>
-    </div>
+    @if (currUserId == Model.UserId)
+    {
+        <div>
+            <span>
+                <a asp-controller="Blogs" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Edit</a>
+            </span><text>&nbsp;&nbsp;&nbsp;</text>
+            <span>
+                <a asp-controller="Blogs" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Delete</a>
+            </span>
+        </div>
+    }
 </div>
 <br>
 

@@ -1,12 +1,10 @@
 ﻿namespace Dispatcher.Web.Areas.Identity.Pages.Account.Manage
 {
     using System.ComponentModel.DataAnnotations;
-    using System.Linq;
     using System.Threading.Tasks;
 
     using Dispatcher.Data.Common.CustomAttributes;
     using Dispatcher.Data.Models;
-    using Dispatcher.Data.Models.UserInfoModels;
     using Dispatcher.Services.Data.Contracts;
     using Dispatcher.Web.ViewModels.ProfileModels;
     using Microsoft.AspNetCore.Hosting;

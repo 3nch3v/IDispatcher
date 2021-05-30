@@ -25,17 +25,21 @@
             var comments = new AllCommentsViewModel
             {
                 Comments = this.profileServices.GetComments<CommentViewModel>(id),
+                UserId = id,
             };
 
             return this.View(comments);
         }
 
         [Authorize]
-        public async Task<IActionResult> Comment(CommentInputModel input)
+        public async Task<IActionResult> Comment(CommentInputModel input, string userId)
         {
-            if (!string.IsNullOrWhiteSpace(input.Comment))
+            var appraiserId = this.userManager.GetUserId(this.User);
+
+            if (!string.IsNullOrWhiteSpace(input.Comment)
+                && appraiserId != userId)
             {
-                var appraiserId = this.userManager.GetUserId(this.User);
+                input.UserId = userId;
                 await this.profileServices.CommentAsync(appraiserId, input);
             }
 
