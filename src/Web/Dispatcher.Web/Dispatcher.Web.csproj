@@ -54,7 +54,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\img\blog-pictures\" />
     <Folder Include="wwwroot\img\profile-pictures\" />
   </ItemGroup>
 </Project>

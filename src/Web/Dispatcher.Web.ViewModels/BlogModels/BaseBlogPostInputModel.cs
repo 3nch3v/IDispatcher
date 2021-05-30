@@ -21,7 +21,7 @@
         public string VideoLink { get; set; }
 
         [MaxFileSize(5 * 1024 * 1024)]
-        [AllowedExtensions(new[] { ".jpg", ".jpeg", ".png", ".gif", ".bmp" })]
+        [FileAllowedExtensions(new[] { ".jpg", ".jpeg", ".png", ".gif", ".bmp" })]
         public IFormFile Picture { get; set; }
     }
 }

@@ -2,6 +2,8 @@
 {
     using System.ComponentModel.DataAnnotations;
 
+    using Dispatcher.Data.Common.CustomAttributes;
+
     public class BaseJobInputModel
     {
         [Required]
@@ -26,6 +28,7 @@
         public string Contact { get; set; }
 
         [MaxLength(2048)]
+        [UrlAllowedExtensions(new string[] { ".jpg", ".jpeg", ".png", ".gif", ".bmp" })]
         public string LogoUrl { get; set; }
     }
 }

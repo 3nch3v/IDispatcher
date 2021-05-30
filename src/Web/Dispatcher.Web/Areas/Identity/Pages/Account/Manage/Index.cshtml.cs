@@ -232,7 +232,7 @@
             public string InstagramUrl { get; set; }
 
             [MaxFileSize(5 * 1024 * 1024)]
-            [AllowedExtensions(new[] { ".jpg", ".jpeg", ".png", ".gif", ".bmp" })]
+            [FileAllowedExtensions(new[] { ".jpg", ".jpeg", ".png", ".gif", ".bmp" })]
             public IFormFile UploadPicture { get; set; }
 
             public string ProfilePicture { get; set; }

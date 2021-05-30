@@ -17,30 +17,35 @@
     </div>
 </div>
 
-
-<div class="d-flex justify-content-lg-end">
-  
-</div>
-
+<div class="d-flex justify-content-lg-end"></div>
 <br>
-
 <div class="container-fluid">
     <div class="row">
 
         <div class="col-xs-12 col-sm-12 col-md-8 col-lg-9 col-xl-9">
             <div class="tm-blog-post">
-                <h3 class="tm-gold-text">@Model.Title</h3>
-                <img src="@Model.LogoUrl" alt="Image" class="img-fluid tm-img-post">
+                <div class="col-xs-12 col-sm-12 col-md-8 col-lg-9 col-xl-9">
+                    <div>
+                       <h3 class="tm-gold-text">@Model.Title</h3>
+                    </div>
+                    @if (!string.IsNullOrWhiteSpace(Model.LogoUrl))
+                    {
+                        <img src="@Model.LogoUrl" alt="Image" class="img-fluid tm-img-post" width="250" style="float:left;">
+                    }
+                </div>
+
                 <br>
-                <p>@Html.Raw(Model.SanitizedBody)</p>
+                <div >
+                    <p>@Html.Raw(Model.SanitizedBody)</p>
+                </div>
                 <hr>
                 <div class="d-flex justify-content-between">
-                    <span>@Model.Contact</span>
-                    <span>@Model.CreatedOn.ToString("d")</span>
+                    <span>@Model.CompanyName</span>
+                    <span>@Model.Contact</span>     
                 </div>
                 <div class="d-flex justify-content-between">
                     <span>@Model.Location</span>
-                    <span></span>
+                    <span>@Model.CreatedOn.ToString("d")</span>
                 </div>
                 <br>
 

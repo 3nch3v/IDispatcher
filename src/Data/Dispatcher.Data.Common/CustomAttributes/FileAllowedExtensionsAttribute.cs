@@ -7,11 +7,11 @@
 
     using Microsoft.AspNetCore.Http;
 
-    public class AllowedExtensionsAttribute : ValidationAttribute
+    public class FileAllowedExtensionsAttribute : ValidationAttribute
     {
         private readonly string[] extensions;
 
-        public AllowedExtensionsAttribute(string[] extensions)
+        public FileAllowedExtensionsAttribute(string[] extensions)
         {
             this.extensions = extensions;
         }

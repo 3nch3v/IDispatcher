@@ -14,7 +14,7 @@
 
         public string SanitizedBody => new HtmlSanitizer().Sanitize(this.Body);
 
-        public string PictureFileName { get; set; }
+        public string FilePath { get; set; }
 
         public bool IsWithPicture { get; set; }
 }
