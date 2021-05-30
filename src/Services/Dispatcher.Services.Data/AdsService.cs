@@ -5,7 +5,6 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    using Dispatcher.Common;
     using Dispatcher.Data.Common.Repositories;
     using Dispatcher.Data.Models.AdvertisementModels;
     using Dispatcher.Services.Data.Contracts;
@@ -31,6 +30,19 @@
             var newAd = AutoMapperConfig.MapperInstance.Map<Advertisement>(input);
             newAd.UserId = userId;
             await this.advertisementRepository.AddAsync(newAd);
+            await this.advertisementRepository.SaveChangesAsync();
+        }
+
+        public async Task UpdateAsync(AdInputModel input, int id)
+        {
+            var ad = this.advertisementRepository.All().FirstOrDefault(a => a.Id == id);
+            ad.Title = input.Title;
+            ad.Description = input.Description;
+            ad.AdvertisementTypeId = input.AdvertisementTypeId;
+            ad.Title = input.Title;
+            ad.Compensation = input.Compensation;
+            ad.PictureUrl = input.PictureUrl;
+
             await this.advertisementRepository.SaveChangesAsync();
         }
 
@@ -73,19 +85,6 @@
             return adTypes;
         }
 
-        public async Task UpdateAsync(AdInputModel input, int id)
-        {
-            var ad = this.advertisementRepository.All().FirstOrDefault(a => a.Id == id);
-            ad.Title = input.Title;
-            ad.Description = input.Description;
-            ad.AdvertisementTypeId = input.AdvertisementTypeId;
-            ad.Title = input.Title;
-            ad.Compensation = input.Compensation;
-            ad.PictureUrl = input.PictureUrl;
-
-            await this.advertisementRepository.SaveChangesAsync();
-        }
-
         public IEnumerable<T> RandomAds<T>(int adsCount)
         {
             var randomAds = this.advertisementRepository.AllAsNoTracking()
@@ -95,11 +94,6 @@
                 .ToList();
 
             return randomAds;
-        }
-
-        public int AdsCount()
-        {
-            return this.advertisementRepository.AllAsNoTracking().Count();
         }
 
         public IEnumerable<T> SearchResults<T>(int page, int pageEntitiesCount, string keyWords)
@@ -112,7 +106,8 @@
             {
                 query = query.Where(a => a.Title.ToLower().Contains(word)
                 || a.Description.ToLower().Contains(word)
-                || searchingKeyWords.Contains(a.AdvertisementType.Type));
+                || searchingKeyWords.Contains(a.AdvertisementType.Type)
+                || a.Compensation.Contains(word));
             }
 
             this.searchResultCount = query
@@ -132,6 +127,11 @@
         public int SearchCount()
         {
             return this.searchResultCount;
+        }
+
+        public int AdsCount()
+        {
+            return this.advertisementRepository.AllAsNoTracking().Count();
         }
     }
 }

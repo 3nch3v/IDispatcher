@@ -4,6 +4,7 @@
 
     using Dispatcher.Common;
     using Dispatcher.Data.Models;
+    using Dispatcher.Services.Contracts;
     using Dispatcher.Services.Data.Contracts;
     using Dispatcher.Web.ViewModels.AdModels;
     using Microsoft.AspNetCore.Authorization;
@@ -13,31 +14,17 @@
     public class AdsController : Controller
     {
         private readonly IAdsService adsService;
+        private readonly IStringValidatorService stringValidator;
         private readonly UserManager<ApplicationUser> userManager;
 
-        public AdsController(IAdsService adsService, UserManager<ApplicationUser> userManager)
+        public AdsController(
+            IAdsService adsService,
+            IStringValidatorService stringValidator,
+            UserManager<ApplicationUser> userManager)
         {
             this.adsService = adsService;
+            this.stringValidator = stringValidator;
             this.userManager = userManager;
-        }
-
-        public IActionResult AllAds(int page = GlobalConstants.DefaultPageNumber)
-        {
-            var ads = new AllAdsViewModel
-            {
-                Ads = this.adsService.GetAllAds<AdsViewModel>(page, GlobalConstants.AdsPageEntitiesCount),
-                AdsCount = this.adsService.AdsCount(),
-                Page = page,
-            };
-
-            return this.View(ads);
-        }
-
-        public IActionResult Ad(int id)
-        {
-            var ad = this.adsService.GetAd<SingleAdViewModel>(id);
-
-            return this.View(ad);
         }
 
         [Authorize]
@@ -56,7 +43,8 @@
         [Authorize]
         public async Task<IActionResult> Create(AdInputModel input)
         {
-            if (!this.ModelState.IsValid)
+            if (!this.ModelState.IsValid
+                || !this.stringValidator.IsStringValidDecoded(input.Description, GlobalConstants.DefaultBodyStringMinLength))
             {
                 var adTypes = this.adsService.GetAllAdTypes<AdTypesDropDownViewModel>();
                 var adInputModel = new AdInputModel
@@ -86,7 +74,8 @@
         [Authorize]
         public async Task<IActionResult> Edit(AdInputModel input, int id)
         {
-            if (!this.ModelState.IsValid)
+            if (!this.ModelState.IsValid
+                || !this.stringValidator.IsStringValidDecoded(input.Description, GlobalConstants.DefaultBodyStringMinLength))
             {
                 var ad = this.adsService.GetAd<EditAdViewModel>(id);
                 ad.AdTypes = this.adsService.GetAllAdTypes<AdTypesDropDownViewModel>();
@@ -105,6 +94,25 @@
             return this.RedirectToAction(nameof(this.AllAds));
         }
 
+        public IActionResult AllAds(int page = GlobalConstants.DefaultPageNumber)
+        {
+            var ads = new AllAdsViewModel
+            {
+                Ads = this.adsService.GetAllAds<AdsViewModel>(page, GlobalConstants.AdsPageEntitiesCount),
+                AdsCount = this.adsService.AdsCount(),
+                Page = page,
+            };
+
+            return this.View(ads);
+        }
+
+        public IActionResult Ad(int id)
+        {
+            var ad = this.adsService.GetAd<SingleAdViewModel>(id);
+
+            return this.View(ad);
+        }
+
         [HttpGet]
         public IActionResult Search(string keyWords, int page = GlobalConstants.DefaultPageNumber)
         {
@@ -113,7 +121,7 @@
                 return this.RedirectToAction(nameof(this.AllAds));
             }
 
-            this.TempData["keyWords"] = keyWords;
+            this.TempData["KeyWords"] = keyWords;
 
             var ads = new AllAdsViewModel
             {

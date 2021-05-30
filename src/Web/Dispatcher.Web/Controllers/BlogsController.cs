@@ -42,7 +42,7 @@
         public async Task<IActionResult> Create(BlogInputModel input)
         {
             if (!this.ModelState.IsValid
-                || !this.stringValidatorService.IsStringValidDecoded(input.Body, GlobalConstants.BlogBodyMinLength))
+                || !this.stringValidatorService.IsStringValidDecoded(input.Body, GlobalConstants.DefaultBodyStringMinLength))
             {
                 return this.View();
             }
@@ -66,7 +66,7 @@
         public async Task<IActionResult> Edit(int id, EditBlogPostInputmodel input)
         {
             if (!this.ModelState.IsValid
-                || !this.stringValidatorService.IsStringValidDecoded(input.Body, GlobalConstants.BlogBodyMinLength))
+                || !this.stringValidatorService.IsStringValidDecoded(input.Body, GlobalConstants.DefaultBodyStringMinLength))
             {
                 var editPost = this.blogServie.GetPost<EditBlogPostInputmodel>(id);
                 return this.View(editPost);

@@ -38,7 +38,7 @@
         public async Task<IActionResult> Create(JobInputModel input)
         {
             if (!this.ModelState.IsValid
-                || !this.stringValidatorService.IsStringValidDecoded(input.JobBody, GlobalConstants.JobBodyMinLength))
+                || !this.stringValidatorService.IsStringValidDecoded(input.JobBody, GlobalConstants.DefaultBodyStringMinLength))
             {
                 return this.View();
             }
@@ -61,7 +61,7 @@
         public async Task<IActionResult> Edit(EditJobInputModel input, int id)
         {
             if (!this.ModelState.IsValid
-                || !this.stringValidatorService.IsStringValidDecoded(input.JobBody, GlobalConstants.JobBodyMinLength))
+                || !this.stringValidatorService.IsStringValidDecoded(input.JobBody, GlobalConstants.DefaultBodyStringMinLength))
             {
                 return this.View(input);
             }

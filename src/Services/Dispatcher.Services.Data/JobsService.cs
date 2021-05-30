@@ -30,6 +30,19 @@
             await this.jobRepository.SaveChangesAsync();
         }
 
+        public async Task UpdateAsync(EditJobInputModel input, int id)
+        {
+            var job = this.jobRepository.All().FirstOrDefault(j => j.Id == id);
+            job.Title = input.Title;
+            job.JobBody = input.JobBody;
+            job.CompanyName = input.CompanyName;
+            job.Location = input.Location;
+            job.Contact = input.Contact;
+            job.LogoUrl = input.LogoUrl;
+
+            await this.jobRepository.SaveChangesAsync();
+        }
+
         public async Task DeleteAsync(int id)
         {
             var job = this.jobRepository.All().FirstOrDefault(j => j.Id == id);
@@ -73,16 +86,6 @@
             return jobs;
         }
 
-        public int JobsCount()
-        {
-            return this.jobRepository.AllAsNoTracking().Count();
-        }
-
-        public int SearchCount()
-        {
-            return this.searchResultCount;
-        }
-
         public IEnumerable<T> SearchResults<T>(int page, int pageEntitiesCount, string keyWords)
         {
             string[] searchingKeyWords = keyWords.ToLower().Split(' ', StringSplitOptions.RemoveEmptyEntries).ToArray();
@@ -110,17 +113,14 @@
             return result;
         }
 
-        public async Task UpdateAsync(EditJobInputModel input, int id)
+        public int JobsCount()
         {
-            var job = this.jobRepository.All().FirstOrDefault(j => j.Id == id);
-            job.Title = input.Title;
-            job.JobBody = input.JobBody;
-            job.CompanyName = input.CompanyName;
-            job.Location = input.Location;
-            job.Contact = input.Contact;
-            job.LogoUrl = input.LogoUrl;
+            return this.jobRepository.AllAsNoTracking().Count();
+        }
 
-            await this.jobRepository.SaveChangesAsync();
+        public int SearchCount()
+        {
+            return this.searchResultCount;
         }
     }
 }

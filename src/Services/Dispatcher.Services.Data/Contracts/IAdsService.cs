@@ -7,23 +7,23 @@
 
     public interface IAdsService
     {
-        IEnumerable<T> GetAllAds<T>(int page, int pageEntitiesCount);
-
-        T GetAd<T>(int id);
-
         Task CreateAsync(AdInputModel input, string userId);
-
-        IEnumerable<T> GetAllAdTypes<T>();
 
         Task UpdateAsync(AdInputModel input, int id);
 
         Task DeleteAsync(int id);
 
+        IEnumerable<T> GetAllAds<T>(int page, int pageEntitiesCount);
+
+        IEnumerable<T> GetAllAdTypes<T>();
+
         IEnumerable<T> RandomAds<T>(int adsCount);
 
-        int AdsCount();
-
         IEnumerable<T> SearchResults<T>(int page, int pageEntitiesCount, string searchParams);
+
+        T GetAd<T>(int id);
+
+        int AdsCount();
 
         int SearchCount();
     }
