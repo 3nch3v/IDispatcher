@@ -3,12 +3,13 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    using Dispatcher.Data.Models.UserInfoModels;
     using Dispatcher.Web.ViewModels.ProfileModels;
 
     public interface IProfileService
     {
         T GetUserById<T>(string id);
+
+        DataManagerViewModel GetUserData(string id);
 
         IEnumerable<T> GetComments<T>(string id);
 

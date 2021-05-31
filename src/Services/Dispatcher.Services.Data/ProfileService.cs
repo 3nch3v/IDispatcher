@@ -38,6 +38,24 @@
             return user;
         }
 
+        public DataManagerViewModel GetUserData(string id)
+        {
+            var userData = this.usersRepository.AllAsNoTracking()
+                .Where(u => u.Id == id)
+                .Select(x => new DataManagerViewModel
+                {
+                    Id = x.Id,
+                    Projects = x.Projects,
+                    Advertisements = x.Advertisements,
+                    Discussions = x.Discussions,
+                    Jobs = x.Jobs,
+                    Blogs = x.Blogs,
+                })
+                .FirstOrDefault();
+
+            return userData;
+        }
+
         public IEnumerable<T> GetComments<T>(string id)
         {
             var comments = this.commentsRepository.All()

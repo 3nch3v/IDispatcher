@@ -37,5 +37,12 @@
             var userProfile = this.profileService.GetUserById<ProfileViewModel>(id);
             return this.View(userProfile);
         }
+
+        [Authorize]
+        public IActionResult DataManager(string userId)
+        {
+            var userData = this.profileService.GetUserData(userId);
+            return this.View(userData);
+        }
     }
 }

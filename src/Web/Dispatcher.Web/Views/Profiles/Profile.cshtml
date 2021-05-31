@@ -113,16 +113,23 @@
                             <h5><i class="fa fa-cube">  Blog posts:</i></h5>
                         </li>
 
-                        @foreach (var blog in Model.Blogs)
+                        @if (Model.Blogs.Count > 0)
+                        {
+                            @foreach (var blog in Model.Blogs)
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                                    <span class="text-secondary"><a asp-controller="Blogs" asp-action="Post" asp-route-id="@blog.Id">@blog.Title</a></span>
+                                </li>
+                            }
+                        }
+                        else
                         {
                             <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                                <span class="text-secondary"><a asp-controller="Blogs" asp-action="Post" asp-route-id="@blog.Id">@blog.Title</a></span>
+                                <span class="text-secondary">No blog posts available...</span>
                             </li>
                         }
                     </ul>
                 </div>
-
-
             </div>
 
             <div class="col-md-8">
@@ -130,74 +137,66 @@
                     <div class="card-body">
                         <h5>Projects</h5>
                         <hr>
-                        @foreach (var project in Model.Projects)
+                        @if (Model.Projects.Count > 0)
                         {
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <h6 class="mb-0"><a asp-controller="Projects" asp-action="Project" asp-route-id="@project.Id">@project.Name</a></h6>
+                            @foreach (var project in Model.Projects)
+                            {
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <h6 class="mb-0"><a asp-controller="Projects" asp-action="Project" asp-route-id="@project.Id">@project.Name</a></h6>
+                                    </div>
+                                    <div class="col-sm-3 text-secondary">
+                                        @project.UserRole
+                                    </div>
+                                    <div class="col-sm-3 text-secondary">
+                                        @if (!string.IsNullOrEmpty(project.Url))
+                                        {
+                                            if (project.Url.Length < 18) {<a href="@project.Url">@project.Url</a> }
+                                            else { <a href="@project.Url">@project.Url.Substring(0, 18)</a>}
+                                        }
+                                    </div>
                                 </div>
-                                <div class="col-sm-3 text-secondary">
-                                    @project.UserRole
-                                </div>
-                                <div class="col-sm-3 text-secondary">
-                                    @if (project.Url.Length < 18)
-                                    {<a href="@project.Url">@project.Url</a> }
-                                else
-                                { <a href="@project.Url">@project.Url.Substring(0, 18)</a>}
-                                </div>
-
-                                <div class="col-sm-2 text-secondary">
-                                    <a asp-controller="Projects" asp-action="Edit" asp-route-id="@project.Id" title="Edit" style="background-color:#FFFFFF;color:#000000;text-decoration:none">
-                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                    </a>
-                                    <a asp-controller="Projects" asp-action="Delete" asp-route-id="@project.Id" title="Delete" style="background-color:#FFFFFF;color:#000000;text-decoration:none">
-                                        <i class="fa fa-trash" aria-hidden="true"></i>
-                                    </a>
-                                </div>
-
-                            </div>
-                            <hr>
+                                <hr>
+                            }
                         }
-
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <a class="btn btn-info " target="__blank" asp-controller="Projects" asp-action="Add">Add Project</a>
-                            </div>
-                        </div>
-
+                        else
+                        {
+                            <span class="text-secondary">No projects available...</span>
+                        }
                     </div>
-
                 </div>
 
                 <div class="card mb-3">
                     <div class="card-body">
                         <h5>Advertisements</h5>
                         <hr>
-                        @foreach (var advertisement in Model.Advertisements)
+                        @if (Model.Advertisements.Count > 0)
                         {
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <h6 class="mb-0"><a asp-controller="Ads" asp-action="Ad" asp-route-id="@advertisement.Id">@advertisement.Title</a></h6>
-                                </div>
+                            @foreach (var advertisement in Model.Advertisements)
+                            {
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <h6 class="mb-0"><a asp-controller="Ads" asp-action="Ad" asp-route-id="@advertisement.Id">@advertisement.Title</a></h6>
+                                    </div>
 
-                                <div class="col-sm-5 text-secondary">
-                                    @if (advertisement.Description.Length < 26)
-                                    {@advertisement.Description }
-                                else
-                                { @advertisement.Description.Substring(0, 23) <text>...</text>}
-                                </div>
+                                    <div class="col-sm-5 text-secondary">
+                                        @if (advertisement.Description.Length < 26)
+                                        {@advertisement.Description }
+                                    else
+                                    { @advertisement.Description.Substring(0, 23) <text>...</text>}
+                                    </div>
 
-                                <div class="col-sm-2 text-secondary">
-                                    @advertisement.Compensation
-                                </div>
+                                    <div class="col-sm-2 text-secondary">
+                                        @advertisement.Compensation
+                                    </div>
 
-                                <div class="col-sm-1 text-secondary">
-                                    <a asp-controller="Ads" asp-action="Delete" asp-route-id="@advertisement.Id" title="Delete" style="background-color:#FFFFFF;color:#000000;text-decoration:none">
-                                        <i class="fa fa-trash" aria-hidden="true"></i>
-                                    </a>
                                 </div>
-                            </div>
-                            <hr>
+                                <hr>
+                            }
+                        }
+                        else
+                        {
+                            <span class="text-secondary">No advertisements available...</span>
                         }
 
                     </div>
@@ -210,11 +209,19 @@
                                 <h5>Job Advertisements</h5>
                                 <hr>
                                 <h6 class="d-flex align-items-center mb-3"></h6>
-                                @foreach (var job in Model.Jobs)
+                                @if (Model.Jobs.Count > 0)
                                 {
-                                    <small><a asp-controller="Jobs" asp-action="Job" asp-route-id="@job.Id">@job.Title</a></small>
-                                    <hr>
+                                    @foreach (var job in Model.Jobs)
+                                    {
+                                        <small><a asp-controller="Jobs" asp-action="Job" asp-route-id="@job.Id">@job.Title</a></small>
+                                        <hr>
+                                    }
                                 }
+                                else
+                                {
+                                    <span class="text-secondary">No job ads available...</span>
+                                }
+
                             </div>
                         </div>
                     </div>
@@ -225,10 +232,18 @@
                                 <h5>Forum Discussions</h5>
                                 <hr>
                                 <h6 class="d-flex align-items-center mb-3"></h6>
-                                @foreach (var discussion in Model.Discussions)
+
+                                @if (Model.Discussions.Count > 0)
                                 {
-                                    <small><a asp-controller="Forum" asp-action="ForumDiscussion" asp-route-id="@discussion.Id">@discussion.Title</a></small>
-                                    <hr>
+                                    @foreach (var discussion in Model.Discussions)
+                                    {
+                                        <small><a asp-controller="Forum" asp-action="ForumDiscussion" asp-route-id="@discussion.Id">@discussion.Title</a></small>
+                                        <hr>
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="text-secondary">No discussions available...</span>
                                 }
                             </div>
                         </div>
