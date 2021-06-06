@@ -15,27 +15,16 @@
     {
         private readonly IDeletableEntityRepository<Discussion> forumRepository;
         private readonly IDeletableEntityRepository<Category> categoriesRepository;
-        private readonly IDeletableEntityRepository<Comment> postsRepository;
         private readonly IProfileService profileService;
 
         public ForumService(
             IDeletableEntityRepository<Discussion> forumRepository,
             IDeletableEntityRepository<Category> categoriesRepository,
-            IDeletableEntityRepository<Comment> postsRepository,
             IProfileService profileService)
         {
             this.forumRepository = forumRepository;
             this.categoriesRepository = categoriesRepository;
-            this.postsRepository = postsRepository;
             this.profileService = profileService;
-        }
-
-        public async Task AddCommentAsync<T>(T input)
-        {
-            var comment = AutoMapperConfig.MapperInstance.Map<Comment>(input);
-
-            await this.postsRepository.AddAsync(comment);
-            await this.postsRepository.SaveChangesAsync();
         }
 
         public async Task CreateAsync<T>(T input, string id)
@@ -47,7 +36,32 @@
             await this.forumRepository.SaveChangesAsync();
         }
 
-        public T GetDiscussion<T>(int id)
+        public async Task UpdateAsync<T>(T input, int id)
+        {
+            var updatedDiscussion = AutoMapperConfig.MapperInstance.Map<Discussion>(input);
+            var discussion = this.forumRepository.All().FirstOrDefault(d => d.Id == id);
+            discussion.Title = updatedDiscussion.Title;
+            discussion.Description = updatedDiscussion.Description;
+            discussion.CategoryId = updatedDiscussion.CategoryId;
+
+            await this.forumRepository.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var discussion = this.forumRepository.All().FirstOrDefault(d => d.Id == id);
+            this.forumRepository.Delete(discussion);
+            await this.forumRepository.SaveChangesAsync();
+        }
+
+        public async Task SetDiscussionToSolvedAsync(int id)
+        {
+            var discussion = this.forumRepository.All().FirstOrDefault(d => d.Id == id);
+            discussion.IsSolved = true;
+            await this.forumRepository.SaveChangesAsync();
+        }
+
+        public T GetById<T>(int id)
         {
             var discussion = this.forumRepository.AllAsNoTracking()
                 .Include(x => x.Votes)
@@ -66,18 +80,18 @@
                 .To<SingleForumDiscussionsViewModel>()
                 .FirstOrDefault();
 
-            this.LoadProfilePictures(discussion);
+            this.LoadCommentsWithPicture(discussion);
 
             return discussion;
         }
 
         public IEnumerable<SingleForumDiscussionsViewModel> GetAllForumDiscussions(int page, int pageEntitiesCount, string category = null)
         {
-            IEnumerable<SingleForumDiscussionsViewModel> forumPosts = null;
+            IEnumerable<SingleForumDiscussionsViewModel> discussions = null;
 
             if (string.IsNullOrEmpty(category))
             {
-               forumPosts = this.forumRepository.AllAsNoTracking()
+               discussions = this.forumRepository.AllAsNoTracking()
                .Include(x => x.Votes)
                .OrderByDescending(p => p.CreatedOn)
                .Skip((page - 1) * pageEntitiesCount)
@@ -87,7 +101,7 @@
             }
             else if (!string.IsNullOrEmpty(category) && category != "unsolved")
             {
-                forumPosts = this.forumRepository.AllAsNoTracking()
+                discussions = this.forumRepository.AllAsNoTracking()
                .Include(x => x.Votes)
                .Where(x => x.Category.Name == category)
                .OrderByDescending(p => p.CreatedOn)
@@ -98,7 +112,7 @@
             }
             else
             {
-                forumPosts = this.forumRepository.AllAsNoTracking()
+                discussions = this.forumRepository.AllAsNoTracking()
                .Include(x => x.Votes)
                .Where(x => x.IsSolved == false)
                .OrderByDescending(p => p.CreatedOn)
@@ -108,12 +122,12 @@
                .ToList();
             }
 
-            foreach (var discussion in forumPosts)
+            foreach (var discussion in discussions)
             {
-                this.LoadProfilePictures(discussion);
+                this.LoadCommentsWithPicture(discussion);
             }
 
-            return forumPosts;
+            return discussions;
         }
 
         public IEnumerable<T> GetCategories<T>()
@@ -123,37 +137,6 @@
                 .ToList();
 
             return categories;
-        }
-
-        public async Task EditDiscussionAsync(DiscussionInputModel input, int id)
-        {
-            var discussion = this.forumRepository.All().FirstOrDefault(d => d.Id == id);
-            discussion.Title = input.Title;
-            discussion.Description = input.Description;
-            discussion.CategoryId = input.CategoryId;
-
-            await this.forumRepository.SaveChangesAsync();
-        }
-
-        public async Task SetDiscussionToSolvedAsync(int id)
-        {
-            var discussion = this.forumRepository.All().FirstOrDefault(d => d.Id == id);
-            discussion.IsSolved = true;
-            await this.forumRepository.SaveChangesAsync();
-        }
-
-        public async Task DeleteCommentAsync(int id)
-        {
-            var commment = this.postsRepository.All().FirstOrDefault(c => c.Id == id);
-            this.postsRepository.Delete(commment);
-            await this.postsRepository.SaveChangesAsync();
-        }
-
-        public async Task DeleteDiscussionAsync(int id)
-        {
-            var discussion = this.forumRepository.All().FirstOrDefault(d => d.Id == id);
-            this.forumRepository.Delete(discussion);
-            await this.forumRepository.SaveChangesAsync();
         }
 
         public int ForumDiscussionsCount()
@@ -178,7 +161,7 @@
                 .Count();
         }
 
-        private void LoadProfilePictures(SingleForumDiscussionsViewModel discussion)
+        private void LoadCommentsWithPicture(SingleForumDiscussionsViewModel discussion)
         {
             discussion.ProfilePicture = this.profileService.GetProfilePicturePath(discussion.UserId);
             var result = discussion.Posts.Select(x => new SinglePostViewModel
@@ -189,6 +172,7 @@
                 UserUsername = x.UserUsername,
                 ProfilePicture = this.profileService.GetProfilePicturePath(x.UserId),
             });
+
             discussion.Posts = result;
         }
     }

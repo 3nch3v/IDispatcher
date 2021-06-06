@@ -5,32 +5,20 @@
 
     using Dispatcher.Web.ViewModels.ForumModels;
 
-    public interface IForumService
+    public interface IForumService : IBaseService
     {
-        Task CreateAsync<T>(T input, string id);
-
-        Task AddCommentAsync<T>(T input);
-
-        Task DeleteDiscussionAsync(int id);
-
         Task SetDiscussionToSolvedAsync(int id);
 
-        Task EditDiscussionAsync(DiscussionInputModel input, int id);
+        SingleForumDiscussionsViewModel GetDiscussion(int id);
 
-        Task DeleteCommentAsync(int id);
+        IEnumerable<T> GetCategories<T>();
+
+        IEnumerable<SingleForumDiscussionsViewModel> GetAllForumDiscussions(int page, int pageEntitiesCount, string category);
 
         int ForumDiscussionsCount();
 
         int GetDiscussionsCountPerCategory(string category);
 
         int GetUnsolvedDiscussionsCount();
-
-        T GetDiscussion<T>(int id);
-
-        IEnumerable<T> GetCategories<T>();
-
-        SingleForumDiscussionsViewModel GetDiscussion(int id);
-
-        IEnumerable<SingleForumDiscussionsViewModel> GetAllForumDiscussions(int page, int pageEntitiesCount, string category);
     }
 }

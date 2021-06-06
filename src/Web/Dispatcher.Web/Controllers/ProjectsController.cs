@@ -24,7 +24,7 @@
 
         public IActionResult Project(int id)
         {
-            var project = this.projectServices.GetProject<SingleProjectViewModel>(id);
+            var project = this.projectServices.GetById<SingleProjectViewModel>(id);
 
             return this.View(project);
         }
@@ -45,7 +45,7 @@
             }
 
             var user = await this.userManager.GetUserAsync(this.User);
-            await this.projectServices.AddProjectAsync(input, user.Id);
+            await this.projectServices.CreateAsync<ProjectInputmodel>(input, user.Id);
 
             return this.RedirectToAction(nameof(ProfilesController.Profile), "Profiles");
         }
@@ -53,7 +53,7 @@
         [Authorize]
         public IActionResult Edit(int id)
         {
-            var project = this.projectServices.GetProject<EditProjectInputModul>(id);
+            var project = this.projectServices.GetById<EditProjectInputModul>(id);
             return this.View(project);
         }
 
@@ -63,18 +63,18 @@
         {
             if (!this.ModelState.IsValid)
             {
-                var project = this.projectServices.GetProject<EditProjectInputModul>(id);
+                var project = this.projectServices.GetById<EditProjectInputModul>(id);
                 return this.View(project);
             }
 
-            await this.projectServices.UpdateAsync(input, id);
+            await this.projectServices.UpdateAsync<ProjectInputmodel>(input, id);
             return this.RedirectToAction(nameof(ProfilesController.Profile), "Profiles");
         }
 
         [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
-            await this.projectServices.Delete(id);
+            await this.projectServices.DeleteAsync(id);
             return this.RedirectToAction(nameof(ProfilesController.Profile), "Profiles");
         }
     }

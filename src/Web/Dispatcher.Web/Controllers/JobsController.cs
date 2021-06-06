@@ -52,7 +52,7 @@
         [Authorize]
         public IActionResult Edit(int id)
         {
-            var job = this.jobService.GetJob<EditJobInputModel>(id);
+            var job = this.jobService.GetById<EditJobInputModel>(id);
             return this.View(job);
         }
 
@@ -66,7 +66,7 @@
                 return this.View(input);
             }
 
-            await this.jobService.UpdateAsync(input, id);
+            await this.jobService.UpdateAsync<EditJobInputModel>(input, id);
             return this.RedirectToAction(nameof(this.Job), new { id = id });
         }
 
@@ -84,7 +84,7 @@
 
         public IActionResult Job(int id)
         {
-            var job = this.jobService.GetJob<SigleJobViewModel>(id);
+            var job = this.jobService.GetById<SigleJobViewModel>(id);
             return this.View(job);
         }
 

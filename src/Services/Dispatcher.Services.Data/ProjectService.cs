@@ -7,7 +7,6 @@
     using Dispatcher.Data.Models.UserInfoModels;
     using Dispatcher.Services.Data.Contracts;
     using Dispatcher.Services.Mapping;
-    using Dispatcher.Web.ViewModels.ProjectModels;
 
     public class ProjectService : IProjectService
     {
@@ -18,7 +17,7 @@
             this.projectRepository = projectRepository;
         }
 
-        public async Task AddProjectAsync<T>(T input, string id)
+        public async Task CreateAsync<T>(T input, string id)
         {
             var project = AutoMapperConfig.MapperInstance.Map<Project>(input);
             project.UserId = id;
@@ -27,14 +26,16 @@
             await this.projectRepository.SaveChangesAsync();
         }
 
-        public async Task Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            var project = this.projectRepository.All().FirstOrDefault(p => p.Id == id);
+            var project = this.projectRepository.All()
+                .FirstOrDefault(p => p.Id == id);
+
             this.projectRepository.Delete(project);
             await this.projectRepository.SaveChangesAsync();
         }
 
-        public T GetProject<T>(int id)
+        public T GetById<T>(int id)
         {
             var project = this.projectRepository.AllAsNoTracking()
                 .Where(p => p.Id == id)
@@ -44,13 +45,15 @@
             return project;
         }
 
-        public async Task UpdateAsync(ProjectInputmodel input, int id)
+        public async Task UpdateAsync<T>(T input, int id)
         {
+            var updatedProject = AutoMapperConfig.MapperInstance.Map<Project>(input);
             var project = this.projectRepository.All().FirstOrDefault(p => p.Id == id);
-            project.Name = input.Name;
-            project.Description = input.Description;
-            project.Url = input.Url;
-            project.UserRole = input.UserRole;
+
+            project.Name = updatedProject.Name;
+            project.Description = updatedProject.Description;
+            project.Url = updatedProject.Url;
+            project.UserRole = updatedProject.UserRole;
 
             await this.projectRepository.SaveChangesAsync();
         }

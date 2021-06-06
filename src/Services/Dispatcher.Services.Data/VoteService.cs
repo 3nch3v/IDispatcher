@@ -7,7 +7,7 @@
     using Dispatcher.Data.Common.Repositories;
     using Dispatcher.Data.Models.ForumModels;
     using Dispatcher.Services.Data.Contracts;
-    using Dispatcher.Web.ViewModels.VotesModels;
+    using Dispatcher.Services.Data.Dtos;
 
     public class VoteService : IVoteService
     {
@@ -51,7 +51,7 @@
             await this.votes.SaveChangesAsync();
         }
 
-        public VoteResultsModel GetVoteResults(int discussionId)
+        public VoteResultsDto GetVoteResults(int discussionId)
         {
             var votes = this.votes
                 .All()
@@ -63,7 +63,7 @@
                 })
                 .ToList();
 
-            var results = new VoteResultsModel
+            var results = new VoteResultsDto
             {
                 Likes = votes.Sum(x => x.Likes),
                 Dislikes = votes.Sum(x => x.Dislikes),

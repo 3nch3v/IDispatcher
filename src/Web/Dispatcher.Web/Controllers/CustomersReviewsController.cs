@@ -40,7 +40,7 @@
                 && appraiserId != userId)
             {
                 input.UserId = userId;
-                await this.profileServices.CommentAsync(appraiserId, input);
+                await this.profileServices.CommentAsync<CommentInputModel>(appraiserId, input);
             }
 
             return this.RedirectToAction(nameof(this.AllCustomersReviews), new { id = input.UserId });

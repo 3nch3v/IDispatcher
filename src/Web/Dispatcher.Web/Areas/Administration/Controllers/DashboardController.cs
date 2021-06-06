@@ -1,6 +1,6 @@
 ﻿namespace Dispatcher.Web.Areas.Administration.Controllers
 {
-    using Dispatcher.Services.Data;
+    using Dispatcher.Services.Data.Contracts;
     using Dispatcher.Web.ViewModels.Administration.Dashboard;
 
     using Microsoft.AspNetCore.Mvc;

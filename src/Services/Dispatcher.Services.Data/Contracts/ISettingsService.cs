@@ -1,4 +1,4 @@
-﻿namespace Dispatcher.Services.Data
+﻿namespace Dispatcher.Services.Data.Contracts
 {
     using System.Collections.Generic;
 

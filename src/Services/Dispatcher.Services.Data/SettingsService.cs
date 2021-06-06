@@ -5,6 +5,7 @@
 
     using Dispatcher.Data.Common.Repositories;
     using Dispatcher.Data.Models;
+    using Dispatcher.Services.Data.Contracts;
     using Dispatcher.Services.Mapping;
 
     public class SettingsService : ISettingsService

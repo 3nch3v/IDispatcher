@@ -41,8 +41,18 @@
         [Authorize]
         public IActionResult DataManager(string userId)
         {
-            var userData = this.profileService.GetUserData(userId);
-            return this.View(userData);
+            var dataManagerDto = this.profileService.GetUserData(userId);
+            var dataManager = new DataManagerViewModel
+            {
+                Id = dataManagerDto.Id,
+                Advertisements = dataManagerDto.Advertisements,
+                Blogs = dataManagerDto.Blogs,
+                Discussions = dataManagerDto.Discussions,
+                Jobs = dataManagerDto.Jobs,
+                Projects = dataManagerDto.Projects,
+            };
+
+            return this.View(dataManager);
         }
     }
 }

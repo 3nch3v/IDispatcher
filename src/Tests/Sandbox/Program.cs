@@ -13,6 +13,7 @@
     using Dispatcher.Data.Repositories;
     using Dispatcher.Data.Seeding;
     using Dispatcher.Services.Data;
+    using Dispatcher.Services.Data.Contracts;
     using Dispatcher.Services.Messaging;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;

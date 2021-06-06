@@ -63,7 +63,7 @@
             return posts;
         }
 
-        public T GetPost<T>(int id)
+        public T GetById<T>(int id)
         {
             var post = this.blogsRepository.AllAsNoTracking()
                 .Where(b => b.Id == id)

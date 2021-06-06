@@ -9,6 +9,7 @@
     using Dispatcher.Data.Models;
     using Dispatcher.Data.Models.UserInfoModels;
     using Dispatcher.Services.Data.Contracts;
+    using Dispatcher.Services.Data.Dtos;
     using Dispatcher.Services.Mapping;
     using Dispatcher.Web.ViewModels.ProfileModels;
 
@@ -38,24 +39,6 @@
             return user;
         }
 
-        public DataManagerViewModel GetUserData(string id)
-        {
-            var userData = this.usersRepository.AllAsNoTracking()
-                .Where(u => u.Id == id)
-                .Select(x => new DataManagerViewModel
-                {
-                    Id = x.Id,
-                    Projects = x.Projects,
-                    Advertisements = x.Advertisements,
-                    Discussions = x.Discussions,
-                    Jobs = x.Jobs,
-                    Blogs = x.Blogs,
-                })
-                .FirstOrDefault();
-
-            return userData;
-        }
-
         public IEnumerable<T> GetComments<T>(string id)
         {
             var comments = this.commentsRepository.All()
@@ -67,14 +50,31 @@
             return comments;
         }
 
-        public async Task CommentAsync(string appraiserId, CommentInputModel input)
+        public async Task CommentAsync<T>(string appraiserId, T input)
         {
             var comment = AutoMapperConfig.MapperInstance.Map<CustomerReview>(input);
             comment.AppraiserId = appraiserId;
-            comment.UserId = input.UserId;
 
             await this.commentsRepository.AddAsync(comment);
             await this.commentsRepository.SaveChangesAsync();
+        }
+
+        public DataManagerDto GetUserData(string id)
+        {
+            var userData = this.usersRepository.AllAsNoTracking()
+                .Where(u => u.Id == id)
+                .Select(x => new DataManagerDto
+                {
+                    Id = x.Id,
+                    Projects = x.Projects,
+                    Advertisements = x.Advertisements,
+                    Discussions = x.Discussions,
+                    Jobs = x.Jobs,
+                    Blogs = x.Blogs,
+                })
+                .FirstOrDefault();
+
+            return userData;
         }
 
         public async Task SavePictureAsync(ProfilePictureInputModel input, string pictureDirectory)

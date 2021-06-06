@@ -9,7 +9,6 @@
     using Dispatcher.Data.Models.AdvertisementModels;
     using Dispatcher.Services.Data.Contracts;
     using Dispatcher.Services.Mapping;
-    using Dispatcher.Web.ViewModels.JobModels;
 
     public class JobsService : IJobService
     {
@@ -21,24 +20,25 @@
             this.jobRepository = jobRepository;
         }
 
-        public async Task CreateAsync<T>(T input, string userId)
+        public async Task CreateAsync<T>(T input, string id)
         {
             var job = AutoMapperConfig.MapperInstance.Map<Job>(input);
-            job.UserId = userId;
+            job.UserId = id;
 
             await this.jobRepository.AddAsync(job);
             await this.jobRepository.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(EditJobInputModel input, int id)
+        public async Task UpdateAsync<T>(T input, int id)
         {
+            var updatedJob = AutoMapperConfig.MapperInstance.Map<Job>(input);
             var job = this.jobRepository.All().FirstOrDefault(j => j.Id == id);
-            job.Title = input.Title;
-            job.JobBody = input.JobBody;
-            job.CompanyName = input.CompanyName;
-            job.Location = input.Location;
-            job.Contact = input.Contact;
-            job.LogoUrl = input.LogoUrl;
+            job.Title = updatedJob.Title;
+            job.JobBody = updatedJob.JobBody;
+            job.CompanyName = updatedJob.CompanyName;
+            job.Location = updatedJob.Location;
+            job.Contact = updatedJob.Contact;
+            job.LogoUrl = updatedJob.LogoUrl;
 
             await this.jobRepository.SaveChangesAsync();
         }
@@ -48,6 +48,17 @@
             var job = this.jobRepository.All().FirstOrDefault(j => j.Id == id);
             this.jobRepository.Delete(job);
             await this.jobRepository.SaveChangesAsync();
+        }
+
+        public T GetById<T>(int id)
+        {
+            var job = this.jobRepository
+                .AllAsNoTracking()
+                .Where(j => j.Id == id)
+                .To<T>()
+                .FirstOrDefault();
+
+            return job;
         }
 
         public IEnumerable<T> GetAll<T>(int page, int pageEntitiesCount)
@@ -61,17 +72,6 @@
                 .ToList();
 
              return jobs;
-        }
-
-        public T GetJob<T>(int id)
-        {
-            var job = this.jobRepository
-                .AllAsNoTracking()
-                .Where(j => j.Id == id)
-                .To<T>()
-                .FirstOrDefault();
-
-            return job;
         }
 
         public IEnumerable<T> GetRandomJobs<T>()

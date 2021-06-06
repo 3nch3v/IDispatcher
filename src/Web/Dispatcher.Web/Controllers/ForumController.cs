@@ -18,17 +18,20 @@
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IForumService forumService;
         private readonly IProfileService profileService;
+        private readonly ICommentService commentService;
         private readonly IStringValidatorService stringValidatorService;
 
         public ForumController(
             UserManager<ApplicationUser> userManager,
             IForumService forumService,
             IProfileService profileService,
+            ICommentService commentService,
             IStringValidatorService stringValidatorService)
         {
             this.forumService = forumService;
             this.userManager = userManager;
             this.profileService = profileService;
+            this.commentService = commentService;
             this.stringValidatorService = stringValidatorService;
         }
 
@@ -69,7 +72,7 @@
         [Authorize]
         public IActionResult Edit(int id)
         {
-            var discussion = this.forumService.GetDiscussion<EditDiscussionViewModel>(id);
+            var discussion = this.forumService.GetById<EditDiscussionViewModel>(id);
             var categories = this.forumService.GetCategories<CategoryDropDownViewModel>();
             discussion.Categories = categories;
             return this.View(discussion);
@@ -82,14 +85,21 @@
             if (!this.ModelState.IsValid
                 || !this.stringValidatorService.IsStringValidDecoded(input.Description, GlobalConstants.DiscussionDescriptionMinLength))
             {
-                var discussion = this.forumService.GetDiscussion<EditDiscussionViewModel>(id);
+                var discussion = this.forumService.GetById<EditDiscussionViewModel>(id);
                 var categories = this.forumService.GetCategories<CategoryDropDownViewModel>();
                 discussion.Categories = categories;
                 return this.View(discussion);
             }
 
-            await this.forumService.EditDiscussionAsync(input, id);
+            await this.forumService.UpdateAsync<DiscussionInputModel>(input, id);
             return this.RedirectToAction(nameof(this.ForumDiscussion), new { id = id });
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await this.forumService.DeleteAsync(id);
+            return this.RedirectToAction(nameof(this.ForumDiscussions));
         }
 
         public IActionResult ForumDiscussion(int id)
@@ -137,13 +147,6 @@
         }
 
         [Authorize]
-        public async Task<IActionResult> Delete(int id)
-        {
-            await this.forumService.DeleteDiscussionAsync(id);
-            return this.RedirectToAction(nameof(this.ForumDiscussions));
-        }
-
-        [Authorize]
         public async Task<IActionResult> SetToSolved(int id)
         {
             await this.forumService.SetDiscussionToSolvedAsync(id);
@@ -157,7 +160,7 @@
             {
                 var user = await this.userManager.GetUserAsync(this.User);
                 input.UserId = user.Id;
-                await this.forumService.AddCommentAsync<PostInputViewModel>(input);
+                await this.commentService.AddCommentAsync<PostInputViewModel>(input);
             }
 
             return this.RedirectToAction(nameof(this.ForumDiscussion), new { id = input.DiscussionId });
@@ -166,7 +169,7 @@
         [Authorize]
         public async Task<IActionResult> DeleteComment(int id, int discussionId)
         {
-            await this.forumService.DeleteCommentAsync(id);
+            await this.commentService.DeleteCommentAsync(id);
             return this.RedirectToAction(nameof(this.ForumDiscussion), new { id = discussionId });
         }
     }

@@ -5,7 +5,7 @@
 
     using Dispatcher.Data.Common.Repositories;
     using Dispatcher.Data.Models;
-    using Dispatcher.Services.Data;
+    using Dispatcher.Services.Data.Contracts;
     using Dispatcher.Web.ViewModels.Settings;
 
     using Microsoft.AspNetCore.Mvc;

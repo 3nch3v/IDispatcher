@@ -57,7 +57,7 @@
         [Authorize]
         public IActionResult Edit(int id)
         {
-            var editPost = this.blogServie.GetPost<EditBlogPostInputmodel>(id);
+            var editPost = this.blogServie.GetById<EditBlogPostInputmodel>(id);
             return this.View(editPost);
         }
 
@@ -68,7 +68,7 @@
             if (!this.ModelState.IsValid
                 || !this.stringValidatorService.IsStringValidDecoded(input.Body, GlobalConstants.DefaultBodyStringMinLength))
             {
-                var editPost = this.blogServie.GetPost<EditBlogPostInputmodel>(id);
+                var editPost = this.blogServie.GetById<EditBlogPostInputmodel>(id);
                 return this.View(editPost);
             }
 
@@ -79,7 +79,7 @@
 
         public IActionResult Post(int id)
         {
-            var post = this.blogServie.GetPost<BlogPostViewModel>(id);
+            var post = this.blogServie.GetById<BlogPostViewModel>(id);
             return this.View(post);
         }
 

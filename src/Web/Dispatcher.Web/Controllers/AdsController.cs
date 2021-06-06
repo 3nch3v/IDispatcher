@@ -56,7 +56,7 @@
             }
 
             var user = await this.userManager.GetUserAsync(this.User);
-            await this.adsService.CreateAsync(input, user.Id);
+            await this.adsService.CreateAsync<AdInputModel>(input, user.Id);
 
             return this.RedirectToAction(nameof(this.AllAds));
         }
@@ -64,7 +64,7 @@
         [Authorize]
         public IActionResult Edit(int id)
         {
-            var ad = this.adsService.GetAd<EditAdViewModel>(id);
+            var ad = this.adsService.GetById<EditAdViewModel>(id);
             ad.AdTypes = this.adsService.GetAllAdTypes<AdTypesDropDownViewModel>();
 
             return this.View(ad);
@@ -77,12 +77,12 @@
             if (!this.ModelState.IsValid
                 || !this.stringValidator.IsStringValidDecoded(input.Description, GlobalConstants.DefaultBodyStringMinLength))
             {
-                var ad = this.adsService.GetAd<EditAdViewModel>(id);
+                var ad = this.adsService.GetById<EditAdViewModel>(id);
                 ad.AdTypes = this.adsService.GetAllAdTypes<AdTypesDropDownViewModel>();
                 return this.View(ad);
             }
 
-            await this.adsService.UpdateAsync(input, id);
+            await this.adsService.UpdateAsync<AdInputModel>(input, id);
             return this.RedirectToAction(nameof(this.AllAds));
         }
 
@@ -108,7 +108,7 @@
 
         public IActionResult Ad(int id)
         {
-            var ad = this.adsService.GetAd<SingleAdViewModel>(id);
+            var ad = this.adsService.GetById<SingleAdViewModel>(id);
 
             return this.View(ad);
         }

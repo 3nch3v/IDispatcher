@@ -9,7 +9,6 @@
     using Dispatcher.Data.Models.AdvertisementModels;
     using Dispatcher.Services.Data.Contracts;
     using Dispatcher.Services.Mapping;
-    using Dispatcher.Web.ViewModels.AdModels;
 
     public class AdsService : IAdsService
     {
@@ -25,7 +24,7 @@
             this.adTypesRepository = adTypesRepository;
         }
 
-        public async Task CreateAsync(AdInputModel input, string userId)
+        public async Task CreateAsync<T>(T input, string userId)
         {
             var newAd = AutoMapperConfig.MapperInstance.Map<Advertisement>(input);
             newAd.UserId = userId;
@@ -33,15 +32,16 @@
             await this.advertisementRepository.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(AdInputModel input, int id)
+        public async Task UpdateAsync<T>(T input, int id)
         {
+            var updatedAd = AutoMapperConfig.MapperInstance.Map<Advertisement>(input);
             var ad = this.advertisementRepository.All().FirstOrDefault(a => a.Id == id);
-            ad.Title = input.Title;
-            ad.Description = input.Description;
-            ad.AdvertisementTypeId = input.AdvertisementTypeId;
-            ad.Title = input.Title;
-            ad.Compensation = input.Compensation;
-            ad.PictureUrl = input.PictureUrl;
+            ad.Title = updatedAd.Title;
+            ad.Description = updatedAd.Description;
+            ad.AdvertisementTypeId = updatedAd.AdvertisementTypeId;
+            ad.Title = updatedAd.Title;
+            ad.Compensation = updatedAd.Compensation;
+            ad.PictureUrl = updatedAd.PictureUrl;
 
             await this.advertisementRepository.SaveChangesAsync();
         }
@@ -53,7 +53,7 @@
             await this.advertisementRepository.SaveChangesAsync();
         }
 
-        public T GetAd<T>(int id)
+        public T GetById<T>(int id)
         {
             var ad = this.advertisementRepository
                 .AllAsNoTracking()

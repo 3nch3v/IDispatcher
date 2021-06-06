@@ -2,12 +2,12 @@
 {
     using System.Threading.Tasks;
 
-    using Dispatcher.Web.ViewModels.VotesModels;
+    using Dispatcher.Services.Data.Dtos;
 
     public interface IVoteService
     {
         Task VoteAsync(string userId, int discussionId, string voteType);
 
-        VoteResultsModel GetVoteResults(int discussionId);
+        VoteResultsDto GetVoteResults(int discussionId);
     }
 }

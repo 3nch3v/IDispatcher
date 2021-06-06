@@ -1,13 +1,16 @@
-﻿namespace Dispatcher.Web.ViewModels.ProfileModels
+﻿namespace Dispatcher.Services.Data.Dtos
 {
     using System.Collections.Generic;
 
+    using Dispatcher.Data.Models;
     using Dispatcher.Data.Models.AdvertisementModels;
     using Dispatcher.Data.Models.BlogModels;
     using Dispatcher.Data.Models.ForumModels;
     using Dispatcher.Data.Models.UserInfoModels;
+    using Dispatcher.Services.Mapping;
+    using Dispatcher.Web.ViewModels.ProfileModels;
 
-    public class DataManagerViewModel
+    public class DataManagerDto : IMapFrom<ApplicationUser>, IMapTo<DataManagerViewModel>
     {
         public string Id { get; set; }
 
