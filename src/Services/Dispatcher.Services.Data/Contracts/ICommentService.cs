@@ -4,8 +4,8 @@
 
     public interface ICommentService
     {
-        Task AddCommentAsync<T>(T input);
+        Task CreateAsync<T>(T input);
 
-        Task DeleteCommentAsync(int id);
+        Task DeleteAsync(int id);
     }
 }

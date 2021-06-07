@@ -6,40 +6,56 @@
     using System.Linq;
     using System.Threading.Tasks;
 
+    using AutoMapper;
     using Dispatcher.Data.Common.Repositories;
     using Dispatcher.Data.Models.BlogModels;
     using Dispatcher.Services.Data.Contracts;
+    using Dispatcher.Services.Data.Dtos;
     using Dispatcher.Services.Mapping;
-    using Dispatcher.Web.ViewModels.BlogModels;
 
     public class BlogsService : IBlogService
     {
         private readonly IDeletableEntityRepository<Blog> blogsRepository;
+        private readonly IMapper mapper;
 
-        public BlogsService(IDeletableEntityRepository<Blog> blogsRepository)
+        public BlogsService(
+            IDeletableEntityRepository<Blog> blogsRepository,
+            IMapper mapper)
         {
             this.blogsRepository = blogsRepository;
+            this.mapper = mapper;
         }
 
-        public async Task CreatPostAsync(BlogInputModel input, string userId, string pictureDirectory)
+        public async Task CreateAsync<T>(T input, string userId)
         {
+            var blogPostDto = this.mapper.Map<BlogPostDto>(input);
             Blog post = AutoMapperConfig.MapperInstance.Map<Blog>(input);
             post.UserId = userId;
 
-            await this.FileSaverAsync(post, input, pictureDirectory);
+            if (blogPostDto.Picture != null)
+            {
+                await this.FileSaverAsync(post, blogPostDto);
+            }
+
             await this.blogsRepository.AddAsync(post);
             await this.blogsRepository.SaveChangesAsync();
         }
 
-        public async Task UpdatePostAsync(int id, EditBlogPostInputmodel input, string pictureDirectory)
+        public async Task UpdateAsync<T>(T input, int id)
         {
+            var blogPostDto = this.mapper.Map<BlogPostDto>(input);
+
             Blog post = this.blogsRepository.All().FirstOrDefault(p => p.Id == id);
-            post.Title = input.Title;
-            post.Body = input.Body;
-            post.VideoLink = input.VideoLink;
+            post.Title = blogPostDto.Title;
+            post.Body = blogPostDto.Body;
+            post.VideoLink = blogPostDto.VideoLink;
             post.ModifiedOn = DateTime.UtcNow;
 
-            await this.FileSaverAsync(post, input, pictureDirectory);
+            if (blogPostDto.Picture != null)
+            {
+                await this.FileSaverAsync(post, blogPostDto);
+            }
+
             await this.blogsRepository.SaveChangesAsync();
         }
 
@@ -88,19 +104,16 @@
             return this.blogsRepository.All().Count();
         }
 
-        private async Task FileSaverAsync(Blog post, BaseBlogPostInputModel input, string pictureDirectory)
+        private async Task FileSaverAsync(Blog post, BlogPostDto input)
         {
-            if (input.Picture != null)
-            {
-                string filePath = $"/img/blog-pictures/{input.Picture.FileName}";
-                string physicalFilePath = $"{pictureDirectory}/{input.Picture.FileName}";
+            string filePath = $"/img/blog-pictures/{input.Picture.FileName}";
+            string physicalFilePath = $"{input.PictureDirectory}/{input.Picture.FileName}";
 
-                post.FilePath = filePath;
-                post.PhysicalFilePath = physicalFilePath;
+            post.FilePath = filePath;
+            post.PhysicalFilePath = physicalFilePath;
 
-                using var fileStream = new FileStream(physicalFilePath, FileMode.Create);
-                await input.Picture.CopyToAsync(fileStream);
-            }
+            using var fileStream = new FileStream(physicalFilePath, FileMode.Create);
+            await input.Picture.CopyToAsync(fileStream);
         }
     }
 }

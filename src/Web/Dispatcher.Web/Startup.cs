@@ -15,7 +15,6 @@
     using Dispatcher.Services.Mapping;
     using Dispatcher.Services.Messaging;
     using Dispatcher.Web.ViewModels;
-
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -63,6 +62,8 @@
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddSingleton(this.configuration);
+
+            services.AddAutoMapper(typeof(IBlogService));
 
             // Data repositories
             services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));

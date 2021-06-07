@@ -3,7 +3,7 @@
     using Dispatcher.Data.Models.BlogModels;
     using Dispatcher.Services.Mapping;
 
-    public class EditBlogPostInputmodel : BaseBlogPostInputModel, IMapFrom<Blog>
+    public class EditBlogPostInputmodel : BaseBlogPostInputModel, IMapFrom<Blog>, IMapTo<Blog>
     {
         public int Id { get; set; }
 

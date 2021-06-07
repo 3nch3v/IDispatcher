@@ -1,14 +1,14 @@
-﻿namespace Dispatcher.Web.ViewModels.BlogModels
+﻿namespace Dispatcher.Services.Data.Dtos
 {
     using System.ComponentModel.DataAnnotations;
 
     using Dispatcher.Common;
     using Dispatcher.Data.Common.CustomAttributes;
-    using Dispatcher.Data.Models.BlogModels;
     using Dispatcher.Services.Mapping;
+    using Dispatcher.Web.ViewModels.BlogModels;
     using Microsoft.AspNetCore.Http;
 
-    public abstract class BaseBlogPostInputModel : IMapTo<Blog>
+    public class BlogPostDto : IMapFrom<BaseBlogPostInputModel>, IMapFrom<BlogInputModel>, IMapFrom<EditBlogPostInputmodel>
     {
         [Required]
         [StringLength(100, MinimumLength = 2)]

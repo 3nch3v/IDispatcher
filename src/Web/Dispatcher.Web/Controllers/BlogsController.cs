@@ -2,6 +2,7 @@
 {
     using System.Threading.Tasks;
 
+    using AutoMapper;
     using Dispatcher.Common;
     using Dispatcher.Data.Models;
     using Dispatcher.Services.Contracts;
@@ -18,17 +19,20 @@
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IWebHostEnvironment environment;
         private readonly IStringValidatorService stringValidatorService;
+        private readonly IMapper mapper;
 
         public BlogsController(
             UserManager<ApplicationUser> userManager,
             IBlogService blogServie,
             IWebHostEnvironment environment,
-            IStringValidatorService stringValidatorService)
+            IStringValidatorService stringValidatorService,
+            IMapper mapper)
         {
             this.blogServie = blogServie;
             this.userManager = userManager;
             this.environment = environment;
             this.stringValidatorService = stringValidatorService;
+            this.mapper = mapper;
         }
 
         [Authorize]
@@ -48,8 +52,9 @@
             }
 
             string pictureDirectory = $"{this.environment.WebRootPath}/img/blog-pictures";
+            input.PictureDirectory = pictureDirectory;
             var user = await this.userManager.GetUserAsync(this.User);
-            await this.blogServie.CreatPostAsync(input, user.Id, pictureDirectory);
+            await this.blogServie.CreateAsync<BlogInputModel>(input, user.Id);
 
             return this.RedirectToAction(nameof(this.AllPosts));
         }
@@ -73,7 +78,8 @@
             }
 
             string pictureDirectory = $"{this.environment.WebRootPath}/img/blog-pictures";
-            await this.blogServie.UpdatePostAsync(id, input, pictureDirectory);
+            input.PictureDirectory = pictureDirectory;
+            await this.blogServie.UpdateAsync<EditBlogPostInputmodel>(input, id);
             return this.RedirectToAction(nameof(this.Post), new { id });
         }
 

@@ -17,7 +17,7 @@
             this.postsRepository = postsRepository;
         }
 
-        public async Task AddCommentAsync<T>(T input)
+        public async Task CreateAsync<T>(T input)
         {
             var comment = AutoMapperConfig.MapperInstance.Map<Comment>(input);
 
@@ -25,7 +25,7 @@
             await this.postsRepository.SaveChangesAsync();
         }
 
-        public async Task DeleteCommentAsync(int id)
+        public async Task DeleteAsync(int id)
         {
             var commment = this.postsRepository.All().FirstOrDefault(c => c.Id == id);
             this.postsRepository.Delete(commment);

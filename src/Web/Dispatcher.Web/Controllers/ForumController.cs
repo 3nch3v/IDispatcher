@@ -160,7 +160,7 @@
             {
                 var user = await this.userManager.GetUserAsync(this.User);
                 input.UserId = user.Id;
-                await this.commentService.AddCommentAsync<PostInputViewModel>(input);
+                await this.commentService.CreateAsync<PostInputViewModel>(input);
             }
 
             return this.RedirectToAction(nameof(this.ForumDiscussion), new { id = input.DiscussionId });
@@ -169,7 +169,7 @@
         [Authorize]
         public async Task<IActionResult> DeleteComment(int id, int discussionId)
         {
-            await this.commentService.DeleteCommentAsync(id);
+            await this.commentService.DeleteAsync(id);
             return this.RedirectToAction(nameof(this.ForumDiscussion), new { id = discussionId });
         }
     }
