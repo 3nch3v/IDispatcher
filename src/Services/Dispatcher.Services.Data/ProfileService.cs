@@ -32,14 +32,73 @@
             this.profilePicturesRepository = profilePicturesRepository;
         }
 
-        public T GetUserById<T>(string id)
+        public ProfileDataDto GetUserById(string id)
         {
-            var user = this.usersRepository.AllAsNoTracking()
+            var userData = this.usersRepository.AllAsNoTracking()
                 .Where(u => u.Id == id)
-                .To<T>()
+                .Select(u => new ProfileDataDto
+                {
+                    Id = u.Id,
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
+                    PhoneNumber = u.PhoneNumber,
+                    Education = u.Education,
+                    ComponyName = u.ComponyName,
+                    Interests = u.Interests,
+                    Contacts = u.Contacts,
+                    WebsiteUrl = u.WebsiteUrl,
+                    GithubUrl = u.GithubUrl,
+                    FacebookUrl = u.FacebookUrl,
+                    InstagramUrl = u.InstagramUrl,
+                    CumstomerReviews = u.CumstomerReviews
+                        .Select(x => new ProfileCustomersReviewsDto
+                        {
+                            StarsCount = x.StarsCount,
+                        }).ToArray(),
+                    ProfilePictures = u.ProfilePictures
+                        .Select(x => new ProfilePicturesDto
+                        {
+                            FilePath = x.FilePath,
+                            CreatedOn = x.CreatedOn,
+                        }).ToArray(),
+                    Advertisements = u.Advertisements
+                        .Select(x => new ProfileAdvertisementsDto
+                        {
+                            Id = x.Id,
+                            Title = x.Title,
+                            Description = x.Description,
+                            Compensation = x.Compensation,
+                        }).ToArray(),
+                    Projects = u.Projects
+                        .Select(x => new ProfileProjectsDto
+                        {
+                            Id = x.Id,
+                            Name = x.Name,
+                            UserRole = x.UserRole,
+                            Url = x.Url,
+                        }).ToArray(),
+                    Discussions = u.Discussions
+                        .Select(x => new ProfileForumDiscussionsDto
+                        {
+                            Id = x.Id,
+                            Title = x.Title,
+                        }).ToArray(),
+                    Blogs = u.Blogs
+                        .Select(x => new ProfileBlogDtos
+                        {
+                            Id = x.Id,
+                            Title = x.Title,
+                        }).ToArray(),
+                    Jobs = u.Jobs
+                        .Select(x => new ProfileJobsDto
+                        {
+                            Id = x.Id,
+                            Title = x.Title,
+                        }).ToArray(),
+                })
                 .FirstOrDefault();
 
-            return user;
+            return userData;
         }
 
         public IEnumerable<T> GetComments<T>(string id)
@@ -69,11 +128,36 @@
                 .Select(x => new DataManagerDto
                 {
                     Id = x.Id,
-                    Projects = x.Projects,
-                    Advertisements = x.Advertisements,
-                    Discussions = x.Discussions,
-                    Jobs = x.Jobs,
-                    Blogs = x.Blogs,
+                    Projects = x.Projects
+                        .Select(p => new DataManagerCollectionsDto
+                        {
+                            Id = p.Id,
+                            Title = p.Name,
+                        }).ToArray(),
+                    Advertisements = x.Advertisements
+                        .Select(p => new DataManagerCollectionsDto
+                        {
+                            Id = p.Id,
+                            Title = p.Title,
+                        }).ToArray(),
+                    Discussions = x.Discussions
+                        .Select(p => new DataManagerCollectionsDto
+                        {
+                            Id = p.Id,
+                            Title = p.Title,
+                        }).ToArray(),
+                    Jobs = x.Jobs
+                        .Select(p => new DataManagerCollectionsDto
+                        {
+                            Id = p.Id,
+                            Title = p.Title,
+                        }).ToArray(),
+                    Blogs = x.Blogs
+                        .Select(p => new DataManagerCollectionsDto
+                        {
+                            Id = p.Id,
+                            Title = p.Title,
+                        }).ToArray(),
                 })
                 .FirstOrDefault();
 

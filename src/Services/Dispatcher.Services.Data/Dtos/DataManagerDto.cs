@@ -3,25 +3,20 @@
     using System.Collections.Generic;
 
     using Dispatcher.Data.Models;
-    using Dispatcher.Data.Models.AdvertisementModels;
-    using Dispatcher.Data.Models.BlogModels;
-    using Dispatcher.Data.Models.ForumModels;
-    using Dispatcher.Data.Models.UserInfoModels;
     using Dispatcher.Services.Mapping;
-    using Dispatcher.Web.ViewModels.ProfileModels;
 
-    public class DataManagerDto : IMapFrom<ApplicationUser>, IMapTo<DataManagerViewModel>
+    public class DataManagerDto : IMapFrom<ApplicationUser>
     {
         public string Id { get; set; }
 
-        public virtual ICollection<Project> Projects { get; set; }
+        public virtual ICollection<DataManagerCollectionsDto> Projects { get; set; }
 
-        public virtual ICollection<Advertisement> Advertisements { get; set; }
+        public virtual ICollection<DataManagerCollectionsDto> Advertisements { get; set; }
 
-        public virtual ICollection<Discussion> Discussions { get; set; }
+        public virtual ICollection<DataManagerCollectionsDto> Discussions { get; set; }
 
-        public virtual ICollection<Blog> Blogs { get; set; }
+        public virtual ICollection<DataManagerCollectionsDto> Blogs { get; set; }
 
-        public virtual ICollection<Job> Jobs { get; set; }
+        public virtual ICollection<DataManagerCollectionsDto> Jobs { get; set; }
     }
 }

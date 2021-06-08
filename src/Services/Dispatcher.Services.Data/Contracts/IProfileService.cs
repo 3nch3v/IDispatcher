@@ -8,7 +8,7 @@
 
     public interface IProfileService
     {
-        T GetUserById<T>(string id);
+        ProfileDataDto GetUserById(string id);
 
         IEnumerable<T> GetComments<T>(string id);
 

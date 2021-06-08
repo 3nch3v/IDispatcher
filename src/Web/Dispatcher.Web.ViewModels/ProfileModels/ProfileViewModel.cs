@@ -3,10 +3,6 @@
     using System.Collections.Generic;
 
     using Dispatcher.Data.Models;
-    using Dispatcher.Data.Models.AdvertisementModels;
-    using Dispatcher.Data.Models.BlogModels;
-    using Dispatcher.Data.Models.ForumModels;
-    using Dispatcher.Data.Models.UserInfoModels;
     using Dispatcher.Services.Mapping;
 
     public class ProfileViewModel : IMapFrom<ApplicationUser>
@@ -37,18 +33,18 @@
 
         public string InstagramUrl { get; set; }
 
-        public ICollection<ProfilePicture> ProfilePictures { get; set; }
+        public virtual ICollection<ProfileCustomersReviewsViewModel> CumstomerReviews { get; set; }
 
-        public virtual ICollection<Project> Projects { get; set; }
+        public ICollection<ProfilePicturesCollectionViewModel> ProfilePictures { get; set; }
 
-        public virtual ICollection<Advertisement> Advertisements { get; set; }
+        public virtual ICollection<ProfileAdvertisementsViewModel> Advertisements { get; set; }
 
-        public virtual ICollection<CustomerReview> CumstomerReviews { get; set; }
+        public virtual ICollection<ProfileProjectsViewModel> Projects { get; set; }
 
-        public virtual ICollection<Discussion> Discussions { get; set; }
+        public virtual ICollection<ProfileForumDiscussionsViewModel> Discussions { get; set; }
 
-        public virtual ICollection<Blog> Blogs { get; set; }
+        public virtual ICollection<ProfileBlogsViewModel> Blogs { get; set; }
 
-        public virtual ICollection<Job> Jobs { get; set; }
+        public virtual ICollection<ProfileJobsViewModel> Jobs { get; set; }
     }
 }

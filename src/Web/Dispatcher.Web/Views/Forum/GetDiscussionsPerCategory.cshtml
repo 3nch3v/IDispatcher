@@ -1,5 +1,5 @@
 ﻿@using Dispatcher.Web.ViewModels.ForumModels
-@model AllForumDiscussionsViewModel
+@model ForumDiscussionsViewModel
 @{
     this.ViewData["Title"] = "Forum Discussions";
     this.TempData.Keep("Category");
@@ -12,21 +12,18 @@
 </nav>
 
 <section class="tm-section">
+
     <div class="container-fluid">
         <div class="row">
-
             <aside class="col-xs-12 col-sm-12 col-md-4 col-lg-3 col-xl-3 tm-aside-r">
                 <vc:forum-side-bar></vc:forum-side-bar>
-
             </aside>
-
             <div class="col-xs-12 col-sm-12 col-md-8 col-lg-9 col-xl-9">
 
                 @foreach (var forumDiscussion in Model.AllForumDiscussions)
                 {
                     <div class="card mb-1 col-md-12 offser-md-6">
                         <div class="card-body p-2 p-sm-3">
-
                             <div class="media forum-item">
 
                                 <a asp-controller="Forum" asp-action="ForumDiscussion" asp-route-id="@forumDiscussion.Id">
@@ -128,7 +125,6 @@
         </nav>
     }
 </section>
-
 
 @section Scripts {
     <script>

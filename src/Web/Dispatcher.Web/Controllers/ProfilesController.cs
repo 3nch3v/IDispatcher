@@ -1,27 +1,27 @@
 ﻿namespace Dispatcher.Web.Controllers
 {
+    using AutoMapper;
     using Dispatcher.Data.Models;
     using Dispatcher.Services.Data.Contracts;
     using Dispatcher.Web.ViewModels.ProfileModels;
     using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
     public class ProfilesController : Controller
     {
         private readonly IProfileService profileService;
+        private readonly IMapper mapper;
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly IWebHostEnvironment environment;
 
         public ProfilesController(
             IProfileService profileService,
-            UserManager<ApplicationUser> userManager,
-            IWebHostEnvironment environment)
+            IMapper mapper,
+            UserManager<ApplicationUser> userManager)
         {
             this.profileService = profileService;
+            this.mapper = mapper;
             this.userManager = userManager;
-            this.environment = environment;
         }
 
         [Authorize]
@@ -34,7 +34,8 @@
                 id = this.userManager.GetUserId(this.User);
             }
 
-            var userProfile = this.profileService.GetUserById<ProfileViewModel>(id);
+            var userDataDto = this.profileService.GetUserById(id);
+            var userProfile = this.mapper.Map<ProfileViewModel>(userDataDto);
             return this.View(userProfile);
         }
 
@@ -42,15 +43,7 @@
         public IActionResult DataManager(string userId)
         {
             var dataManagerDto = this.profileService.GetUserData(userId);
-            var dataManager = new DataManagerViewModel
-            {
-                Id = dataManagerDto.Id,
-                Advertisements = dataManagerDto.Advertisements,
-                Blogs = dataManagerDto.Blogs,
-                Discussions = dataManagerDto.Discussions,
-                Jobs = dataManagerDto.Jobs,
-                Projects = dataManagerDto.Projects,
-            };
+            var dataManager = this.mapper.Map<DataManagerViewModel>(dataManagerDto);
 
             return this.View(dataManager);
         }

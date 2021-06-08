@@ -5,7 +5,7 @@
 
     using Dispatcher.Common;
 
-    public class AllForumDiscussionsViewModel
+    public class ForumDiscussionsViewModel
     {
         public int ForumDiscussionsCount { get; set; }
 

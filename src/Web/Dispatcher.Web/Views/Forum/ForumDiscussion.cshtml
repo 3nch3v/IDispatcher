@@ -77,23 +77,23 @@
 
                                 @if (currUserId == Model.UserId)
                                 {
-                                <div>
                                     <div>
-                                        <a asp-controller="Forum" asp-action="SetToSolved" asp-route-id="@Model.Id" title="Is it solved?" style="background-color:#FFFFFF;color:#000000;text-decoration:none">
-                                            <i class="fa fa-check-circle" aria-hidden="true"></i>
-                                        </a>
+                                        <div>
+                                            <a asp-controller="Forum" asp-action="SetToSolved" asp-route-id="@Model.Id" title="Is it solved?" style="background-color:#FFFFFF;color:#000000;text-decoration:none">
+                                                <i class="fa fa-check-circle" aria-hidden="true"></i>
+                                            </a>
+                                        </div>
+                                        <div>
+                                            <a asp-controller="Forum" asp-action="Edit" asp-route-id="@Model.Id" title="Edit" style="background-color:#FFFFFF;color:#000000;text-decoration:none">
+                                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                            </a>
+                                        </div>
+                                        <div>
+                                            <a asp-controller="Forum" asp-action="Delete" asp-route-id="@Model.Id" title="Delete" style="background-color:#FFFFFF;color:#000000;text-decoration:none">
+                                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                            </a>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <a asp-controller="Forum" asp-action="Edit" asp-route-id="@Model.Id" title="Edit" style="background-color:#FFFFFF;color:#000000;text-decoration:none">
-                                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                        </a>
-                                    </div>
-                                    <div>
-                                        <a asp-controller="Forum" asp-action="Delete" asp-route-id="@Model.Id" title="Delete" style="background-color:#FFFFFF;color:#000000;text-decoration:none">
-                                            <i class="fa fa-trash" aria-hidden="true"></i>
-                                        </a>
-                                    </div>
-                                </div>
                                 }
                             </div>
                         </div>

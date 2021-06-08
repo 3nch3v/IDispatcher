@@ -115,7 +115,7 @@
 
         public IActionResult ForumDiscussions(int page = GlobalConstants.DefaultPageNumber)
         {
-            var forumDiscussions = new AllForumDiscussionsViewModel
+            var forumDiscussions = new ForumDiscussionsViewModel
             {
                 AllForumDiscussions = this.forumService.GetAllForumDiscussions<SingleForumDiscussionsViewModel>(page, GlobalConstants.ForumPageEntitiesCount, null),
                 ForumDiscussionsCount = this.forumService.ForumDiscussionsCount(),
@@ -131,7 +131,7 @@
         {
             this.TempData["Category"] = category;
 
-            var forumDiscussions = new AllForumDiscussionsViewModel
+            var forumDiscussions = new ForumDiscussionsViewModel
             {
                 AllForumDiscussions = this.forumService.GetAllForumDiscussions<SingleForumDiscussionsViewModel>(page, GlobalConstants.ForumPageEntitiesCount, category),
                 ForumDiscussionsCount = this.forumService.GetDiscussionsCountPerCategory(category),
@@ -145,7 +145,7 @@
 
         public IActionResult GetUnsolvedDiscussions(int page = GlobalConstants.DefaultPageNumber)
         {
-            var unsolvedDiscussions = new AllForumDiscussionsViewModel
+            var unsolvedDiscussions = new ForumDiscussionsViewModel
             {
                 AllForumDiscussions = this.forumService.GetAllForumDiscussions<SingleForumDiscussionsViewModel>(page, GlobalConstants.ForumPageEntitiesCount, UnsolvedDiscussions),
                 ForumDiscussionsCount = this.forumService.GetUnsolvedDiscussionsCount(),
@@ -184,7 +184,7 @@
             return this.RedirectToAction(nameof(this.ForumDiscussion), new { id = discussionId });
         }
 
-        private void SetProfilePictures(AllForumDiscussionsViewModel forumDiscussions)
+        private void SetProfilePictures(ForumDiscussionsViewModel forumDiscussions)
         {
             forumDiscussions.AllForumDiscussions.ToList()
                 .ForEach(x => x.ProfilePicture = this.profileService.GetProfilePicturePath(x.UserId));
