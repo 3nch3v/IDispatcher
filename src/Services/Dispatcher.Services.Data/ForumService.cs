@@ -8,23 +8,19 @@
     using Dispatcher.Data.Models.ForumModels;
     using Dispatcher.Services.Data.Contracts;
     using Dispatcher.Services.Mapping;
-    using Dispatcher.Web.ViewModels.ForumModels;
     using Microsoft.EntityFrameworkCore;
 
     public class ForumService : IForumService
     {
         private readonly IDeletableEntityRepository<Discussion> forumRepository;
         private readonly IDeletableEntityRepository<Category> categoriesRepository;
-        private readonly IProfileService profileService;
 
         public ForumService(
             IDeletableEntityRepository<Discussion> forumRepository,
-            IDeletableEntityRepository<Category> categoriesRepository,
-            IProfileService profileService)
+            IDeletableEntityRepository<Category> categoriesRepository)
         {
             this.forumRepository = forumRepository;
             this.categoriesRepository = categoriesRepository;
-            this.profileService = profileService;
         }
 
         public async Task CreateAsync<T>(T input, string id)
@@ -72,22 +68,9 @@
             return discussion;
         }
 
-        public SingleForumDiscussionsViewModel GetDiscussion(int id)
+        public IEnumerable<T> GetAllForumDiscussions<T>(int page, int pageEntitiesCount, string category = null)
         {
-            var discussion = this.forumRepository.AllAsNoTracking()
-                .Include(x => x.Votes)
-                .Where(d => d.Id == id)
-                .To<SingleForumDiscussionsViewModel>()
-                .FirstOrDefault();
-
-            this.LoadCommentsWithPicture(discussion);
-
-            return discussion;
-        }
-
-        public IEnumerable<SingleForumDiscussionsViewModel> GetAllForumDiscussions(int page, int pageEntitiesCount, string category = null)
-        {
-            IEnumerable<SingleForumDiscussionsViewModel> discussions = null;
+            IEnumerable<T> discussions = null;
 
             if (string.IsNullOrEmpty(category))
             {
@@ -96,7 +79,7 @@
                .OrderByDescending(p => p.CreatedOn)
                .Skip((page - 1) * pageEntitiesCount)
                .Take(pageEntitiesCount)
-               .To<SingleForumDiscussionsViewModel>()
+               .To<T>()
                .ToList();
             }
             else if (!string.IsNullOrEmpty(category) && category != "unsolved")
@@ -107,7 +90,7 @@
                .OrderByDescending(p => p.CreatedOn)
                .Skip((page - 1) * pageEntitiesCount)
                .Take(pageEntitiesCount)
-               .To<SingleForumDiscussionsViewModel>()
+               .To<T>()
                .ToList();
             }
             else
@@ -118,13 +101,8 @@
                .OrderByDescending(p => p.CreatedOn)
                .Skip((page - 1) * pageEntitiesCount)
                .Take(pageEntitiesCount)
-               .To<SingleForumDiscussionsViewModel>()
+               .To<T>()
                .ToList();
-            }
-
-            foreach (var discussion in discussions)
-            {
-                this.LoadCommentsWithPicture(discussion);
             }
 
             return discussions;
@@ -159,21 +137,6 @@
             return this.forumRepository.AllAsNoTracking()
                 .Where(x => x.Category.Name == categoty)
                 .Count();
-        }
-
-        private void LoadCommentsWithPicture(SingleForumDiscussionsViewModel discussion)
-        {
-            discussion.ProfilePicture = this.profileService.GetProfilePicturePath(discussion.UserId);
-            var result = discussion.Posts.Select(x => new SinglePostViewModel
-            {
-                Id = x.Id,
-                Content = x.Content,
-                UserId = x.UserId,
-                UserUsername = x.UserUsername,
-                ProfilePicture = this.profileService.GetProfilePicturePath(x.UserId),
-            });
-
-            discussion.Posts = result;
         }
     }
 }

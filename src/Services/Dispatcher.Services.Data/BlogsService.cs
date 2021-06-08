@@ -15,6 +15,8 @@
 
     public class BlogsService : IBlogService
     {
+        private const string DefaultBlogPicturesFolder = "/img/blog-pictures";
+
         private readonly IDeletableEntityRepository<Blog> blogsRepository;
         private readonly IMapper mapper;
 
@@ -106,7 +108,7 @@
 
         private async Task FileSaverAsync(Blog post, BlogPostDto input)
         {
-            string filePath = $"/img/blog-pictures/{input.Picture.FileName}";
+            string filePath = $"{DefaultBlogPicturesFolder}/{input.Picture.FileName}";
             string physicalFilePath = $"{input.PictureDirectory}/{input.Picture.FileName}";
 
             post.FilePath = filePath;

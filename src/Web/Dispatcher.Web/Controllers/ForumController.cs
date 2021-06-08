@@ -1,5 +1,6 @@
 ﻿namespace Dispatcher.Web.Controllers
 {
+    using System.Linq;
     using System.Threading.Tasks;
 
     using Dispatcher.Common;
@@ -104,7 +105,11 @@
 
         public IActionResult ForumDiscussion(int id)
         {
-            var discussion = this.forumService.GetDiscussion(id);
+            var discussion = this.forumService.GetById<SingleForumDiscussionsViewModel>(id);
+            discussion.ProfilePicture = this.profileService.GetProfilePicturePath(discussion.UserId);
+            discussion.Posts.ToList()
+                .ForEach(x => x.ProfilePicture = this.profileService.GetProfilePicturePath(x.UserId));
+
             return this.View(discussion);
         }
 
@@ -112,10 +117,12 @@
         {
             var forumDiscussions = new AllForumDiscussionsViewModel
             {
-                AllForumDiscussions = this.forumService.GetAllForumDiscussions(page, GlobalConstants.ForumPageEntitiesCount, null),
+                AllForumDiscussions = this.forumService.GetAllForumDiscussions<SingleForumDiscussionsViewModel>(page, GlobalConstants.ForumPageEntitiesCount, null),
                 ForumDiscussionsCount = this.forumService.ForumDiscussionsCount(),
                 Page = page,
             };
+
+            this.SetProfilePictures(forumDiscussions);
 
             return this.View(forumDiscussions);
         }
@@ -124,24 +131,28 @@
         {
             this.TempData["Category"] = category;
 
-            var forumPosts = new AllForumDiscussionsViewModel
+            var forumDiscussions = new AllForumDiscussionsViewModel
             {
-                AllForumDiscussions = this.forumService.GetAllForumDiscussions(page, GlobalConstants.ForumPageEntitiesCount, category),
+                AllForumDiscussions = this.forumService.GetAllForumDiscussions<SingleForumDiscussionsViewModel>(page, GlobalConstants.ForumPageEntitiesCount, category),
                 ForumDiscussionsCount = this.forumService.GetDiscussionsCountPerCategory(category),
                 Page = page,
             };
 
-            return this.View(forumPosts);
+            this.SetProfilePictures(forumDiscussions);
+
+            return this.View(forumDiscussions);
         }
 
         public IActionResult GetUnsolvedDiscussions(int page = GlobalConstants.DefaultPageNumber)
         {
             var unsolvedDiscussions = new AllForumDiscussionsViewModel
             {
-                AllForumDiscussions = this.forumService.GetAllForumDiscussions(page, GlobalConstants.ForumPageEntitiesCount, UnsolvedDiscussions),
+                AllForumDiscussions = this.forumService.GetAllForumDiscussions<SingleForumDiscussionsViewModel>(page, GlobalConstants.ForumPageEntitiesCount, UnsolvedDiscussions),
                 ForumDiscussionsCount = this.forumService.GetUnsolvedDiscussionsCount(),
                 Page = page,
             };
+
+            this.SetProfilePictures(unsolvedDiscussions);
 
             return this.View(unsolvedDiscussions);
         }
@@ -171,6 +182,12 @@
         {
             await this.commentService.DeleteAsync(id);
             return this.RedirectToAction(nameof(this.ForumDiscussion), new { id = discussionId });
+        }
+
+        private void SetProfilePictures(AllForumDiscussionsViewModel forumDiscussions)
+        {
+            forumDiscussions.AllForumDiscussions.ToList()
+                .ForEach(x => x.ProfilePicture = this.profileService.GetProfilePicturePath(x.UserId));
         }
     }
 }

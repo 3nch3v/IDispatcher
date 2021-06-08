@@ -15,6 +15,9 @@
 
     public class ProfileService : IProfileService
     {
+        private const string DefaultAvatarPath = "/img/3_avatar-512.png";
+        private const string ProfilePictureFolder = "/img/profile-pictures";
+
         private readonly IDeletableEntityRepository<ApplicationUser> usersRepository;
         private readonly IDeletableEntityRepository<CustomerReview> commentsRepository;
         private readonly IDeletableEntityRepository<ProfilePicture> profilePicturesRepository;
@@ -87,7 +90,7 @@
                 Extension = fileExtension,
             };
 
-            string filePath = $"/img/profile-pictures/{profilePicture.Id}{fileExtension}";
+            string filePath = $"{ProfilePictureFolder}/{profilePicture.Id}{fileExtension}";
             string physicalFilePath = $"{pictureDirectory}/{profilePicture.Id}{fileExtension}";
 
             profilePicture.FilePath = filePath;
@@ -109,7 +112,7 @@
 
             if (picture == null)
             {
-                return "/img/3_avatar-512.png";
+                return DefaultAvatarPath;
             }
 
             return picture.FilePath;
