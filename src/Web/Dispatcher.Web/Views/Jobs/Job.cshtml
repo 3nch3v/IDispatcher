@@ -37,13 +37,13 @@
                     </div>
                     @if (!string.IsNullOrWhiteSpace(Model.LogoUrl))
                     {
-                        <img src="@Model.LogoUrl" alt="Image" class="img-fluid tm-img-post" width="250" style="float:left; margin-right:30px">
+                        <img src="@Model.LogoUrl" alt="Image" class="img-fluid tm-img-post" width="250" style="float:left; margin-right:30px; margin-bottom: 5px;">
                     }
                 </div>
 
                 <br>
                 <div>
-                    <p style="margin-top: -30px">@Html.Raw(Model.SanitizedBody)</p>
+                    <p style="margin-top: -50px">@Html.Raw(Model.SanitizedBody)</p>
                 </div>
                 <hr>
                 <div class="d-flex justify-content-between">

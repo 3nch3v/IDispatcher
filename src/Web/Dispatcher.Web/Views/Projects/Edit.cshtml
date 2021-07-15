@@ -5,28 +5,34 @@
     this.ViewData["Title"] = "Edit project info";
 }
 
-<h1>@this.ViewData["Title"]</h1>
+<div style="max-width: 900px; margin-left: auto; margin-right: auto;">
+    <div>
+        <h1>@this.ViewData["Title"]</h1>
+    </div>
+    <div>
+        <form method="post">
+            <div class="form-group">
+                <label asp-for="Name">Project Name</label>
+                <input asp-for="Name" class="form-control">
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserRole">Our Role</label>
+                <input asp-for="UserRole" class="form-control">
+                <span asp-validation-for="UserRole" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description">Project Description</label>
+                <textarea asp-for="Description" class="form-control" rows="5"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Url">Project's URL</label>
+                <input asp-for="Url" class="form-control">
+                <span asp-validation-for="Url" class="text-danger"></span>
+            </div>
+            <button type="submit" class="tm-btn text-uppercase">Safe</button>
+        </form>
+    </div>
+</div>
 
-<form method="post">
-    <div class="form-group">
-        <label asp-for="Name">Project Name</label>
-        <input asp-for="Name" class="form-control">
-        <span asp-validation-for="Name" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="UserRole">Our Role</label>
-        <input asp-for="UserRole" class="form-control">
-        <span asp-validation-for="UserRole" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Description">Project Description</label>
-        <textarea asp-for="Description" class="form-control" rows="5"></textarea>
-        <span asp-validation-for="Description" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Url">Project's URL</label>
-        <input asp-for="Url" class="form-control">
-        <span asp-validation-for="Url" class="text-danger"></span>
-    </div>
-    <button type="submit" class="btn btn-primary">Safe</button>
-</form>

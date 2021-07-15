@@ -1,12 +1,35 @@
 ﻿@using Dispatcher.Web.ViewModels.ProjectModels
 @model SingleProjectViewModel
 
+<div style="max-width: 900px; margin-left:auto; margin-right:auto; margin-top: 50px;">
+    <div style="float:right;">
+        @if (Model.Url != null)
+        {
+            <img src="@Model.Url" alt="Project picture" style="width: 500px;" />
+        }
+    </div>
+    <div>
+        <div>
+            <h3>@Model.Name</h3>
+            <p>Role: @Model.UserRole</p>
+        </div>
+        <div>
+            <p>@Model.SanitizedDescription</p>
+        </div>
+    </div>
+</div>
 
 
-<p>@Model.Name</p>
-   
-<p>@Model.SanitizedDescription</p>
+
+
+
+
+
+
+
+
+
   
-<p>@Model.UserRole</p>
 
-<p>@Model.Url</p>
+
+

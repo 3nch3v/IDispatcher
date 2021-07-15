@@ -80,7 +80,7 @@
                 <span asp-validation-for="Input.InstagramUrl" class="text-danger"></span>
             </div>
 
-            <button id="update-profile-button" type="submit" class="btn btn-primary">Save</button>
+            <button id="update-profile-button" type="submit" class="tm-btn">Save</button>
         </div>
 
         <div class="col-md-6">
@@ -107,11 +107,11 @@
 <div>
     <br>
     <p class="nav-item">
-        <a class="btn btn-primary" asp-area="Controllers" asp-controller="Profiles" asp-action="DataManager" asp-route-userId="@this.userManager.GetUserId(this.User)">Data manager</a> With profile manager you can create, edit or delete your data.
+        <a class="tm-btn" asp-area="Controllers" asp-controller="Profiles" asp-action="DataManager" asp-route-userId="@this.userManager.GetUserId(this.User)">Data manager</a> With profile manager you can create, edit or delete your data.
     </p>
     <br>
     <p class="nav-item">
-        <a class="btn btn-primary" asp-area="Controllers" asp-controller="Profiles" asp-action="Profile">Profile Review</a> This is what your profile looks like to the people.
+        <a class="tm-btn" asp-area="Controllers" asp-controller="Profiles" asp-action="Profile">Profile Review</a> This is what your profile looks like to the people.
     </p>
 </div>
 

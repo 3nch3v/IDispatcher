@@ -9,47 +9,52 @@
     string currUserId = this.userManager.GetUserId(this.User);
 }
 
-<div class="d-flex justify-content-between">
-    <div class="navbar-brand"><h3 class="tm-gold-text"><a class="tm-gold-text" asp-controller="Blogs" asp-action="AllPosts"><i class="fa fa-arrow-left"></i> Back to Blog Posts</a></h3></div>
-    @if (currUserId == Model.UserId)
-    {
-        <div>
-            <span>
-                <a asp-controller="Blogs" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Edit</a>
-            </span><text>&nbsp;&nbsp;&nbsp;</text>
-            <span>
-                <a asp-controller="Blogs" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Delete</a>
-            </span>
-        </div>
-    }
-</div>
-<br>
-
-<div>
-    <div>
-        <h2>@Model.Title</h2>
-        <br>
-
-        @if (Model.VideoLink != null)
-        {
-            <div class="embed-responsive embed-responsive-16by9">
-                @Html.Raw(Model.VideoLink)
-            </div>
-        }
-        else if (!string.IsNullOrWhiteSpace(Model.FilePath))
+<div style="max-width: 900px; margin-left:auto; margin-right:auto;">
+    <div class="d-flex justify-content-between">
+        <div class="navbar-brand"><h3 class="tm-gold-text"><a class="tm-gold-text" asp-controller="Blogs" asp-action="AllPosts"><i class="fa fa-arrow-left"></i> Back to Blog Posts</a></h3></div>
+        @if (currUserId == Model.UserId)
         {
             <div>
-                <img src="@Model.FilePath" class="card-img-top" alt="@Model.Title">
+                <span>
+                    <a asp-controller="Blogs" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Edit</a>
+                </span><text>&nbsp;&nbsp;&nbsp;</text>
+                <span>
+                    <a asp-controller="Blogs" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Delete</a>
+                </span>
             </div>
         }
-
-        <br>
-        <p align="justify">@Html.Raw(Model.SanitizedBody)</p>
     </div>
     <br>
-    <div class="d-flex flex-row justify-content-between">
-        <span>Created on @Model.CreatedOn.ToString("g")</span>
-        <span>Created by <a class="tm-gold-text" asp-controller="Profiles" asp-action="Profile" asp-route-userId="@Model.UserId">@Model.UserUsername</a></span>
+
+    <div>
+        <div>
+            <h2>@Model.Title</h2>
+            <div>
+
+
+                @if (Model.VideoLink != null)
+                {
+                    <div class="embed-responsive embed-responsive-16by9" style="max-width: 500px; float: left; margin-right: 30px;">
+                        @Html.Raw(Model.VideoLink)
+                    </div>
+                }
+                else if (!string.IsNullOrWhiteSpace(Model.FilePath))
+                {
+                    <div>
+                        <img src="@Model.FilePath" class="card-img-top" alt="@Model.Title" style="max-width: 500px; float: left; margin-right: 30px;margin-bottom:0px;">
+                    </div>
+                }
+
+                <div>
+                    <p>@Html.Raw(Model.SanitizedBody)</p>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="d-flex flex-row justify-content-between">
+            <span>Created on @Model.CreatedOn.ToString("g")</span>
+            <span>Created by <a class="tm-gold-text" asp-controller="Profiles" asp-action="Profile" asp-route-userId="@Model.UserId">@Model.UserUsername</a></span>
+        </div>
     </div>
 </div>
 
