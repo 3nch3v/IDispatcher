@@ -16,7 +16,7 @@
         <span><a asp-controller="Ads" asp-action="Create" type="button" class="btn btn-outline-secondary">Create Ad</a></span>
     </nav>
 
-    <div class="row tm-row">
+    <div class="ad-main-container row tm-row">
         @foreach (var ad in Model.Ads)
         {
             <article class="col-12 col-md-4 tm-post">
