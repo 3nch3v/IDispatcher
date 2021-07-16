@@ -4,7 +4,9 @@
     {
         public const string SystemName = "Dispatcher";
 
-        public const string AdministratorRoleName = "Administrator";
+        public const string AdministratorRole = "Administrator";
+
+        public const string UserRole = "User";
 
         public const string Like = "Like";
 

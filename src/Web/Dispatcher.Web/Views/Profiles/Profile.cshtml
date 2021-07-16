@@ -68,28 +68,28 @@
                         {
                             <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                                 <h5><i class="fa fa-internet-explorer"> Website</i></h5>
-                                <span class="text-secondary"><a href="@Model.WebsiteUrl">@Model.WebsiteUrl</a></span>
+                                <span class="text-secondary"><a href="#" onclick="window.open('//@Model.WebsiteUrl')">@Model.WebsiteUrl</a></span>
                             </li>
                         }
                         @if (Model.GithubUrl != null)
                         {
                             <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                                 <h5><i class="fa fa-github"> Github</i></h5>
-                                <span class="text-secondary"><a href="@Model.GithubUrl">@Model.GithubUrl</a></span>
+                                <span class="text-secondary"><a href="#" onclick="window.open('//@Model.GithubUrl')">@Model.GithubUrl</a></span>
                             </li>
                         }
                         @if (Model.FacebookUrl != null)
                         {
                             <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                                 <h5><i class="fa fa-facebook"> Facebook</i></h5>
-                                <span class="text-secondary"><a href="@Model.FacebookUrl">@Model.FacebookUrl</a></span>
+                                <span class="text-secondary"><a href="#" onclick="window.open('//@Model.FacebookUrl')">@Model.FacebookUrl</a></span>
                             </li>
                         }
                         @if (Model.InstagramUrl != null)
                         {
                             <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                                 <h5><i class="fa fa-instagram"> Instagram</i></h5>
-                                <span class="text-secondary"><a href="@Model.InstagramUrl">@Model.InstagramUrl</a></span>
+                                <span class="text-secondary"><a href="#" onclick="window.open('//@Model.InstagramUrl')">@Model.InstagramUrl</a></span>
                             </li>
                         }
                     </ul>

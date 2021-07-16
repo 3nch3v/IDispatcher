@@ -19,13 +19,13 @@
     <div class="ad-main-container row tm-row">
         @foreach (var ad in Model.Ads)
         {
-            <article class="col-12 col-md-4 tm-post">
+            <article class="col-12 col-md-4 tm-post" style="margin-bottom: 30px">
                 <hr class="tm-hr-primary">
                 <a asp-controller="Ads" asp-action="Ad" asp-route-id="@ad.Id" class="effect-lily tm-post-link tm-pt-60">
                     <div class="tm-post-link-inner">
                         @if (!string.IsNullOrWhiteSpace(ad.PictureUrl))
                         {
-                            <img src="@ad.PictureUrl" alt="@ad.Title" class="img-fluid">
+                            <img src="@ad.PictureUrl" alt="@ad.Title" class="tm-contact-img-container" style="max-width:100%; object-fit: cover;">
                         }
                         else
                         {
