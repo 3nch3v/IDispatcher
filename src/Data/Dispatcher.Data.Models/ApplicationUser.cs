@@ -1,5 +1,4 @@
-﻿// ReSharper disable VirtualMemberCallInConstructor
-namespace Dispatcher.Data.Models
+﻿namespace Dispatcher.Data.Models
 {
     using System;
     using System.Collections.Generic;
@@ -66,12 +65,10 @@ namespace Dispatcher.Data.Models
         [MaxLength(2048)]
         public string InstagramUrl { get; set; }
 
-        // Audit info
         public DateTime CreatedOn { get; set; }
 
         public DateTime? ModifiedOn { get; set; }
 
-        // Deletable entity
         public bool IsDeleted { get; set; }
 
         public DateTime? DeletedOn { get; set; }

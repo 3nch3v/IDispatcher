@@ -6,10 +6,14 @@
     using System.Threading.Tasks;
 
     using Dispatcher.Data.Models.ForumModels;
+    using Microsoft.Extensions.Configuration;
 
     public class CategoriesSeeder : ISeeder
     {
-        public async Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider)
+        public async Task SeedAsync(
+            ApplicationDbContext dbContext,
+            IServiceProvider serviceProvider,
+            IConfiguration configuration)
         {
             if (dbContext.Categories.Any())
             {

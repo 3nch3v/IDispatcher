@@ -5,10 +5,14 @@
     using System.Threading.Tasks;
 
     using Dispatcher.Data.Models;
+    using Microsoft.Extensions.Configuration;
 
     internal class SettingsSeeder : ISeeder
     {
-        public async Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider)
+        public async Task SeedAsync(
+            ApplicationDbContext dbContext,
+            IServiceProvider serviceProvider,
+            IConfiguration configuration)
         {
             if (dbContext.Settings.Any())
             {

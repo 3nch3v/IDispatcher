@@ -4,12 +4,16 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
 
     public class ApplicationDbContextSeeder : ISeeder
     {
-        public async Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider)
+        public async Task SeedAsync(
+            ApplicationDbContext dbContext,
+            IServiceProvider serviceProvider,
+            IConfiguration configuration)
         {
             if (dbContext == null)
             {
@@ -26,16 +30,17 @@
             var seeders = new List<ISeeder>
                           {
                               new RolesSeeder(),
-                              new BlogSeeder(),
-                              new JobSeeder(),
+                              new UsersSeeder(),
                               new AdvertisementTypesSeeder(),
-                              new AdvertisementSeeder(),
                               new CategoriesSeeder(),
+                              new BlogsSeeder(),
+                              new JobsSeeder(),
+                              new AdvertisementsSeeder(),
                           };
 
             foreach (var seeder in seeders)
             {
-                await seeder.SeedAsync(dbContext, serviceProvider);
+                await seeder.SeedAsync(dbContext, serviceProvider, configuration);
                 await dbContext.SaveChangesAsync();
                 logger.LogInformation($"Seeder {seeder.GetType().Name} done.");
             }

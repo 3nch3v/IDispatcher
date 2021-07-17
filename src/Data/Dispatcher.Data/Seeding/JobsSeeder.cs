@@ -6,22 +6,26 @@
     using System.Threading.Tasks;
 
     using Dispatcher.Data.Models.AdvertisementModels;
+    using Microsoft.Extensions.Configuration;
 
-    public class JobSeeder : ISeeder
+    public class JobsSeeder : ISeeder
     {
-        public async Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider)
+        public async Task SeedAsync(
+            ApplicationDbContext dbContext,
+            IServiceProvider serviceProvider,
+            IConfiguration configuration)
         {
             if (dbContext.Jobs.Any())
             {
                 return;
             }
 
-            var jobs = new List<Job>();
-
-            jobs.Add(new Job
+            var jobs = new List<Job>
             {
-                Title = "Software Engineer, Frontend at Welcome, Inc.",
-                JobBody = @"Software Engineer, Frontend
+                new Job
+                {
+                    Title = "Software Engineer, Frontend at Welcome, Inc.",
+                    JobBody = @"Software Engineer, Frontend
 •	U.S. REMOTE
 •	ENGINEERING
 •	FULL-TIME
@@ -52,17 +56,16 @@ Our Investments in You:
 •	Opportunity to work with tech’s best talent; An incredible team with a great blend of hustle, productivity and a ton of fun!
 •	Opportunities to attend the most high-end virtual events in the world
 ",
-                Location = "Remote",
-                CompanyName = "Welcome, Inc.",
-                Contact = "apply-welcome@welcome.com",
-                LogoUrl = "https://remoteco.s3.amazonaws.com/wp-content/uploads/2021/07/15125054/welcome_inc-150x150.jpg",
-                UserId = "6b4f487f-5cde-4509-825b-103b69220131",
-            });
-
-            jobs.Add(new Job
-            {
-                Title = "Rails Full Stack Engineer at Assurant",
-                JobBody = @"Title: Rails Full Stack Engineer
+                    Location = "Remote",
+                    CompanyName = "Welcome, Inc.",
+                    Contact = "apply-welcome@welcome.com",
+                    LogoUrl = "https://remoteco.s3.amazonaws.com/wp-content/uploads/2021/07/15125054/welcome_inc-150x150.jpg",
+                    UserId = "1b99c696-64f5-443a-ae1e-6b4a1bc8f2cb",
+                },
+                new Job
+                {
+                    Title = "Rails Full Stack Engineer at Assurant",
+                    JobBody = @"Title: Rails Full Stack Engineer
 
 US Virtual
 C: 7.63
@@ -109,17 +112,16 @@ A continuous learning mindset that keeps you current on development best practic
 Desire for a deep technical understanding for the problems at hand
 Ability to balance trade-offs between speed and quality based on business priorities
 Technical leadership skills with the ability to resolve ambiguity in requirements",
-                Location = "Berlin, Germany",
-                CompanyName = "Assurant",
-                Contact = "00421330332458, assurant@hr.de",
-                LogoUrl = "https://remoteco.s3.amazonaws.com/wp-content/uploads/2020/03/23155207/assurant-150x150.jpg",
-                UserId = "6b4f487f-5cde-4509-825b-103b69220131",
-            });
-
-            jobs.Add(new Job
-            {
-                Title = "Senior Software Engineer – Full Stack at TeamSnap",
-                JobBody = @"Senior Software Engineer – Full Stack (Multiple)
+                    Location = "Berlin, Germany",
+                    CompanyName = "Assurant",
+                    Contact = "00421330332458, assurant@hr.de",
+                    LogoUrl = "https://remoteco.s3.amazonaws.com/wp-content/uploads/2020/03/23155207/assurant-150x150.jpg",
+                    UserId = "6b4f487f-5cde-4509-825b-103b69220131",
+                },
+                new Job
+                {
+                    Title = "Senior Software Engineer – Full Stack at TeamSnap",
+                    JobBody = @"Senior Software Engineer – Full Stack (Multiple)
 
 REMOTE /
 ENGINEERING – ENGINEERING /
@@ -174,17 +176,16 @@ $1,500 learning and development stipend
 Inclusion and Diversity
 
 Bring your real self. Celebrate what makes you unique. Part of our commitment to inclusion and diversity includes deepening our relationships with our employee resource groups (women, people of color, and LGBTQ+). Our ERGs partner regularly with the executive team and people experience team to hold TeamSnap accountable in building an environment where everyone feels valued. We are an Equal Employment Opportunity Employer.",
-                Location = "Sofia, Bulgaria",
-                CompanyName = "TeamSnap",
-                Contact = "teamSnap@haha.bg",
-                LogoUrl = "https://remoteco.s3.amazonaws.com/wp-content/uploads/2015/07/teamsnap_twitter-150x150.png",
-                UserId = "6b4f487f-5cde-4509-825b-103b69220131",
-            });
-
-            jobs.Add(new Job
-            {
-                Title = "Software Engineer at Metadata.io",
-                JobBody = @"About Us
+                    Location = "Sofia, Bulgaria",
+                    CompanyName = "TeamSnap",
+                    Contact = "teamSnap@haha.bg",
+                    LogoUrl = "https://remoteco.s3.amazonaws.com/wp-content/uploads/2015/07/teamsnap_twitter-150x150.png",
+                    UserId = "6b4f487f-5cde-4509-825b-103b69220131",
+                },
+                new Job
+                {
+                    Title = "Software Engineer at Metadata.io",
+                    JobBody = @"About Us
 We are a team of highly dedicated professionals who are making a breakthrough in B2B marketing by introducing an autonomous technology powered by AI to replace the daily mundane tasks of marketing operations teams, empowering them to execute 100x faster and more efficiently, freeing up time for creative and strategic tasks.
 
 The company is  REMOTE with members spread out across 10 countries and 3 continents. We move fast but scientifically; we are agile but disciplined. We value and reward dedication, hard work, and a can-do attitude. We embrace equality, diversity, and authenticity. “Givers” will thrive in our team! 
@@ -223,17 +224,16 @@ Competitive salary
 Flexible PTO and holidays
 Opportunities to work with Machine Learning, Big Data Analytics, and new technologies
 Friendly supportive team",
-                Location = "International, Anywhere",
-                CompanyName = "Metadata.io",
-                Contact = "metadata@hr.io",
-                LogoUrl = "https://remoteco.s3.amazonaws.com/wp-content/uploads/2020/09/28110927/metadata-150x150.png",
-                UserId = "6b4f487f-5cde-4509-825b-103b69220131",
-            });
-
-            jobs.Add(new Job
-            {
-                Title = "Senior UI – Front-End Developer at Interaction Design Foundation - IDF",
-                JobBody = @"Senior UI/Front-End Developer
+                    Location = "International, Anywhere",
+                    CompanyName = "Metadata.io",
+                    Contact = "metadata@hr.io",
+                    LogoUrl = "https://remoteco.s3.amazonaws.com/wp-content/uploads/2020/09/28110927/metadata-150x150.png",
+                    UserId = "6b4f487f-5cde-4509-825b-103b69220131",
+                },
+                new Job
+                {
+                    Title = "Senior UI – Front-End Developer at Interaction Design Foundation - IDF",
+                    JobBody = @"Senior UI/Front-End Developer
 
 Do you want to use your coding skills to improve the lives of millions of people? Are you brave enough to let millions of UX designers use your code? Are you obsessive about your own professional development and continuous learning-through-doing? Then read on!
 
@@ -300,17 +300,16 @@ You get bonus points…
 Heydon Pickering https://heydonworks.com/latest
 Rob Dodson
 Sara Soueidan https://www.sarasoueidan.com/blog/",
-                Location = "Munich, Germany",
-                CompanyName = "Interaction Design Foundation - IDF",
-                Contact = "0042136999874522, idf@idf.de",
-                LogoUrl = "https://remoteco.s3.amazonaws.com/wp-content/uploads/2018/11/interaction_design_foundation-150x150.jpg",
-                UserId = "6b4f487f-5cde-4509-825b-103b69220131",
-            });
-
-            jobs.Add(new Job
-            {
-                Title = "Software Engineer – Fullstack at Stitch Fix",
-                JobBody = @"Title: Software Engineer (Fullstack)
+                    Location = "Munich, Germany",
+                    CompanyName = "Interaction Design Foundation - IDF",
+                    Contact = "0042136999874522, idf@idf.de",
+                    LogoUrl = "https://remoteco.s3.amazonaws.com/wp-content/uploads/2018/11/interaction_design_foundation-150x150.jpg",
+                    UserId = "1b99c696-64f5-443a-ae1e-6b4a1bc8f2cb",
+                },
+                new Job
+                {
+                    Title = "Software Engineer – Fullstack at Stitch Fix",
+                    JobBody = @"Title: Software Engineer (Fullstack)
 
 Location: Remote, USA
 At Stitch Fix, our goal is to help our customers look great and feel great about themselves by revolutionizing how people shop. In a time-starved world where shopping often feels overwhelming, our business connects customers to clothes they love. Whether it’s helping someone dress for success at a new job or taking the stress out of packing for a family vacation, we fix clients’ closets and they love us for it!
@@ -366,17 +365,16 @@ Believe in autonomy & taking initiative.
 Fully support remote work and you get to visit our SF office every few months to connect with your peers and partners.
 Offer transparent, equitable, and competitive compensation based on your level to help eliminate bias in salaries, as well as equity and comprehensive health benefits.
 Are serious about our commitment to life-work balance, and have generous parental leave policies.",
-                Location = "Remote",
-                CompanyName = "Stitch Fix",
-                Contact = "fake@email.com",
-                LogoUrl = "https://remoteco.s3.amazonaws.com/wp-content/uploads/2016/12/Stitch_Fix-150x150.jpg",
-                UserId = "6b4f487f-5cde-4509-825b-103b69220131",
-            });
-
-            jobs.Add(new Job
-            {
-                Title = "Front-End Software Engineer III at Particle",
-                JobBody = @"Position Overview
+                    Location = "Remote",
+                    CompanyName = "Stitch Fix",
+                    Contact = "fake@email.com",
+                    LogoUrl = "https://remoteco.s3.amazonaws.com/wp-content/uploads/2016/12/Stitch_Fix-150x150.jpg",
+                    UserId = "7699db4d-e91c-4dcd-9672-7b88b8484930",
+                },
+                new Job
+                {
+                    Title = "Front-End Software Engineer III at Particle",
+                    JobBody = @"Position Overview
 
 Particle is hiring an engineer to work on the web front-end applications that our customers use to both manage their IoT device experience on the Particle platform, from fleet health through to use case specific applications. To most of our customers, this IS the Particle experience and you would be joining us right as we begin the rebuilding of our existing web properties and internal systems. In this role, you will build, deploy, test and monitor a suite of applications that enable product creators to rapidly deploy and scale an IoT solution.
 
@@ -411,17 +409,16 @@ Flexible and open vacation policy
 Work from home stipend
 Generous parental leave policy
 A robust wellness program with individual, personalized coaching",
-                Location = "California, USA",
-                CompanyName = "Particle",
-                Contact = "particle@fake.usa",
-                LogoUrl = "https://remoteco.s3.amazonaws.com/wp-content/uploads/2016/06/particle_square-150x150.png",
-                UserId = "6b4f487f-5cde-4509-825b-103b69220131",
-            });
-
-            jobs.Add(new Job
-            {
-                Title = "Senior Full Stack Engineer – Client at TaskRabbit",
-                JobBody = @"Title: Senior Full Stack Engineer – Client
+                    Location = "California, USA",
+                    CompanyName = "Particle",
+                    Contact = "particle@fake.usa",
+                    LogoUrl = "https://remoteco.s3.amazonaws.com/wp-content/uploads/2016/06/particle_square-150x150.png",
+                    UserId = "7699db4d-e91c-4dcd-9672-7b88b8484930",
+                },
+                new Job
+                {
+                    Title = "Senior Full Stack Engineer – Client at TaskRabbit",
+                    JobBody = @"Title: Senior Full Stack Engineer – Client
 
 Location: United States
 
@@ -503,17 +500,16 @@ Equal Opportunity Employer
 TaskRabbit is an equal opportunity employer and values diversity at our company. We do not discriminate on the basis of race, religion, color, national origin, ancestry, citizenship, gender, gender identity, sexual orientation, age, marital status, military/veteran status, or disability status. TaskRabbit is committed to working with and providing reasonable accommodation to applicants with physical and mental disabilities.
 
 TaskRabbit will consider for employment all qualified applicants with criminal histories in a manner consistent with applicable law.",
-                Location = "United States",
-                CompanyName = "TaskRabbit",
-                Contact = "09023009349034, rabbitv@hr.com",
-                LogoUrl = "https://remoteco.s3.amazonaws.com/wp-content/uploads/2018/09/task_rabbit-150x150.jpg",
-                UserId = "6b4f487f-5cde-4509-825b-103b69220131",
-            });
-
-            jobs.Add(new Job
-            {
-                Title = "Software Engineer – Backend/Python (Americas & European time zones) at Close",
-                JobBody = @"About Us
+                    Location = "United States",
+                    CompanyName = "TaskRabbit",
+                    Contact = "09023009349034, rabbitv@hr.com",
+                    LogoUrl = "https://remoteco.s3.amazonaws.com/wp-content/uploads/2018/09/task_rabbit-150x150.jpg",
+                    UserId = "1b99c696-64f5-443a-ae1e-6b4a1bc8f2cb",
+                },
+                new Job
+                {
+                    Title = "Software Engineer – Backend/Python (Americas & European time zones) at Close",
+                    JobBody = @"About Us
 At Close, we’re building the sales communication platform of the future. With our roots as the very first sales CRM to include built-in calling, we’re leading the industry toward eliminating manual processes and helping companies to close more deals(faster). Since our founding in 2013, we’ve grown to become a profitable, 100% globally distributed team of ~45 high-performing, happy people that are dedicated to building a product our customers love.
 Our backend tech stack currently consists of Python Flask web apps with our TaskTiger scheduler handling many of the backend asynchronous task processing chores. Our data stores include MongoDB, Postgres, Elasticsearch, and Redis. The underlying infrastructure runs on AWS using a combination of managed services like RDS and ElasticCache and non-managed services running on EC2 instances. All of our compute runs through CI/CD pipelines that build Docker images, run automated tests and deploy to our Kubernetes clusters.Our backend primarily serves a well-documented public API that our front-end JavaScript app consumes.
 We 💛 open source – using dozens of open source projects with contributions to many of them, and released some of our own like ciso8601, LimitLion, SocketShark, TaskTiger, and more at https://github.com/closeio
@@ -558,17 +554,16 @@ At Close, everyone has a voice. We encourage transparency and practicing a matur
 We come from 12 countries and 16 states; a collection of talented humans rich in diverse backgrounds, lifestyles, and cultures. Twice a year we meet up somewhere around the world to spend time with one another (however we’re opting for quarterly virtual summits during 2020/2021). We see these retreats as an opportunity to strengthen the social fiber of our community. This team is growing in more ways than one – we’ve recently launched 14 babies (and counting!).
 Unanimously, our favorite and most impactful value is “Build a house you want to live in.” We strive to make decisions that are authentic for our organization. At Close, we have a high care factor for one another, in making an awesome product and championing the success of our customers.
 Interested in Close but don’t think this role is the best fit for you? View our other positions.",
-                Location = "Americas & European time zones",
-                CompanyName = "Close",
-                Contact = "fake@mail.net",
-                LogoUrl = "https://remoteco.s3.amazonaws.com/wp-content/uploads/2021/01/19130351/CloseLogo-150x150.png",
-                UserId = "6b4f487f-5cde-4509-825b-103b69220131",
-            });
-
-            jobs.Add(new Job
-            {
-                Title = "Engineering Manager at Fold",
-                JobBody = @"Job Description – Engineering Manager
+                    Location = "Americas & European time zones",
+                    CompanyName = "Close",
+                    Contact = "fake@mail.net",
+                    LogoUrl = "https://remoteco.s3.amazonaws.com/wp-content/uploads/2021/01/19130351/CloseLogo-150x150.png",
+                    UserId = "7699db4d-e91c-4dcd-9672-7b88b8484930",
+                },
+                new Job
+                {
+                    Title = "Engineering Manager at Fold",
+                    JobBody = @"Job Description – Engineering Manager
 
 We’re here to introduce the world to Bitcoin. Fold makes it easy to earn bitcoin, instead of airline miles and hotel points, on everyday purchases via our mobile app and the Fold Visa Debit Card. We’re growing like crazy with a loyal (and loud!) community which has generated a lot of buzz (Fortune, Bloomberg).
 
@@ -615,17 +610,16 @@ Company retreats and onsite meetings (at least, after COVID)
 Location: US Locations Only
 
 Apply to: people@foldapp.com",
-                Location = "Lion, France",
-                CompanyName = "Fold",
-                Contact = "people@foldapp.com",
-                LogoUrl = "https://remoteco.s3.amazonaws.com/wp-content/uploads/2021/06/28171231/fold-app-150x150.png",
-                UserId = "6b4f487f-5cde-4509-825b-103b69220131",
-            });
-
-            jobs.Add(new Job
-            {
-                Title = "UI – UX Front-End Developer",
-                JobBody = @"UI/UX Front-End Developer (m/f/d)
+                    Location = "Lion, France",
+                    CompanyName = "Fold",
+                    Contact = "people@foldapp.com",
+                    LogoUrl = "https://remoteco.s3.amazonaws.com/wp-content/uploads/2021/06/28171231/fold-app-150x150.png",
+                    UserId = "7699db4d-e91c-4dcd-9672-7b88b8484930",
+                },
+                new Job
+                {
+                    Title = "UI – UX Front-End Developer",
+                    JobBody = @"UI/UX Front-End Developer (m/f/d)
 
 REMOTE
 Tech
@@ -666,17 +660,16 @@ Emphasis on a healthy work-life balance, with flexible working hours and extensi
 Focus on knowledge sharing and cross-team collaboration, with opportunities to share experiences with one another.
 Regular team events to be decided on democratically.
 A wonderful and growing company library",
-                Location = "Mars, Cave",
-                CompanyName = "Social Sweethearts",
-                Contact = "mail@me.ch",
-                LogoUrl = "https://remoteco.s3.amazonaws.com/wp-content/uploads/2021/06/25114623/social_sweethearts-150x150.png",
-                UserId = "6b4f487f-5cde-4509-825b-103b69220131",
-            });
-
-            jobs.Add(new Job
-            {
-                Title = "C++ Developer at Severalnines",
-                JobBody = @"You will work on the backend services for our product ClusterControl which is the leading monitoring and management application for open source databases and used by thousands of companies.
+                    Location = "Mars, Cave",
+                    CompanyName = "Social Sweethearts",
+                    Contact = "mail@me.ch",
+                    LogoUrl = "https://remoteco.s3.amazonaws.com/wp-content/uploads/2021/06/25114623/social_sweethearts-150x150.png",
+                    UserId = "7699db4d-e91c-4dcd-9672-7b88b8484930",
+                },
+                new Job
+                {
+                    Title = "C++ Developer at Severalnines",
+                    JobBody = @"You will work on the backend services for our product ClusterControl which is the leading monitoring and management application for open source databases and used by thousands of companies.
 
 Be part of a great distributed team of highly skilled and motivated colleagues building the next-generation services and applications for database monitoring and management.
 
@@ -695,17 +688,16 @@ Experience in working with containers, VMs, and Cloud services is a plus
 Additional Details
 
 We’re a software startup with a globally distributed team. As we don’t have any offices, you will be working remotely; in other words, we all work from our homes. Therefore, a good laptop and access to a reliable, high-speed Internet connection are required. The company is based in Europe and although no travel is required, we do encourage attendance at our annual meeting which rotates cities. Contact us to find out more about the working life at Severalnines!",
-                Location = "Remote",
-                CompanyName = "Severalnines",
-                Contact = "one-job@for.you",
-                LogoUrl = "https://remoteco.s3.amazonaws.com/wp-content/uploads/2019/05/severalnines-150x150.jpg",
-                UserId = "6b4f487f-5cde-4509-825b-103b69220131",
-            });
-
-            jobs.Add(new Job
-            {
-                Title = "Full Stack Developer at SixLeaf",
-                JobBody = @"About SixLeaf
+                    Location = "Remote",
+                    CompanyName = "Severalnines",
+                    Contact = "one-job@for.you",
+                    LogoUrl = "https://remoteco.s3.amazonaws.com/wp-content/uploads/2019/05/severalnines-150x150.jpg",
+                    UserId = "1b99c696-64f5-443a-ae1e-6b4a1bc8f2cb",
+                },
+                new Job
+                {
+                    Title = "Full Stack Developer at SixLeaf",
+                    JobBody = @"About SixLeaf
 Originally founded in 2014 as ZonBlast, SixLeaf is the leading marketing platform for Brand Owners on Amazon. We offer a suite of launch and re-launch solutions, and a growing suite of ancillary tools that are helping third party sellers launch, grow, scale, and exit physical product brands on Amazon.
 
 With the experience of being central to over 15,000 Brands’ successful launches in 7 years, SixLeaf is the cornerstone of fast-growing Brands. Since our founding in 2014, our team has had a hand in dozens of 8 figure exits, and have been a part of 9 figures of retail-value products sold on Amazon. By helping Brands grow, we’re helping our clients and their families achieve their dreams, and we’re helping to make Amazon a better, more relevant place for consumers to buy on Amazon. Each member of the SixLeaf team shares in the joy and responsibility of making e-commerce better for consumers and Brand Owners alike.
@@ -747,17 +739,16 @@ Experience working with Amazon Partner or MWS APIs
 Experience with Microsoft environment (visual studio, team services, sql), Slack, Asana, Product Board
 Sound Like You?
 To apply, submit your resume, your linkedin profile, and cover letter explaining why you’re the team player we’re in need of. While we won’t be able to apply to every applicant, if we feel like you’re a potential fit, we’ll be in touch within 3-5 business days. SixLeaf is an equal opportunity employer and considers all qualified applicants without regard to race, color, gender, religion, age, etc. No agency resumes please.",
-                Location = "Remote",
-                CompanyName = "SixLeaf",
-                Contact = "013633556478, SixLeaf@fake.fr",
-                LogoUrl = "https://remoteco.s3.amazonaws.com/wp-content/uploads/2021/06/14145119/SixLeaf-150x150.png",
-                UserId = "6b4f487f-5cde-4509-825b-103b69220131",
-            });
-
-            jobs.Add(new Job
-            {
-                Title = "Senior Backend Engineer – Collaboration and Reporting Infrastructure",
-                JobBody = @"Senior Backend Engineer – Collaboration and Reporting Infrastructure
+                    Location = "Remote",
+                    CompanyName = "SixLeaf",
+                    Contact = "013633556478, SixLeaf@fake.fr",
+                    LogoUrl = "https://remoteco.s3.amazonaws.com/wp-content/uploads/2021/06/14145119/SixLeaf-150x150.png",
+                    UserId = "7699db4d-e91c-4dcd-9672-7b88b8484930",
+                },
+                new Job
+                {
+                    Title = "Senior Backend Engineer – Collaboration and Reporting Infrastructure",
+                    JobBody = @"Senior Backend Engineer – Collaboration and Reporting Infrastructure
 
 Location: US National
 Remote, United States
@@ -785,17 +776,16 @@ Bonus
 
 Experience with technologies like Spring, Cassandra, Redis, Kafka, Elasticsearch
 Building cloud applications (ex. AWS, Google Cloud, Microsoft Azure)",
-                Location = "NY, USA",
-                CompanyName = "Netflix",
-                Contact = "hr@fake.job",
-                LogoUrl = "https://remoteco.s3.amazonaws.com/wp-content/uploads/2019/07/30144933/netflix-150x150.jpg",
-                UserId = "6b4f487f-5cde-4509-825b-103b69220131",
-            });
-
-            jobs.Add(new Job
-            {
-                Title = "Senior Manager, Backend Engineering",
-                JobBody = @"Life360 is a Remote First company, which means a remote work environment will be the primary experience for all employees. All positions, unless otherwise specified, can be performed remotely (within the US) regardless of any specified location above.
+                    Location = "NY, USA",
+                    CompanyName = "Netflix",
+                    Contact = "hr@fake.job",
+                    LogoUrl = "https://remoteco.s3.amazonaws.com/wp-content/uploads/2019/07/30144933/netflix-150x150.jpg",
+                    UserId = "7699db4d-e91c-4dcd-9672-7b88b8484930",
+                },
+                new Job
+                {
+                    Title = "Senior Manager, Backend Engineering",
+                    JobBody = @"Life360 is a Remote First company, which means a remote work environment will be the primary experience for all employees. All positions, unless otherwise specified, can be performed remotely (within the US) regardless of any specified location above.
 
 About Life360
 
@@ -866,12 +856,13 @@ We encourage people of all backgrounds to apply. We believe that a diversity of 
 #LI-Remote
 
 Since the majority of our staff is located on the US West Coast, our primary working hours will be 9-4pm PST",
-                Location = "Atina, Greece",
-                CompanyName = "Life360",
-                Contact = "life360@gosho.bg",
-                LogoUrl = "https://remoteco.s3.amazonaws.com/wp-content/uploads/2018/10/life_360-150x150.jpeg",
-                UserId = "6b4f487f-5cde-4509-825b-103b69220131",
-            });
+                    Location = "Atina, Greece",
+                    CompanyName = "Life360",
+                    Contact = "life360@gosho.bg",
+                    LogoUrl = "https://remoteco.s3.amazonaws.com/wp-content/uploads/2018/10/life_360-150x150.jpeg",
+                    UserId = "1b99c696-64f5-443a-ae1e-6b4a1bc8f2cb",
+                },
+            };
 
             await dbContext.AddRangeAsync(jobs);
         }
