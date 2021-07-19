@@ -27,6 +27,9 @@
         [MaxLength(2048)]
         public string PictureUrl { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether remove it, you dont use it.
+        /// </summary>
         public bool IsActive { get; set; }
 
         [Required]

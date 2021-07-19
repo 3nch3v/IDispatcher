@@ -1,13 +1,11 @@
 ﻿@model Dispatcher.Web.ViewModels.BlogModels.BlogInputModel
 @{
-    this.ViewData["Title"] = "New Post";
+    this.ViewBag.Title = "New Post";
 }
 
 <div class="create-blog-main" style="max-width: 900px; margin-left: auto; margin-right: auto;">
     <h3 class="create-blog-title" style="margin:30px 10px">Create new Post</h3>
-
     <form method="post" enctype="multipart/form-data" class="col-md-12 offser-md-8">
-
         <div class="form-group">
             <label asp-for="Title">Title:</label>
             <input asp-for="Title" class="form-control" />
@@ -23,9 +21,7 @@
             <input asp-for="VideoLink" class="form-control" />
             <span asp-validation-for="VideoLink" class="text-danger"></span>
         </div>
-
         <div>And / Or</div><br>
-
         <div class="form-group">
             <label asp-for="Picture">Add Picture (optional)</label>
             <input asp-for="Picture" type="file" class="form-control-file" />
@@ -35,7 +31,6 @@
         <input type="submit" class="tm-btn text-uppercase" value="Create" />
     </form>
 </div>
-
 
 @section Scripts
 {

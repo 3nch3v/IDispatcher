@@ -1,11 +1,11 @@
 ﻿@model Dispatcher.Web.ViewModels.JobModels.EditJobInputModel
 @{
-    this.ViewData["Title"] = "Edit Job Ad";
+    this.ViewBag.Title = "Edit your job ad";
 }
 
 <div class="edit-job-main" style="max-width: 900px; margin-left: auto; margin-right: auto;">
     <div>
-        <h3 style="margin:30px 10px">Edit Job Ad</h3>
+        <h3 style="margin:30px 10px">@this.ViewBag.Title</h3>
     </div>
     <div>
         <form method="post" class="col-md-12 offser-md-8">

@@ -3,9 +3,8 @@
 @model Dispatcher.Web.ViewModels.BlogModels.BlogPostViewModel
 @inject UserManager<ApplicationUser> userManager
 
-
 @{
-    this.ViewData["Title"] = Model.Title;
+    this.ViewBag.Title = Model.Title;
     string currUserId = this.userManager.GetUserId(this.User);
 }
 
@@ -30,8 +29,6 @@
         <div>
             <h2>@Model.Title</h2>
             <div>
-
-
                 @if (Model.VideoLink != null)
                 {
                     <div class="embed-responsive embed-responsive-16by9" style="max-width: 500px; float: left; margin-right: 30px;">

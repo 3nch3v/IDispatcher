@@ -5,46 +5,57 @@
 @model AllCommentsViewModel
 
 @{
-    this.ViewData["Title"] = "Customers reviews";
+    this.ViewBag.Title = "Customers reviews";
     string currUserId = this.userManager.GetUserId(this.User);
 }
 
 <div class="container-fluid">
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-8 col-lg-9 col-xl-9" style="margin: 30px auto;">
-            <div>
+            @if (Model.Comments.Count() > 0)
+            {
+                <div>
+                    @foreach (var comment in Model.Comments)
+                    {
+                        <div class="card mb-1 col-md-12 offser-md-6">
+                            <div class="card-body p-2 p-sm-3">
+                                @for (int i = 0; i < comment.StarsCount; i++)
+                                {
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                }
+                                @for (int i = 0; i < 5 - comment.StarsCount; i++)
+                                {
+                                    <i class="fa fa-star-o" aria-hidden="true"></i>
+                                }
+                                <div class="media forum-item">
+                                    <div class="media-body">
+                                        <p class="text-secondary">@comment.Comment</p>
 
-                @foreach (var comment in Model.Comments)
-                {
-
-                    <div class="card mb-1 col-md-12 offser-md-6">
-                        <div class="card-body p-2 p-sm-3">
-                            @for (int i = 0; i < comment.StarsCount; i++)
-                            {
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                            }
-                            @for (int i = 0; i < 5 - comment.StarsCount; i++)
-                            {
-                                <i class="fa fa-star-o" aria-hidden="true"></i>
-                            }
-                            <div class="media forum-item">
-
-                                <div class="media-body">
-                                    <p class="text-secondary">@comment.Comment</p>
-
-                                    <div class="d-flex flex-row justify-content-between">
-                                        <span>@comment.CreatedOn.ToString("g")</span>
-                                        <span>@comment.AppraiserUsername</span>
+                                        <div class="d-flex flex-row justify-content-between">
+                                            <span>@comment.CreatedOn.ToString("g")</span>
+                                            <span>@comment.AppraiserUsername</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                }
-            </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div>
+                    <p>There are no comments available.
+                    @if (Model.UserId != currUserId)
+                    {
+                        <span>Write the first comment!</span>  
+                     }
+                    </p>
+                </div>
+            }
 
             @if (Model.UserId != currUserId)
-            {
+            {            
                 <div class="form-control-plaintext">
                     <form method="post" asp-controller="CustomersReviews" asp-action="Comment" class="col-md-12 offser-md-6">
                         <input name="userId" value="@Model.UserId" type="hidden">
@@ -62,11 +73,8 @@
                         </div>
                         <button type="submit" class="btn btn-outline-secondary" style="float: right;">Comment</button>
                     </form>
-
                 </div>
             }
         </div>
-
     </div>
-
 </div>

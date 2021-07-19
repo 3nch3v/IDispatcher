@@ -2,81 +2,27 @@
 @model AllAdsViewModel
 
 @{
-    this.ViewData["Title"] = "The Talents";
+    this.ViewBag.Title = "The Talents";
+    this.ViewData["Location"] = "Ads";
 }
 <div class="container-fluid">
     <nav class="navbar navbar-light bg-transparent justify-content-between">
-        <div class="navbar-brand"><h3><a asp-controller="Ads" asp-action="AllAds" class="tm-gold-text">@this.ViewData["Title"]</a></h3></div>
-
+        <div class="navbar-brand">
+            <h3><a asp-controller="Ads" asp-action="AllAds" class="tm-gold-text">@this.ViewBag.Title</a></h3>
+        </div>
         <form asp-controller="Ads" asp-action="Search" method="get" class="form-inline" >
             <input name="keyWords"  class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-secondary my-2 my-sm-0 tm-gold-text" type="submit">Search</button>
         </form>
-
         <span><a asp-controller="Ads" asp-action="Create" type="button" class="btn btn-outline-secondary">Create Ad</a></span>
     </nav>
 
     <div class="ad-main-container row tm-row">
         @foreach (var ad in Model.Ads)
         {
-            <article class="col-12 col-md-4 tm-post" style="margin-bottom: 30px">
-                <hr class="tm-hr-primary">
-                <a asp-controller="Ads" asp-action="Ad" asp-route-id="@ad.Id" class="effect-lily tm-post-link tm-pt-60">
-                    <div class="tm-post-link-inner">
-                        @if (!string.IsNullOrWhiteSpace(ad.PictureUrl))
-                        {
-                            <img src="@ad.PictureUrl" alt="@ad.Title" class="tm-contact-img-container" style="max-width:100%; object-fit: cover;">
-                        }
-                        else
-                        {
-                            <img src="~/img/default-ad.png" alt="@ad.Title" class="img-fluid" />
-
-                        }
-                    </div>
-                    <h2 class="tm-margin-b-10 tm-gold-text">@ad.Title</h2>
-                </a>
-                <p>@ad.ClearDescription.Substring(0, 80)</p>
-                <div class="d-flex justify-content-between tm-pt-45">
-                    <span>@ad.Compensation</span>
-                    <span>by <a class="tm-gold-text" asp-controller="Profiles" asp-action="Profile" asp-route-userId="@ad.UserId">@ad.UserUsername</a></span>
-                </div>
-                <hr>
-                <div class="d-flex justify-content-between">
-                    <span class="tm-color-primary">For: @ad.AdvertisementTypeType</span>
-                    <span class="tm-color-primary">@ad.CreatedOn.ToString("d")</span>
-                </div>
-            </article>
+           <partial name="_AdCardPartial" model="ad" />
         }
     </div>
-
     <br>
-    <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-center">
-            <li class="page-item @if (!Model.HasPreviousPage) { <text> disabled </text> }">
-                <a asp-controller="Ads" asp-action="AllAds" asp-route-page="@Model.PreviousPage" class="page-link tm-gold-text">Previous</a>
-            </li>
-
-            @if (Model.HasPreviousPage)
-            {
-                <li class="page-item">
-                    <a asp-controller="Ads" asp-action="AllAds" asp-route-page="@(Model.Page - 1)" class="page-link tm-gold-text">@(Model.Page - 1)</a>
-                </li>
-            }
-
-            <li class="page-item">
-                <a asp-controller="Ads" asp-action="AllAds" asp-route-page="@Model.Page" class="page-link tm-gold-text">@Model.Page</a>
-            </li>
-
-            @if (Model.HasNextPage)
-            {
-                <li class="page-item">
-                    <a asp-controller="Ads" asp-action="AllAds" asp-route-page="@(Model.Page + 1)" class="page-link tm-gold-text">@(Model.Page + 1)</a>
-                </li>
-            }
-
-            <li class="page-item  @if (!Model.HasNextPage) { <text> disabled </text> }">
-                <a asp-controller="Ads" asp-action="AllAds" asp-route-page="@Model.NextPage" class="page-link tm-gold-text">Next</a>
-            </li>
-        </ul>
-    </nav>
+    <partial name="_PaginationPartial" view-data="this.ViewData" />
 </div>

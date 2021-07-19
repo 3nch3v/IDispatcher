@@ -94,6 +94,14 @@
             return this.RedirectToAction(nameof(this.AllAds));
         }
 
+        public IActionResult Ad(int id)
+        {
+            var ad = this.adsService.GetById<SingleAdViewModel>(id);
+
+            return this.View(ad);
+        }
+
+        [HttpGet]
         public IActionResult AllAds(int page = GlobalConstants.DefaultPageNumber)
         {
             var ads = new AllAdsViewModel
@@ -104,13 +112,6 @@
             };
 
             return this.View(ads);
-        }
-
-        public IActionResult Ad(int id)
-        {
-            var ad = this.adsService.GetById<SingleAdViewModel>(id);
-
-            return this.View(ad);
         }
 
         [HttpGet]
@@ -126,8 +127,8 @@
             var ads = new AllAdsViewModel
             {
                 Ads = this.adsService.SearchResults<AdsViewModel>(page, GlobalConstants.AdsPageEntitiesCount, this.TempData["KeyWords"].ToString()),
-                Page = page,
                 AdsCount = this.adsService.SearchCount(),
+                Page = page,
             };
 
             return this.View(ads);

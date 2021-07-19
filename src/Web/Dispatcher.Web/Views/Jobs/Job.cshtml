@@ -4,12 +4,16 @@
 @inject UserManager<ApplicationUser> userManager
 
 @{
-    this.ViewData["Title"] = this.Model.Title;
+    this.ViewBag.Title = this.Model.Title;
     string currUserId = this.userManager.GetUserId(this.User);
 }
 
 <div class="d-flex justify-content-between">
-    <div class="navbar-brand"><h3 class="tm-gold-text"><a class="tm-gold-text" asp-controller="Jobs" asp-action="AllJobs"><i class="fa fa-arrow-left"></i> Back to Blog Posts</a></h3></div>
+    <div class="navbar-brand">
+        <h3 class="tm-gold-text">
+            <a class="tm-gold-text" asp-controller="Jobs" asp-action="AllJobs"><i class="fa fa-arrow-left"></i> Back to Blog Posts</a>
+        </h3>
+    </div>
     @if (currUserId == Model.UserId)
     {
         <div>
@@ -21,14 +25,12 @@
             </span>
         </div>
     }
-
 </div>
 
 <div class="d-flex justify-content-lg-end"></div>
 <br>
 <div class="container-fluid">
     <div class="row">
-
         <div class="col-xs-12 col-sm-12 col-md-8 col-lg-9 col-xl-9">
             <div class="tm-blog-post">
                 <div>
@@ -40,7 +42,6 @@
                         <img src="@Model.LogoUrl" alt="Image" class="img-fluid tm-img-post" width="250" style="float:left; margin-right:30px; margin-bottom: 5px;">
                     }
                 </div>
-
                 <br>
                 <div>
                     <p style="margin-top: -50px">@Html.Raw(Model.SanitizedBody)</p>
@@ -48,52 +49,19 @@
                 <hr>
                 <div class="d-flex justify-content-between">
                     <span>@Model.CompanyName</span>
-                    <span>@Model.Contact</span>
+                    <span><a asp-controller="Profiles" asp-action="Profile" class="tm-gold-text">@Model.Contact</a></span>
                 </div>
                 <div class="d-flex justify-content-between">
                     <span>@Model.Location</span>
                     <span>@Model.CreatedOn.ToString("d")</span>
                 </div>
                 <br>
-
             </div>
-
-            <div class="row tm-margin-t-big">
+            <div class="row tm-margin-t-big" style="margin-top:45px;">
                 <vc:random-jobs></vc:random-jobs>
             </div>
         </div>
 
-        <aside class="col-xs-12 col-sm-12 col-md-4 col-lg-3 col-xl-3 tm-aside-r">
-            <div class="tm-aside-container">
-
-                <hr class="tm-margin-t-small">
-                <h3 class="tm-gold-text tm-title">
-                    Blog Post
-                </h3>
-                <hr class="tm-margin-t-small">
-
-                <div class="tm-content-box tm-margin-t-small">
-
-                    <vc:random-blog-post-component is-with-picture="false"></vc:random-blog-post-component>
-
-                </div>
-                <hr class="tm-margin-t-small">
-                <h3 class="tm-gold-text tm-title tm-margin-t-small">
-                    Useful Links
-                </h3>
-                <hr class="tm-margin-t-small">
-                <nav>
-                    <ul class="nav">
-                        <li><a href="https://github.com/" class="tm-text-link">github.com</a></li>
-                        <li><a href="https://stackoverflow.com/" class="tm-text-link">stackoverflow.com</a></li>
-                        <li><a href="https://azure.microsoft.com/" class="tm-text-link">azure.microsoft.com</a></li>
-                        <li><a href="https://www.hackerrank.com/" class="tm-text-link">www.hackerrank.com</a></li>
-                        <li><a href="https://softuni.bg/" class="tm-text-link">softuni.bg</a></li>
-                    </ul>
-                </nav>
-
-                <hr class="tm-margin-t-small">
-            </div>
-        </aside>
+        <partial name="_AdvertisementsSideBarPartial" />
     </div>
 </div>
