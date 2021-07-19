@@ -2,34 +2,29 @@
 @model DiscussionInputModel
 
 @{
-    this.ViewData["Title"] = "Start new Discussion";
+    this.ViewBag.Title = "Start new Discussion";
 }
 
 <div class="create-blog-main" style="max-width: 900px; margin-left: auto; margin-right: auto;">
     <div class="create-blog-title" style="margin:30px 10px"> 
-        <h5>New Discussion</h5>
-    </div>
-   
+        <h5>@this.ViewBag.Title</h5>
+    </div> 
     <form method="post" asp-controller="Forum" asp-action="Create" class="col-md-12 offser-md-8">
-
         <div class="form-group">
             <label asp-for="CategoryId">Category</label>
             <p><select class="form-control-sm" asp-for="CategoryId" asp-items="Model.Categories.Select(t => new SelectListItem(t.Name, t.Id.ToString()))"></select></p>
             <span asp-validation-for="CategoryId" class="text-danger"></span>
         </div>
-
         <div class="form-group">
             <label asp-for="Title">Title</label>
             <input asp-for="Title" class="form-control">
             <span asp-validation-for="Title" class="text-danger"></span>
         </div>
-
         <div class="form-group">
             <label asp-for="Description">Description</label>
             <textarea asp-for="Description" class="form-control" required minlength="50" rows="10"></textarea>
             <span asp-validation-for="Description" class="text-danger"></span>
         </div>
-
         <button type="submit" class="tm-btn text-uppercase">Create</button>
     </form>
 </div>

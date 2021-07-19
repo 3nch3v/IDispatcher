@@ -4,6 +4,7 @@
     using System.Linq;
     using System.Threading.Tasks;
 
+    using Dispatcher.Common;
     using Dispatcher.Data.Common.Repositories;
     using Dispatcher.Data.Models.ForumModels;
     using Dispatcher.Services.Data.Contracts;
@@ -57,6 +58,24 @@
             await this.forumRepository.SaveChangesAsync();
         }
 
+        public int GetDiscussionsCount(string categoty)
+        {
+            if (categoty == GlobalConstants.Unsolved)
+            {
+                return this.forumRepository.AllAsNoTracking()
+               .Where(x => x.IsSolved == false)
+               .Count();
+            }
+            else if (!string.IsNullOrEmpty(categoty))
+            {
+                return this.forumRepository.AllAsNoTracking()
+               .Where(x => x.Category.Name == categoty)
+               .Count();
+            }
+
+            return this.forumRepository.All().Count();
+        }
+
         public T GetById<T>(int id)
         {
             var discussion = this.forumRepository.AllAsNoTracking()
@@ -68,21 +87,31 @@
             return discussion;
         }
 
+        public IEnumerable<T> GetCategories<T>()
+        {
+            var categories = this.categoriesRepository.AllAsNoTracking()
+                .To<T>()
+                .ToList();
+
+            return categories;
+        }
+
         public IEnumerable<T> GetAllForumDiscussions<T>(int page, int pageEntitiesCount, string category = null)
         {
             IEnumerable<T> discussions = null;
 
-            if (string.IsNullOrEmpty(category))
+            if (category == GlobalConstants.Unsolved)
             {
-               discussions = this.forumRepository.AllAsNoTracking()
+                discussions = this.forumRepository.AllAsNoTracking()
                .Include(x => x.Votes)
+               .Where(x => x.IsSolved == false)
                .OrderByDescending(p => p.CreatedOn)
                .Skip((page - 1) * pageEntitiesCount)
                .Take(pageEntitiesCount)
                .To<T>()
                .ToList();
             }
-            else if (!string.IsNullOrEmpty(category) && category != "unsolved")
+            else if (!string.IsNullOrEmpty(category))
             {
                 discussions = this.forumRepository.AllAsNoTracking()
                .Include(x => x.Votes)
@@ -96,47 +125,15 @@
             else
             {
                 discussions = this.forumRepository.AllAsNoTracking()
-               .Include(x => x.Votes)
-               .Where(x => x.IsSolved == false)
-               .OrderByDescending(p => p.CreatedOn)
-               .Skip((page - 1) * pageEntitiesCount)
-               .Take(pageEntitiesCount)
-               .To<T>()
-               .ToList();
+                .Include(x => x.Votes)
+                .OrderByDescending(p => p.CreatedOn)
+                .Skip((page - 1) * pageEntitiesCount)
+                .Take(pageEntitiesCount)
+                .To<T>()
+                .ToList();
             }
 
             return discussions;
-        }
-
-        public IEnumerable<T> GetCategories<T>()
-        {
-            var categories = this.categoriesRepository.AllAsNoTracking()
-                .To<T>()
-                .ToList();
-
-            return categories;
-        }
-
-        public int ForumDiscussionsCount()
-        {
-            return this.forumRepository.All().Count();
-        }
-
-        public int GetUnsolvedDiscussionsCount()
-        {
-            int unsolvedCount = this.forumRepository
-                .AllAsNoTracking()
-                .Where(d => d.IsSolved == false)
-                .Count();
-
-            return unsolvedCount;
-        }
-
-        public int GetDiscussionsCountPerCategory(string categoty)
-        {
-            return this.forumRepository.AllAsNoTracking()
-                .Where(x => x.Category.Name == categoty)
-                .Count();
         }
     }
 }

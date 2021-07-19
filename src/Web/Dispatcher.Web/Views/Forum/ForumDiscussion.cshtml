@@ -5,12 +5,12 @@
 @inject UserManager<ApplicationUser> userManager
 
 @{
-    this.ViewData["Title"] = "Forum Discussions";
+    this.ViewBag.Title = "Forum Discussions";
     string currUserId = this.userManager.GetUserId(this.User);
 }
 
 <nav class="navbar navbar-light bg-transparent justify-content-between">
-    <div class="navbar-brand"><h3 class="tm-gold-text"><a asp-controller="Forum" asp-action="ForumDiscussions" class="tm-gold-text">@this.ViewData["Title"]</a></h3></div>
+    <div class="navbar-brand"><h3 class="tm-gold-text"><a asp-controller="Forum" asp-action="ForumDiscussions" class="tm-gold-text">@this.ViewBag.Title</a></h3></div>
     <a asp-controller="Forum" asp-action="Create" type="button" class="btn btn-outline-secondary">Start Discussion</a>
 </nav>
 
@@ -23,14 +23,10 @@
             </aside>
 
             <div class="col-xs-12 col-sm-12 col-md-8 col-lg-9 col-xl-9">
-
                 <div>
-
-
                     <div class="card mb-1 col-md-12 offser-md-6">
                         <div class="card-body p-2 p-sm-3">
                             <div class="media forum-item">
-
                                 <a asp-controller="Profiles" asp-action="Profile" asp-route-userId="@Model.UserId">
                                     <img src="@Model.ProfilePicture" class="mr-3 rounded-circle" width="50" alt="User" />
                                 </a>
@@ -50,7 +46,6 @@
                                     <div class="d-flex flex-row justify-content-between">
                                         <span>@Model.CreatedOn.ToString("g")</span>
 
-
                                         <form id="votesForm" method="post"></form>
 
                                         <div class="text-muted small text-center align-self-center">
@@ -68,7 +63,6 @@
                                             </span>
                                             <span id="dislikesCount">@Model.Dislikes</span>
                                         </div>
-
 
                                         <div>@Model.UserUsername</div>
                                     </div>
@@ -98,7 +92,6 @@
                             </div>
                         </div>
                     </div>
-
 
                     @foreach (var post in Model.Posts)
                     {
@@ -144,13 +137,9 @@
                         <button type="submit" class="btn btn-outline-secondary" style="float: right;">Comment</button>
                     </form>
                 </div>
-
             </div>
-
         </div>
-
     </div>
-
 </section>
 
 

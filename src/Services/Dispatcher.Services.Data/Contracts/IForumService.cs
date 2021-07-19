@@ -11,10 +11,6 @@
 
         IEnumerable<T> GetAllForumDiscussions<T>(int page, int pageEntitiesCount, string category);
 
-        int ForumDiscussionsCount();
-
-        int GetDiscussionsCountPerCategory(string category);
-
-        int GetUnsolvedDiscussionsCount();
+        int GetDiscussionsCount(string category);
     }
 }

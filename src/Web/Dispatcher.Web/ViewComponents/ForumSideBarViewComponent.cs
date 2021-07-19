@@ -1,5 +1,6 @@
 ﻿namespace Dispatcher.Web.ViewComponents
 {
+    using Dispatcher.Common;
     using Dispatcher.Services.Data.Contracts;
     using Dispatcher.Web.ViewModels.ForumModels;
     using Microsoft.AspNetCore.Mvc;
@@ -18,7 +19,7 @@
             var categories = new CategoriesWithDiscussionsCountViewModel
             {
                 Categories = this.forumServices.GetCategories<SingleCategoryViewModel>(),
-                UnsolvedCount = this.forumServices.GetUnsolvedDiscussionsCount(),
+                UnsolvedCount = this.forumServices.GetDiscussionsCount(GlobalConstants.Unsolved),
             };
 
             return this.View(categories);

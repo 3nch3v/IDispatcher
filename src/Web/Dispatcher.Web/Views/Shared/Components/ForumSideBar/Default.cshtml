@@ -2,26 +2,20 @@
 @model CategoriesWithDiscussionsCountViewModel
 
 <div class="tm-aside-container">
-    <h3 class="tm-gold-text tm-title">
-        Categories
-    </h3>
+    <h3 class="tm-gold-text tm-title">Categories</h3>
     <hr class="tm-margin-t-small">
-
-
     @foreach (var category in Model.Categories)
     {
         <form method="get">
             <span>
-                <a asp-controller="Forum" asp-action="GetDiscussionsPerCategory" asp-route-category="@category.Name" class="tm-text-link" style="text-decoration: none">@category.Name (@category.DiscussionsCount)</a>
+                <a asp-controller="Forum" asp-action="ForumDiscussions" asp-route-category="@category.Name" class="tm-text-link" style="text-decoration: none">@category.Name (@category.DiscussionsCount)</a>
             </span>
             <br>
         </form>
     }
-
     <span>
-        <a asp-controller="Forum" asp-action="GetUnsolvedDiscussions" class="tm-text-link" style="text-decoration: none">Unsolved (@Model.UnsolvedCount)</a>
+        <a asp-controller="Forum" asp-action="ForumDiscussions" asp-route-category="Unsolved" class="tm-text-link" style="text-decoration: none">Unsolved (@Model.UnsolvedCount)</a>
     </span>
     <br>
-
     <hr class="tm-margin-t-small">
 </div>

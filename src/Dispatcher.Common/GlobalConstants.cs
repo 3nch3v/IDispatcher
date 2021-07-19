@@ -12,6 +12,8 @@
 
         public const string Dislike = "Dislike";
 
+        public const string Unsolved = "Unsolved";
+
         public const int AdsPageEntitiesCount = 9;
 
         public const int DefaultPageNumber = 1;

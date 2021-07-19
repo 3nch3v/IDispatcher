@@ -113,48 +113,20 @@
             return this.View(discussion);
         }
 
-        public IActionResult ForumDiscussions(int page = GlobalConstants.DefaultPageNumber)
-        {
-            var forumDiscussions = new ForumDiscussionsViewModel
-            {
-                AllForumDiscussions = this.forumService.GetAllForumDiscussions<SingleForumDiscussionsViewModel>(page, GlobalConstants.ForumPageEntitiesCount, null),
-                ForumDiscussionsCount = this.forumService.ForumDiscussionsCount(),
-                Page = page,
-            };
-
-            this.SetProfilePictures(forumDiscussions);
-
-            return this.View(forumDiscussions);
-        }
-
-        public IActionResult GetDiscussionsPerCategory(string category, int page = GlobalConstants.DefaultPageNumber)
+        public IActionResult ForumDiscussions(string category = null, int page = GlobalConstants.DefaultPageNumber)
         {
             this.TempData["Category"] = category;
 
             var forumDiscussions = new ForumDiscussionsViewModel
             {
                 AllForumDiscussions = this.forumService.GetAllForumDiscussions<SingleForumDiscussionsViewModel>(page, GlobalConstants.ForumPageEntitiesCount, category),
-                ForumDiscussionsCount = this.forumService.GetDiscussionsCountPerCategory(category),
+                ForumDiscussionsCount = this.forumService.GetDiscussionsCount(category),
                 Page = page,
             };
 
             this.SetProfilePictures(forumDiscussions);
 
             return this.View(forumDiscussions);
-        }
-
-        public IActionResult GetUnsolvedDiscussions(int page = GlobalConstants.DefaultPageNumber)
-        {
-            var unsolvedDiscussions = new ForumDiscussionsViewModel
-            {
-                AllForumDiscussions = this.forumService.GetAllForumDiscussions<SingleForumDiscussionsViewModel>(page, GlobalConstants.ForumPageEntitiesCount, UnsolvedDiscussions),
-                ForumDiscussionsCount = this.forumService.GetUnsolvedDiscussionsCount(),
-                Page = page,
-            };
-
-            this.SetProfilePictures(unsolvedDiscussions);
-
-            return this.View(unsolvedDiscussions);
         }
 
         [Authorize]
