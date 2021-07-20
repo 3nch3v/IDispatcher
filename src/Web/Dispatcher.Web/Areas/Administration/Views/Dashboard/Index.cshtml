@@ -1,7 +1,71 @@
 ﻿@model Dispatcher.Web.ViewModels.Administration.Dashboard.IndexViewModel
-@{
-    this.ViewData["Title"] = "Admin dashboard";
+
+@{ 
+    this.ViewBag.Title = "Admin dashboard"; 
 }
 
-<h1>@this.ViewData["Title"]</h1>
-Settings: @this.Model.SettingsCount
+<div style="max-width: 1200px; margin: 50px auto;">
+    <div>
+        <h2 style="text-align: center;">@this.ViewBag.Title</h2>
+    </div>
+    <section style="margin-top: 15px;">
+        <header>
+            <h3>Current statistic:</h3>
+        </header>
+        <article>
+            <table style="width: 100%; border-collapse: collapse; margin: 25px 0; font-size: 0.9em; font-family: sans-serif; min-width: 400px; box-shadow: 0 0 20px rgba(0, 0, 0, 0.15); ">
+                <thead>
+                    <tr style="background-color: #CC9900; color: #ffffff; text-align: left; ">
+                        <th style="padding: 12px 15px;">Users count:</th>
+                        <th style="padding: 12px 15px;">Advertisements count:</th>
+                        <th style="padding: 12px 15px;">Jobs count:</th>
+                        <th style="padding: 12px 15px;">Blog posts count:</th>
+                        <th style="padding: 12px 15px;">Forum discussions count:</th>
+                        <th style="padding: 12px 15px;">Comments count</th>
+                        <th style="padding: 12px 15px;">Cunstomers Reviews</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="border-bottom: 1px solid #dddddd;">
+                        <td style="padding: 12px 15px;">@Model.UsersCount</td>
+                        <td style="padding: 12px 15px;">@Model.AdsCount</td>
+                        <td style="padding: 12px 15px;">@Model.JobsCount</td>
+                        <td style="padding: 12px 15px;">@Model.BlogsCount</td>
+                        <td style="padding: 12px 15px;">@Model.DiscussionsCount</td>
+                        <td style="padding: 12px 15px;">@Model.CommentsCount</td>
+                        <td style="padding: 12px 15px;">@Model.ReviewsCount</td>
+                    </tr>
+                </tbody>
+            </table>
+        </article>
+    </section>
+    <div>
+        <form asp-controller="Administration" asp-action="GetData" method="post">
+            <div asp-validation-summary="All">
+                <span>Please correct the following errors</span>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-3">
+                    <label asp-for="SearchData">Searching data type</label>
+                    <select asp-for="SearchData" asp-items="Model.SearchData.Select(d => new SelectListItem(d, d))" class="form-control" style="padding-bottom: 0px;"></select>
+                    <span asp-validation-for="SearchData"></span>
+                </div>
+                <div class="form-group col-md-3">
+                    <label asp-for="SearchMethod">Searching method</label>
+                    <select asp-for="SearchMethod" asp-items="Model.SearchMethod.Select(m => new SelectListItem(m, m))" class="form-control" style="padding-bottom: 0px;"></select>
+                    <span asp-validation-for="SearchMethod"></span>
+                </div>
+            </div>
+            <div>
+                <div class="col-md-6">
+                    <label asp-for="SearchTerm">Searching term</label>
+                    <input asp-for="SearchTerm" class="form-control" required/>
+                    <span asp-validation-for="SearchTerm"></span>
+                </div>
+                <div class="form-group col-md-3" style="margin-top: 20px">
+                    <input type="submit" value="Search" class="tm-btn text-uppercase">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

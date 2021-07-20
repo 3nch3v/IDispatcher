@@ -1,23 +1,33 @@
 ﻿namespace Dispatcher.Web.Areas.Administration.Controllers
 {
+    using AutoMapper;
+    using Dispatcher.Common;
     using Dispatcher.Services.Data.Contracts;
     using Dispatcher.Web.ViewModels.Administration.Dashboard;
-
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
-    public class DashboardController : AdministrationController
+    [Area("Administration")]
+    [Authorize(Roles = GlobalConstants.AdministratorRole)]
+    public class DashboardController : Controller
     {
-        private readonly ISettingsService settingsService;
+        private readonly IAdministartorsServices administartorsServices;
+        private readonly IMapper mapper;
 
-        public DashboardController(ISettingsService settingsService)
+        public DashboardController(
+            IAdministartorsServices administartorsServices,
+            IMapper mapper)
         {
-            this.settingsService = settingsService;
+            this.administartorsServices = administartorsServices;
+            this.mapper = mapper;
         }
 
         public IActionResult Index()
         {
-            var viewModel = new IndexViewModel { SettingsCount = this.settingsService.GetCount(), };
-            return this.View(viewModel);
+            var data = this.administartorsServices.GetIndexData();
+            var indexData = this.mapper.Map<IndexViewModel>(data);
+
+            return this.View(indexData);
         }
     }
 }

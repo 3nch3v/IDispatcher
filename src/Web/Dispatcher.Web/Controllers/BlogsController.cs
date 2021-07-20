@@ -19,20 +19,17 @@
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IWebHostEnvironment environment;
         private readonly IStringValidatorService stringValidatorService;
-        private readonly IMapper mapper;
 
         public BlogsController(
             UserManager<ApplicationUser> userManager,
             IBlogService blogServie,
             IWebHostEnvironment environment,
-            IStringValidatorService stringValidatorService,
-            IMapper mapper)
+            IStringValidatorService stringValidatorService)
         {
             this.blogServie = blogServie;
             this.userManager = userManager;
             this.environment = environment;
             this.stringValidatorService = stringValidatorService;
-            this.mapper = mapper;
         }
 
         [Authorize]

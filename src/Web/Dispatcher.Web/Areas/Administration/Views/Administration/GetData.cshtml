@@ -1,0 +1,16 @@
+﻿@using Dispatcher.Web.ViewModels.Administration
+@model SearchDataViewmodel
+
+@{ 
+    this.ViewBag.Title = "Requested data";
+}
+
+<h1>@this.ViewBag.Title</h1>
+
+@foreach (var data in Model.Data)
+{
+    <h1>@data.Id</h1>
+    <h3>@data.Title</h3>
+    <h3>@data.Content</h3>
+    <h3>@data.Username</h3>
+}

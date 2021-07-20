@@ -2,6 +2,8 @@
 {
     using AutoMapper;
     using Dispatcher.Services.Data.Dtos;
+    using Dispatcher.Web.ViewModels.Administration;
+    using Dispatcher.Web.ViewModels.Administration.Dashboard;
     using Dispatcher.Web.ViewModels.BlogModels;
     using Dispatcher.Web.ViewModels.ProfileModels;
 
@@ -23,6 +25,8 @@
             this.CreateMap<ProfileForumDiscussionsDto, ProfileForumDiscussionsViewModel>();
             this.CreateMap<ProfileBlogDtos, ProfileBlogsViewModel>();
             this.CreateMap<ProfileJobsDto, ProfileJobsViewModel>();
+            this.CreateMap<AdminIndexDto, IndexViewModel>();
+            this.CreateMap<SearchDataDto, DataViewModel>();
         }
     }
 }

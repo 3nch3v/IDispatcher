@@ -82,6 +82,7 @@
             services.AddTransient<IProfileService, ProfileService>();
             services.AddTransient<IStringValidatorService, StringValidatorService>();
             services.AddTransient<ICommentService, CommentService>();
+            services.AddTransient<IAdministartorsServices, AdministartorsServices>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

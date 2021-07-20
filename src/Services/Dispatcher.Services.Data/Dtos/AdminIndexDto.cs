@@ -1,14 +1,12 @@
-﻿namespace Dispatcher.Web.ViewModels.Administration.Dashboard
+﻿namespace Dispatcher.Services.Data.Dtos
 {
     using System.Collections.Generic;
 
-    public class IndexViewModel
+    public class AdminIndexDto
     {
         public IEnumerable<string> SearchData { get; set; }
 
         public IEnumerable<string> SearchMethod { get; set; }
-
-        public string SearchTerm { get; set; }
 
         public int UsersCount { get; set; }
 
