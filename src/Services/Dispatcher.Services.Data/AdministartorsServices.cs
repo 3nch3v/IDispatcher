@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
 
     using Dispatcher.Data.Common.Repositories;
     using Dispatcher.Data.Models;
@@ -42,14 +43,51 @@
             this.customersReviesRepository = customersReviesRepository;
         }
 
-        public IEnumerable<SearchDataDto> GetData(string searchData, string searchMethod, string searchTerm)
+        public AdminIndexDto GetIndexData()
         {
-            Enum.TryParse<RepositoriesDataTypes>(searchData, true, out var typeResult);
+            var data = new AdminIndexDto
+            {
+                SearchDataTypes = Enum.GetNames(typeof(RepositoriesDataTypes)).ToList(),
+                SearchMethodTypes = Enum.GetNames(typeof(SearchMethod)).ToList(),
+                UsersCount = this.usersRepository.AllAsNoTracking().Count(),
+                AdsCount = this.advertisementsRepository.AllAsNoTracking().Count(),
+                JobsCount = this.jobRepository.AllAsNoTracking().Count(),
+                BlogsCount = this.blogRepository.AllAsNoTracking().Count(),
+                DiscussionsCount = this.discussionsRepository.AllAsNoTracking().Count(),
+                CommentsCount = this.commentsRepository.AllAsNoTracking().Count(),
+                ReviewsCount = this.customersReviesRepository.AllAsNoTracking().Count(),
+            };
+
+            return data;
+        }
+
+        public async Task DeleteUserAsync(string id)
+        {
+            var user = this.usersRepository.All().FirstOrDefault(u => u.Id == id);
+            this.usersRepository.Delete(user);
+            await this.usersRepository.SaveChangesAsync();
+        }
+
+        public async Task DeleteReviewAsync(int id)
+        {
+            var review = this.customersReviesRepository.All().FirstOrDefault(r => r.Id == id);
+            this.customersReviesRepository.Delete(review);
+            await this.customersReviesRepository.SaveChangesAsync();
+        }
+
+        public AdminRequestDataDto GetData(string searchData, string searchMethod, string searchTerm)
+        {
+            Enum.TryParse<RepositoriesDataTypes>(searchData, true, out var dataTypeResult);
             Enum.TryParse<SearchMethod>(searchMethod, true, out var methodResult);
+
+            var dataDto = new AdminRequestDataDto
+            {
+                DataType = dataTypeResult.ToString(),
+            };
 
             IEnumerable<SearchDataDto> data = null;
 
-            if (typeResult == RepositoriesDataTypes.Advertisement)
+            if (dataTypeResult == RepositoriesDataTypes.Advertisement)
             {
                 var dataQuery = this.advertisementsRepository.AllAsNoTracking().AsQueryable();
 
@@ -89,15 +127,22 @@
                     })
                     .ToList();
             }
-            else if (typeResult == RepositoriesDataTypes.BlogPost)
+            else if (dataTypeResult == RepositoriesDataTypes.BlogPost)
             {
                 var dataQuery = this.blogRepository.AllAsNoTracking().AsQueryable();
 
                 if (methodResult == SearchMethod.Id)
                 {
-                    dataQuery = dataQuery
-                        .Where(a => a.Id == int.Parse(searchTerm))
+                    if (int.TryParse(searchTerm, out int id))
+                    {
+                        dataQuery = dataQuery
+                        .Where(a => a.Id == id)
                         .AsQueryable();
+                    }
+                    else
+                    {
+                        return null;
+                    }
                 }
                 else if (methodResult == SearchMethod.Username)
                 {
@@ -122,15 +167,22 @@
                     })
                     .ToList();
             }
-            else if (typeResult == RepositoriesDataTypes.Job)
+            else if (dataTypeResult == RepositoriesDataTypes.Job)
             {
                 var dataQuery = this.jobRepository.AllAsNoTracking().AsQueryable();
 
                 if (methodResult == SearchMethod.Id)
                 {
-                    dataQuery = dataQuery
-                        .Where(a => a.Id == int.Parse(searchTerm))
+                    if (int.TryParse(searchTerm, out int id))
+                    {
+                        dataQuery = dataQuery
+                        .Where(a => a.Id == id)
                         .AsQueryable();
+                    }
+                    else
+                    {
+                        return null;
+                    }
                 }
                 else if (methodResult == SearchMethod.Username)
                 {
@@ -155,15 +207,22 @@
                     })
                     .ToList();
             }
-            else if (typeResult == RepositoriesDataTypes.ForumPost)
+            else if (dataTypeResult == RepositoriesDataTypes.ForumPost)
             {
                 var dataQuery = this.discussionsRepository.AllAsNoTracking().AsQueryable();
 
                 if (methodResult == SearchMethod.Id)
                 {
-                    dataQuery = dataQuery
-                        .Where(a => a.Id == int.Parse(searchTerm))
+                    if (int.TryParse(searchTerm, out int id))
+                    {
+                        dataQuery = dataQuery
+                        .Where(a => a.Id == id)
                         .AsQueryable();
+                    }
+                    else
+                    {
+                        return null;
+                    }
                 }
                 else if (methodResult == SearchMethod.Username)
                 {
@@ -188,15 +247,22 @@
                     })
                     .ToList();
             }
-            else if (typeResult == RepositoriesDataTypes.ForumComment)
+            else if (dataTypeResult == RepositoriesDataTypes.ForumComment)
             {
                 var dataQuery = this.commentsRepository.AllAsNoTracking().AsQueryable();
 
                 if (methodResult == SearchMethod.Id)
                 {
-                    dataQuery = dataQuery
-                        .Where(a => a.Id == int.Parse(searchTerm))
+                    if (int.TryParse(searchTerm, out int id))
+                    {
+                        dataQuery = dataQuery
+                        .Where(a => a.Id == id)
                         .AsQueryable();
+                    }
+                    else
+                    {
+                        return null;
+                    }
                 }
                 else if (methodResult == SearchMethod.Username)
                 {
@@ -221,7 +287,7 @@
                     })
                     .ToList();
             }
-            else if (typeResult == RepositoriesDataTypes.User)
+            else if (dataTypeResult == RepositoriesDataTypes.User)
             {
                 var dataQuery = this.usersRepository.AllAsNoTracking().AsQueryable();
 
@@ -248,15 +314,22 @@
                     })
                     .ToList();
             }
-            else if (typeResult == RepositoriesDataTypes.Review)
+            else if (dataTypeResult == RepositoriesDataTypes.Review)
             {
                 var dataQuery = this.customersReviesRepository.AllAsNoTracking().AsQueryable();
 
                 if (methodResult == SearchMethod.Id)
                 {
-                    dataQuery = dataQuery
-                        .Where(a => a.Id == int.Parse(searchTerm))
+                    if (int.TryParse(searchTerm, out int id))
+                    {
+                        dataQuery = dataQuery
+                        .Where(a => a.Id == id)
                         .AsQueryable();
+                    }
+                    else
+                    {
+                        return null;
+                    }
                 }
                 else if (methodResult == SearchMethod.Username || methodResult == SearchMethod.Title)
                 {
@@ -276,25 +349,9 @@
                     .ToList();
             }
 
-            return data;
-        }
+            dataDto.Data = data;
 
-        public AdminIndexDto GetIndexData()
-        {
-            var data = new AdminIndexDto
-            {
-                SearchData = Enum.GetNames(typeof(RepositoriesDataTypes)).ToList(),
-                SearchMethod = Enum.GetNames(typeof(SearchMethod)).ToList(),
-                UsersCount = this.usersRepository.AllAsNoTracking().Count(),
-                AdsCount = this.advertisementsRepository.AllAsNoTracking().Count(),
-                JobsCount = this.jobRepository.AllAsNoTracking().Count(),
-                BlogsCount = this.blogRepository.AllAsNoTracking().Count(),
-                DiscussionsCount = this.discussionsRepository.AllAsNoTracking().Count(),
-                CommentsCount = this.commentsRepository.AllAsNoTracking().Count(),
-                ReviewsCount = this.customersReviesRepository.AllAsNoTracking().Count(),
-            };
-
-            return data;
+            return dataDto;
         }
     }
 }

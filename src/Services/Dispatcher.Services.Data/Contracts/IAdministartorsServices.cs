@@ -1,6 +1,6 @@
 ﻿namespace Dispatcher.Services.Data.Contracts
 {
-    using System.Collections.Generic;
+    using System.Threading.Tasks;
 
     using Dispatcher.Services.Data.Dtos;
 
@@ -8,6 +8,10 @@
     {
         AdminIndexDto GetIndexData();
 
-        IEnumerable<SearchDataDto> GetData(string searchData, string searchMethod, string searchTerm);
+        Task DeleteUserAsync(string id);
+
+        Task DeleteReviewAsync(int id);
+
+        AdminRequestDataDto GetData(string searchData, string searchMethod, string searchTerm);
     }
 }

@@ -4,11 +4,9 @@
 
     public class IndexViewModel
     {
-        public IEnumerable<string> SearchData { get; set; }
+        public IEnumerable<string> SearchDataTypes { get; set; }
 
-        public IEnumerable<string> SearchMethod { get; set; }
-
-        public string SearchTerm { get; set; }
+        public IEnumerable<string> SearchMethodTypes { get; set; }
 
         public int UsersCount { get; set; }
 

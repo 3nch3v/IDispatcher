@@ -2,15 +2,74 @@
 @model SearchDataViewmodel
 
 @{ 
+    string[] editableData = { "Advertisement", "ForumPost", "BlogPost", "Job" };
     this.ViewBag.Title = "Requested data";
+    string area = "Controllers";
+    string controllerAction = string.Empty;
+    string deleteAction = "Delete";
+    string editAction = "Edit";
+
+    if (Model != null)
+    {
+        switch (Model.DataType)
+        {
+            case "Advertisement": controllerAction = "Ads"; break;
+            case "ForumPost": controllerAction = "Forum"; break;
+            case "BlogPost": controllerAction = "Blogs"; break;
+            case "Job": controllerAction = "Jobs"; break;
+            case "ForumComment": controllerAction = "Forum"; deleteAction = "DeleteComment"; break;
+            case "Review": area = controllerAction = "Administration"; deleteAction = "DeleteReview"; break;
+            case "User": area = controllerAction = "Administration"; deleteAction = "DeleteUser"; break;
+            default:
+                controllerAction = "Home"; deleteAction = "Error";
+                break;
+        }
+    }
 }
 
-<h1>@this.ViewBag.Title</h1>
+<div class="col-md-12">
+    <div class="navbar-brand" style="margin: 30px auto;">
+        <h3 class="tm-gold-text">
+            <a class="tm-gold-text" asp-controller="Dashboard" asp-action="Index"><i class="fa fa-arrow-left"></i> Back to the Dashboard</a>
+        </h3>
+    </div>
+    <h3>@this.ViewBag.Title</h3>
+    <div class="card mb-3">
+        <div class="card-body">
+            @if (Model != null && Model.Data.Count() > 0)
+            {
+                @foreach (var data in Model.Data)
+                {
+                    <div class="row justify-content-between">
+                        <section class="col-sm-2 text-secondary">
+                            @if (editableData.Contains(Model.DataType))
+                            {
+                                <a asp-area="@area" asp-controller="@controllerAction" asp-action="@editAction" asp-route-id="@data.Id" class="btn btn-outline-secondary" title="Edit">Edit</a>
+                            }
+                            <a asp-area="@area" asp-controller="@controllerAction" asp-action="@deleteAction" asp-route-id="@data.Id" class="btn btn-outline-secondary" title="Delete">Delete</a>
+                        </section>
+                        <section class="col-sm-10">
+                            <header>
+                                <h4 class="mb-0">@data.Title</h4>
+                            </header>
+                            <article>
+                                <p>@data.Content</p>
+                            </article>
+                            <article class="row justify-content-between">
+                                <p>Id: @data.Id</p>
+                                <p>Username: @data.Username</p>
+                            </article>
+                        </section>
 
-@foreach (var data in Model.Data)
-{
-    <h1>@data.Id</h1>
-    <h3>@data.Title</h3>
-    <h3>@data.Content</h3>
-    <h3>@data.Username</h3>
-}
+                    </div>
+                    <hr>
+                }
+            }
+            else
+            {
+                <span class="text-secondary">No projects available...</span>
+                <br>
+            }
+        </div>
+    </div>
+</div>

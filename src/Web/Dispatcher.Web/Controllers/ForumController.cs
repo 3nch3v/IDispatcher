@@ -153,6 +153,12 @@
         public async Task<IActionResult> DeleteComment(int id, int discussionId)
         {
             await this.commentService.DeleteAsync(id);
+
+            if (discussionId == default)
+            {
+                return this.RedirectToAction(nameof(this.ForumDiscussions));
+            }
+
             return this.RedirectToAction(nameof(this.ForumDiscussion), new { id = discussionId });
         }
 

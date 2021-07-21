@@ -5,5 +5,7 @@
     public class SearchDataViewmodel
     {
         public IEnumerable<DataViewModel> Data { get; set; }
+
+        public string DataType { get; set; }
     }
 }

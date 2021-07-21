@@ -26,6 +26,7 @@
             this.CreateMap<ProfileBlogDtos, ProfileBlogsViewModel>();
             this.CreateMap<ProfileJobsDto, ProfileJobsViewModel>();
             this.CreateMap<AdminIndexDto, IndexViewModel>();
+            this.CreateMap<AdminRequestDataDto, SearchDataViewmodel>();
             this.CreateMap<SearchDataDto, DataViewModel>();
         }
     }

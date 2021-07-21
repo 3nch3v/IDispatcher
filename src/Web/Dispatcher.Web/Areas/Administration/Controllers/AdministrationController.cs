@@ -1,7 +1,5 @@
 ﻿namespace Dispatcher.Web.Areas.Administration.Controllers
 {
-    using System.Linq;
-
     using AutoMapper;
     using Dispatcher.Common;
     using Dispatcher.Services.Data.Contracts;
@@ -34,19 +32,21 @@
             }
 
             var dataDto = this.administartorsServices.GetData(input.SearchData, input.SearchMethod, input.SearchTerm);
+            var data = this.mapper.Map<SearchDataViewmodel>(dataDto);
 
-            if (dataDto == null)
-            {
-                return this.RedirectToAction("Index", "Dashboard");
-            }
+            return this.View(data);
+        }
 
-            var data = dataDto
-                .Select(d => this.mapper.Map<DataViewModel>(d))
-                .ToList();
+        public IActionResult DeleteUser(string id)
+        {
+            this.administartorsServices.DeleteUserAsync(id);
+            return this.RedirectToAction("Index", "Dashboard");
+        }
 
-            var dataResult = new SearchDataViewmodel { Data = data };
-
-            return this.View(dataResult);
+        public IActionResult DeleteReview(int id)
+        {
+            this.administartorsServices.DeleteReviewAsync(id);
+            return this.RedirectToAction("Index", "Dashboard");
         }
     }
 }
