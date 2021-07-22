@@ -5,6 +5,7 @@
     using System.Threading.Tasks;
 
     using Dispatcher.Common;
+    using Dispatcher.Data;
     using Dispatcher.Data.Common.Repositories;
     using Dispatcher.Data.Models.ForumModels;
     using Dispatcher.Services.Data.Contracts;

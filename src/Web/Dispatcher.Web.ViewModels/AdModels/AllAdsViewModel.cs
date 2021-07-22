@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
 
-    using Dispatcher.Common;
+    using static Dispatcher.Common.GlobalConstants;
 
     public class AllAdsViewModel
     {
@@ -11,7 +11,7 @@
 
         public int AdsCount { get; set; }
 
-        public int PageEntitiesCount => GlobalConstants.AdsPageEntitiesCount;
+        public int PageEntitiesCount => PageEntities.AdsCount;
 
         public int PagesCount => (int)Math.Ceiling(this.AdsCount * 1.0 / this.PageEntitiesCount);
 

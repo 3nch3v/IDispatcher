@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
 
-    using Dispatcher.Common;
+    using static Dispatcher.Common.GlobalConstants.PageEntities;
 
     public class AllBlogPostsViewModel
     {
@@ -11,7 +11,7 @@
 
         public int BlogPostsCount { get; set; }
 
-        public int PageEntitiesCount => GlobalConstants.BlogPageEntitiesCount;
+        public int PageEntitiesCount => BlogsCount;
 
         public int PagesCount => (int)Math.Ceiling(this.BlogPostsCount * 1.0 / this.PageEntitiesCount);
 

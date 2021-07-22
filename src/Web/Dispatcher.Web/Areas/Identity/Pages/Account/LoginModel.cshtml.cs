@@ -13,6 +13,8 @@
     using Microsoft.AspNetCore.Mvc.RazorPages;
     using Microsoft.Extensions.Logging;
 
+    using static Dispatcher.Common.GlobalConstants.User;
+
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
@@ -66,10 +68,12 @@
             {
                 ApplicationUser user = await this.userManager.FindByEmailAsync(this.Input.Email);
 
-                var result = await this.signInManager.PasswordSignInAsync(user, this.Input.Password, this.Input.RememberMe, lockoutOnFailure: false);
+                var result = await this.signInManager
+                    .PasswordSignInAsync(user, this.Input.Password, this.Input.RememberMe, lockoutOnFailure: false);
+
                 if (result.Succeeded)
                 {
-                    this.logger.LogInformation("User logged in.");
+                    this.logger.LogInformation(LoggedInConfirmation);
                     return this.LocalRedirect(returnUrl);
                 }
 
@@ -80,12 +84,12 @@
 
                 if (result.IsLockedOut)
                 {
-                    this.logger.LogWarning("User account locked out.");
+                    this.logger.LogWarning(LockedOut);
                     return this.RedirectToPage("./Lockout");
                 }
                 else
                 {
-                    this.ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    this.ModelState.AddModelError(string.Empty, InvalidLoginAttemt);
                     return this.Page();
                 }
             }

@@ -11,6 +11,8 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
+    using static Dispatcher.Common.GlobalConstants.PageEntities;
+
     public class JobsController : Controller
     {
         private readonly IJobService jobService;
@@ -67,14 +69,14 @@
             }
 
             await this.jobService.UpdateAsync<EditJobInputModel>(input, id);
-            return this.RedirectToAction(nameof(this.Job), new { id = id });
+            return this.RedirectToAction(nameof(this.Job), new { id });
         }
 
-        public IActionResult AllJobs(int page = GlobalConstants.DefaultPageNumber)
+        public IActionResult AllJobs(int page = DefaultPageNumber)
         {
             var jobs = new AllJobsViewModel
             {
-                Jobs = this.jobService.GetAll<SigleJobViewModel>(page, GlobalConstants.JobsPageEntitiesCount),
+                Jobs = this.jobService.GetAll<SigleJobViewModel>(page, JobsCount),
                 Page = page,
                 JobsCount = this.jobService.JobsCount(),
             };
@@ -95,7 +97,7 @@
         }
 
         [HttpGet]
-        public IActionResult Search(string keyWords, int page = GlobalConstants.DefaultPageNumber)
+        public IActionResult Search(string keyWords, int page = DefaultPageNumber)
         {
             if (string.IsNullOrWhiteSpace(keyWords))
             {
@@ -106,7 +108,7 @@
 
             var jobs = new AllJobsViewModel
             {
-                Jobs = this.jobService.SearchResults<SigleJobViewModel>(page, GlobalConstants.JobsPageEntitiesCount, keyWords),
+                Jobs = this.jobService.SearchResults<SigleJobViewModel>(page, JobsCount, keyWords),
                 Page = page,
                 JobsCount = this.jobService.SearchCount(),
             };

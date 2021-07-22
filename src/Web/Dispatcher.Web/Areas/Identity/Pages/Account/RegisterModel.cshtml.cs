@@ -15,7 +15,10 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
     using Microsoft.AspNetCore.WebUtilities;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
+
+    using static Dispatcher.Common.GlobalConstants.User;
 
     [AllowAnonymous]
     public class RegisterModel : PageModel
@@ -24,17 +27,20 @@
         private readonly UserManager<ApplicationUser> userManager;
         private readonly ILogger<RegisterModel> logger;
         private readonly IEmailSender emailSender;
+        private readonly IConfiguration configuration;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IConfiguration configuration)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.logger = logger;
             this.emailSender = emailSender;
+            this.configuration = configuration;
         }
 
         [BindProperty]
@@ -53,28 +59,48 @@
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= this.Url.Content("~/");
+
             this.ExternalLogins = (await this.signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
             if (this.ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = this.Input.Username, Email = this.Input.Email };
+                var user = new ApplicationUser
+                {
+                    UserName = this.Input.Username,
+                    Email = this.Input.Email,
+                };
+
                 var result = await this.userManager.CreateAsync(user, this.Input.Password);
+
                 if (result.Succeeded)
                 {
+                    if (this.Input.Username == this.configuration["AdminData:Username"]
+                        && this.Input.Email == this.configuration["AdminData:Email"]
+                        && this.Input.Password == this.configuration["AdminData:Password"])
+                    {
+                        await this.userManager.AddToRoleAsync(user, AdministratorRole);
+                    }
+                    else
+                    {
+                        await this.userManager.AddToRoleAsync(user, UserRole);
+                    }
+
                     this.logger.LogInformation("User created a new account with password.");
 
                     var code = await this.userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+
                     var callbackUrl = this.Url.Page(
                         "/Account/ConfirmEmail",
                         pageHandler: null,
-                        values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
+                        values: new { area = "Identity", userId = user.Id, code, returnUrl },
                         protocol: this.Request.Scheme);
 
                     await this.emailSender.SendEmailAsync(this.Input.Email, "Confirm your email", $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     if (this.userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        return this.RedirectToPage("RegisterConfirmation", new { email = this.Input.Email, returnUrl = returnUrl });
+                        return this.RedirectToPage("RegisterConfirmation", new { email = this.Input.Email, returnUrl });
                     }
                     else
                     {
@@ -89,7 +115,6 @@
                 }
             }
 
-            // If we got this far, something failed, redisplay form
             return this.Page();
         }
 

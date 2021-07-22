@@ -2,11 +2,11 @@
 @model LoginModel
 
 @{
-    ViewData["Title"] = "Log in";
+    this.ViewBag.Title = "Log in";
 }
 
 <div style="margin: 50px auto;">
-    <h1 class="tm-gold-text" style="text-align: center"><strong>@ViewData["Title"]</strong></h1>
+    <h1 class="tm-gold-text" style="text-align: center"><strong>@this.ViewBag.Title</strong></h1>
     <div class="row">
         <div class="col-md-4" style="margin: 0 auto;">
             <section>

@@ -112,7 +112,7 @@
 
             this.searchResultCount = query
                 .To<T>()
-                .ToList().Count();
+                .ToList().Count;
 
             var result = query
                 .OrderByDescending(x => x.CreatedOn)
@@ -122,6 +122,16 @@
                 .ToList();
 
             return result;
+        }
+
+        public string GetCreatorId(int id)
+        {
+            var ad = this.advertisementRepository
+                .AllAsNoTracking()
+                .Where(a => a.Id == id)
+                .FirstOrDefault();
+
+            return ad.UserId;
         }
 
         public int SearchCount()

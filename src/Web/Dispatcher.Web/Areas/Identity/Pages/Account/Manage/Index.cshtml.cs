@@ -11,7 +11,10 @@
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.ModelBinding;
     using Microsoft.AspNetCore.Mvc.RazorPages;
+
+    using static Dispatcher.Common.GlobalConstants.User;
 
     public partial class IndexModel : PageModel
     {
@@ -43,12 +46,14 @@
         public async Task<IActionResult> OnGetAsync()
         {
             var user = await this.userManager.GetUserAsync(this.User);
+
             if (user == null)
             {
-                return this.NotFound($"Unable to load user with ID '{this.userManager.GetUserId(this.User)}'.");
+                return this.NotFound($"{UnableToLoadUser} '{this.userManager.GetUserId(this.User)}'.");
             }
 
             await this.LoadAsync(user);
+
             return this.Page();
         }
 
@@ -58,22 +63,25 @@
 
             if (user == null)
             {
-                return this.NotFound($"Unable to load user with ID '{this.userManager.GetUserId(this.User)}'.");
+                return this.NotFound($"{UnableToLoadUser} '{this.userManager.GetUserId(this.User)}'.");
             }
 
             if (!this.ModelState.IsValid)
             {
                 await this.LoadAsync(user);
+
                 return this.Page();
             }
 
             var phoneNumber = await this.userManager.GetPhoneNumberAsync(user);
+
             if (this.Input.PhoneNumber != phoneNumber)
             {
                 var setPhoneResult = await this.userManager.SetPhoneNumberAsync(user, this.Input.PhoneNumber);
+
                 if (!setPhoneResult.Succeeded)
                 {
-                    this.StatusMessage = "Unexpected error when trying to set phone number.";
+                    this.StatusMessage = PhoneError;
                     return this.RedirectToPage();
                 }
             }
@@ -141,14 +149,22 @@
 
             if (this.Input.UploadPicture != null)
             {
-                string pictureDirectory = $"{this.environment.WebRootPath}/img/profile-pictures";
-                await this.profileServices.SavePictureAsync(new ProfilePictureInputModel { UserId = user.Id, Picture = this.Input.UploadPicture }, pictureDirectory);
+                string pictureDirectory = $"{this.environment.WebRootPath}{ProfilePicturePath}";
+
+                await this.profileServices.SavePictureAsync(
+                    new ProfilePictureInputModel
+                    {
+                        UserId = user.Id,
+                        Picture = this.Input.UploadPicture,
+                    },
+                    pictureDirectory);
             }
 
             await this.userManager.UpdateAsync(user);
 
             await this.signInManager.RefreshSignInAsync(user);
-            this.StatusMessage = "Your profile has been updated";
+            this.StatusMessage = UpdatedSuccessfully;
+
             return this.RedirectToPage();
         }
 
@@ -233,6 +249,7 @@
             [FileAllowedExtensions(new[] { ".jpg", ".jpeg", ".png", ".gif", ".bmp" })]
             public IFormFile UploadPicture { get; set; }
 
+            [BindNever]
             public string ProfilePicture { get; set; }
         }
     }

@@ -12,6 +12,8 @@
 
         IEnumerable<T> RandomAds<T>(int adsCount);
 
+        string GetCreatorId(int id);
+
         int AdsCount();
 
         int SearchCount();

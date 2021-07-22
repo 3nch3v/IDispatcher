@@ -11,19 +11,24 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
+    using static Dispatcher.Common.GlobalConstants.PageEntities;
+
     public class AdsController : Controller
     {
+        private readonly UserManager<ApplicationUser> userManager;
         private readonly IAdsService adsService;
         private readonly IStringValidatorService stringValidator;
-        private readonly UserManager<ApplicationUser> userManager;
+        private readonly IPermissionsValidatorService permissionsValidator;
 
         public AdsController(
-            IAdsService adsService,
-            IStringValidatorService stringValidator,
-            UserManager<ApplicationUser> userManager)
+             UserManager<ApplicationUser> userManager,
+             IAdsService adsService,
+             IStringValidatorService stringValidator,
+             IPermissionsValidatorService permissionsValidator)
         {
             this.adsService = adsService;
             this.stringValidator = stringValidator;
+            this.permissionsValidator = permissionsValidator;
             this.userManager = userManager;
         }
 
@@ -67,6 +72,15 @@
             var ad = this.adsService.GetById<EditAdViewModel>(id);
             ad.AdTypes = this.adsService.GetAllAdTypes<AdTypesDropDownViewModel>();
 
+            var hasPermission = this.permissionsValidator.HasPermission(
+                this.adsService.GetCreatorId(id),
+                this.userManager.GetUserId(this.User));
+
+            if (!hasPermission.Result)
+            {
+                return this.RedirectToAction("Error", "Home");
+            }
+
             return this.View(ad);
         }
 
@@ -79,7 +93,17 @@
             {
                 var ad = this.adsService.GetById<EditAdViewModel>(id);
                 ad.AdTypes = this.adsService.GetAllAdTypes<AdTypesDropDownViewModel>();
+
                 return this.View(ad);
+            }
+
+            var hasPermission = this.permissionsValidator.HasPermission(
+               this.adsService.GetCreatorId(id),
+               this.userManager.GetUserId(this.User));
+
+            if (!hasPermission.Result)
+            {
+                return this.RedirectToAction("Error", "Home");
             }
 
             await this.adsService.UpdateAsync<AdInputModel>(input, id);
@@ -89,6 +113,15 @@
         [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
+            var hasPermission = this.permissionsValidator.HasPermission(
+              this.adsService.GetCreatorId(id),
+              this.userManager.GetUserId(this.User));
+
+            if (!hasPermission.Result)
+            {
+                return this.RedirectToAction("Error", "Home");
+            }
+
             await this.adsService.DeleteAsync(id);
 
             return this.RedirectToAction(nameof(this.AllAds));
@@ -102,11 +135,11 @@
         }
 
         [HttpGet]
-        public IActionResult AllAds(int page = GlobalConstants.DefaultPageNumber)
+        public IActionResult AllAds(int page = DefaultPageNumber)
         {
             var ads = new AllAdsViewModel
             {
-                Ads = this.adsService.GetAllAds<AdsViewModel>(page, GlobalConstants.AdsPageEntitiesCount),
+                Ads = this.adsService.GetAllAds<AdsViewModel>(page, AdsCount),
                 AdsCount = this.adsService.AdsCount(),
                 Page = page,
             };
@@ -115,7 +148,7 @@
         }
 
         [HttpGet]
-        public IActionResult Search(string keyWords, int page = GlobalConstants.DefaultPageNumber)
+        public IActionResult Search(string keyWords, int page = DefaultPageNumber)
         {
             if (string.IsNullOrWhiteSpace(keyWords))
             {
@@ -126,7 +159,7 @@
 
             var ads = new AllAdsViewModel
             {
-                Ads = this.adsService.SearchResults<AdsViewModel>(page, GlobalConstants.AdsPageEntitiesCount, this.TempData["KeyWords"].ToString()),
+                Ads = this.adsService.SearchResults<AdsViewModel>(page, AdsCount, this.TempData["KeyWords"].ToString()),
                 AdsCount = this.adsService.SearchCount(),
                 Page = page,
             };

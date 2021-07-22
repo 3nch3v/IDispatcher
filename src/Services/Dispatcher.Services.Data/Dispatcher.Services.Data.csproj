@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
@@ -23,6 +23,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.5" />
     <ProjectReference Include="..\..\Data\Dispatcher.Data.Common\Dispatcher.Data.Common.csproj" />
     <ProjectReference Include="..\..\Data\Dispatcher.Data.Models\Dispatcher.Data.Models.csproj" />
+    <ProjectReference Include="..\..\Data\Dispatcher.Data\Dispatcher.Data.csproj" />
     <ProjectReference Include="..\..\Dispatcher.Common\Dispatcher.Common.csproj" />
     <ProjectReference Include="..\..\Web\Dispatcher.Web.ViewModels\Dispatcher.Web.ViewModels.csproj" />
     <ProjectReference Include="..\Dispatcher.Services.Mapping\Dispatcher.Services.Mapping.csproj" />

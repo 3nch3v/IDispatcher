@@ -3,13 +3,13 @@
     using System;
     using System.Collections.Generic;
 
-    using Dispatcher.Common;
+    using static Dispatcher.Common.GlobalConstants.PageEntities;
 
     public class ForumDiscussionsViewModel
     {
         public int ForumDiscussionsCount { get; set; }
 
-        public int PageEntitiesCount => GlobalConstants.ForumPageEntitiesCount;
+        public int PageEntitiesCount => ForumCount;
 
         public int PagesCount => (int)Math.Ceiling(this.ForumDiscussionsCount * 1.0 / this.PageEntitiesCount);
 

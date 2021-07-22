@@ -168,7 +168,7 @@
         {
             string fileExtension = Path.GetExtension(input.Picture.FileName);
 
-            ProfilePicture profilePicture = new ProfilePicture
+            ProfilePicture profilePicture = new()
             {
                 UserId = input.UserId,
                 Extension = fileExtension,

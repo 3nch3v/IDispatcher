@@ -2,7 +2,6 @@
 {
     using System.Threading.Tasks;
 
-    using AutoMapper;
     using Dispatcher.Common;
     using Dispatcher.Data.Models;
     using Dispatcher.Services.Contracts;
@@ -13,23 +12,28 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
+    using static Dispatcher.Common.GlobalConstants.PageEntities;
+
     public class BlogsController : Controller
     {
         private readonly IBlogService blogServie;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IWebHostEnvironment environment;
         private readonly IStringValidatorService stringValidatorService;
+        private readonly IPermissionsValidatorService permissionsValidator;
 
         public BlogsController(
             UserManager<ApplicationUser> userManager,
             IBlogService blogServie,
             IWebHostEnvironment environment,
-            IStringValidatorService stringValidatorService)
+            IStringValidatorService stringValidatorService,
+            IPermissionsValidatorService permissionsValidator)
         {
             this.blogServie = blogServie;
             this.userManager = userManager;
             this.environment = environment;
             this.stringValidatorService = stringValidatorService;
+            this.permissionsValidator = permissionsValidator;
         }
 
         [Authorize]
@@ -59,6 +63,11 @@
         [Authorize]
         public IActionResult Edit(int id)
         {
+            if (!this.HasPermission(id))
+            {
+                return this.RedirectToAction("Error", "Home");
+            }
+
             var editPost = this.blogServie.GetById<EditBlogPostInputmodel>(id);
             return this.View(editPost);
         }
@@ -67,6 +76,11 @@
         [Authorize]
         public async Task<IActionResult> Edit(int id, EditBlogPostInputmodel input)
         {
+            if (!this.HasPermission(id))
+            {
+                return this.RedirectToAction("Error", "Home");
+            }
+
             if (!this.ModelState.IsValid
                 || !this.stringValidatorService.IsStringValidDecoded(input.Body, GlobalConstants.DefaultBodyStringMinLength))
             {
@@ -86,11 +100,11 @@
             return this.View(post);
         }
 
-        public IActionResult AllPosts(int page = GlobalConstants.DefaultPageNumber)
+        public IActionResult AllPosts(int page = DefaultPageNumber)
         {
             var posts = new AllBlogPostsViewModel()
             {
-                Posts = this.blogServie.GetAllBlogPosts<BlogPostViewModel>(page, GlobalConstants.BlogPageEntitiesCount),
+                Posts = this.blogServie.GetAllBlogPosts<BlogPostViewModel>(page, BlogsCount),
                 Page = page,
                 BlogPostsCount = this.blogServie.BlogPostsCount(),
             };
@@ -101,8 +115,22 @@
         [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
+            if (!this.HasPermission(id))
+            {
+                return this.RedirectToAction("Error", "Home");
+            }
+
             await this.blogServie.DeleteAsync(id);
             return this.RedirectToAction(nameof(this.AllPosts));
+        }
+
+        private bool HasPermission(int id)
+        {
+            var hasPermission = this.permissionsValidator.HasPermission(
+              this.blogServie.GetCreatorId(id),
+              this.userManager.GetUserId(this.User));
+
+            return hasPermission.Result;
         }
     }
 }

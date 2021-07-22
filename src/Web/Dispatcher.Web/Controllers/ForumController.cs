@@ -12,6 +12,8 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
+    using static Dispatcher.Common.GlobalConstants.PageEntities;
+
     public class ForumController : Controller
     {
         private const string UnsolvedDiscussions = "unsolved";
@@ -93,7 +95,7 @@
             }
 
             await this.forumService.UpdateAsync<DiscussionInputModel>(input, id);
-            return this.RedirectToAction(nameof(this.ForumDiscussion), new { id = id });
+            return this.RedirectToAction(nameof(this.ForumDiscussion), new { id });
         }
 
         [Authorize]
@@ -113,13 +115,13 @@
             return this.View(discussion);
         }
 
-        public IActionResult ForumDiscussions(string category = null, int page = GlobalConstants.DefaultPageNumber)
+        public IActionResult ForumDiscussions(string category = null, int page = DefaultPageNumber)
         {
             this.TempData["Category"] = category;
 
             var forumDiscussions = new ForumDiscussionsViewModel
             {
-                AllForumDiscussions = this.forumService.GetAllForumDiscussions<SingleForumDiscussionsViewModel>(page, GlobalConstants.ForumPageEntitiesCount, category),
+                AllForumDiscussions = this.forumService.GetAllForumDiscussions<SingleForumDiscussionsViewModel>(page, ForumCount, category),
                 ForumDiscussionsCount = this.forumService.GetDiscussionsCount(category),
                 Page = page,
             };
@@ -133,7 +135,7 @@
         public async Task<IActionResult> SetToSolved(int id)
         {
             await this.forumService.SetDiscussionToSolvedAsync(id);
-            return this.RedirectToAction(nameof(this.ForumDiscussion), new { id = id });
+            return this.RedirectToAction(nameof(this.ForumDiscussion), new { id });
         }
 
         [Authorize]

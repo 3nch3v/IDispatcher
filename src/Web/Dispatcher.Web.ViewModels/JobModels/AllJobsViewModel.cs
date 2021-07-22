@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
 
-    using Dispatcher.Common;
+    using static Dispatcher.Common.GlobalConstants;
 
     public class AllJobsViewModel
     {
@@ -11,7 +11,7 @@
 
         public int JobsCount { get; set; }
 
-        public int PageEntitiesCount => GlobalConstants.JobsPageEntitiesCount;
+        public int PageEntitiesCount => PageEntities.JobsCount;
 
         public int PagesCount => (int)Math.Ceiling(this.JobsCount * 1.0 / this.PageEntitiesCount);
 

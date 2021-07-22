@@ -106,6 +106,15 @@
             return this.blogsRepository.All().Count();
         }
 
+        public string GetCreatorId(int id)
+        {
+            var post = this.blogsRepository.AllAsNoTracking()
+                .Where(b => b.Id == id)
+                .FirstOrDefault();
+
+            return post.UserId;
+        }
+
         private async Task FileSaverAsync(Blog post, BlogPostDto input)
         {
             string filePath = $"{DefaultBlogPicturesFolder}/{input.Picture.FileName}";

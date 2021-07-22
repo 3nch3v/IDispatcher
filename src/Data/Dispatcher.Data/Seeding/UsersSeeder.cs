@@ -10,6 +10,8 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
+    using static Dispatcher.Common.GlobalConstants.User;
+
     public class UsersSeeder : ISeeder
     {
         public async Task SeedAsync(
@@ -32,7 +34,7 @@
             var result = userManager.CreateAsync(admin, configuration["AdminData:Password"]).Result;
             if (result.Succeeded)
             {
-                await userManager.AddToRoleAsync(admin, GlobalConstants.AdministratorRole);
+                await userManager.AddToRoleAsync(admin, AdministratorRole);
             }
 
             var userIvan = new ApplicationUser
@@ -55,7 +57,7 @@
             var userIvanResult = userManager.CreateAsync(userIvan, configuration["UserIvan:Password"]).Result;
             if (userIvanResult.Succeeded)
             {
-                await userManager.AddToRoleAsync(userIvan, GlobalConstants.UserRole);
+                await userManager.AddToRoleAsync(userIvan, UserRole);
             }
 
             var userBeroec = new ApplicationUser
@@ -78,7 +80,7 @@
             var userBeroecResult = userManager.CreateAsync(userBeroec, configuration["UserBeroe:Password"]).Result;
             if (userBeroecResult.Succeeded)
             {
-                await userManager.AddToRoleAsync(userBeroec, GlobalConstants.UserRole);
+                await userManager.AddToRoleAsync(userBeroec, UserRole);
             }
 
             var userHans = new ApplicationUser
@@ -101,7 +103,7 @@
             var userHansResult = userManager.CreateAsync(userHans, configuration["UserHans:Password"]).Result;
             if (userHansResult.Succeeded)
             {
-                await userManager.AddToRoleAsync(userHans, GlobalConstants.UserRole);
+                await userManager.AddToRoleAsync(userHans, UserRole);
             }
         }
     }

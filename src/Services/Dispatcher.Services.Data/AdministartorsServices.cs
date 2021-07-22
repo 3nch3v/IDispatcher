@@ -80,18 +80,13 @@
             Enum.TryParse<RepositoriesDataTypes>(searchData, true, out var dataTypeResult);
             Enum.TryParse<SearchMethod>(searchMethod, true, out var methodResult);
 
-            var dataDto = new AdminRequestDataDto
-            {
-                DataType = dataTypeResult.ToString(),
-            };
-
             IEnumerable<SearchDataDto> data = null;
 
             if (dataTypeResult == RepositoriesDataTypes.Advertisement)
             {
-                var dataQuery = this.advertisementsRepository.AllAsNoTracking().AsQueryable();
+               var dataQuery = this.advertisementsRepository.AllAsNoTracking().AsQueryable();
 
-                if (methodResult == SearchMethod.Id)
+               if (methodResult == SearchMethod.Id)
                 {
                     if (int.TryParse(searchTerm, out int id))
                     {
@@ -117,7 +112,7 @@
                        .AsQueryable();
                 }
 
-                data = dataQuery
+               data = dataQuery
                     .Select(d => new SearchDataDto
                     {
                         Id = d.Id.ToString(),
@@ -349,7 +344,11 @@
                     .ToList();
             }
 
-            dataDto.Data = data;
+            var dataDto = new AdminRequestDataDto
+            {
+                Data = data,
+                DataType = dataTypeResult.ToString(),
+            };
 
             return dataDto;
         }
