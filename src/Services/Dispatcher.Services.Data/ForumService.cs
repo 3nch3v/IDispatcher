@@ -61,20 +61,22 @@
 
         public int GetDiscussionsCount(string categoty)
         {
-            if (categoty == Unsolved)
+            if (categoty == "All")
+            {
+                return this.forumRepository.All().Count();
+            }
+            else if (categoty == Unsolved)
             {
                 return this.forumRepository.AllAsNoTracking()
                .Where(x => x.IsSolved == false)
                .Count();
             }
-            else if (!string.IsNullOrEmpty(categoty))
+            else
             {
                 return this.forumRepository.AllAsNoTracking()
                .Where(x => x.Category.Name == categoty)
                .Count();
             }
-
-            return this.forumRepository.All().Count();
         }
 
         public T GetById<T>(int id)
@@ -97,11 +99,21 @@
             return categories;
         }
 
-        public IEnumerable<T> GetAllForumDiscussions<T>(int page, int pageEntitiesCount, string category = null)
+        public IEnumerable<T> GetAllForumDiscussions<T>(int page, int pageEntitiesCount, string category)
         {
             IEnumerable<T> discussions = null;
 
-            if (category == Unsolved)
+            if (category == "All")
+            {
+                discussions = this.forumRepository.AllAsNoTracking()
+               .Include(x => x.Votes)
+               .OrderByDescending(p => p.CreatedOn)
+               .Skip((page - 1) * pageEntitiesCount)
+               .Take(pageEntitiesCount)
+               .To<T>()
+               .ToList();
+            }
+            else if (category == Unsolved)
             {
                 discussions = this.forumRepository.AllAsNoTracking()
                .Include(x => x.Votes)
@@ -122,16 +134,6 @@
                .Take(pageEntitiesCount)
                .To<T>()
                .ToList();
-            }
-            else
-            {
-                discussions = this.forumRepository.AllAsNoTracking()
-                .Include(x => x.Votes)
-                .OrderByDescending(p => p.CreatedOn)
-                .Skip((page - 1) * pageEntitiesCount)
-                .Take(pageEntitiesCount)
-                .To<T>()
-                .ToList();
             }
 
             return discussions;

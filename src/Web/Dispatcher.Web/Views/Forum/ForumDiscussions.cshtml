@@ -12,7 +12,7 @@
     <a asp-controller="Forum" asp-action="Create" type="button" class="btn btn-outline-secondary">Start Discussion</a>
 </nav>
 
-<section class="tm-section">
+<div class="tm-section">
     <div class="container-fluid">
         <div class="row">
             <aside class="col-xs-12 col-sm-12 col-md-4 col-lg-3 col-xl-3 tm-aside-r">
@@ -22,14 +22,14 @@
 
                 @foreach (var forumDiscussion in Model.AllForumDiscussions)
                 {
-                    <div class="card mb-1 col-md-12 offser-md-6">
+                    <div class="card mb-4 col-md-12 offser-md-6" style=" -webkit-box-shadow: -10px 0px 13px -7px #000000, 10px 0px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0); box-shadow: -10px 0px 13px -7px #000000, 10px 0px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0);">
                         <div class="card-body p-2 p-sm-3">
                             <div class="media forum-item">
                                 <a asp-controller="Forum" asp-action="ForumDiscussion" asp-route-id="@forumDiscussion.Id">
                                     <img src="@forumDiscussion.ProfilePicture" class="mr-3 rounded-circle" width="50" alt="User" />
                                 </a>
                                 <div class="media-body">
-                                    <h6><a asp-controller="Forum" asp-action="ForumDiscussion" asp-route-id="@forumDiscussion.Id" class="text-body"><strong>@forumDiscussion.Title</strong></a></h6>
+                                    <h6><a asp-controller="Forum" asp-action="ForumDiscussion" asp-route-id="@forumDiscussion.Id" class="tm-gold-text tm-title"><strong>@forumDiscussion.Title</strong></a></h6>
                                     <p class="text-secondary">
                                         @if (forumDiscussion.SanitizedDescription.Length > 200)
                                         {@Html.Raw(forumDiscussion.SanitizedDescription.Substring(0, 200)) }
@@ -75,15 +75,21 @@
                             </div>
                         </div>
                     </div>
+                }
 
-
+                @if (Model.AllForumDiscussions.Count() == 0)
+                {
+                    <div class="d-flex justify-content-center row mt-5">
+                        <p>There are no discussions in the selected category.</p>
+                        <p>Please select another category or start a new discussion.</p>
+                    </div>
                 }
 
             </div>
+
+
         </div>
     </div>
-
-    <br>
     @if (Model.AllForumDiscussions.Count() > 0)
     {
         <nav aria-label="Page navigation example">
@@ -116,42 +122,8 @@
             </ul>
         </nav>
     }
-</section>
+</div>
 
 @section Scripts {
-    <script>
-        function like(DiscussionId, currRowId) {
-            var token = $("#votesForm input[name=__RequestVerificationToken]").val();
-            var json = { DiscussionId: DiscussionId, VoteType: "Like" };
-            $.ajax({
-                url: "/api/votes",
-                type: "POST",
-                data: JSON.stringify(json),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                headers: { 'X-CSRF-TOKEN': token },
-                success: function (data) {
-                    $('#likesCount_' + currRowId).html(data.likes);
-                    $('#dislikesCount_' + currRowId).html(data.dislikes);
-                }
-            });
-        }
-
-        function dislike(DiscussionId, currRowId) {
-            var token = $("#votesForm input[name=__RequestVerificationToken]").val();
-            var json = { DiscussionId: DiscussionId, VoteType: "Dislike" };
-            $.ajax({
-                url: "/api/votes",
-                type: "POST",
-                data: JSON.stringify(json),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                headers: { 'X-CSRF-TOKEN': token },
-                success: function (data) {
-                    $('#likesCount_' + currRowId).html(data.likes);
-                    $('#dislikesCount_' + currRowId).html(data.dislikes);
-                }
-            });
-        }
-    </script>
+    <script src="~/js/vote-all.js"></script>
 }

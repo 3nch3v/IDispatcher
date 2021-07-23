@@ -128,13 +128,13 @@
             return this.View(discussion);
         }
 
-        public IActionResult ForumDiscussions(string category = null, int page = DefaultPageNumber)
+        public IActionResult ForumDiscussions(string category = "All", int page = DefaultPageNumber)
         {
             this.TempData["Category"] = category;
 
             var forumDiscussions = new ForumDiscussionsViewModel
             {
-                AllForumDiscussions = this.forumService.GetAllForumDiscussions<SingleForumDiscussionsViewModel>(page, ForumCount, category),
+                AllForumDiscussions = this.forumService.GetAllForumDiscussions<SingleForumDiscussionsViewModel>(page, ForumCount, this.TempData["Category"].ToString()),
                 ForumDiscussionsCount = this.forumService.GetDiscussionsCount(category),
                 Page = page,
             };
@@ -174,7 +174,11 @@
         [Authorize]
         public async Task<IActionResult> DeleteComment(int id, int discussionId)
         {
-            if (!this.HasPermission(id))
+            var hasPermission = this.permissionsValidator.HasPermission(
+              this.commentService.GetCreatorId(id),
+              this.userManager.GetUserId(this.User));
+
+            if (!hasPermission.Result)
             {
                 return this.RedirectToAction("Error", "Home");
             }

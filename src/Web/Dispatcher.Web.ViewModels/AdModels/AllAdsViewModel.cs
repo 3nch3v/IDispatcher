@@ -7,8 +7,6 @@
 
     public class AllAdsViewModel
     {
-        public IEnumerable<AdsViewModel> Ads { get; set; }
-
         public int AdsCount { get; set; }
 
         public int PageEntitiesCount => PageEntities.AdsCount;
@@ -24,5 +22,7 @@
         public bool HasNextPage => this.Page < this.PagesCount;
 
         public int NextPage => this.Page + 1;
+
+        public IEnumerable<AdsViewModel> Ads { get; set; }
     }
 }

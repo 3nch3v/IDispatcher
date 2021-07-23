@@ -7,5 +7,7 @@
         Task CreateAsync<T>(T input);
 
         Task DeleteAsync(int id);
+
+        string GetCreatorId(int dataId);
     }
 }

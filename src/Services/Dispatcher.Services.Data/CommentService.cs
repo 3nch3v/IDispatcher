@@ -10,26 +10,36 @@
 
     public class CommentService : ICommentService
     {
-        private readonly IDeletableEntityRepository<Comment> postsRepository;
+        private readonly IDeletableEntityRepository<Comment> commentsRepository;
 
-        public CommentService(IDeletableEntityRepository<Comment> postsRepository)
+        public CommentService(IDeletableEntityRepository<Comment> commentsRepository)
         {
-            this.postsRepository = postsRepository;
+            this.commentsRepository = commentsRepository;
         }
 
         public async Task CreateAsync<T>(T input)
         {
             var comment = AutoMapperConfig.MapperInstance.Map<Comment>(input);
 
-            await this.postsRepository.AddAsync(comment);
-            await this.postsRepository.SaveChangesAsync();
+            await this.commentsRepository.AddAsync(comment);
+            await this.commentsRepository.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)
         {
-            var commment = this.postsRepository.All().FirstOrDefault(c => c.Id == id);
-            this.postsRepository.Delete(commment);
-            await this.postsRepository.SaveChangesAsync();
+            var commment = this.commentsRepository.All().FirstOrDefault(c => c.Id == id);
+            this.commentsRepository.Delete(commment);
+            await this.commentsRepository.SaveChangesAsync();
+        }
+
+        public string GetCreatorId(int dataId)
+        {
+            var comment = this.commentsRepository
+                .AllAsNoTracking()
+                .Where(c => c.Id == dataId)
+                .FirstOrDefault();
+
+            return comment.UserId;
         }
     }
 }

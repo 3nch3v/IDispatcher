@@ -81,7 +81,7 @@
 
             public const int JobsCount = 10;
 
-            public const int BlogsCount = 10;
+            public const int BlogsCount = 5;
 
             public const int ForumCount = 5;
         }
