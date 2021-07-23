@@ -4,29 +4,34 @@
 
     using Dispatcher.Data.Common.Models;
 
+    using static Dispatcher.Common.GlobalConstants;
+    using static Dispatcher.Common.GlobalConstants.Job;
+
     public class Job : BaseDeletableModel<int>
     {
         [Required]
-        [StringLength(150, MinimumLength = 3)]
+        [MaxLength(TitleMaxLength)]
         public string Title { get; set; }
 
+        //// just Body
+
         [Required]
-        [StringLength(50000, MinimumLength = 100)]
+        [MaxLength(BodyMaxLength)]
         public string JobBody { get; set; }
 
         [Required]
-        [StringLength(50, MinimumLength = 2)]
+        [MaxLength(CompanyMaxLength)]
         public string CompanyName { get; set; }
 
         [Required]
-        [StringLength(50, MinimumLength = 3)]
+        [MaxLength(LocationMaxLength)]
         public string Location { get; set; }
 
         [Required]
-        [StringLength(250, MinimumLength = 6)]
+        [MaxLength(ContactMaxLength)]
         public string Contact { get; set; }
 
-        [MaxLength(2048)]
+        [MaxLength(UrlMaxLenght)]
         public string LogoUrl { get; set; }
 
         [Required]

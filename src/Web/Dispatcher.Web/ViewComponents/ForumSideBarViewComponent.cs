@@ -1,9 +1,10 @@
 ﻿namespace Dispatcher.Web.ViewComponents
 {
-    using Dispatcher.Common;
     using Dispatcher.Services.Data.Contracts;
     using Dispatcher.Web.ViewModels.ForumModels;
     using Microsoft.AspNetCore.Mvc;
+
+    using static Dispatcher.Common.GlobalConstants.Forum;
 
     public class ForumSideBarViewComponent : ViewComponent
     {
@@ -19,7 +20,7 @@
             var categories = new CategoriesWithDiscussionsCountViewModel
             {
                 Categories = this.forumServices.GetCategories<SingleCategoryViewModel>(),
-                UnsolvedCount = this.forumServices.GetDiscussionsCount(GlobalConstants.Unsolved),
+                UnsolvedCount = this.forumServices.GetDiscussionsCount(Unsolved),
             };
 
             return this.View(categories);

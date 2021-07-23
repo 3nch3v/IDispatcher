@@ -45,6 +45,15 @@
             return project;
         }
 
+        public string GetCreatorId(int dataId)
+        {
+            var project = this.projectRepository.AllAsNoTracking()
+              .Where(p => p.Id == dataId)
+              .FirstOrDefault();
+
+            return project.UserId;
+        }
+
         public async Task UpdateAsync<T>(T input, int id)
         {
             var updatedProject = AutoMapperConfig.MapperInstance.Map<Project>(input);

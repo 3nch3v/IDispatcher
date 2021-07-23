@@ -9,19 +9,18 @@
             else
             {
             <img src="~/img/default-ad.png" alt="@Model.Title" class="img-fluid" />
-
             }
         </div>
         <h2 class="tm-margin-b-10 tm-gold-text">@Model.Title</h2>
     </a>
     <p>@Model.ClearDescription.Substring(0, 80)</p>
     <div class="d-flex justify-content-between tm-pt-45">
-        <span>@Model.Compensation</span>
-        <span>by <a class="tm-gold-text" asp-controller="Profiles" asp-action="Profile" asp-route-userId="@Model.UserId">@Model.UserUsername</a></span>
+        <div>@Model.Compensation</div>
+        <div>by <a class="tm-gold-text" asp-controller="Profiles" asp-action="Profile" asp-route-userId="@Model.UserId">@Model.UserUsername</a></div>
     </div>
     <hr>
     <div class="d-flex justify-content-between">
-        <span class="tm-color-primary">For: @Model.AdvertisementTypeType</span>
-        <span class="tm-color-primary">@Model.CreatedOn.ToString("d")</span>
+        <div class="tm-color-primary">For: @Model.AdvertisementTypeType</div>
+        <div class="tm-color-primary">@Model.CreatedOn.ToString("d")</div>
     </div>
 </article>

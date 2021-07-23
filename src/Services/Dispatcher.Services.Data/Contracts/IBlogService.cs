@@ -8,8 +8,6 @@
 
         T RandomBlogPost<T>();
 
-        string GetCreatorId(int id);
-
         int BlogPostsCount();
     }
 }

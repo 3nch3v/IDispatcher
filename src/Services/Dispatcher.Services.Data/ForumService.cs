@@ -4,13 +4,13 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    using Dispatcher.Common;
-    using Dispatcher.Data;
     using Dispatcher.Data.Common.Repositories;
     using Dispatcher.Data.Models.ForumModels;
     using Dispatcher.Services.Data.Contracts;
     using Dispatcher.Services.Mapping;
     using Microsoft.EntityFrameworkCore;
+
+    using static Dispatcher.Common.GlobalConstants.Forum;
 
     public class ForumService : IForumService
     {
@@ -61,7 +61,7 @@
 
         public int GetDiscussionsCount(string categoty)
         {
-            if (categoty == GlobalConstants.Unsolved)
+            if (categoty == Unsolved)
             {
                 return this.forumRepository.AllAsNoTracking()
                .Where(x => x.IsSolved == false)
@@ -101,7 +101,7 @@
         {
             IEnumerable<T> discussions = null;
 
-            if (category == GlobalConstants.Unsolved)
+            if (category == Unsolved)
             {
                 discussions = this.forumRepository.AllAsNoTracking()
                .Include(x => x.Votes)
@@ -135,6 +135,16 @@
             }
 
             return discussions;
+        }
+
+        public string GetCreatorId(int dataId)
+        {
+            var discussion = this.forumRepository.AllAsNoTracking()
+                .Include(x => x.Votes)
+                .Where(d => d.Id == dataId)
+                .FirstOrDefault();
+
+            return discussion.UserId;
         }
     }
 }

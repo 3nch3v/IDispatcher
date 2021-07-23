@@ -1,5 +1,4 @@
-﻿@using Dispatcher.Common
-@model Dispatcher.Web.ViewModels.BlogModels.AllBlogPostsViewModel
+﻿@model Dispatcher.Web.ViewModels.BlogModels.AllBlogPostsViewModel
 
 @{ 
     this.ViewBag.Title = "Blog Posts";
@@ -13,7 +12,9 @@
                 <a class="tm-gold-text" asp-controller="Blogs" asp-action="AllPosts">@this.ViewBag.Title</a>
             </h3>
         </div>
-        <a asp-controller="Blogs" asp-action="Create" type="button" class="btn btn-outline-secondary">Creat New Post</a>
+        <div>
+            <a asp-controller="Blogs" asp-action="Create" type="button" class="btn btn-outline-secondary">Creat New Post</a>
+        </div>
     </nav>
     <div class="main-wrapper">
         <section class="blog-list px-3 py-5 p-md-5">
@@ -24,21 +25,27 @@
                         <div class="media">
                             @if (!string.IsNullOrWhiteSpace(post.FilePath))
                             {
-                                <div>
-                                    <img class="mr-4 img-fluid post-thumb d-none d-md-flex" src="@Url.Content(post.FilePath)" alt="image" style="width: 200px; max-height: 200px;">
-                                </div> 
+                             <div>
+                                <a class="tm-gold-text" asp-action="Post" asp-route-id="@post.Id">
+                                    <img class="mr-4 img-fluid post-thumb d-none d-md-flex" src="@Url.Content(post.FilePath)" alt="image" style="width: 150px; max-height: 150px; object-fit: cover; ">
+                                </a>
+                             </div> 
                             }
                             else if (post.VideoLink != null)
                             {
-                               <div>
-                                   <img class="mr-4 img-fluid post-thumb d-none d-md-flex" src="~/img/blog-pictures/video-default-icon.png" alt="image" style="width: 200px; max-height: 200px;">
-                               </div> 
+                                <div>
+                                    <a class="tm-gold-text" asp-action="Post" asp-route-id="@post.Id">
+                                        <img class="mr-4 img-fluid post-thumb d-none d-md-flex" src="~/img/blog-pictures/video-default-icon.png" alt="image" style="width: 150px; max-height: 150px; object-fit: cover; ">
+                                    </a>
+                                </div> 
                             }
                             else
                             {
-                               <div>
-                                  <img class="mr-4 img-fluid post-thumb d-none d-md-flex" src="~/img/blog-pictures/blog-post-default-pic.jpg" alt="image" style="width: 200px; max-height: 200px;">
-                               </div>
+                                <div>
+                                    <a class="tm-gold-text" asp-action="Post" asp-route-id="@post.Id">
+                                        <img class="mr-4 img-fluid post-thumb d-none d-md-flex" src="~/img/blog-pictures/blog-post-default-pic.jpg" alt="image" style="width: 150px; max-height: 150px; object-fit: cover; ">
+                                    </a>
+                                </div>
                             }
                             <div class="media-body">
                                <h3 class="title mb-1">

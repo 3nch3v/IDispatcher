@@ -3,7 +3,6 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    using Dispatcher.Common;
     using Dispatcher.Data.Models;
     using Dispatcher.Services.Contracts;
     using Dispatcher.Services.Data.Contracts;
@@ -12,42 +11,43 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
+    using static Dispatcher.Common.GlobalConstants.Forum;
     using static Dispatcher.Common.GlobalConstants.PageEntities;
 
     public class ForumController : Controller
     {
-        private const string UnsolvedDiscussions = "unsolved";
-
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IForumService forumService;
         private readonly IProfileService profileService;
         private readonly ICommentService commentService;
         private readonly IStringValidatorService stringValidatorService;
+        private readonly IPermissionsValidatorService permissionsValidator;
 
         public ForumController(
             UserManager<ApplicationUser> userManager,
             IForumService forumService,
             IProfileService profileService,
             ICommentService commentService,
-            IStringValidatorService stringValidatorService)
+            IStringValidatorService stringValidatorService,
+            IPermissionsValidatorService permissionsValidator)
         {
             this.forumService = forumService;
             this.userManager = userManager;
             this.profileService = profileService;
             this.commentService = commentService;
             this.stringValidatorService = stringValidatorService;
+            this.permissionsValidator = permissionsValidator;
         }
 
         [Authorize]
         public IActionResult Create()
         {
-            var categories = this.forumService.GetCategories<CategoryDropDownViewModel>();
-            var discussionInput = new DiscussionInputModel
+            var discussion = new DiscussionInputModel
             {
-                Categories = categories,
+                Categories = this.forumService.GetCategories<CategoryDropDownViewModel>(),
             };
 
-            return this.View(discussionInput);
+            return this.View(discussion);
         }
 
         [HttpPost]
@@ -55,19 +55,18 @@
         public async Task<IActionResult> Create(DiscussionInputModel input)
         {
             if (!this.ModelState.IsValid
-                || !this.stringValidatorService.IsStringValidDecoded(input.Description, GlobalConstants.DiscussionDescriptionMinLength))
+                || !this.stringValidatorService.IsStringValidDecoded(input.Description, DescriptionMinLenght))
             {
-                var categories = this.forumService.GetCategories<CategoryDropDownViewModel>();
                 var discussionInput = new DiscussionInputModel
                 {
-                    Categories = categories,
+                    Categories = this.forumService.GetCategories<CategoryDropDownViewModel>(),
                 };
 
                 return this.View(discussionInput);
             }
 
-            var user = await this.userManager.GetUserAsync(this.User);
-            await this.forumService.CreateAsync<DiscussionInputModel>(input, user.Id);
+            var userId = this.userManager.GetUserId(this.User);
+            await this.forumService.CreateAsync<DiscussionInputModel>(input, userId);
 
             return this.RedirectToAction(nameof(this.ForumDiscussions));
         }
@@ -75,9 +74,14 @@
         [Authorize]
         public IActionResult Edit(int id)
         {
+            if (!this.HasPermission(id))
+            {
+                return this.RedirectToAction("Error", "Home");
+            }
+
             var discussion = this.forumService.GetById<EditDiscussionViewModel>(id);
-            var categories = this.forumService.GetCategories<CategoryDropDownViewModel>();
-            discussion.Categories = categories;
+            discussion.Categories = this.forumService.GetCategories<CategoryDropDownViewModel>();
+
             return this.View(discussion);
         }
 
@@ -85,8 +89,13 @@
         [HttpPost]
         public async Task<IActionResult> Edit(DiscussionInputModel input, int id)
         {
+            if (!this.HasPermission(id))
+            {
+                return this.RedirectToAction("Error", "Home");
+            }
+
             if (!this.ModelState.IsValid
-                || !this.stringValidatorService.IsStringValidDecoded(input.Description, GlobalConstants.DiscussionDescriptionMinLength))
+                || !this.stringValidatorService.IsStringValidDecoded(input.Description, DescriptionMinLenght))
             {
                 var discussion = this.forumService.GetById<EditDiscussionViewModel>(id);
                 var categories = this.forumService.GetCategories<CategoryDropDownViewModel>();
@@ -101,6 +110,11 @@
         [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
+            if (!this.HasPermission(id))
+            {
+                return this.RedirectToAction("Error", "Home");
+            }
+
             await this.forumService.DeleteAsync(id);
             return this.RedirectToAction(nameof(this.ForumDiscussions));
         }
@@ -109,8 +123,7 @@
         {
             var discussion = this.forumService.GetById<SingleForumDiscussionsViewModel>(id);
             discussion.ProfilePicture = this.profileService.GetProfilePicturePath(discussion.UserId);
-            discussion.Posts.ToList()
-                .ForEach(x => x.ProfilePicture = this.profileService.GetProfilePicturePath(x.UserId));
+            discussion.Posts.ToList().ForEach(x => x.ProfilePicture = this.profileService.GetProfilePicturePath(x.UserId));
 
             return this.View(discussion);
         }
@@ -126,7 +139,8 @@
                 Page = page,
             };
 
-            this.SetProfilePictures(forumDiscussions);
+            forumDiscussions.AllForumDiscussions.ToList()
+                .ForEach(x => x.ProfilePicture = this.profileService.GetProfilePicturePath(x.UserId));
 
             return this.View(forumDiscussions);
         }
@@ -134,7 +148,13 @@
         [Authorize]
         public async Task<IActionResult> SetToSolved(int id)
         {
+            if (!this.HasPermission(id))
+            {
+                return this.RedirectToAction("Error", "Home");
+            }
+
             await this.forumService.SetDiscussionToSolvedAsync(id);
+
             return this.RedirectToAction(nameof(this.ForumDiscussion), new { id });
         }
 
@@ -143,8 +163,8 @@
         {
             if (!string.IsNullOrWhiteSpace(input.Content))
             {
-                var user = await this.userManager.GetUserAsync(this.User);
-                input.UserId = user.Id;
+                var userId = this.userManager.GetUserId(this.User);
+                input.UserId = userId;
                 await this.commentService.CreateAsync<PostInputViewModel>(input);
             }
 
@@ -154,6 +174,11 @@
         [Authorize]
         public async Task<IActionResult> DeleteComment(int id, int discussionId)
         {
+            if (!this.HasPermission(id))
+            {
+                return this.RedirectToAction("Error", "Home");
+            }
+
             await this.commentService.DeleteAsync(id);
 
             if (discussionId == default)
@@ -164,10 +189,13 @@
             return this.RedirectToAction(nameof(this.ForumDiscussion), new { id = discussionId });
         }
 
-        private void SetProfilePictures(ForumDiscussionsViewModel forumDiscussions)
+        private bool HasPermission(int dataId)
         {
-            forumDiscussions.AllForumDiscussions.ToList()
-                .ForEach(x => x.ProfilePicture = this.profileService.GetProfilePicturePath(x.UserId));
+            var hasPermission = this.permissionsValidator.HasPermission(
+              this.forumService.GetCreatorId(dataId),
+              this.userManager.GetUserId(this.User));
+
+            return hasPermission.Result;
         }
     }
 }

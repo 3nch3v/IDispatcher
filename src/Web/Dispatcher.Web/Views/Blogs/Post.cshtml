@@ -8,7 +8,7 @@
     string currUserId = this.userManager.GetUserId(this.User);
 }
 
-<div style="max-width: 900px; margin-left:auto; margin-right:auto;">
+<div style="max-width: 1200px; margin:30px auto;">
     <div class="d-flex justify-content-between">
         <div class="navbar-brand"><h3 class="tm-gold-text"><a class="tm-gold-text" asp-controller="Blogs" asp-action="AllPosts"><i class="fa fa-arrow-left"></i> Back to Blog Posts</a></h3></div>
         @if (currUserId == Model.UserId)
@@ -24,10 +24,11 @@
         }
     </div>
     <br>
-
     <div>
         <div>
-            <h2>@Model.Title</h2>
+            <div style="margin-bottom: 20px;">
+                <h2>@Model.Title</h2>
+            </div>
             <div>
                 @if (Model.VideoLink != null)
                 {
@@ -38,7 +39,7 @@
                 else if (!string.IsNullOrWhiteSpace(Model.FilePath))
                 {
                     <div>
-                        <img src="@Model.FilePath" class="card-img-top" alt="@Model.Title" style="max-width: 500px; float: left; margin-right: 30px;margin-bottom:0px;">
+                        <img src="@Model.FilePath" class="card-img-top" alt="@Model.Title" style="max-width: 500px; float: left; margin-right: 30px;">
                     </div>
                 }
 

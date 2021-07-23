@@ -4,23 +4,26 @@
 
     using Dispatcher.Data.Common.Models;
 
+    using static Dispatcher.Common.GlobalConstants;
+    using static Dispatcher.Common.GlobalConstants.Blog;
+
     public class Blog : BaseDeletableModel<int>
     {
         [Required]
-        [StringLength(100, MinimumLength = 2)]
+        [MaxLength(TitleMaxLength)]
         public string Title { get; set; }
 
         [Required]
-        [StringLength(100000, MinimumLength = 100)]
+        [MaxLength(BodyMaxLength)]
         public string Body { get; set; }
 
-        [MaxLength(2048)]
+        [MaxLength(UrlMaxLenght)]
         public string FilePath { get; set; }
 
-        [MaxLength(2048)]
+        [MaxLength(UrlMaxLenght)]
         public string PhysicalFilePath { get; set; }
 
-        [MaxLength(2048)]
+        [MaxLength(UrlMaxLenght)]
         public string VideoLink { get; set; }
 
         [Required]

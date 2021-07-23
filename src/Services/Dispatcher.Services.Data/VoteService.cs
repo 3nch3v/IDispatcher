@@ -3,11 +3,12 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    using Dispatcher.Common;
     using Dispatcher.Data.Common.Repositories;
     using Dispatcher.Data.Models.ForumModels;
     using Dispatcher.Services.Data.Contracts;
     using Dispatcher.Services.Data.Dtos;
+
+    using static Dispatcher.Common.GlobalConstants.Forum;
 
     public class VoteService : IVoteService
     {
@@ -28,20 +29,20 @@
                 {
                     DiscussionId = discussionId,
                     UserId = userId,
-                    Like = voteType == GlobalConstants.Like ? 1 : default,
-                    Dislike = voteType == GlobalConstants.Dislike ? 1 : default,
+                    Like = voteType == Like ? 1 : default,
+                    Dislike = voteType == Dislike ? 1 : default,
                 };
 
                 await this.votes.AddAsync(vote);
             }
             else
             {
-                if (vote.Like == 1 && voteType == GlobalConstants.Dislike)
+                if (vote.Like == 1 && voteType == Dislike)
                 {
                     vote.Like -= 1;
                     vote.Dislike += 1;
                 }
-                else if (vote.Dislike == 1 && voteType == GlobalConstants.Like)
+                else if (vote.Dislike == 1 && voteType == Like)
                 {
                     vote.Like += 1;
                     vote.Dislike -= 1;

@@ -2,11 +2,12 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    using Dispatcher.Common;
     using Dispatcher.Data.Common.CustomAttributes;
     using Dispatcher.Services.Mapping;
     using Dispatcher.Web.ViewModels.BlogModels;
     using Microsoft.AspNetCore.Http;
+
+    using static Dispatcher.Common.GlobalConstants.Attributes;
 
     public class BlogPostDto : IMapFrom<BaseBlogPostInputModel>, IMapFrom<BlogInputModel>, IMapFrom<EditBlogPostInputmodel>
     {
@@ -19,7 +20,7 @@
         public string Body { get; set; }
 
         [MaxLength(2048)]
-        [RegularExpression(GlobalConstants.YouTubeRegexPattern, ErrorMessage = "Please enter valid YouTube embed code!")]
+        [RegularExpression(YouTubeRegexPattern, ErrorMessage = "Please enter valid YouTube embed code!")]
         public string VideoLink { get; set; }
 
         [MaxLength(2048)]

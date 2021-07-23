@@ -12,6 +12,7 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
+    using static Dispatcher.Common.GlobalConstants.Blog;
     using static Dispatcher.Common.GlobalConstants.PageEntities;
 
     public class BlogsController : Controller
@@ -47,12 +48,12 @@
         public async Task<IActionResult> Create(BlogInputModel input)
         {
             if (!this.ModelState.IsValid
-                || !this.stringValidatorService.IsStringValidDecoded(input.Body, GlobalConstants.DefaultBodyStringMinLength))
+                || !this.stringValidatorService.IsStringValidDecoded(input.Body, BodyMinLength))
             {
                 return this.View();
             }
 
-            string pictureDirectory = $"{this.environment.WebRootPath}/img/blog-pictures";
+            string pictureDirectory = $"{this.environment.WebRootPath}{BlogPicturePath}";
             input.PictureDirectory = pictureDirectory;
             var user = await this.userManager.GetUserAsync(this.User);
             await this.blogServie.CreateAsync<BlogInputModel>(input, user.Id);
@@ -82,13 +83,13 @@
             }
 
             if (!this.ModelState.IsValid
-                || !this.stringValidatorService.IsStringValidDecoded(input.Body, GlobalConstants.DefaultBodyStringMinLength))
+                || !this.stringValidatorService.IsStringValidDecoded(input.Body, BodyMinLength))
             {
                 var editPost = this.blogServie.GetById<EditBlogPostInputmodel>(id);
                 return this.View(editPost);
             }
 
-            string pictureDirectory = $"{this.environment.WebRootPath}/img/blog-pictures";
+            string pictureDirectory = $"{this.environment.WebRootPath}{BlogPicturePath}";
             input.PictureDirectory = pictureDirectory;
             await this.blogServie.UpdateAsync<EditBlogPostInputmodel>(input, id);
             return this.RedirectToAction(nameof(this.Post), new { id });
@@ -124,10 +125,10 @@
             return this.RedirectToAction(nameof(this.AllPosts));
         }
 
-        private bool HasPermission(int id)
+        private bool HasPermission(int dataId)
         {
             var hasPermission = this.permissionsValidator.HasPermission(
-              this.blogServie.GetCreatorId(id),
+              this.blogServie.GetCreatorId(dataId),
               this.userManager.GetUserId(this.User));
 
             return hasPermission.Result;

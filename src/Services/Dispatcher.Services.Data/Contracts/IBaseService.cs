@@ -11,5 +11,7 @@
         Task UpdateAsync<T>(T input, int id);
 
         T GetById<T>(int id);
+
+        string GetCreatorId(int dataId);
     }
 }

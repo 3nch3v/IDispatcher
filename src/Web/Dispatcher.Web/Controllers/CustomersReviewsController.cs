@@ -14,7 +14,9 @@
         private readonly IProfileService profileServices;
         private readonly UserManager<ApplicationUser> userManager;
 
-        public CustomersReviewsController(IProfileService profileServices, UserManager<ApplicationUser> userManager)
+        public CustomersReviewsController(
+            IProfileService profileServices,
+            UserManager<ApplicationUser> userManager)
         {
             this.profileServices = profileServices;
             this.userManager = userManager;
@@ -34,13 +36,13 @@
         [Authorize]
         public async Task<IActionResult> Comment(CommentInputModel input, string userId)
         {
-            var appraiserId = this.userManager.GetUserId(this.User);
+            var loggedInUserId = this.userManager.GetUserId(this.User);
 
             if (!string.IsNullOrWhiteSpace(input.Comment)
-                && appraiserId != userId)
+                && loggedInUserId != userId)
             {
                 input.UserId = userId;
-                await this.profileServices.CommentAsync<CommentInputModel>(appraiserId, input);
+                await this.profileServices.CommentAsync<CommentInputModel>(loggedInUserId, input);
             }
 
             return this.RedirectToAction(nameof(this.AllCustomersReviews), new { id = input.UserId });

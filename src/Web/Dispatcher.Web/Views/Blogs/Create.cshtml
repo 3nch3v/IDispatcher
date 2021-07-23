@@ -3,17 +3,17 @@
     this.ViewBag.Title = "New Post";
 }
 
-<div class="create-blog-main" style="max-width: 900px; margin-left: auto; margin-right: auto;">
+<div class="create-blog-main" style="max-width: 900px; margin: 30px auto;">
     <h3 class="create-blog-title" style="margin:30px 10px">Create new Post</h3>
     <form method="post" enctype="multipart/form-data" class="col-md-12 offser-md-8">
         <div class="form-group">
             <label asp-for="Title">Title:</label>
-            <input asp-for="Title" class="form-control" />
+            <input asp-for="Title" class="form-control" required/>
             <span asp-validation-for="Title" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label asp-for="Body">Text:</label>
-            <textarea asp-for="Body" class="form-control" rows="12"></textarea>
+            <textarea asp-for="Body" class="form-control" rows="12" required></textarea>
             <span asp-validation-for="Body" class="text-danger"></span>
         </div>
         <div class="form-group">
@@ -21,12 +21,14 @@
             <input asp-for="VideoLink" class="form-control" />
             <span asp-validation-for="VideoLink" class="text-danger"></span>
         </div>
-        <div>And / Or</div><br>
+        <div>
+            <p>And / Or</p>
+        </div>
         <div class="form-group">
-            <label asp-for="Picture">Add Picture (optional)</label>
+            <label asp-for="Picture">Add Picture (optional):</label>
             <input asp-for="Picture" type="file" class="form-control-file" />
             <span asp-validation-for="Picture" class="text-danger"></span>
-            <span>Allowed image file formats: .jpg, .jpeg, .png, .gif, .bmp</span>
+            <p>Allowed image file formats: .jpg, .jpeg, .png, .gif, .bmp</p>
         </div>
         <input type="submit" class="tm-btn text-uppercase" value="Create" />
     </form>

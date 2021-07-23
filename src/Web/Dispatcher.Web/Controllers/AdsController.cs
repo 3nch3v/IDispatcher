@@ -11,6 +11,7 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
+    using static Dispatcher.Common.GlobalConstants.Advertisement;
     using static Dispatcher.Common.GlobalConstants.PageEntities;
 
     public class AdsController : Controller
@@ -49,7 +50,7 @@
         public async Task<IActionResult> Create(AdInputModel input)
         {
             if (!this.ModelState.IsValid
-                || !this.stringValidator.IsStringValidDecoded(input.Description, GlobalConstants.DefaultBodyStringMinLength))
+                || !this.stringValidator.IsStringValidDecoded(input.Description, DescriptionMinLength))
             {
                 var adTypes = this.adsService.GetAllAdTypes<AdTypesDropDownViewModel>();
                 var adInputModel = new AdInputModel
@@ -69,17 +70,13 @@
         [Authorize]
         public IActionResult Edit(int id)
         {
-            var ad = this.adsService.GetById<EditAdViewModel>(id);
-            ad.AdTypes = this.adsService.GetAllAdTypes<AdTypesDropDownViewModel>();
-
-            var hasPermission = this.permissionsValidator.HasPermission(
-                this.adsService.GetCreatorId(id),
-                this.userManager.GetUserId(this.User));
-
-            if (!hasPermission.Result)
+            if (!this.HasPermission(id))
             {
                 return this.RedirectToAction("Error", "Home");
             }
+
+            var ad = this.adsService.GetById<EditAdViewModel>(id);
+            ad.AdTypes = this.adsService.GetAllAdTypes<AdTypesDropDownViewModel>();
 
             return this.View(ad);
         }
@@ -88,22 +85,18 @@
         [Authorize]
         public async Task<IActionResult> Edit(AdInputModel input, int id)
         {
+            if (!this.HasPermission(id))
+            {
+                return this.RedirectToAction("Error", "Home");
+            }
+
             if (!this.ModelState.IsValid
-                || !this.stringValidator.IsStringValidDecoded(input.Description, GlobalConstants.DefaultBodyStringMinLength))
+                || !this.stringValidator.IsStringValidDecoded(input.Description, DescriptionMinLength))
             {
                 var ad = this.adsService.GetById<EditAdViewModel>(id);
                 ad.AdTypes = this.adsService.GetAllAdTypes<AdTypesDropDownViewModel>();
 
                 return this.View(ad);
-            }
-
-            var hasPermission = this.permissionsValidator.HasPermission(
-               this.adsService.GetCreatorId(id),
-               this.userManager.GetUserId(this.User));
-
-            if (!hasPermission.Result)
-            {
-                return this.RedirectToAction("Error", "Home");
             }
 
             await this.adsService.UpdateAsync<AdInputModel>(input, id);
@@ -113,28 +106,21 @@
         [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
-            var hasPermission = this.permissionsValidator.HasPermission(
-              this.adsService.GetCreatorId(id),
-              this.userManager.GetUserId(this.User));
-
-            if (!hasPermission.Result)
+            if (!this.HasPermission(id))
             {
                 return this.RedirectToAction("Error", "Home");
             }
 
             await this.adsService.DeleteAsync(id);
-
             return this.RedirectToAction(nameof(this.AllAds));
         }
 
         public IActionResult Ad(int id)
         {
             var ad = this.adsService.GetById<SingleAdViewModel>(id);
-
             return this.View(ad);
         }
 
-        [HttpGet]
         public IActionResult AllAds(int page = DefaultPageNumber)
         {
             var ads = new AllAdsViewModel
@@ -147,7 +133,6 @@
             return this.View(ads);
         }
 
-        [HttpGet]
         public IActionResult Search(string keyWords, int page = DefaultPageNumber)
         {
             if (string.IsNullOrWhiteSpace(keyWords))
@@ -165,6 +150,15 @@
             };
 
             return this.View(ads);
+        }
+
+        private bool HasPermission(int dataId)
+        {
+            var hasPermission = this.permissionsValidator.HasPermission(
+              this.adsService.GetCreatorId(dataId),
+              this.userManager.GetUserId(this.User));
+
+            return hasPermission.Result;
         }
     }
 }

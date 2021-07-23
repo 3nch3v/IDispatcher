@@ -27,21 +27,25 @@
         [Authorize]
         public IActionResult Profile(string userId)
         {
-            string id = userId;
-
             if (userId == null)
             {
-                id = this.userManager.GetUserId(this.User);
+                userId = this.userManager.GetUserId(this.User);
             }
 
-            var userDataDto = this.profileService.GetUserById(id);
+            var userDataDto = this.profileService.GetUserById(userId);
             var userProfile = this.mapper.Map<ProfileViewModel>(userDataDto);
+
             return this.View(userProfile);
         }
 
         [Authorize]
         public IActionResult DataManager(string userId)
         {
+            if (userId != this.userManager.GetUserId(this.User))
+            {
+                return this.RedirectToAction("Error", "Home");
+            }
+
             var dataManagerDto = this.profileService.GetUserData(userId);
             var dataManager = this.mapper.Map<DataManagerViewModel>(dataManagerDto);
 

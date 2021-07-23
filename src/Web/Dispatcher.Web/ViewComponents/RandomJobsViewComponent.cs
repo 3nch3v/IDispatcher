@@ -1,9 +1,6 @@
 ﻿namespace Dispatcher.Web.ViewComponents
 {
-    using Dispatcher.Data.Common.Repositories;
-    using Dispatcher.Data.Models.AdvertisementModels;
     using Dispatcher.Services.Data.Contracts;
-    using Dispatcher.Web.ViewModels.JobModels;
     using Dispatcher.Web.ViewModels.ViewComponents;
     using Microsoft.AspNetCore.Mvc;
 

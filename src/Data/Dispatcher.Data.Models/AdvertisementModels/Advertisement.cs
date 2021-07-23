@@ -5,6 +5,9 @@
 
     using Dispatcher.Data.Common.Models;
 
+    using static Dispatcher.Common.GlobalConstants;
+    using static Dispatcher.Common.GlobalConstants.Advertisement;
+
     public class Advertisement : BaseDeletableModel<int>
     {
         [ForeignKey(nameof(AdvertisementType))]
@@ -13,18 +16,18 @@
         public virtual AdvertisementType AdvertisementType { get; set; }
 
         [Required]
-        [StringLength(100, MinimumLength = 3)]
+        [MaxLength(TitleMaxLength)]
         public string Title { get; set; }
 
         [Required]
-        [StringLength(5000, MinimumLength = 100)]
+        [MaxLength(DescriptionMaxLength)]
         public string Description { get; set; }
 
         [Required]
-        [MaxLength(50)]
+        [MaxLength(CompensationMaxLenght)]
         public string Compensation { get; set; }
 
-        [MaxLength(2048)]
+        [MaxLength(UrlMaxLenght)]
         public string PictureUrl { get; set; }
 
         /// <summary>

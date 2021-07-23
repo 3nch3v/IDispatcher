@@ -36,7 +36,11 @@
                 Dislikes = votesDto.Dislikes,
             };
 
-            return new VoteResultsModel { Likes = votes.Likes, Dislikes = votes.Dislikes };
+            return new VoteResultsModel
+            {
+                Likes = votes.Likes,
+                Dislikes = votes.Dislikes,
+            };
         }
     }
 }
