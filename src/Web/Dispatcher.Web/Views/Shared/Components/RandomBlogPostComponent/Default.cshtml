@@ -6,7 +6,7 @@
     {
         if (body.Length > 500)
         {
-            return body.Substring(0, 450);
+            return body.Substring(0, 500);
         }
 
         return body;
@@ -16,24 +16,33 @@
 @if (Model.IsWithPicture == false)
 {
     <div class="tm-content-box tm-margin-t-small">
-        <a asp-controller="Blogs" asp-action="Post" asp-route-id="@Model.Id" class="tm-text-link"><h4 class="tm-margin-b-20 tm-thin-font">@Model.Title</h4></a>
-        <p class="tm-margin-b-30">@Html.Raw(PostBody(Model.SanitizedBody)))</p>
+        <a asp-controller="Blogs" asp-action="Post" asp-route-id="@Model.Id" class="tm-gold-text" style="text-decoration: none;">
+            <h4 class="tm-margin-b-20 tm-thin-font">@Model.Title</h4>
+        </a>
+        <p class="tm-margin-b-30" style="text-align: justify;">@Html.Raw(PostBody(Model.SanitizedBody)))</p>
     </div>
 }
 else
 {
-<div class="tm-2-col-left">
-    <h3 class="tm-gold-text tm-title">@Model.Title</h3>
-    @if (!string.IsNullOrWhiteSpace(Model.FilePath))
-    {
-        <img src="@Model.FilePath" alt="Image" class="tm-margin-b-40 img-fluid" width="400">
-    }
-    else
-    {
-        <img src="~/img/blog-pictures/blog-post-default-pic.jpg" alt="Image" class="tm-margin-b-40 img-fluid" max-width="300">
-    }
-
-    <p>@Html.Raw(PostBody(Model.SanitizedBody)))</p>
-    <a asp-controller="Blogs" asp-action="Post" asp-route-id="@Model.Id" class="tm-btn text-uppercase">Read More</a>
-</div>
+    <article class="mt-4">
+        <header class="pt-2">
+            <h3 class="tm-gold-text tm-title">@Model.Title</h3>
+        </header>
+        <section style="display: flex;">
+            @if (!string.IsNullOrWhiteSpace(Model.FilePath))
+            {
+                <img src="@Model.FilePath" alt="Image" style="max-height:300px; max-width: 300px; margin: 10px auto;">
+            }
+            else
+            {
+                <img src="~/img/blog-pictures/blog-post-default-pic.jpg" alt="Image" style="max-height: 300px; max-width: 300px; margin: 10px auto;">
+            }
+        </section>
+        <section>
+            <p style="text-align: justify;">@Html.Raw(PostBody(Model.SanitizedBody)))</p>
+            <a asp-controller="Blogs" asp-action="Post" asp-route-id="@Model.Id" class="tm-btn text-uppercase">Read More</a>
+        </section>
+    </article>
 }
+
+

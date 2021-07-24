@@ -2,7 +2,6 @@
 {
     using System.Threading.Tasks;
 
-    using Dispatcher.Common;
     using Dispatcher.Data.Models;
     using Dispatcher.Services.Contracts;
     using Dispatcher.Services.Data.Contracts;
@@ -12,6 +11,7 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
+    using static Dispatcher.Common.GlobalConstants;
     using static Dispatcher.Common.GlobalConstants.Blog;
     using static Dispatcher.Common.GlobalConstants.PageEntities;
 
@@ -20,20 +20,20 @@
         private readonly IBlogService blogServie;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IWebHostEnvironment environment;
-        private readonly IStringValidatorService stringValidatorService;
+        private readonly IStringValidatorService stringValidator;
         private readonly IPermissionsValidatorService permissionsValidator;
 
         public BlogsController(
             UserManager<ApplicationUser> userManager,
             IBlogService blogServie,
             IWebHostEnvironment environment,
-            IStringValidatorService stringValidatorService,
+            IStringValidatorService stringValidator,
             IPermissionsValidatorService permissionsValidator)
         {
             this.blogServie = blogServie;
             this.userManager = userManager;
             this.environment = environment;
-            this.stringValidatorService = stringValidatorService;
+            this.stringValidator = stringValidator;
             this.permissionsValidator = permissionsValidator;
         }
 
@@ -47,10 +47,14 @@
         [Authorize]
         public async Task<IActionResult> Create(BlogInputModel input)
         {
-            if (!this.ModelState.IsValid
-                || !this.stringValidatorService.IsStringValidDecoded(input.Body, BodyMinLength))
+            if (!this.stringValidator.IsStringValidDecoded(input.Body, BodyMinLength))
             {
-                return this.View();
+                this.ModelState.AddModelError("Error", EmptyBody);
+            }
+
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(input);
             }
 
             string pictureDirectory = $"{this.environment.WebRootPath}{BlogPicturePath}";
@@ -82,8 +86,12 @@
                 return this.RedirectToAction("Error", "Home");
             }
 
-            if (!this.ModelState.IsValid
-                || !this.stringValidatorService.IsStringValidDecoded(input.Body, BodyMinLength))
+            if (!this.stringValidator.IsStringValidDecoded(input.Body, BodyMinLength))
+            {
+                this.ModelState.AddModelError("Error", EmptyBody);
+            }
+
+            if (!this.ModelState.IsValid)
             {
                 var editPost = this.blogServie.GetById<EditBlogPostInputmodel>(id);
                 return this.View(editPost);

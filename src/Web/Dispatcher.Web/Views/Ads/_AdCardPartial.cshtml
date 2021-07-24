@@ -1,26 +1,25 @@
-﻿<article class="col-12 col-md-4 tm-post" style="margin-bottom: 30px">
-    <hr class="tm-hr-primary">
+﻿<div class="card" style="min-width: 255px; max-width: 255px; margin: 20px 10px">
     <a asp-controller="Ads" asp-action="Ad" asp-route-id="@Model.Id" class="effect-lily tm-post-link tm-pt-60">
-        <div class="tm-post-link-inner">
-            @if (!string.IsNullOrWhiteSpace(Model.PictureUrl))
-            {
-            <img src="@Model.PictureUrl" alt="@Model.Title" class="tm-contact-img-container" style="max-width:100%; object-fit: cover;">
-            }
-            else
-            {
-            <img src="~/img/default-ad.png" alt="@Model.Title" class="img-fluid" />
-            }
-        </div>
-        <h2 class="tm-margin-b-10 tm-gold-text">@Model.Title</h2>
+        @if (!string.IsNullOrWhiteSpace(Model.PictureUrl))
+        {
+            <img class="card-img-top" src="@Model.PictureUrl" alt="@Model.Title">
+        }
+        else
+        {
+            <img class="card-img-top" src="~/img/default-ad.png" alt="@Model.Title">
+        }
     </a>
-    <p>@Model.ClearDescription.Substring(0, 80)</p>
-    <div class="d-flex justify-content-between tm-pt-45">
-        <div>@Model.Compensation</div>
-        <div>by <a class="tm-gold-text" asp-controller="Profiles" asp-action="Profile" asp-route-userId="@Model.UserId">@Model.UserUsername</a></div>
+    <div class="card-body">
+        <a asp-controller="Ads" asp-action="Ad" asp-route-id="@Model.Id" class="effect-lily tm-post-link tm-pt-60">
+            <h5 class="card-title tm-gold-text">@Model.Title</h5>
+        </a>
+        <p class="card-text">@Model.ClearDescription.Substring(0, 80)</p>
+        <div style="display: flex; justify-content: space-between;">
+            <small class="text-muted">For: @Model.AdvertisementTypeType</small>
+            <small class="text-muted">@Model.Compensation</small>
+        </div>
     </div>
-    <hr>
-    <div class="d-flex justify-content-between">
-        <div class="tm-color-primary">For: @Model.AdvertisementTypeType</div>
-        <div class="tm-color-primary">@Model.CreatedOn.ToString("d")</div>
+    <div class="card-footer">
+        <small class="text-muted">by <a class="tm-gold-text" asp-controller="Profiles" asp-action="Profile" asp-route-userId="@Model.UserId">@Model.UserUsername</a></small>
     </div>
-</article>
+</div>

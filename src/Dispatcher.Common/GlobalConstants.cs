@@ -4,6 +4,8 @@
     {
         public const string SystemName = "Dispatcher";
 
+        public const string EmptyBody = "The description can not be white space!";
+
         public const int UrlMaxLenght = 2048;
 
         public static class Advertisement
@@ -75,7 +77,7 @@
 
         public static class PageEntities
         {
-            public const int AdsCount = 9;
+            public const int AdsCount = 8;
 
             public const int DefaultPageNumber = 1;
 

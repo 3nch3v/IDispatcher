@@ -2,7 +2,6 @@
 {
     using System.Threading.Tasks;
 
-    using Dispatcher.Common;
     using Dispatcher.Data.Models;
     using Dispatcher.Services.Contracts;
     using Dispatcher.Services.Data.Contracts;
@@ -11,6 +10,7 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
+    using static Dispatcher.Common.GlobalConstants;
     using static Dispatcher.Common.GlobalConstants.Advertisement;
     using static Dispatcher.Common.GlobalConstants.PageEntities;
 
@@ -36,7 +36,7 @@
         [Authorize]
         public IActionResult Create()
         {
-            var adTypes = this.adsService.GetAllAdTypes<AdTypesDropDownViewModel>();
+            var adTypes = this.adsService.GetAllAdTypes<AdTypesViewModel>();
             var adInputModel = new AdInputModel
             {
                 AdTypes = adTypes,
@@ -49,10 +49,14 @@
         [Authorize]
         public async Task<IActionResult> Create(AdInputModel input)
         {
-            if (!this.ModelState.IsValid
-                || !this.stringValidator.IsStringValidDecoded(input.Description, DescriptionMinLength))
+            if (!this.stringValidator.IsStringValidDecoded(input.Description, DescriptionMinLength))
             {
-                var adTypes = this.adsService.GetAllAdTypes<AdTypesDropDownViewModel>();
+                this.ModelState.AddModelError("Error", EmptyBody);
+            }
+
+            if (!this.ModelState.IsValid)
+            {
+                var adTypes = this.adsService.GetAllAdTypes<AdTypesViewModel>();
                 var adInputModel = new AdInputModel
                 {
                     AdTypes = adTypes,
@@ -76,7 +80,7 @@
             }
 
             var ad = this.adsService.GetById<EditAdViewModel>(id);
-            ad.AdTypes = this.adsService.GetAllAdTypes<AdTypesDropDownViewModel>();
+            ad.AdTypes = this.adsService.GetAllAdTypes<AdTypesViewModel>();
 
             return this.View(ad);
         }
@@ -90,11 +94,15 @@
                 return this.RedirectToAction("Error", "Home");
             }
 
-            if (!this.ModelState.IsValid
-                || !this.stringValidator.IsStringValidDecoded(input.Description, DescriptionMinLength))
+            if (!this.stringValidator.IsStringValidDecoded(input.Description, DescriptionMinLength))
+            {
+                this.ModelState.AddModelError("Error", EmptyBody);
+            }
+
+            if (!this.ModelState.IsValid)
             {
                 var ad = this.adsService.GetById<EditAdViewModel>(id);
-                ad.AdTypes = this.adsService.GetAllAdTypes<AdTypesDropDownViewModel>();
+                ad.AdTypes = this.adsService.GetAllAdTypes<AdTypesViewModel>();
 
                 return this.View(ad);
             }
@@ -117,7 +125,7 @@
 
         public IActionResult Ad(int id)
         {
-            var ad = this.adsService.GetById<SingleAdViewModel>(id);
+            var ad = this.adsService.GetById<AdViewModel>(id);
             return this.View(ad);
         }
 
@@ -125,7 +133,7 @@
         {
             var ads = new AllAdsViewModel
             {
-                Ads = this.adsService.GetAllAds<AdsViewModel>(page, AdsCount),
+                Ads = this.adsService.GetAllAds<AdViewModel>(page, AdsCount),
                 AdsCount = this.adsService.AdsCount(),
                 Page = page,
             };
@@ -144,7 +152,7 @@
 
             var ads = new AllAdsViewModel
             {
-                Ads = this.adsService.SearchResults<AdsViewModel>(page, AdsCount, this.TempData["KeyWords"].ToString()),
+                Ads = this.adsService.SearchResults<AdViewModel>(page, AdsCount, this.TempData["KeyWords"].ToString()),
                 AdsCount = this.adsService.SearchCount(),
                 Page = page,
             };

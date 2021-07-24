@@ -8,21 +8,18 @@
     public class ProjectInputmodel : IMapTo<Project>
     {
         [Required]
-        [MinLength(3)]
-        [MaxLength(100)]
+        [StringLength(100, MinimumLength = 3)]
         public string Name { get; set; }
 
         [MaxLength(2048)]
         public string Url { get; set; }
 
         [Required]
-        [MinLength(3)]
-        [MaxLength(100)]
+        [StringLength(100, MinimumLength = 3)]
         public string UserRole { get; set; }
 
         [Required]
-        [MinLength(3)]
-        [MaxLength(500)]
+        [StringLength(500, MinimumLength = 3)]
         public string Description { get; set; }
     }
 }

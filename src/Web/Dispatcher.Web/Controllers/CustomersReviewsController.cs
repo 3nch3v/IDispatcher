@@ -36,16 +36,20 @@
         [Authorize]
         public async Task<IActionResult> Comment(CommentInputModel input, string userId)
         {
+            if (!this.ModelState.IsValid)
+            {
+                return this.RedirectToAction(nameof(this.AllCustomersReviews), new { id = userId });
+            }
+
             var loggedInUserId = this.userManager.GetUserId(this.User);
 
-            if (!string.IsNullOrWhiteSpace(input.Comment)
-                && loggedInUserId != userId)
+            if (!string.IsNullOrWhiteSpace(input.Comment) && loggedInUserId != userId)
             {
                 input.UserId = userId;
                 await this.profileServices.CommentAsync<CommentInputModel>(loggedInUserId, input);
             }
 
-            return this.RedirectToAction(nameof(this.AllCustomersReviews), new { id = input.UserId });
+            return this.RedirectToAction(nameof(this.AllCustomersReviews), new { id = userId });
         }
     }
 }

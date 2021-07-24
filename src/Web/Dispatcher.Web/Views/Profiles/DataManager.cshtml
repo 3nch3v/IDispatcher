@@ -5,20 +5,21 @@
     this.ViewBag.Title = "Data manager";
 }
 
-
 <div class="col-md-12">
-    <h3>@this.ViewBag.Title</h3>
+    <div class="mt-4 mb-4">
+        <h3>@this.ViewBag.Title</h3>
+    </div>
     <div class="card mb-3">
         <div class="card-body">
-            <h5>Projects</h5>
+            <h4>Projects</h4>
             <hr>
             @if (Model.Projects.Count > 0)
             {
                 @foreach (var project in Model.Projects)
                 {
                     <div class="row justify-content-between">
-                        <div class="col-sm-4">
-                            <h6 class="mb-0"><a asp-controller="Projects" asp-action="Project" asp-route-id="@project.Id">@project.Title</a></h6>
+                        <div class="col-sm-10">
+                            <p class="mb-0"><a asp-controller="Projects" asp-action="Project" asp-route-id="@project.Id">@project.Title</a></p>
                         </div>
                         <div class="col-sm-2 text-secondary">
                             <a asp-controller="Projects" asp-action="Edit" asp-route-id="@project.Id" class="btn btn-outline-secondary" title="Edit">Edit</a>
@@ -30,9 +31,7 @@
             }
             else
             {
-                <span class="text-secondary">No projects available...</span>
-                <br>
-                <br>
+                <p class="text-secondary">No projects available...</p>
             }
             <div class="row">
                 <div class="col-sm-12">
@@ -44,15 +43,15 @@
 
     <div class="card mb-3">
         <div class="card-body">
-            <h5>Advertisements</h5>
+            <h4>Advertisements</h4>
             <hr>
             @if (Model.Advertisements.Count > 0)
             {
                 @foreach (var advertisement in Model.Advertisements)
                 {
                     <div class="row justify-content-between">
-                        <div class="col-sm-4">
-                            <h6 class="mb-0"><a asp-controller="Ads" asp-action="Ad" asp-route-id="@advertisement.Id">@advertisement.Title</a></h6>
+                        <div class="col-sm-10">
+                            <p class="mb-0"><a asp-controller="Ads" asp-action="Ad" asp-route-id="@advertisement.Id">@advertisement.Title</a></p>
                         </div>
                         <div class="col-sm-2 text-secondary">
                             <a asp-controller="Ads" asp-action="Edit" asp-route-id="@advertisement.Id" class="btn btn-outline-secondary">Edit</a>
@@ -64,7 +63,7 @@
             }
             else
             {
-                <span class="text-secondary">No advertisements available...</span>
+                <p class="text-secondary">No advertisements available...</p>
             }
             <div class="row">
                 <div class="col-sm-12">
@@ -76,15 +75,15 @@
 
     <div class="card mb-3">
         <div class="card-body">
-            <h5>Job Advertisements</h5>
+            <h4>Job Advertisements</h4>
             <hr>
             @if (Model.Jobs.Count > 0)
             {
                 @foreach (var job in Model.Jobs)
                 {
                     <div class="row justify-content-between">
-                        <div class="col-sm-4">
-                            <h6 class="mb-0"><a asp-controller="Jobs" asp-action="Job" asp-route-id="@job.Id">@job.Title</a></h6>
+                        <div class="col-sm-10">
+                            <p class="mb-0"><a asp-controller="Jobs" asp-action="Job" asp-route-id="@job.Id">@job.Title</a></p>
                         </div>
                         <div class="col-sm-2 text-secondary">
                             <a asp-controller="Jobs" asp-action="Edit" asp-route-id="@job.Id" class="btn btn-outline-secondary">Edit</a>
@@ -96,7 +95,7 @@
             }
             else
             {
-                <span class="text-secondary">No job ads available...</span>
+                <p class="text-secondary">No job ads available...</p>
             }
             <div class="row">
                 <div class="col-sm-12">
@@ -108,15 +107,15 @@
 
     <div class="card mb-3">
         <div class="card-body">
-            <h5>Forum Discussions</h5>
+            <h4>Forum Discussions</h4>
             <h6 class="d-flex align-items-center mb-3"></h6>
             @if (Model.Discussions.Count > 0)
             {
                 @foreach (var discussion in Model.Discussions)
                 {
                     <div class="row justify-content-between">
-                        <div class="col-sm-4">
-                            <h6 class="mb-0"><a asp-controller="Forum" asp-action="ForumDiscussion" asp-route-id="@discussion.Id">@discussion.Title</a></h6>
+                        <div class="col-sm-10">
+                            <p class="mb-0"><a asp-controller="Forum" asp-action="ForumDiscussion" asp-route-id="@discussion.Id">@discussion.Title</a></p>
                         </div>
                         <div class="col-sm-2 text-secondary">
                             <a asp-controller="Forum" asp-action="Edit" asp-route-id="@discussion.Id" class="btn btn-outline-secondary">Edit</a>
@@ -128,7 +127,7 @@
             }
             else
             {
-                <span class="text-secondary">No discussions available...</span>
+                <p class="text-secondary">No discussions available...</p>
             }
             <div class="row">
                 <div class="col-sm-12">
@@ -140,15 +139,15 @@
 
     <div class="card mb-3">
         <div class="card-body">
-            <h5>Blog posts</h5>
+            <h4>Blog posts</h4>
             <hr>
             @if (Model.Blogs.Count > 0)
             {
                 @foreach (var post in Model.Blogs)
                 {
                     <div class="row justify-content-between">
-                        <div class="col-sm-4">
-                            <h6 class="mb-0"><a asp-controller="Blogs" asp-action="Post" asp-route-id="@post.Id">@post.Title</a></h6>
+                        <div class="col-sm-10">
+                            <p class="mb-0"><a asp-controller="Blogs" asp-action="Post" asp-route-id="@post.Id">@post.Title</a></p>
                         </div>
                         <div class="col-sm-2 text-secondary">
                             <a asp-controller="Blogs" asp-action="Edit" asp-route-id="@post.Id" class="btn btn-outline-secondary">Edit</a>
@@ -160,7 +159,7 @@
             }
             else
             {
-                <span class="text-secondary">No job ads available...</span>
+                <p class="text-secondary">No job ads available...</p>
             }
             <div class="row">
                 <div class="col-sm-12">

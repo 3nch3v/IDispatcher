@@ -3,7 +3,7 @@
     using Dispatcher.Data.Models.AdvertisementModels;
     using Dispatcher.Services.Mapping;
 
-    public class AdTypesDropDownViewModel : IMapFrom<AdvertisementType>
+    public class AdTypesViewModel : IMapFrom<AdvertisementType>
     {
         public int Id { get; set; }
 

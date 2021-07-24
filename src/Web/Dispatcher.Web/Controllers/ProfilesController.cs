@@ -41,7 +41,9 @@
         [Authorize]
         public IActionResult DataManager(string userId)
         {
-            if (userId != this.userManager.GetUserId(this.User))
+            var loggedInUserId = this.userManager.GetUserId(this.User);
+
+            if (userId != loggedInUserId)
             {
                 return this.RedirectToAction("Error", "Home");
             }

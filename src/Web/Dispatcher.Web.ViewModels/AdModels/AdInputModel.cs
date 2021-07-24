@@ -25,6 +25,6 @@
         [MaxLength(2048)]
         public string PictureUrl { get; set; }
 
-        public IEnumerable<AdTypesDropDownViewModel> AdTypes { get; set; }
+        public IEnumerable<AdTypesViewModel> AdTypes { get; set; }
     }
 }

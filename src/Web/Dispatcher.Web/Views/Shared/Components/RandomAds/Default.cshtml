@@ -1,29 +1,16 @@
 ﻿@using Dispatcher.Web.ViewModels.ViewComponents
 @model RandomAdsModel
 
-@{
-    string columnCoount = null;
-}
-
 @foreach (var ad in Model.Ads)
 {
-    if (Model.Ads.Count() == 4)
-    {
-        columnCoount = @"col-xs-12 col-sm-6 col-md-6 col-lg-3 col-xl-3";
-    }
-    else
-    {
-        columnCoount = @"col-lg-4 col-xl-4";
-    }
-
-<div class="@columnCoount">
-    <hr>
-    <div class="tm-content-box">
-        <img src="@ad.PictureUrl" alt="@ad.Title" class="tm-margin-b-20 img-thumbnail" style="height:160px; width:250px; object-fit:cover">
-        <h4 class="tm-margin-b-20 tm-gold-text">@ad.Title</h4>
-        <p class="tm-margin-b-20">@Html.Raw(ad.SanitizedDescription.Substring(0, 100))</p>
-        <a asp-controller="Ads" asp-action="Ad" asp-route-id="@ad.Id" class="tm-btn text-uppercase">READ MORE</a>
+    <div class="card">
+        <img class="card-img-top" src="@ad.PictureUrl" alt="@ad.Title">
+        <div class="card-body">
+            <h5 class="card-title">@ad.Title</h5>
+            <p class="card-text" style="text-align: justify;">@Html.Raw(ad.SanitizedDescription.Substring(0, 100))</p>
+        </div>
+        <div class="card-footer" style="background: white; margin: auto auto;">
+            <a asp-controller="Ads" asp-action="Ad" asp-route-id="@ad.Id" class="tm-btn text-uppercase">READ MORE</a>
+        </div>
     </div>
-    <hr>
-</div>
 }

@@ -23,6 +23,6 @@
 
         public int NextPage => this.Page + 1;
 
-        public IEnumerable<AdsViewModel> Ads { get; set; }
+        public IEnumerable<AdViewModel> Ads { get; set; }
     }
 }

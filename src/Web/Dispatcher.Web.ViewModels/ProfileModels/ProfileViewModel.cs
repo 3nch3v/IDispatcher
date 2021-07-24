@@ -19,7 +19,7 @@
 
         public string Education { get; set; }
 
-        public string ComponyName { get; set; }
+        public string CompanyName { get; set; }
 
         public string Interests { get; set; }
 

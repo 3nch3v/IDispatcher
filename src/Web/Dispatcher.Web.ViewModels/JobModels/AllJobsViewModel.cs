@@ -7,8 +7,6 @@
 
     public class AllJobsViewModel
     {
-        public IEnumerable<SigleJobViewModel> Jobs { get; set; }
-
         public int JobsCount { get; set; }
 
         public int PageEntitiesCount => PageEntities.JobsCount;
@@ -24,5 +22,7 @@
         public bool HasNextPage => this.Page < this.PagesCount;
 
         public int NextPage => this.Page + 1;
+
+        public IEnumerable<SigleJobViewModel> Jobs { get; set; }
     }
 }

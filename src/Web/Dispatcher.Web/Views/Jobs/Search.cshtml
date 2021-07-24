@@ -1,5 +1,5 @@
-﻿@model Dispatcher.Web.ViewModels.JobModels.AllJobsViewModel
-@using Dispatcher.Common
+﻿@using Dispatcher.Common
+@model Dispatcher.Web.ViewModels.JobModels.AllJobsViewModel
 
 <p hidden>@this.TempData["keyWords"];</p>
 
@@ -12,65 +12,34 @@
 
 <div class="container-fluid">
     <nav class="navbar navbar-light bg-transparent justify-content-between">
-        <div class="navbar-brand"><h3 class="tm-gold-text">@this.ViewBag.Title</h3></div>
+        <div class="navbar-brand">
+            <h3 class="tm-gold-text">@this.ViewBag.Title</h3>
+        </div>
         <form asp-controller="Jobs" asp-action="Search" method="get" class="form-inline" aria-required="true">
-            <input required name="keyWords" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <input required name="keyWords" class="form-control mr-sm-2" type="search" placeholder="@this.ViewData["KeyWords"]" aria-label="Search">
             <button class="btn btn-outline-secondary my-2 my-sm-0 tm-gold-text" type="submit">Search</button>
         </form>
-        <span><a asp-controller="Jobs" asp-action="Create" type="button" class="btn btn-outline-secondary">Post a Job</a></span>
+        <div>
+            <a asp-controller="Jobs" asp-action="Create" type="button" class="btn btn-outline-secondary">Post a Job</a>
+        </div>
     </nav>
 
-    <br>
     @if (Model.JobsCount > 0)
     {
-        <h3 style="text-align: center;">@Model.JobsCount search results found</h3>
-        <br>
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-xs-12 col-sm-12 col-md-8 col-lg-9 col-xl-9">
-                    @foreach (var job in Model.Jobs)
-                    {
-                        <div class="media tm-related-post">
-                            <div class="media-left media-middle">
-                                <a asp-controller="Jobs" asp-action="Job" asp-route-id="@job.Id">
-                                    <img class="media-object" src="@job.LogoUrl" alt="Generic placeholder image" width="80" height="80">
-                                </a>
-                            </div>
-                            <div class="media-body">
-                                <a asp-controller="Jobs" asp-action="Job" asp-route-id="@job.Id"><h4 class="media-heading tm-gold-text tm-margin-b-15">@job.Title</h4></a>
-                                <p class="tm-small-font tm-media-description">@Html.Raw(job.SanitizedBody.Substring(0, 100))</p>
-                                <p class="tm-small-font tm-media-description">@job.Location  @job.CreatedOn.ToString("dd-MM-yyyy")</p>
-                            </div>
-                        </div>
-                    }
-                </div>
-                <aside class="col-xs-12 col-sm-12 col-md-4 col-lg-3 col-xl-3 tm-aside-r">
-                    <div class="tm-aside-container">
-                        <hr class="tm-margin-t-small">
-                        <h3 class="tm-gold-text tm-title">
-                            Blog Posts
-                        </h3>
-                        <div class="tm-content-box tm-margin-t-small">
-                            <vc:random-blog-post-component is-with-picture="false"></vc:random-blog-post-component>
-                        </div>
-                        <hr class="tm-margin-t-small">
-                        <div class="tm-content-box tm-margin-t-small">
-                            <vc:random-blog-post-component is-with-picture="false"></vc:random-blog-post-component>
-                        </div>
-                        <hr class="tm-margin-t-small">
-                    </div>
-                </aside>
-            </div>
-            <br>
-            <partial name="_PaginationPartial" view-data="this.ViewData" />
-         
-        </div>
+        <h3 style="text-align: center; margin: 25px auto;">@Model.JobsCount jobs found for "@this.ViewData["KeyWords"]"</h3>
+
+        <div>
+            <partial name="_RenderJobsPartial" model="this.Model">
+        </div>   
     }
     else
     {
         <div style="margin: 20px auto; text-align: center;">
-            <h1>0 search results found</h1>
+            <h1>0 search results found for "@this.ViewData["KeyWords"]"</h1>
             <p>Sorry, we couldn't find any results for your search</p>
+            <h3 class="tm-gold-text">
+                <a class="tm-gold-text" asp-controller="Jobs" asp-action="AllJobs"><i class="fa fa-arrow-left"></i> Back to the Jobs</a>
+            </h3>
         </div>
     }
 

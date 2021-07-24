@@ -6,16 +6,12 @@
     <hr class="tm-margin-t-small">
     @foreach (var category in Model.Categories)
     {
-        <form method="get">
-            <span>
-                <a asp-controller="Forum" asp-action="ForumDiscussions" asp-route-category="@category.Name" class="tm-text-link tm-gold-text" tm-title" style="text-decoration: none; color: #CC9900; ">@category.Name (@category.DiscussionsCount)</a>
-            </span>
-            <br>
-        </form>
+        <p style="margin-bottom: 5px;">
+            <a asp-controller="Forum" asp-action="ForumDiscussions" asp-route-category="@category.Name" class="tm-text-link tm-gold-text" tm-title" style="text-decoration: none; color: #CC9900; ">@category.Name (@category.DiscussionsCount)</a>
+        </p>
     }
-    <span>
+    <p style="margin-bottom: 5px;">
         <a asp-controller="Forum" asp-action="ForumDiscussions" asp-route-category="Unsolved" class="tm-text-link " style="text-decoration: none; color: #CC9900;">Unsolved (@Model.UnsolvedCount)</a>
-    </span>
-    <br>
+    </p>
     <hr class="tm-margin-t-small">
 </div>

@@ -5,8 +5,6 @@
 
     public class ProfileAdvertisementsDto : BaseProfileCollectionsDto, IMapFrom<Advertisement>
     {
-        public string Description { get; set; }
-
         public string Compensation { get; set; }
     }
 }

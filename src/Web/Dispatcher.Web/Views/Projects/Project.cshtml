@@ -1,21 +1,25 @@
 ﻿@using Dispatcher.Web.ViewModels.ProjectModels
 @model SingleProjectViewModel
 
-<div style="max-width: 900px; margin-left:auto; margin-right:auto; margin-top: 50px;">
-    <div style="float:right;">
-        @if (Model.Url != null)
-        {
-            <img src="@Model.Url" alt="Project picture" style="width: 500px;" />
-        }
+@{
+    this.ViewBag.Title = "User's Project";
+}
+
+<div class="jumbotron row justify-content-between" style="margin-top: 50px;">
+    <div @(Model.Url == null ? @"class='col-md-12'" : @"class='col-md-6'")>
+        <h2 class="display-4">@Model.Name</h2>
+        <p>Role: @Model.UserRole</p>
     </div>
+    @if (Model.Url != null)
+    {
+        <div class="col-md-4">
+            <img src="@Model.Url" alt="Project picture" class="float-right" style="width: 250px;" />
+        </div>
+    }
+
     <div>
-        <div>
-            <h3>@Model.Name</h3>
-            <p>Role: @Model.UserRole</p>
-        </div>
-        <div>
-            <p>@Model.SanitizedDescription</p>
-        </div>
+        <hr class="my-5">
+        <p>@Model.SanitizedDescription</p>
     </div>
 </div>
 
@@ -27,9 +31,6 @@
 
 
 
-
-
-  
 
 
 

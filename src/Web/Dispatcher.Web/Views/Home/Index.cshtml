@@ -1,39 +1,44 @@
-﻿@using Dispatcher.Common
-@{ this.ViewData["Title"] = "Home Page"; }
+﻿@{ 
+    this.ViewBag.Title = "Home Page"; 
+}
 
-<div class="tm-home-img-container">
-    <img src="img/tm-home-img.jpg" alt="Image" class="hidden-lg-up img-fluid">
-</div>
-
-<section class="tm-section">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-xs-center">
-                <h2 class="tm-gold-text tm-title">Introduction</h2>
-                <p class="tm-subtitle">Dispatcher is the place for your ideas, to find a job, to read the news in the programming world or the find a help in our forum.</p>
-                <p class="tm-subtitle">If you have an idea and you need a team to code it you can find the best talent on our web page with different way of conpensation.</p>
+<div style="margin-top: -18px;">
+    <div >
+        <img src="img/tm-home-img.jpg" alt="Image" class="hidden-lg-up img-fluid">
+    </div>
+    <section class="tm-section">
+        <div class="container-fluid">
+            <div class="row mb-4">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-xs-center">
+                    <h2 class="tm-gold-text tm-title">Introduction</h2>
+                    <p class="tm-subtitle" style="text-align: justify;">
+                        Dispatcher is the place for your ideas, to find a job, to read the news in the programming world or the find help in our forum.
+                        If you have an idea and you need a team to code it you can find the best talent on our web page with a different way of compensation.
+                    </p>
+                </div>
             </div>
-        </div>
-        <div style="display:flex; align-items:stretch;">
-            <vc:random-ads ads-count="4">Ads</vc:random-ads>
-        </div>
-        <div class="row tm-margin-t-small">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
-                <vc:random-blog-post-component is-with-picture="true">Blog Post</vc:random-blog-post-component>
+            <div div class="card-deck">
+                <vc:random-ads ads-count="4">Ads</vc:random-ads>
             </div>
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
-                <div class="tm-2-col-right">
-                    <div class="tm-2-rows-md-swap">
-                        <div class="row tm-2-rows-md-down-1 tm-margin-t-small">
-                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                                <h3 class="tm-gold-text tm-title tm-margin-b-30">Job Offers</h3>
-                                <vc:random-jobs>Jobs</vc:random-jobs>
+            <div class="row tm-margin-t-small">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                    <vc:random-blog-post-component is-with-picture="true">Blog Post</vc:random-blog-post-component>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                    <div class="tm-2-col-right">
+                        <div class="tm-2-rows-md-swap">
+                            <div class="row tm-2-rows-md-down-1 tm-margin-t-small">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                    <h3 class="tm-gold-text tm-title tm-margin-b-30">Job Offers</h3>
+                                    <vc:random-jobs>Jobs</vc:random-jobs>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
+</div>
+
 

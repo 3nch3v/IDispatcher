@@ -11,6 +11,7 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
+    using static Dispatcher.Common.GlobalConstants;
     using static Dispatcher.Common.GlobalConstants.Forum;
     using static Dispatcher.Common.GlobalConstants.PageEntities;
 
@@ -20,7 +21,7 @@
         private readonly IForumService forumService;
         private readonly IProfileService profileService;
         private readonly ICommentService commentService;
-        private readonly IStringValidatorService stringValidatorService;
+        private readonly IStringValidatorService stringValidator;
         private readonly IPermissionsValidatorService permissionsValidator;
 
         public ForumController(
@@ -35,7 +36,7 @@
             this.userManager = userManager;
             this.profileService = profileService;
             this.commentService = commentService;
-            this.stringValidatorService = stringValidatorService;
+            this.stringValidator = stringValidatorService;
             this.permissionsValidator = permissionsValidator;
         }
 
@@ -54,8 +55,12 @@
         [Authorize]
         public async Task<IActionResult> Create(DiscussionInputModel input)
         {
-            if (!this.ModelState.IsValid
-                || !this.stringValidatorService.IsStringValidDecoded(input.Description, DescriptionMinLenght))
+            if (!this.stringValidator.IsStringValidDecoded(input.Description, DescriptionMinLenght))
+            {
+                this.ModelState.AddModelError("Error", EmptyBody);
+            }
+
+            if (!this.ModelState.IsValid)
             {
                 var discussionInput = new DiscussionInputModel
                 {
@@ -94,8 +99,12 @@
                 return this.RedirectToAction("Error", "Home");
             }
 
-            if (!this.ModelState.IsValid
-                || !this.stringValidatorService.IsStringValidDecoded(input.Description, DescriptionMinLenght))
+            if (!this.stringValidator.IsStringValidDecoded(input.Description, DescriptionMinLenght))
+            {
+                this.ModelState.AddModelError("Error", EmptyBody);
+            }
+
+            if (!this.ModelState.IsValid)
             {
                 var discussion = this.forumService.GetById<EditDiscussionViewModel>(id);
                 var categories = this.forumService.GetCategories<CategoryDropDownViewModel>();
@@ -161,7 +170,7 @@
         [Authorize]
         public async Task<IActionResult> Comment(PostInputViewModel input)
         {
-            if (!string.IsNullOrWhiteSpace(input.Content))
+            if (this.ModelState.IsValid)
             {
                 var userId = this.userManager.GetUserId(this.User);
                 input.UserId = userId;

@@ -1,6 +1,6 @@
-﻿@model Dispatcher.Web.ViewModels.JobModels.SigleJobViewModel
-@using Dispatcher.Data.Models
+﻿@using Dispatcher.Data.Models
 @using Microsoft.AspNetCore.Identity;
+@model Dispatcher.Web.ViewModels.JobModels.SigleJobViewModel
 @inject UserManager<ApplicationUser> userManager
 
 @{
@@ -8,34 +8,32 @@
     string currUserId = this.userManager.GetUserId(this.User);
 }
 
-<div class="d-flex justify-content-between">
+<div class="d-flex justify-content-between mt-4">
     <div class="navbar-brand">
         <h3 class="tm-gold-text">
-            <a class="tm-gold-text" asp-controller="Jobs" asp-action="AllJobs"><i class="fa fa-arrow-left"></i> Back to Blog Posts</a>
+            <a class="tm-gold-text" asp-controller="Jobs" asp-action="AllJobs"><i class="fa fa-arrow-left"></i> Back to the Jobs</a>
         </h3>
     </div>
     @if (currUserId == Model.UserId)
     {
-        <div>
-            <span>
+        <div class="row mr-xl-5">
+            <div class="mr-4">
                 <a asp-controller="Jobs" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Edit</a>
-            </span><text>&nbsp;&nbsp;&nbsp;</text>
-            <span>
+            </div>
+            <div>
                 <a asp-controller="Jobs" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Delete</a>
-            </span>
+            </div>
         </div>
     }
 </div>
 
-<div class="d-flex justify-content-lg-end"></div>
-<br>
-<div class="container-fluid">
+<div class="container-fluid" style="margin: 30px auto;">
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-8 col-lg-9 col-xl-9">
             <div class="tm-blog-post">
                 <div>
                     <div>
-                        <h3 style="margin-bottom:20px;" class="tm-gold-text">@Model.Title</h3>
+                        <h3 style="margin-bottom:50px;" class="tm-gold-text">@Model.Title</h3>
                     </div>
                     @if (!string.IsNullOrWhiteSpace(Model.LogoUrl))
                     {
@@ -44,7 +42,7 @@
                 </div>
                 <br>
                 <div>
-                    <p style="margin-top: -50px">@Html.Raw(Model.SanitizedBody)</p>
+                    <p style="margin-top: -50px; text-align: justify;">@Html.Raw(Model.SanitizedBody)</p>
                 </div>
                 <hr>
                 <div class="d-flex justify-content-between">

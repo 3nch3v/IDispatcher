@@ -10,13 +10,14 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
+    using static Dispatcher.Common.GlobalConstants;
     using static Dispatcher.Common.GlobalConstants.Job;
     using static Dispatcher.Common.GlobalConstants.PageEntities;
 
     public class JobsController : Controller
     {
         private readonly IJobService jobService;
-        private readonly IStringValidatorService stringValidatorService;
+        private readonly IStringValidatorService stringValidator;
         private readonly IPermissionsValidatorService permissionsValidator;
         private readonly UserManager<ApplicationUser> userManager;
 
@@ -27,7 +28,7 @@
             UserManager<ApplicationUser> userManager)
         {
             this.jobService = jobService;
-            this.stringValidatorService = stringValidatorService;
+            this.stringValidator = stringValidatorService;
             this.permissionsValidator = permissionsValidator;
             this.userManager = userManager;
         }
@@ -42,10 +43,14 @@
         [Authorize]
         public async Task<IActionResult> Create(JobInputModel input)
         {
-            if (!this.ModelState.IsValid
-                || !this.stringValidatorService.IsStringValidDecoded(input.JobBody, BodyMinLength))
+            if (!this.stringValidator.IsStringValidDecoded(input.JobBody, BodyMinLength))
             {
-                return this.View();
+                this.ModelState.AddModelError("Error", EmptyBody);
+            }
+
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(input);
             }
 
             var userId = this.userManager.GetUserId(this.User);
@@ -76,8 +81,12 @@
                 return this.RedirectToAction("Error", "Home");
             }
 
-            if (!this.ModelState.IsValid
-                || !this.stringValidatorService.IsStringValidDecoded(input.JobBody, BodyMinLength))
+            if (!this.stringValidator.IsStringValidDecoded(input.JobBody, BodyMinLength))
+            {
+                this.ModelState.AddModelError("Error", EmptyBody);
+            }
+
+            if (!this.ModelState.IsValid)
             {
                 return this.View(input);
             }
@@ -85,25 +94,6 @@
             await this.jobService.UpdateAsync<EditJobInputModel>(input, id);
 
             return this.RedirectToAction(nameof(this.Job), new { id });
-        }
-
-        public IActionResult AllJobs(int page = DefaultPageNumber)
-        {
-            var jobs = new AllJobsViewModel
-            {
-                Jobs = this.jobService.GetAll<SigleJobViewModel>(page, JobsCount),
-                Page = page,
-                JobsCount = this.jobService.JobsCount(),
-            };
-
-            return this.View(jobs);
-        }
-
-        public IActionResult Job(int id)
-        {
-            var job = this.jobService.GetById<SigleJobViewModel>(id);
-
-            return this.View(job);
         }
 
         [Authorize]
@@ -117,6 +107,18 @@
             await this.jobService.DeleteAsync(id);
 
             return this.RedirectToAction(nameof(this.AllJobs));
+        }
+
+        public IActionResult AllJobs(int page = DefaultPageNumber)
+        {
+            var jobs = new AllJobsViewModel
+            {
+                Jobs = this.jobService.GetAll<SigleJobViewModel>(page, JobsCount),
+                Page = page,
+                JobsCount = this.jobService.JobsCount(),
+            };
+
+            return this.View(jobs);
         }
 
         [HttpGet]
@@ -137,6 +139,13 @@
             };
 
             return this.View(jobs);
+        }
+
+        public IActionResult Job(int id)
+        {
+            var job = this.jobService.GetById<SigleJobViewModel>(id);
+
+            return this.View(job);
         }
 
         private bool HasPermission(int dataId)

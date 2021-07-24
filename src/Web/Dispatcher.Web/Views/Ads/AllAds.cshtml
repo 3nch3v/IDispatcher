@@ -5,13 +5,13 @@
     this.ViewBag.Title = "The Talents";
     this.ViewData["Location"] = "Ads";
 }
-<div class="container-fluid">
-    <nav class="navbar navbar-light bg-transparent justify-content-between">
+<div style="max-width: 1200px;">
+    <nav class="col-12 navbar navbar-light bg-transparent justify-content-between">
         <div class="navbar-brand">
             <h3><a asp-controller="Ads" asp-action="AllAds" class="tm-gold-text">@this.ViewBag.Title</a></h3>
         </div>
-        <form asp-controller="Ads" asp-action="Search" method="get" class="form-inline" >
-            <input name="keyWords"  class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <form asp-controller="Ads" asp-action="Search" method="get" class="form-inline">
+            <input name="keyWords" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-secondary my-2 my-sm-0 tm-gold-text" type="submit">Search</button>
         </form>
         <div>
@@ -19,12 +19,13 @@
         </div>
     </nav>
 
-    <div class="ad-main-container row tm-row">
+    <div class="card-group">
         @foreach (var ad in Model.Ads)
         {
-           <partial name="_AdCardPartial" model="ad" />
+            <partial name="_AdCardPartial" model="ad" />
         }
     </div>
-    <br>
-    <partial name="_PaginationPartial" view-data="this.ViewData" />
+    <div class="mt-4">
+        <partial name="_PaginationPartial" view-data="this.ViewData" />
+    </div>
 </div>

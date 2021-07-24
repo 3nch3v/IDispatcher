@@ -1,0 +1,24 @@
+﻿.profile-info {
+    margin-bottom: 0;
+    padding: 5px 5px;
+    font-size: 16px;
+}
+
+hr {
+    margin: 5px auto;
+}
+
+.ads-compensation {
+    text-align: end;
+}
+
+.job-title,
+.discussion-title {
+    font-size: 15px;
+    margin: 8px 0;
+}
+
+.blogs-title {
+    font-size: 15px;
+    margin: 5px 0;
+}

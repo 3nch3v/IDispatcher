@@ -1,12 +1,14 @@
 ﻿namespace Dispatcher.Web.ViewModels.AdModels
 {
     using System;
+    using System.Net;
+    using System.Text.RegularExpressions;
 
     using Dispatcher.Data.Models.AdvertisementModels;
     using Dispatcher.Services.Mapping;
     using Ganss.XSS;
 
-    public class SingleAdViewModel : IMapFrom<Advertisement>
+    public class AdViewModel : IMapFrom<Advertisement>, IMapTo<Advertisement>
     {
         public int Id { get; set; }
 
@@ -18,16 +20,16 @@
 
         public string SanitizedDescription => new HtmlSanitizer().Sanitize(this.Description);
 
-        public string Compensation { get; set; }
-
-        public string PictureUrl { get; set; }
+        public string ClearDescription => WebUtility.HtmlDecode(Regex.Replace(new HtmlSanitizer().Sanitize(this.Description), "<[^>]+>", string.Empty));
 
         public string UserUsername { get; set; }
 
         public string UserId { get; set; }
 
+        public string PictureUrl { get; set; }
+
         public DateTime CreatedOn { get; set; }
 
-        public bool IsActive { get; set; }
+        public string Compensation { get; set; }
     }
 }

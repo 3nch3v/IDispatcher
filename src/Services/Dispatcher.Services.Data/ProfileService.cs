@@ -66,7 +66,6 @@
                         {
                             Id = x.Id,
                             Title = x.Title,
-                            Description = x.Description,
                             Compensation = x.Compensation,
                         }).ToArray(),
                     Projects = u.Projects
