@@ -3,9 +3,10 @@
     using System.Collections.Generic;
 
     using Dispatcher.Data.Models;
+    using Dispatcher.Data.Models.Dtos;
     using Dispatcher.Services.Mapping;
 
-    public class ProfileViewModel : IMapFrom<ApplicationUser>
+    public class ProfileViewModel : IMapFrom<ApplicationUser>, IMapFrom<ProfileDataDto>
     {
         public string Id { get; set; }
 

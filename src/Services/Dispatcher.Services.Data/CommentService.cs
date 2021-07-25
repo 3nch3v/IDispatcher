@@ -28,6 +28,7 @@
         public async Task DeleteAsync(int id)
         {
             var commment = this.commentsRepository.All().FirstOrDefault(c => c.Id == id);
+
             this.commentsRepository.Delete(commment);
             await this.commentsRepository.SaveChangesAsync();
         }

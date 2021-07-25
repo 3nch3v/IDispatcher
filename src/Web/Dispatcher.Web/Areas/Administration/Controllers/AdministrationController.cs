@@ -1,7 +1,9 @@
 ﻿namespace Dispatcher.Web.Areas.Administration.Controllers
 {
-    using AutoMapper;
+    using System.Threading.Tasks;
+
     using Dispatcher.Services.Data.Contracts;
+    using Dispatcher.Services.Mapping;
     using Dispatcher.Web.ViewModels.Administration;
     using Dispatcher.Web.ViewModels.Administration.Dashboard;
     using Microsoft.AspNetCore.Authorization;
@@ -14,14 +16,10 @@
     public class AdministrationController : Controller
     {
         private readonly IAdministartorsServices administartorsServices;
-        private readonly IMapper mapper;
 
-        public AdministrationController(
-            IAdministartorsServices administartorsServices,
-            IMapper mapper)
+        public AdministrationController(IAdministartorsServices administartorsServices)
         {
             this.administartorsServices = administartorsServices;
-            this.mapper = mapper;
         }
 
         [HttpPost]
@@ -33,20 +31,20 @@
             }
 
             var dataDto = this.administartorsServices.GetData(input.SearchData, input.SearchMethod, input.SearchTerm);
-            var data = this.mapper.Map<SearchDataViewmodel>(dataDto);
+            var data = AutoMapperConfig.MapperInstance.Map<SearchDataViewmodel>(dataDto);
 
             return this.View(data);
         }
 
-        public IActionResult DeleteUser(string id)
+        public async Task<IActionResult> DeleteUser(string id)
         {
-            this.administartorsServices.DeleteUserAsync(id);
+            await this.administartorsServices.DeleteUserAsync(id);
             return this.RedirectToAction("Index", "Dashboard");
         }
 
-        public IActionResult DeleteReview(int id)
+        public async Task<IActionResult> DeleteReview(int id)
         {
-            this.administartorsServices.DeleteReviewAsync(id);
+            await this.administartorsServices.DeleteReviewAsync(id);
             return this.RedirectToAction("Index", "Dashboard");
         }
     }

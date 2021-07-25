@@ -16,7 +16,7 @@
             this.extensions = extensions;
         }
 
-        public string GetErrorMessage => $"This photo extension is not allowed!";
+        public static string GetErrorMessage => $"This photo extension is not allowed!";
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
@@ -28,7 +28,7 @@
 
                 if (!this.extensions.Contains(extension.ToLower()))
                 {
-                    return new ValidationResult(this.GetErrorMessage);
+                    return new ValidationResult(GetErrorMessage);
                 }
             }
 

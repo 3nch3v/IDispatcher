@@ -16,7 +16,9 @@
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IVoteService voteServices;
 
-        public VotesController(UserManager<ApplicationUser> userManager, IVoteService voteServices)
+        public VotesController(
+            UserManager<ApplicationUser> userManager,
+            IVoteService voteServices)
         {
             this.userManager = userManager;
             this.voteServices = voteServices;

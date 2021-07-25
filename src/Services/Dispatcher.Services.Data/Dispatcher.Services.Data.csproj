@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.8" />
     <ProjectReference Include="..\..\Data\Dispatcher.Data.Common\Dispatcher.Data.Common.csproj" />
     <ProjectReference Include="..\..\Data\Dispatcher.Data.Models\Dispatcher.Data.Models.csproj" />
     <ProjectReference Include="..\..\Data\Dispatcher.Data\Dispatcher.Data.csproj" />

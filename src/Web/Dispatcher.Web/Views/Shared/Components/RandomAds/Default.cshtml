@@ -3,14 +3,27 @@
 
 @foreach (var ad in Model.Ads)
 {
-    <div class="card">
-        <img class="card-img-top" src="@ad.PictureUrl" alt="@ad.Title">
+    <div class="card" style="min-width: 250px; max-width: 250px; margin: 20px 10px">
+        <a asp-controller="Ads" asp-action="Ad" asp-route-id="@ad.Id" class="effect-lily tm-post-link tm-pt-60">
+            @if (!string.IsNullOrWhiteSpace(ad.PictureUrl))
+            {
+                <img class="card-img-top" src="@ad.PictureUrl" alt="@ad.Title">
+            }
+            else
+            {
+                <img class="card-img-top" src="~/img/default-ad.png" alt="@ad.Title">
+            }
+        </a>
         <div class="card-body">
-            <h5 class="card-title">@ad.Title</h5>
-            <p class="card-text" style="text-align: justify;">@Html.Raw(ad.SanitizedDescription.Substring(0, 100))</p>
+            <a asp-controller="Ads" asp-action="Ad" asp-route-id="@ad.Id" class="effect-lily tm-post-link tm-pt-60">
+                <h5 class="card-title tm-gold-text">@ad.Title</h5>
+            </a>
+            <p class="card-text">@ad.ClearDescription.Substring(0, 100)</p>
         </div>
+
         <div class="card-footer" style="background: white; margin: auto auto;">
             <a asp-controller="Ads" asp-action="Ad" asp-route-id="@ad.Id" class="tm-btn text-uppercase">READ MORE</a>
         </div>
     </div>
 }
+

@@ -5,7 +5,6 @@
 
     using Dispatcher.Data.Common.Models;
     using Dispatcher.Data.Common.Repositories;
-
     using Microsoft.EntityFrameworkCore;
 
     public class EfDeletableEntityRepository<TEntity> : EfRepository<TEntity>, IDeletableEntityRepository<TEntity>

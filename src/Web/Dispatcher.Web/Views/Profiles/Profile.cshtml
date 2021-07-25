@@ -13,9 +13,13 @@
                     <div class="card-body">
                         <div class="d-flex flex-column align-items-center text-center">
                             @if (path != null)
-                            {<img src="@path" alt="Admin" class="rounded-circle" width="150" /> }
+                            {
+                                <img src="@path" alt="Admin" class="rounded-circle" width="150" /> 
+                            }
                             else
-                            { <img src="~/img/3_avatar-512.png" alt="Admin" class="rounded-circle" width="150" />}
+                            { 
+                                <img src="~/img/3_avatar-512.png" alt="Admin" class="rounded-circle" width="150" />
+                            }
                             <div class="mt-3">
                                 <h4>@Model.FullName</h4>
                                 @if (@Model.CumstomerReviews.Any())
@@ -25,9 +29,6 @@
 
                                 <p class="text-secondary mb-1">@Model.Education</p>
                                 <p class="text-muted font-size-sm">@Model.CompanyName</p>
-
-                                @*<button class="btn btn-primary">Follow</button>
-                                   <button class="btn btn-outline-primary">Message</button>*@
                             </div>
                         </div>
                     </div>

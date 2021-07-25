@@ -44,6 +44,7 @@
         [StringLength(50, MinimumLength = 2)]
         public string Education { get; set; }
 
+        // CompanyName !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         [StringLength(50, MinimumLength = 2)]
         public string ComponyName { get; set; }
 

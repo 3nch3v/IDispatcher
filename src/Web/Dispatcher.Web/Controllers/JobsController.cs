@@ -16,16 +16,16 @@
 
     public class JobsController : Controller
     {
+        private readonly UserManager<ApplicationUser> userManager;
         private readonly IJobService jobService;
         private readonly IStringValidatorService stringValidator;
         private readonly IPermissionsValidatorService permissionsValidator;
-        private readonly UserManager<ApplicationUser> userManager;
 
         public JobsController(
+            UserManager<ApplicationUser> userManager,
             IJobService jobService,
             IStringValidatorService stringValidatorService,
-            IPermissionsValidatorService permissionsValidator,
-            UserManager<ApplicationUser> userManager)
+            IPermissionsValidatorService permissionsValidator)
         {
             this.jobService = jobService;
             this.stringValidator = stringValidatorService;

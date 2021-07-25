@@ -1,5 +1,8 @@
 ﻿namespace Dispatcher.Web.ViewModels.ViewComponents
 {
+    using System.Net;
+    using System.Text.RegularExpressions;
+
     using Dispatcher.Data.Models.AdvertisementModels;
     using Dispatcher.Services.Mapping;
     using Ganss.XSS;
@@ -15,6 +18,8 @@
         public string Description { get; set; }
 
         public string SanitizedDescription => new HtmlSanitizer().Sanitize(this.Description);
+
+        public string ClearDescription => WebUtility.HtmlDecode(Regex.Replace(this.SanitizedDescription, "<[^>]+>", string.Empty));
 
         public string Compensation { get; set; }
 

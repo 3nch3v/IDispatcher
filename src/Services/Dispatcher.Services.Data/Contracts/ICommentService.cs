@@ -4,10 +4,10 @@
 
     public interface ICommentService
     {
+        string GetCreatorId(int dataId);
+
         Task CreateAsync<T>(T input);
 
         Task DeleteAsync(int id);
-
-        string GetCreatorId(int dataId);
     }
 }

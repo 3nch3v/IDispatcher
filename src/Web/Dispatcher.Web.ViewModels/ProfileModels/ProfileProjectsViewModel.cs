@@ -1,9 +1,10 @@
 ﻿namespace Dispatcher.Web.ViewModels.ProfileModels
 {
+    using Dispatcher.Data.Models.Dtos;
     using Dispatcher.Data.Models.UserInfoModels;
     using Dispatcher.Services.Mapping;
 
-    public class ProfileProjectsViewModel : IMapFrom<Project>
+    public class ProfileProjectsViewModel : IMapFrom<Project>, IMapFrom<ProfileProjectsDto>
     {
         public int Id { get; set; }
 

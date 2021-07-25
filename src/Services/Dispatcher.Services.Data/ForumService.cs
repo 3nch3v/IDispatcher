@@ -37,7 +37,9 @@
         public async Task UpdateAsync<T>(T input, int id)
         {
             var updatedDiscussion = AutoMapperConfig.MapperInstance.Map<Discussion>(input);
+
             var discussion = this.forumRepository.All().FirstOrDefault(d => d.Id == id);
+
             discussion.Title = updatedDiscussion.Title;
             discussion.Description = updatedDiscussion.Description;
             discussion.CategoryId = updatedDiscussion.CategoryId;
@@ -48,6 +50,7 @@
         public async Task DeleteAsync(int id)
         {
             var discussion = this.forumRepository.All().FirstOrDefault(d => d.Id == id);
+
             this.forumRepository.Delete(discussion);
             await this.forumRepository.SaveChangesAsync();
         }
@@ -55,6 +58,7 @@
         public async Task SetDiscussionToSolvedAsync(int id)
         {
             var discussion = this.forumRepository.All().FirstOrDefault(d => d.Id == id);
+
             discussion.IsSolved = true;
             await this.forumRepository.SaveChangesAsync();
         }
@@ -63,19 +67,19 @@
         {
             if (categoty == "All")
             {
-                return this.forumRepository.All().Count();
+                return this.forumRepository.AllAsNoTracking().Count();
             }
             else if (categoty == Unsolved)
             {
                 return this.forumRepository.AllAsNoTracking()
-               .Where(x => x.IsSolved == false)
-               .Count();
+                             .Where(x => x.IsSolved == false)
+                             .Count();
             }
             else
             {
                 return this.forumRepository.AllAsNoTracking()
-               .Where(x => x.Category.Name == categoty)
-               .Count();
+                             .Where(x => x.Category.Name == categoty)
+                             .Count();
             }
         }
 

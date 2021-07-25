@@ -1,11 +1,8 @@
-﻿namespace Dispatcher.Services.Data.Dtos
+﻿namespace Dispatcher.Data.Models.Dtos
 {
     using System.Collections.Generic;
 
-    using Dispatcher.Data.Models;
-    using Dispatcher.Services.Mapping;
-
-    public class ProfileDataDto : IMapFrom<ApplicationUser>
+    public class ProfileDataDto
     {
         public string Id { get; set; }
 

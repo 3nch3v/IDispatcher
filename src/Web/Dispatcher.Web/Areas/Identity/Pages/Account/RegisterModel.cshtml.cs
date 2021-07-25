@@ -7,6 +7,7 @@
     using System.Text.Encodings.Web;
     using System.Threading.Tasks;
 
+    using Dispatcher.Data.Common.Repositories;
     using Dispatcher.Data.Models;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authorization;
@@ -28,19 +29,22 @@
         private readonly ILogger<RegisterModel> logger;
         private readonly IEmailSender emailSender;
         private readonly IConfiguration configuration;
+        private readonly IDeletableEntityRepository<ApplicationUser> usersRepository;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            IDeletableEntityRepository<ApplicationUser> usersRepository)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.logger = logger;
             this.emailSender = emailSender;
             this.configuration = configuration;
+            this.usersRepository = usersRepository;
         }
 
         [BindProperty]
@@ -69,6 +73,15 @@
                     UserName = this.Input.Username,
                     Email = this.Input.Email,
                 };
+
+                var existingUser = this.usersRepository.AllWithDeleted()
+                    .Any(u => u.UserName == user.UserName || u.Email == user.Email);
+
+                if (existingUser)
+                {
+                    this.ModelState.AddModelError(string.Empty, InvalidUsernameOrEmail);
+                    return this.Page();
+                }
 
                 var result = await this.userManager.CreateAsync(user, this.Input.Password);
 

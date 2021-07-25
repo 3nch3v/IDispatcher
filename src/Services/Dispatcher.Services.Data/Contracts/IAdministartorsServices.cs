@@ -2,16 +2,16 @@
 {
     using System.Threading.Tasks;
 
-    using Dispatcher.Services.Data.Dtos;
+    using Dispatcher.Data.Models.Dtos;
 
     public interface IAdministartorsServices
     {
         AdminIndexDto GetIndexData();
 
+        AdminRequestDataDto GetData(string searchData, string searchMethod, string searchTerm);
+
         Task DeleteUserAsync(string id);
 
         Task DeleteReviewAsync(int id);
-
-        AdminRequestDataDto GetData(string searchData, string searchMethod, string searchTerm);
     }
 }

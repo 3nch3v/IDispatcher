@@ -2,7 +2,7 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    using Dispatcher.Data.Models.Enums;
+    using Dispatcher.Data.Common.Enums;
 
     public class SearchInputModel
     {

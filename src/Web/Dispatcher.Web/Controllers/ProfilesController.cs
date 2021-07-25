@@ -1,8 +1,8 @@
 ﻿namespace Dispatcher.Web.Controllers
 {
-    using AutoMapper;
     using Dispatcher.Data.Models;
     using Dispatcher.Services.Data.Contracts;
+    using Dispatcher.Services.Mapping;
     using Dispatcher.Web.ViewModels.ProfileModels;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
@@ -11,16 +11,13 @@
     public class ProfilesController : Controller
     {
         private readonly IProfileService profileService;
-        private readonly IMapper mapper;
         private readonly UserManager<ApplicationUser> userManager;
 
         public ProfilesController(
             IProfileService profileService,
-            IMapper mapper,
             UserManager<ApplicationUser> userManager)
         {
             this.profileService = profileService;
-            this.mapper = mapper;
             this.userManager = userManager;
         }
 
@@ -33,7 +30,7 @@
             }
 
             var userDataDto = this.profileService.GetUserById(userId);
-            var userProfile = this.mapper.Map<ProfileViewModel>(userDataDto);
+            var userProfile = AutoMapperConfig.MapperInstance.Map<ProfileViewModel>(userDataDto);
 
             return this.View(userProfile);
         }
@@ -49,7 +46,7 @@
             }
 
             var dataManagerDto = this.profileService.GetUserData(userId);
-            var dataManager = this.mapper.Map<DataManagerViewModel>(dataManagerDto);
+            var dataManager = AutoMapperConfig.MapperInstance.Map<DataManagerViewModel>(dataManagerDto);
 
             return this.View(dataManager);
         }

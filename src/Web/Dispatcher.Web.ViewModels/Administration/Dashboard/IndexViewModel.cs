@@ -2,12 +2,11 @@
 {
     using System.Collections.Generic;
 
-    public class IndexViewModel
+    using Dispatcher.Data.Models.Dtos;
+    using Dispatcher.Services.Mapping;
+
+    public class IndexViewModel : IMapFrom<AdminIndexDto>
     {
-        public IEnumerable<string> SearchDataTypes { get; set; }
-
-        public IEnumerable<string> SearchMethodTypes { get; set; }
-
         public int UsersCount { get; set; }
 
         public int AdsCount { get; set; }
@@ -21,5 +20,9 @@
         public int CommentsCount { get; set; }
 
         public int ReviewsCount { get; set; }
+
+        public IEnumerable<string> SearchDataTypes { get; set; }
+
+        public IEnumerable<string> SearchMethodTypes { get; set; }
     }
 }

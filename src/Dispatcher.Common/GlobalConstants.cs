@@ -96,6 +96,8 @@
 
             public const string ProfilePicturePath = "/img/profile-pictures";
 
+            public const string DefaultAvatarPath = "/img/3_avatar-512.png";
+
             public const string UnableToLoadUser = "Unable to load user with ID";
 
             public const string UpdatedSuccessfully = "Your profile has been updated";
@@ -107,6 +109,8 @@
             public const string LockedOut = "User account locked out.";
 
             public const string InvalidLoginAttemt = "Invalid login attempt.";
+
+            public const string InvalidUsernameOrEmail = "The selected username or email is not available.";
         }
     }
 }

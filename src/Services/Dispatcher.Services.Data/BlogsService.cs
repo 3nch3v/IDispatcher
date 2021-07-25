@@ -6,32 +6,27 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    using AutoMapper;
     using Dispatcher.Data.Common.Repositories;
     using Dispatcher.Data.Models.BlogModels;
+    using Dispatcher.Data.Models.Dtos;
     using Dispatcher.Services.Data.Contracts;
-    using Dispatcher.Services.Data.Dtos;
     using Dispatcher.Services.Mapping;
+
+    using static Dispatcher.Common.GlobalConstants.Blog;
 
     public class BlogsService : IBlogService
     {
-        private const string DefaultBlogPicturesFolder = "/img/blog-pictures";
-
         private readonly IDeletableEntityRepository<Blog> blogsRepository;
-        private readonly IMapper mapper;
 
-        public BlogsService(
-            IDeletableEntityRepository<Blog> blogsRepository,
-            IMapper mapper)
+        public BlogsService(IDeletableEntityRepository<Blog> blogsRepository)
         {
             this.blogsRepository = blogsRepository;
-            this.mapper = mapper;
         }
 
         public async Task CreateAsync<T>(T input, string userId)
         {
-            var blogPostDto = this.mapper.Map<BlogPostDto>(input);
-            Blog post = AutoMapperConfig.MapperInstance.Map<Blog>(input);
+            var blogPostDto = AutoMapperConfig.MapperInstance.Map<BlogPostDto>(input);
+            var post = AutoMapperConfig.MapperInstance.Map<Blog>(input);
             post.UserId = userId;
 
             if (blogPostDto.Picture != null)
@@ -45,9 +40,10 @@
 
         public async Task UpdateAsync<T>(T input, int id)
         {
-            var blogPostDto = this.mapper.Map<BlogPostDto>(input);
+            var blogPostDto = AutoMapperConfig.MapperInstance.Map<BlogPostDto>(input);
 
-            Blog post = this.blogsRepository.All().FirstOrDefault(p => p.Id == id);
+            var post = this.blogsRepository.All().FirstOrDefault(p => p.Id == id);
+
             post.Title = blogPostDto.Title;
             post.Body = blogPostDto.Body;
             post.VideoLink = blogPostDto.VideoLink;
@@ -64,6 +60,7 @@
         public async Task DeleteAsync(int id)
         {
             var deletePost = this.blogsRepository.All().FirstOrDefault(p => p.Id == id);
+
             this.blogsRepository.Delete(deletePost);
             await this.blogsRepository.SaveChangesAsync();
         }
@@ -103,7 +100,7 @@
 
         public int BlogPostsCount()
         {
-            return this.blogsRepository.All().Count();
+            return this.blogsRepository.AllAsNoTracking().Count();
         }
 
         public string GetCreatorId(int id)
@@ -117,7 +114,7 @@
 
         private async Task FileSaverAsync(Blog post, BlogPostDto input)
         {
-            string filePath = $"{DefaultBlogPicturesFolder}/{input.Picture.FileName}";
+            string filePath = $"{BlogPicturePath}/{input.Picture.FileName}";
             string physicalFilePath = $"{input.PictureDirectory}/{input.Picture.FileName}";
 
             post.FilePath = filePath;

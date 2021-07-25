@@ -17,8 +17,8 @@
 
     public class BlogsController : Controller
     {
-        private readonly IBlogService blogServie;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly IBlogService blogServie;
         private readonly IWebHostEnvironment environment;
         private readonly IStringValidatorService stringValidator;
         private readonly IPermissionsValidatorService permissionsValidator;

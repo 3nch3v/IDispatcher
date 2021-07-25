@@ -28,6 +28,7 @@
         {
             var newAd = AutoMapperConfig.MapperInstance.Map<Advertisement>(input);
             newAd.UserId = userId;
+
             await this.advertisementRepository.AddAsync(newAd);
             await this.advertisementRepository.SaveChangesAsync();
         }
@@ -35,7 +36,9 @@
         public async Task UpdateAsync<T>(T input, int id)
         {
             var updatedAd = AutoMapperConfig.MapperInstance.Map<Advertisement>(input);
+
             var ad = this.advertisementRepository.All().FirstOrDefault(a => a.Id == id);
+
             ad.Title = updatedAd.Title;
             ad.Description = updatedAd.Description;
             ad.AdvertisementTypeId = updatedAd.AdvertisementTypeId;
@@ -49,6 +52,7 @@
         public async Task DeleteAsync(int id)
         {
             var ad = this.advertisementRepository.All().FirstOrDefault(a => a.Id == id);
+
             this.advertisementRepository.Delete(ad);
             await this.advertisementRepository.SaveChangesAsync();
         }
@@ -100,7 +104,7 @@
         {
             string[] searchingKeyWords = keyWords.ToLower().Split(' ', StringSplitOptions.RemoveEmptyEntries).ToArray();
 
-            var query = this.advertisementRepository.All().AsQueryable();
+            var query = this.advertisementRepository.AllAsNoTracking().AsQueryable();
 
             foreach (var word in searchingKeyWords)
             {
@@ -110,9 +114,7 @@
                 || a.Compensation.Contains(word));
             }
 
-            this.searchResultCount = query
-                .To<T>()
-                .ToList().Count;
+            this.searchResultCount = query.Count();
 
             var result = query
                 .OrderByDescending(x => x.CreatedOn)

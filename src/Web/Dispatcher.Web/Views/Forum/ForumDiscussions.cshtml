@@ -32,9 +32,13 @@
                                     <h6><a asp-controller="Forum" asp-action="ForumDiscussion" asp-route-id="@forumDiscussion.Id" class="tm-gold-text tm-title"><strong>@forumDiscussion.Title</strong></a></h6>
                                     <p class="text-secondary">
                                         @if (forumDiscussion.SanitizedDescription.Length > 200)
-                                        {@Html.Raw(forumDiscussion.SanitizedDescription.Substring(0, 200)) }
-                                    else
-                                    { @Html.Raw(forumDiscussion.SanitizedDescription)}
+                                        {
+                                            @Html.Raw(forumDiscussion.SanitizedDescription.Substring(0, 200)) 
+                                        }
+                                        else
+                                        {
+                                            @Html.Raw(forumDiscussion.SanitizedDescription)
+                                        }
                                     </p>
 
                                     <a asp-controller="Forum" asp-action="ForumDiscussion" asp-route-id="@forumDiscussion.Id">

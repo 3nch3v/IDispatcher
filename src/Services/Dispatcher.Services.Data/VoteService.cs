@@ -4,9 +4,9 @@
     using System.Threading.Tasks;
 
     using Dispatcher.Data.Common.Repositories;
+    using Dispatcher.Data.Models.Dtos;
     using Dispatcher.Data.Models.ForumModels;
     using Dispatcher.Services.Data.Contracts;
-    using Dispatcher.Services.Data.Dtos;
 
     using static Dispatcher.Common.GlobalConstants.Forum;
 
@@ -21,7 +21,7 @@
 
         public async Task VoteAsync(string userId, int discussionId, string voteType)
         {
-            var vote = this.votes.All().FirstOrDefault(x => x.DiscussionId == discussionId && x.UserId == userId);
+            var vote = this.votes.AllAsNoTracking().FirstOrDefault(x => x.DiscussionId == discussionId && x.UserId == userId);
 
             if (vote is null)
             {
@@ -55,7 +55,7 @@
         public VoteResultsDto GetVoteResults(int discussionId)
         {
             var votes = this.votes
-                .All()
+                .AllAsNoTracking()
                 .Where(x => x.DiscussionId == discussionId)
                 .Select(x => new
                 {

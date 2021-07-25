@@ -28,10 +28,22 @@
 
         public async Task DeleteAsync(int id)
         {
-            var project = this.projectRepository.All()
-                .FirstOrDefault(p => p.Id == id);
+            var project = this.projectRepository.All().FirstOrDefault(p => p.Id == id);
 
             this.projectRepository.Delete(project);
+            await this.projectRepository.SaveChangesAsync();
+        }
+
+        public async Task UpdateAsync<T>(T input, int id)
+        {
+            var updatedProject = AutoMapperConfig.MapperInstance.Map<Project>(input);
+            var project = this.projectRepository.All().FirstOrDefault(p => p.Id == id);
+
+            project.Name = updatedProject.Name;
+            project.Description = updatedProject.Description;
+            project.Url = updatedProject.Url;
+            project.UserRole = updatedProject.UserRole;
+
             await this.projectRepository.SaveChangesAsync();
         }
 
@@ -52,19 +64,6 @@
               .FirstOrDefault();
 
             return project.UserId;
-        }
-
-        public async Task UpdateAsync<T>(T input, int id)
-        {
-            var updatedProject = AutoMapperConfig.MapperInstance.Map<Project>(input);
-            var project = this.projectRepository.All().FirstOrDefault(p => p.Id == id);
-
-            project.Name = updatedProject.Name;
-            project.Description = updatedProject.Description;
-            project.Url = updatedProject.Url;
-            project.UserRole = updatedProject.UserRole;
-
-            await this.projectRepository.SaveChangesAsync();
         }
     }
 }

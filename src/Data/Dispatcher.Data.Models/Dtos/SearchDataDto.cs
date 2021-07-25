@@ -1,4 +1,4 @@
-﻿namespace Dispatcher.Services.Data.Dtos
+﻿namespace Dispatcher.Data.Models.Dtos
 {
     public class SearchDataDto
     {

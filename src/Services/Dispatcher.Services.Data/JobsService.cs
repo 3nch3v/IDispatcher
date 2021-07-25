@@ -32,7 +32,9 @@
         public async Task UpdateAsync<T>(T input, int id)
         {
             var updatedJob = AutoMapperConfig.MapperInstance.Map<Job>(input);
+
             var job = this.jobRepository.All().FirstOrDefault(j => j.Id == id);
+
             job.Title = updatedJob.Title;
             job.JobBody = updatedJob.JobBody;
             job.CompanyName = updatedJob.CompanyName;
@@ -46,6 +48,7 @@
         public async Task DeleteAsync(int id)
         {
             var job = this.jobRepository.All().FirstOrDefault(j => j.Id == id);
+
             this.jobRepository.Delete(job);
             await this.jobRepository.SaveChangesAsync();
         }
@@ -74,13 +77,13 @@
              return jobs;
         }
 
-        public IEnumerable<T> GetRandomJobs<T>()
+        public IEnumerable<T> GetRandomJobs<T>(int count)
         {
             var jobs = this.jobRepository
                .AllAsNoTracking()
                .OrderByDescending(j => Guid.NewGuid())
                .To<T>()
-               .Take(3)
+               .Take(count)
                .ToList();
 
             return jobs;
@@ -90,18 +93,17 @@
         {
             string[] searchingKeyWords = keyWords.ToLower().Split(' ', StringSplitOptions.RemoveEmptyEntries).ToArray();
 
-            var query = this.jobRepository.All().AsQueryable();
+            var query = this.jobRepository.AllAsNoTracking().AsQueryable();
 
             foreach (var word in searchingKeyWords)
             {
                 query = query.Where(j => j.Title.ToLower().Contains(word)
                                     || j.JobBody.ToLower().Contains(word)
-                                    || j.Location.ToLower().Contains(word));
+                                    || j.Location.ToLower().Contains(word)
+                                    || j.CompanyName.ToLower().Contains(word));
             }
 
-            this.searchResultCount = query
-                .To<T>()
-                .ToList().Count;
+            this.searchResultCount = query.Count();
 
             var result = query
                 .OrderByDescending(x => x.CreatedOn)

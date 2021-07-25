@@ -1,5 +1,4 @@
-﻿// ReSharper disable VirtualMemberCallInConstructor
-namespace Dispatcher.Data.Models
+﻿namespace Dispatcher.Data.Models
 {
     using System;
 

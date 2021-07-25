@@ -7,17 +7,16 @@
 
     using Dispatcher.Data.Common.Repositories;
     using Dispatcher.Data.Models;
+    using Dispatcher.Data.Models.Dtos;
     using Dispatcher.Data.Models.UserInfoModels;
     using Dispatcher.Services.Data.Contracts;
-    using Dispatcher.Services.Data.Dtos;
     using Dispatcher.Services.Mapping;
     using Dispatcher.Web.ViewModels.ProfileModels;
 
+    using static Dispatcher.Common.GlobalConstants.User;
+
     public class ProfileService : IProfileService
     {
-        private const string DefaultAvatarPath = "/img/3_avatar-512.png";
-        private const string ProfilePictureFolder = "/img/profile-pictures";
-
         private readonly IDeletableEntityRepository<ApplicationUser> usersRepository;
         private readonly IDeletableEntityRepository<CustomerReview> commentsRepository;
         private readonly IDeletableEntityRepository<ProfilePicture> profilePicturesRepository;
@@ -102,7 +101,7 @@
 
         public IEnumerable<T> GetComments<T>(string id)
         {
-            var comments = this.commentsRepository.All()
+            var comments = this.commentsRepository.AllAsNoTracking()
                 .Where(x => x.UserId == id)
                 .OrderBy(x => x.CreatedOn)
                 .To<T>()
@@ -173,7 +172,7 @@
                 Extension = fileExtension,
             };
 
-            string filePath = $"{ProfilePictureFolder}/{profilePicture.Id}{fileExtension}";
+            string filePath = $"{ProfilePicturePath}/{profilePicture.Id}{fileExtension}";
             string physicalFilePath = $"{pictureDirectory}/{profilePicture.Id}{fileExtension}";
 
             profilePicture.FilePath = filePath;

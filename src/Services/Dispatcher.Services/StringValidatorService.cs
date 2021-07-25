@@ -12,7 +12,8 @@
         {
             string decodedString = this.HtmlDecoder(input);
 
-            if (string.IsNullOrWhiteSpace(decodedString) || decodedString.Length < requiredStringLength)
+            if (string.IsNullOrWhiteSpace(decodedString)
+                || decodedString.Length < requiredStringLength)
             {
                 return false;
             }

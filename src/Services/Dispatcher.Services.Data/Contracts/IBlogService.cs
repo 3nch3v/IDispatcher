@@ -4,10 +4,10 @@
 
     public interface IBlogService : IBaseService
     {
-        IEnumerable<T> GetAllBlogPosts<T>(int page, int pageEntitiesCount);
+        int BlogPostsCount();
 
         T RandomBlogPost<T>();
 
-        int BlogPostsCount();
+        IEnumerable<T> GetAllBlogPosts<T>(int page, int pageEntitiesCount);
     }
 }

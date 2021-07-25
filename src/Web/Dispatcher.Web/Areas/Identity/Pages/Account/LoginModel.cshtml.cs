@@ -68,6 +68,12 @@
             {
                 ApplicationUser user = await this.userManager.FindByEmailAsync(this.Input.Email);
 
+                if (user == null)
+                {
+                    this.ModelState.AddModelError(string.Empty, InvalidLoginAttemt);
+                    return this.Page();
+                }
+
                 var result = await this.signInManager
                     .PasswordSignInAsync(user, this.Input.Password, this.Input.RememberMe, lockoutOnFailure: false);
 

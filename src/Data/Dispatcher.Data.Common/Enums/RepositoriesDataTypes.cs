@@ -1,4 +1,4 @@
-﻿namespace Dispatcher.Data.Models.Enums
+﻿namespace Dispatcher.Data.Common.Enums
 {
     public enum RepositoriesDataTypes
     {

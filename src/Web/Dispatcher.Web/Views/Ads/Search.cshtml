@@ -15,7 +15,7 @@
             <h3 class="tm-gold-text">@this.ViewBag.Title</h3>
         </div>
         <form asp-controller="Ads" asp-action="Search" method="get" class="form-inline">
-            <input name="keyWords" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <input name="keyWords" class="form-control mr-sm-2" type="search" placeholder="@this.ViewData["KeyWords"]" aria-label="Search">
             <button class="btn btn-outline-secondary my-2 my-sm-0 tm-gold-text" type="submit">Search</button>
         </form>
         <div>
@@ -25,7 +25,7 @@
 
     @if (Model.AdsCount > 0)
     {
-        <h3>@Model.AdsCount search results found</h3>
+        <h3 style="text-align: center; margin: 25px auto;">@Model.AdsCount ads found for "@this.ViewData["KeyWords"]"</h3>
         <div class="row tm-row">
             @foreach (var ad in Model.Ads)
             {
@@ -39,7 +39,7 @@
     {
         <div style="margin: 50px auto;">
             <div>
-                <h1>0 search results found</h1>
+                <h1>0 search results found for "@this.ViewData["KeyWords"]"</h1>
                 <p>Sorry, we couldn't find any results for your search</p>
             </div>
             <div class="navbar-brand">

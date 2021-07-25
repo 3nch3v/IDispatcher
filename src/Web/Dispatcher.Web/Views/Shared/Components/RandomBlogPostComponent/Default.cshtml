@@ -19,7 +19,7 @@
         <a asp-controller="Blogs" asp-action="Post" asp-route-id="@Model.Id" class="tm-gold-text" style="text-decoration: none;">
             <h4 class="tm-margin-b-20 tm-thin-font">@Model.Title</h4>
         </a>
-        <p class="tm-margin-b-30" style="text-align: justify;">@Html.Raw(PostBody(Model.SanitizedBody)))</p>
+        <p class="tm-margin-b-30" style="text-align: justify;">@PostBody(Model.ClearBody)</p>
     </div>
 }
 else
@@ -39,7 +39,7 @@ else
             }
         </section>
         <section>
-            <p style="text-align: justify;">@Html.Raw(PostBody(Model.SanitizedBody)))</p>
+            <p style="text-align: justify;">@PostBody(Model.ClearBody)</p>
             <a asp-controller="Blogs" asp-action="Post" asp-route-id="@Model.Id" class="tm-btn text-uppercase">Read More</a>
         </section>
     </article>

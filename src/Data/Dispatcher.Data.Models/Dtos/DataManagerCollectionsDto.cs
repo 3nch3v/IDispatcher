@@ -1,6 +1,6 @@
-﻿namespace Dispatcher.Services.Data.Dtos
+﻿namespace Dispatcher.Data.Models.Dtos
 {
-    public class BaseProfileCollectionsDto
+    public class DataManagerCollectionsDto
     {
         public int Id { get; set; }
 

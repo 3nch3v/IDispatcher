@@ -2,7 +2,7 @@
 {
     using System.Threading.Tasks;
 
-    using Dispatcher.Services.Data.Dtos;
+    using Dispatcher.Data.Models.Dtos;
 
     public interface IVoteService
     {

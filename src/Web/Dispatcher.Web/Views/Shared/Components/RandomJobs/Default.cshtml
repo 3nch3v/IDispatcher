@@ -20,7 +20,7 @@
         </div>
         <div class="media-body">
             <a asp-controller="Jobs" asp-action="Job" asp-route-id="@job.Id"><h4 class="media-heading tm-gold-text tm-margin-b-15">@job.Title</h4></a>
-            <p class="tm-small-font tm-media-description">@Html.Raw(job.SanitizedJobBody.Substring(0, 100))</p>
+            <p class="tm-small-font tm-media-description">@Html.Raw(job.ClearBody.Substring(0, 100))</p>
             <p class="tm-small-font tm-media-description">@job.Location  @job.CreatedOn.ToString("dd-MM-yyyy")</p>
         </div>
     </div>

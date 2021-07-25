@@ -1,6 +1,9 @@
 ﻿namespace Dispatcher.Web.ViewModels.Administration
 {
-    public class DataViewModel
+    using Dispatcher.Data.Models.Dtos;
+    using Dispatcher.Services.Mapping;
+
+    public class DataViewModel : IMapFrom<SearchDataDto>
     {
         public string Id { get; set; }
 

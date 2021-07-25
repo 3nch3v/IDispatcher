@@ -5,12 +5,12 @@
 
     public interface IForumService : IBaseService
     {
-        Task SetDiscussionToSolvedAsync(int id);
+        int GetDiscussionsCount(string category);
 
         IEnumerable<T> GetCategories<T>();
 
         IEnumerable<T> GetAllForumDiscussions<T>(int page, int pageEntitiesCount, string category);
 
-        int GetDiscussionsCount(string category);
+        Task SetDiscussionToSolvedAsync(int id);
     }
 }

@@ -1,6 +1,8 @@
 ﻿namespace Dispatcher.Web.ViewModels.ViewComponents
 {
     using System;
+    using System.Net;
+    using System.Text.RegularExpressions;
 
     using Dispatcher.Data.Models.AdvertisementModels;
     using Dispatcher.Services.Mapping;
@@ -15,6 +17,8 @@
         public string JobBody { get; set; }
 
         public string SanitizedJobBody => new HtmlSanitizer().Sanitize(this.JobBody);
+
+        public string ClearBody => WebUtility.HtmlDecode(Regex.Replace(this.SanitizedJobBody, "<[^>]+>", string.Empty));
 
         public string LogoUrl { get; set; }
 

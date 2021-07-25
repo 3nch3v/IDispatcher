@@ -36,10 +36,8 @@
                                     <div class="d-flex flex-row justify-content-between mx-md-2">
                                         <h6><strong>@Model.Title</strong></h6>
                                         <div class="tm-gold-text">
-                                            @if (Model.IsSolved)
-                                            {<text>Solved</text> }
-                                        else
-                                        { <text>Unsolved</text>}
+                                            @if (Model.IsSolved) {<text>Solved</text> }
+                                            else{ <text>Unsolved</text>}
                                         </div>
                                     </div>
                                     <p class="text-secondary">@Html.Raw(Model.SanitizedDescription)</p>

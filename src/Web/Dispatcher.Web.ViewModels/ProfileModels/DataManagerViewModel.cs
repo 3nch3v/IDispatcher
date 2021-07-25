@@ -2,7 +2,10 @@
 {
     using System.Collections.Generic;
 
-    public class DataManagerViewModel
+    using Dispatcher.Data.Models.Dtos;
+    using Dispatcher.Services.Mapping;
+
+    public class DataManagerViewModel : IMapFrom<DataManagerDto>
     {
         public string Id { get; set; }
 
