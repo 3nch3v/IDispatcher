@@ -9,9 +9,12 @@
     using Dispatcher.Data.Models.AdvertisementModels;
     using Dispatcher.Data.Models.BlogModels;
     using Dispatcher.Data.Models.ForumModels;
-    using Dispatcher.Data.Models.MessengerModels;
+    using Dispatcher.Data.Models.JobModels;
     using Dispatcher.Data.Models.UserInfoModels;
     using Microsoft.AspNetCore.Identity;
+
+    using static Dispatcher.Common.GlobalConstants.File;
+    using static Dispatcher.Common.GlobalConstants.User;
 
     public class ApplicationUser : IdentityUser, IAuditInfo, IDeletableEntity
     {
@@ -21,49 +24,43 @@
             this.Roles = new HashSet<IdentityUserRole<string>>();
             this.Claims = new HashSet<IdentityUserClaim<string>>();
             this.Logins = new HashSet<IdentityUserLogin<string>>();
-
             this.Projects = new HashSet<Project>();
             this.CumstomerReviews = new HashSet<CustomerReview>();
             this.Advertisements = new HashSet<Advertisement>();
-            this.UsersGroups = new HashSet<UserGroup>();
-            this.Messages = new HashSet<Message>();
-            this.MessagesRecipients = new HashSet<MessageRecipient>();
             this.Jobs = new HashSet<Job>();
             this.Discussions = new HashSet<Discussion>();
             this.Posts = new HashSet<Comment>();
             this.Blogs = new HashSet<Blog>();
-            this.ProfilePictures = new HashSet<ProfilePicture>();
         }
 
-        [StringLength(50, MinimumLength = 2)]
+        [MaxLength(NameMaxLenght)]
         public string FirstName { get; set; }
 
-        [StringLength(50, MinimumLength = 2)]
+        [MaxLength(NameMaxLenght)]
         public string LastName { get; set; }
 
-        [StringLength(50, MinimumLength = 2)]
+        [MaxLength(EducationMaxLenght)]
         public string Education { get; set; }
 
-        // CompanyName !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        [StringLength(50, MinimumLength = 2)]
-        public string ComponyName { get; set; }
+        [MaxLength(NameMaxLenght)]
+        public string CompanyName { get; set; }
 
-        [StringLength(1000, MinimumLength = 2)]
-        public string Interests { get; set; }
+        [MaxLength(InterestMaxLenght)]
+        public string Interest { get; set; }
 
-        [StringLength(200, MinimumLength = 6)]
-        public string Contacts { get; set; }
+        [MaxLength(ContactMaxLenght)]
+        public string Contact { get; set; }
 
-        [MaxLength(2048)]
+        [MaxLength(UrlMaxLenght)]
         public string WebsiteUrl { get; set; }
 
-        [MaxLength(2048)]
+        [MaxLength(UrlMaxLenght)]
         public string GithubUrl { get; set; }
 
-        [MaxLength(2048)]
+        [MaxLength(UrlMaxLenght)]
         public string FacebookUrl { get; set; }
 
-        [MaxLength(2048)]
+        [MaxLength(UrlMaxLenght)]
         public string InstagramUrl { get; set; }
 
         public DateTime CreatedOn { get; set; }
@@ -73,6 +70,10 @@
         public bool IsDeleted { get; set; }
 
         public DateTime? DeletedOn { get; set; }
+
+        public string ProfilePictureId { get; set; }
+
+        public virtual ProfilePicture ProfilePicture { get; set; }
 
         public virtual ICollection<IdentityUserRole<string>> Roles { get; set; }
 
@@ -90,12 +91,6 @@
 
         public virtual ICollection<Advertisement> Advertisements { get; set; }
 
-        public virtual ICollection<UserGroup> UsersGroups { get; set; }
-
-        public virtual ICollection<Message> Messages { get; set; }
-
-        public virtual ICollection<MessageRecipient> MessagesRecipients { get; set; }
-
         public virtual ICollection<Job> Jobs { get; set; }
 
         public virtual ICollection<Discussion> Discussions { get; set; }
@@ -103,7 +98,5 @@
         public virtual ICollection<Comment> Posts { get; set; }
 
         public virtual ICollection<Blog> Blogs { get; set; }
-
-        public ICollection<ProfilePicture> ProfilePictures { get; set; }
     }
 }

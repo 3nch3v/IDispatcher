@@ -6,21 +6,9 @@
     using Dispatcher.Data.Models.ForumModels;
     using Dispatcher.Services.Mapping;
 
-    public class EditDiscussionViewModel : IMapFrom<Discussion>
+    public class EditDiscussionViewModel : DiscussionInputModel, IMapFrom<Discussion>
     {
         [Required]
         public int Id { get; set; }
-
-        [Required]
-        [StringLength(100, MinimumLength = 3)]
-        public string Title { get; set; }
-
-        [Required]
-        [StringLength(5000, MinimumLength = 50)]
-        public string Description { get; set; }
-
-        public int CategoryId { get; set; }
-
-        public IEnumerable<CategoryDropDownViewModel> Categories { get; set; }
     }
 }

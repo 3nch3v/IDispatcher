@@ -6,7 +6,7 @@
     {
         string GetCreatorId(int dataId);
 
-        Task CreateAsync<T>(T input);
+        Task CreateAsync<T>(T input, string userId);
 
         Task DeleteAsync(int id);
     }

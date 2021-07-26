@@ -6,11 +6,13 @@
 
     using Dispatcher.Data.Common.Models;
 
+    using static Dispatcher.Common.GlobalConstants.Forum;
+
     public class Comment : BaseDeletableModel<int>
     {
         public Comment()
         {
-            this.Votes = new HashSet<Vote>();
+            this.Votes = new HashSet<CommentVote>();
         }
 
         [Required]
@@ -25,9 +27,9 @@
         public virtual Discussion Discussion { get; set; }
 
         [Required]
-        [StringLength(5000, MinimumLength = 2)]
+        [MaxLength(CommentMaxLenght)]
         public string Content { get; set; }
 
-        public virtual ICollection<Vote> Votes { get; set; }
+        public virtual ICollection<CommentVote> Votes { get; set; }
     }
 }

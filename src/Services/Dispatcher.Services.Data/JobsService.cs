@@ -6,7 +6,7 @@
     using System.Threading.Tasks;
 
     using Dispatcher.Data.Common.Repositories;
-    using Dispatcher.Data.Models.AdvertisementModels;
+    using Dispatcher.Data.Models.JobModels;
     using Dispatcher.Services.Data.Contracts;
     using Dispatcher.Services.Mapping;
 

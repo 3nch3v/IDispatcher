@@ -12,6 +12,7 @@
     using Dispatcher.Data.Models.BlogModels;
     using Dispatcher.Data.Models.Dtos;
     using Dispatcher.Data.Models.ForumModels;
+    using Dispatcher.Data.Models.JobModels;
     using Dispatcher.Data.Models.UserInfoModels;
     using Dispatcher.Services.Data.Contracts;
 

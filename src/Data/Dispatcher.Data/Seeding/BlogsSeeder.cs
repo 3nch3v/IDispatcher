@@ -63,8 +63,8 @@ Selectors may be combined in many ways to achieve great specificity and flexibil
     which applies to div elements of class myClass.
 
 The following table provides a summary of selector syntax indicating usage and the version of CSS that introduced it.[8]",
-                    FilePath = "/img/blog-pictures/CSS3_logo_and_wordmark.svg.png",
-                    PhysicalFilePath = @"D:\GitHub Repository\IDispatcher Project\IDispatcher\src\Web\Dispatcher.Web\wwwroot/img/blog-pictures/CSS3_logo_and_wordmark.svg.png",
+                    FilePath = "/img/blog-pictures/CSS3_logo_and_wordmark.svg",
+                    Extension = ".png",
                     UserId = "7699db4d-e91c-4dcd-9672-7b88b8484930",
                 },
                 new Blog
@@ -103,8 +103,8 @@ The most popular computers of the 1980s such as the Apple II and IBM PC had publ
 During the late 1980s and early 1990s, it became economical to move an increasing number of peripheral functions onto the motherboard. In the late 1980s, personal computer motherboards began to include single ICs (also called Super I/O chips) capable of supporting a set of low-speed peripherals: PS/2 keyboard and mouse, floppy disk drive, serial ports, and parallel ports. By the late 1970s, many personal computer motherboards included consumer-grade embedded audio, video, storage, and networking functions without the need for any expansion cards at all; higher-end systems for 3D gaming and computer graphics typically retained only the graphics card as a separate component. Business PCs, workstations, and servers were more likely to need expansion cards, either for more robust functions, or for higher speeds; those systems often had fewer embedded components.
 
 Laptop and notebook computers that were developed in the 1990s integrated the most common peripherals. This even included motherboards with no upgradeable components, a trend that would continue as smaller systems were introduced after the turn of the century (like the tablet computer and the netbook). Memory, processors, network controllers, power source, and storage would be integrated into some systems.",
-                    FilePath = "/img/blog-pictures/Vlb.jpg",
-                    PhysicalFilePath = @"D:\GitHub Repository\IDispatcher Project\IDispatcher\src\Web\Dispatcher.Web\wwwroot/img/blog-pictures/Vlb.jpg",
+                    FilePath = "/img/blog-pictures/Vlb",
+                    Extension = ".jpg",
                     UserId = "7699db4d-e91c-4dcd-9672-7b88b8484930",
                 },
                 new Blog
@@ -185,8 +185,8 @@ Our Educational Model
 The main principle of our educational model is “learning by doing” and the practical approach in an essential part of the teaching methodology. We aim for our students to acquire real practical skills that they will need to get hired or advance in their career.
 
 The self-paced learning model allows the students to learn with their own pace and a schedule that works best for them. Self-paced learning is suitable for different learning styles and allows the students to access study materials at their own pace which means they can focus on things that they find challenging.",
-                    FilePath = "/img/blog-pictures/Logo_Software_University_(SoftUni)_-_blue.png",
-                    PhysicalFilePath = @"D:\GitHub Repository\IDispatcher Project\IDispatcher\src\Web\Dispatcher.Web\wwwroot/img/blog-pictures/Logo_Software_University_(SoftUni)_-_blue.png",
+                    FilePath = "/img/blog-pictures/Logo_Software_University_(SoftUni)_-_blue",
+                    Extension = ".png",
                     VideoLink = @"<iframe width=""853"" height =""480"" src =""https://www.youtube.com/embed/nrSlqAb4ZLw"" title =""YouTube video player"" frameborder =""0"" allow =""accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"" allowfullscreen ></iframe>",
                     UserId = "6b4f487f-5cde-4509-825b-103b69220131",
                 },
@@ -243,8 +243,8 @@ Side-by-side versioning
 New APIs
 Open source",
                     VideoLink = @"<iframe width=""914"" height=""514"" src =""https://www.youtube.com/embed/C5cnZ-gZy2I"" title =""YouTube video player"" frameborder =""0"" allow =""accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"" allowfullscreen ></iframe>",
-                    FilePath = "/img/blog-pictures/asp-net.png",
-                    PhysicalFilePath = @"D:\GitHub Repository\IDispatcher Project\IDispatcher\src\Web\Dispatcher.Web\wwwroot/img/blog-pictures/asp-net.png",
+                    FilePath = "/img/blog-pictures/asp-net",
+                    Extension = ".png",
                     UserId = "6b4f487f-5cde-4509-825b-103b69220131",
                 },
                 new Blog
@@ -258,8 +258,8 @@ Wo hat soXes C# eingesetzt?
 soXes setzt C# sehr häufig in Projekten ein. Wir konnten beispielsweise im Auftrag der Wilux Print AG ein Reengineering einer bestehenden Delphi Software durchführen. Bei diesem Projekt haben wir durch die Migration von Delphi auf C# eine Modernisierung der bestehenden Druck-, Scan- und Etikettierlösung für grosse Produktionsanlagen vorgenommen. Des Weiteren haben wir mit TESTEX ULU ein komplettes ERP-System zur Unterstützung sämtlicher Abläufe von der Auftragserteilung und -planung bis hin zur Durchführung und Reportierung von chemischen und physikalischen Qualitätstests bei Textilien umgesetzt. Die Lösung ist seit 2016 im Einsatz und wird kontinuierlich von soXes weiterentwickelt.
 Warum soXes?
 Mit soXes gewinnen Sie einen Partner mit Kompetenz und Verlässlichkeit. Unser Unternehmen steht bereits seit 20 Jahren für beste Qualität in der Entwicklung, Programmierung und dem Outsourcing von Software. Mit ihren Dienstleistungen deckt soXes den gesamten Lebenszyklus einer IT-Entwicklung (Konzeption, Beratung, Entwicklung und Support) ab. Nehmen Sie den ersten Schritt zur erfolgreichen Umsetzung Ihres Projekts und kontaktieren Sie uns für weitere Informationen.",
-                    FilePath = "/img/blog-pictures/c-sharp.png",
-                    PhysicalFilePath = @"D:\GitHub Repository\IDispatcher Project\IDispatcher\src\Web\Dispatcher.Web\wwwroot/img/blog-pictures/c-sharp.png",
+                    FilePath = "/img/blog-pictures/c-sharp",
+                    Extension = ".png",
                     VideoLink = @"<iframe width=""853"" height=""480"" src =""https://www.youtube.com/embed/qOruiBrXlAw"" title =""YouTube video player"" frameborder =""0"" allow =""accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"" allowfullscreen ></iframe>",
                     UserId = "6b4f487f-5cde-4509-825b-103b69220131",
                 },
@@ -277,8 +277,8 @@ The ECMAScript standard does not include any input/output (I/O), such as network
 JavaScript engines were originally used only in web browsers, but they are now core components of other software systems, most notably servers and a variety of applications.
 
 Although there are similarities between JavaScript and Java, including language name, syntax, and respective standard libraries, the two languages are distinct and differ greatly in design.",
-                    FilePath = "/img/blog-pictures/javascript_logo_unofficial.png",
-                    PhysicalFilePath = @"D:\GitHub Repository\IDispatcher Project\IDispatcher\src\Web\Dispatcher.Web\wwwroot/img/blog-pictures/javascript_logo_unofficial.png",
+                    FilePath = "/img/blog-pictures/javascript_logo_unofficial",
+                    Extension = ".png",
                     UserId = "6b4f487f-5cde-4509-825b-103b69220131",
                 },
                 new Blog
@@ -294,8 +294,8 @@ Java is the Modern COBOL
 At the risk of offending many amazing Java and COBOL programmers I am going to suggest that Java—despite it’s descending but high TIOBE ranking and core place within Android—is dead technology. The strict single inheritance model has been widely viewed as a bloated failure even by the language’s creators.
 JVM Still Risky
 Clojure and other modern languages leverage the deployed JVMs of enterprises to maintain some sense of modern architecture, but they maintain a core dependency on Java and Oracle. Most organizations simply do not see the danger this poses.",
-                    FilePath = "/img/blog-pictures/0fc51f82e036e1d3.jpg",
-                    PhysicalFilePath = @"D:\GitHub Repository\IDispatcher Project\IDispatcher\src\Web\Dispatcher.Web\wwwroot/img/blog-pictures/0fc51f82e036e1d3.jpg",
+                    FilePath = "/img/blog-pictures/0fc51f82e036e1d3",
+                    Extension = ".jpg",
                     UserId = "1b99c696-64f5-443a-ae1e-6b4a1bc8f2cb",
                 },
                 new Blog
@@ -376,8 +376,8 @@ Our Educational Model
 The main principle of our educational model is “learning by doing” and the practical approach in an essential part of the teaching methodology. We aim for our students to acquire real practical skills that they will need to get hired or advance in their career.
 
 The self-paced learning model allows the students to learn with their own pace and a schedule that works best for them. Self-paced learning is suitable for different learning styles and allows the students to access study materials at their own pace which means they can focus on things that they find challenging.",
-                    FilePath = "/img/blog-pictures/Logo_Software_University_(SoftUni)_-_blue.png",
-                    PhysicalFilePath = @"D:\GitHub Repository\IDispatcher Project\IDispatcher\src\Web\Dispatcher.Web\wwwroot/img/blog-pictures/Logo_Software_University_(SoftUni)_-_blue.png",
+                    FilePath = "/img/blog-pictures/Logo_Software_University_(SoftUni)_-_blue",
+                    Extension = ".png",
                     VideoLink = @"<iframe width=""853"" height =""480"" src =""https://www.youtube.com/embed/nrSlqAb4ZLw"" title =""YouTube video player"" frameborder =""0"" allow =""accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"" allowfullscreen ></iframe>",
                     UserId = "1b99c696-64f5-443a-ae1e-6b4a1bc8f2cb",
                 },
@@ -434,8 +434,8 @@ Side-by-side versioning
 New APIs
 Open source",
                     VideoLink = @"<iframe width=""914"" height=""514"" src =""https://www.youtube.com/embed/C5cnZ-gZy2I"" title =""YouTube video player"" frameborder =""0"" allow =""accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"" allowfullscreen ></iframe>",
-                    FilePath = "/img/blog-pictures/asp-net.png",
-                    PhysicalFilePath = @"D:\GitHub Repository\IDispatcher Project\IDispatcher\src\Web\Dispatcher.Web\wwwroot/img/blog-pictures/asp-net.png",
+                    FilePath = "/img/blog-pictures/asp-net",
+                    Extension = ".png",
                     UserId = "1b99c696-64f5-443a-ae1e-6b4a1bc8f2cb",
                 },
                 new Blog
@@ -449,8 +449,8 @@ Wo hat soXes C# eingesetzt?
 soXes setzt C# sehr häufig in Projekten ein. Wir konnten beispielsweise im Auftrag der Wilux Print AG ein Reengineering einer bestehenden Delphi Software durchführen. Bei diesem Projekt haben wir durch die Migration von Delphi auf C# eine Modernisierung der bestehenden Druck-, Scan- und Etikettierlösung für grosse Produktionsanlagen vorgenommen. Des Weiteren haben wir mit TESTEX ULU ein komplettes ERP-System zur Unterstützung sämtlicher Abläufe von der Auftragserteilung und -planung bis hin zur Durchführung und Reportierung von chemischen und physikalischen Qualitätstests bei Textilien umgesetzt. Die Lösung ist seit 2016 im Einsatz und wird kontinuierlich von soXes weiterentwickelt.
 Warum soXes?
 Mit soXes gewinnen Sie einen Partner mit Kompetenz und Verlässlichkeit. Unser Unternehmen steht bereits seit 20 Jahren für beste Qualität in der Entwicklung, Programmierung und dem Outsourcing von Software. Mit ihren Dienstleistungen deckt soXes den gesamten Lebenszyklus einer IT-Entwicklung (Konzeption, Beratung, Entwicklung und Support) ab. Nehmen Sie den ersten Schritt zur erfolgreichen Umsetzung Ihres Projekts und kontaktieren Sie uns für weitere Informationen.",
-                    FilePath = "/img/blog-pictures/c-sharp.png",
-                    PhysicalFilePath = @"D:\GitHub Repository\IDispatcher Project\IDispatcher\src\Web\Dispatcher.Web\wwwroot/img/blog-pictures/c-sharp.png",
+                    FilePath = "/img/blog-pictures/c-sharp",
+                    Extension = ".png",
                     VideoLink = @"<iframe width=""853"" height=""480"" src =""https://www.youtube.com/embed/qOruiBrXlAw"" title =""YouTube video player"" frameborder =""0"" allow =""accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"" allowfullscreen ></iframe>",
                     UserId = "1b99c696-64f5-443a-ae1e-6b4a1bc8f2cb",
                 },

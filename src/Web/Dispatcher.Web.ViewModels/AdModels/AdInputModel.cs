@@ -6,23 +6,26 @@
     using Dispatcher.Data.Models.AdvertisementModels;
     using Dispatcher.Services.Mapping;
 
+    using static Dispatcher.Common.GlobalConstants.Advertisement;
+    using static Dispatcher.Common.GlobalConstants.File;
+
     public class AdInputModel : IMapTo<Advertisement>
     {
         public int AdvertisementTypeId { get; set; }
 
         [Required]
-        [StringLength(100, MinimumLength = 3)]
+        [StringLength(TitleMaxLength, MinimumLength = TitleMinLength)]
         public string Title { get; set; }
 
         [Required]
-        [StringLength(5000, MinimumLength = 100)]
+        [StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength)]
         public string Description { get; set; }
 
         [Required]
-        [MaxLength(50)]
+        [MaxLength(CompensationMaxLenght)]
         public string Compensation { get; set; }
 
-        [MaxLength(2048)]
+        [MaxLength(UrlMaxLenght)]
         public string PictureUrl { get; set; }
 
         public IEnumerable<AdTypesViewModel> AdTypes { get; set; }

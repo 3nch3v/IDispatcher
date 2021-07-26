@@ -6,16 +6,19 @@
     using Dispatcher.Data.Models.ForumModels;
     using Dispatcher.Services.Mapping;
 
+    using static Dispatcher.Common.GlobalConstants.Forum;
+
     public class DiscussionInputModel : IMapTo<Discussion>
     {
         [Required]
-        [StringLength(100, MinimumLength =3)]
+        [StringLength(TitleMaxLenght, MinimumLength = TitleMinLenght)]
         public string Title { get; set; }
 
         [Required]
-        [StringLength(5000, MinimumLength = 50)]
+        [StringLength(DescriptionMAxLenght, MinimumLength = DescriptionMinLenght)]
         public string Description { get; set; }
 
+        [Range(1, 6)]
         public int CategoryId { get; set; }
 
         public IEnumerable<CategoryDropDownViewModel> Categories { get; set; }

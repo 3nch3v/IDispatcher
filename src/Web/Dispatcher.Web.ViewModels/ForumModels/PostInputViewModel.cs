@@ -9,8 +9,6 @@
     {
         public int DiscussionId { get; set; }
 
-        public string UserId { get; set; }
-
         [Required]
         [StringLength(5000, MinimumLength = 2)]
         public string Content { get; set; }

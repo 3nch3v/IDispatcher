@@ -4,8 +4,8 @@
 
     public class AllCommentsViewModel
     {
-        public IEnumerable<CommentViewModel> Comments { get; set; }
-
         public string UserId { get; set; }
+
+        public IEnumerable<CommentViewModel> Comments { get; set; }
     }
 }

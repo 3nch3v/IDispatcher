@@ -23,9 +23,11 @@
             this.blogsRepository = blogsRepository;
         }
 
-        public async Task CreateAsync<T>(T input, string userId)
+        public async Task CreateAsync<T>(T input, string userId, string pictureDirectory)
         {
             var blogPostDto = AutoMapperConfig.MapperInstance.Map<BlogPostDto>(input);
+            blogPostDto.PictureDirectory = pictureDirectory;
+
             var post = AutoMapperConfig.MapperInstance.Map<Blog>(input);
             post.UserId = userId;
 
@@ -38,12 +40,12 @@
             await this.blogsRepository.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync<T>(T input, int id)
+        public async Task UpdateAsync<T>(T input, int id, string pictureDirectory)
         {
             var blogPostDto = AutoMapperConfig.MapperInstance.Map<BlogPostDto>(input);
+            blogPostDto.PictureDirectory = pictureDirectory;
 
             var post = this.blogsRepository.All().FirstOrDefault(p => p.Id == id);
-
             post.Title = blogPostDto.Title;
             post.Body = blogPostDto.Body;
             post.VideoLink = blogPostDto.VideoLink;
@@ -114,13 +116,15 @@
 
         private async Task FileSaverAsync(Blog post, BlogPostDto input)
         {
-            string filePath = $"{BlogPicturePath}/{input.Picture.FileName}";
-            string physicalFilePath = $"{input.PictureDirectory}/{input.Picture.FileName}";
+            string fileName = Guid.NewGuid().ToString();
+            string fileExtension = Path.GetExtension(input.Picture.FileName);
+            string physicalFilePath = $"{input.PictureDirectory}/{fileName}{fileExtension}";
 
-            post.FilePath = filePath;
-            post.PhysicalFilePath = physicalFilePath;
+            post.FilePath = $"{BlogPicturePath}/{fileName}";
+            post.Extension = fileExtension;
 
             using var fileStream = new FileStream(physicalFilePath, FileMode.Create);
+
             await input.Picture.CopyToAsync(fileStream);
         }
     }

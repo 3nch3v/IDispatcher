@@ -89,9 +89,9 @@
             var firstName = user.FirstName;
             var lastName = user.LastName;
             var education = user.Education;
-            var companyName = user.ComponyName;
-            var interests = user.Interests;
-            var contacts = user.Contacts;
+            var companyName = user.CompanyName;
+            var interests = user.Interest;
+            var contacts = user.Contact;
             var websiteUrl = user.WebsiteUrl;
             var githubUrl = user.GithubUrl;
             var facebookUrl = user.FacebookUrl;
@@ -114,17 +114,17 @@
 
             if (this.Input.ComponyName != companyName)
             {
-                user.ComponyName = this.Input.ComponyName;
+                user.CompanyName = this.Input.ComponyName;
             }
 
-            if (this.Input.Interests != interests)
+            if (this.Input.Interest != interests)
             {
-                user.Interests = this.Input.Interests;
+                user.Interest = this.Input.Interest;
             }
 
-            if (this.Input.Contacts != contacts)
+            if (this.Input.Contact != contacts)
             {
-                user.Contacts = this.Input.Contacts;
+                user.Contact = this.Input.Contact;
             }
 
             if (this.Input.WebsiteUrl != websiteUrl)
@@ -175,9 +175,9 @@
             var firstName = user.FirstName;
             var lastName = user.LastName;
             var education = user.Education;
-            var companyName = user.ComponyName;
-            var interests = user.Interests;
-            var contacts = user.Contacts;
+            var companyName = user.CompanyName;
+            var interest = user.Interest;
+            var contact = user.Contact;
             var websiteUrl = user.WebsiteUrl;
             var githubUrl = user.GithubUrl;
             var facebookUrl = user.FacebookUrl;
@@ -192,8 +192,8 @@
                 LastName = lastName,
                 Education = education,
                 ComponyName = companyName,
-                Interests = interests,
-                Contacts = contacts,
+                Interest = interest,
+                Contact = contact,
                 WebsiteUrl = websiteUrl,
                 GithubUrl = githubUrl,
                 FacebookUrl = facebookUrl,
@@ -223,11 +223,13 @@
             [StringLength(50, MinimumLength = 2)]
             public string ComponyName { get; set; }
 
+            [Display(Name = "Interests")]
             [StringLength(1000, MinimumLength = 2)]
-            public string Interests { get; set; }
+            public string Interest { get; set; }
 
+            [Display(Name = "Contacts")]
             [StringLength(200, MinimumLength = 6)]
-            public string Contacts { get; set; }
+            public string Contact { get; set; }
 
             [Display(Name = "Website URL")]
             [MaxLength(2048)]
@@ -245,6 +247,7 @@
             [MaxLength(2048)]
             public string InstagramUrl { get; set; }
 
+            [Display(Name = "Profile picture")]
             [MaxFileSize(5 * 1024 * 1024)]
             [FileAllowedExtensions(new[] { ".jpg", ".jpeg", ".png", ".gif", ".bmp" })]
             public IFormFile UploadPicture { get; set; }

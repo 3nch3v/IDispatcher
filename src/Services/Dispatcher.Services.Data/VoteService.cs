@@ -12,9 +12,9 @@
 
     public class VoteService : IVoteService
     {
-        private readonly IRepository<Vote> votes;
+        private readonly IRepository<DiscussionVote> votes;
 
-        public VoteService(IRepository<Vote> votes)
+        public VoteService(IRepository<DiscussionVote> votes)
         {
             this.votes = votes;
         }
@@ -25,7 +25,7 @@
 
             if (vote is null)
             {
-                vote = new Vote
+                vote = new DiscussionVote
                 {
                     DiscussionId = discussionId,
                     UserId = userId,

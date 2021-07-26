@@ -1,10 +1,10 @@
-﻿namespace Dispatcher.Data.Models.AdvertisementModels
+﻿namespace Dispatcher.Data.Models.JobModels
 {
     using System.ComponentModel.DataAnnotations;
 
     using Dispatcher.Data.Common.Models;
 
-    using static Dispatcher.Common.GlobalConstants;
+    using static Dispatcher.Common.GlobalConstants.File;
     using static Dispatcher.Common.GlobalConstants.Job;
 
     public class Job : BaseDeletableModel<int>
@@ -12,8 +12,6 @@
         [Required]
         [MaxLength(TitleMaxLength)]
         public string Title { get; set; }
-
-        //// just Body
 
         [Required]
         [MaxLength(BodyMaxLength)]

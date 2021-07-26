@@ -58,9 +58,8 @@
             }
 
             string pictureDirectory = $"{this.environment.WebRootPath}{BlogPicturePath}";
-            input.PictureDirectory = pictureDirectory;
-            var user = await this.userManager.GetUserAsync(this.User);
-            await this.blogServie.CreateAsync<BlogInputModel>(input, user.Id);
+            var userId = this.userManager.GetUserId(this.User);
+            await this.blogServie.CreateAsync<BlogInputModel>(input, userId, pictureDirectory);
 
             return this.RedirectToAction(nameof(this.AllPosts));
         }
@@ -98,9 +97,21 @@
             }
 
             string pictureDirectory = $"{this.environment.WebRootPath}{BlogPicturePath}";
-            input.PictureDirectory = pictureDirectory;
-            await this.blogServie.UpdateAsync<EditBlogPostInputmodel>(input, id);
+            await this.blogServie.UpdateAsync<EditBlogPostInputmodel>(input, id, pictureDirectory);
+
             return this.RedirectToAction(nameof(this.Post), new { id });
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (!this.HasPermission(id))
+            {
+                return this.RedirectToAction("Error", "Home");
+            }
+
+            await this.blogServie.DeleteAsync(id);
+            return this.RedirectToAction(nameof(this.AllPosts));
         }
 
         public IActionResult Post(int id)
@@ -119,18 +130,6 @@
             };
 
             return this.View(posts);
-        }
-
-        [Authorize]
-        public async Task<IActionResult> Delete(int id)
-        {
-            if (!this.HasPermission(id))
-            {
-                return this.RedirectToAction("Error", "Home");
-            }
-
-            await this.blogServie.DeleteAsync(id);
-            return this.RedirectToAction(nameof(this.AllPosts));
         }
 
         private bool HasPermission(int dataId)

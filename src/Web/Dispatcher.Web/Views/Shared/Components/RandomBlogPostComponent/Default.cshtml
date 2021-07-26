@@ -29,9 +29,9 @@ else
             <h3 class="tm-gold-text tm-title">@Model.Title</h3>
         </header>
         <section style="display: flex;">
-            @if (!string.IsNullOrWhiteSpace(Model.FilePath))
+            @if (!string.IsNullOrWhiteSpace(Model.FullFilePath))
             {
-                <img src="@Model.FilePath" alt="Image" style="max-height:300px; max-width: 300px; margin: 10px auto;">
+                <img src="@Model.FullFilePath" alt="Image" style="max-height:300px; max-width: 300px; margin: 10px auto;">
             }
             else
             {

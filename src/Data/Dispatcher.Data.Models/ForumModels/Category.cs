@@ -5,6 +5,8 @@
 
     using Dispatcher.Data.Common.Models;
 
+    using static Dispatcher.Common.GlobalConstants.Blog;
+
     public class Category : BaseDeletableModel<int>
     {
         public Category()
@@ -13,7 +15,7 @@
         }
 
         [Required]
-        [MaxLength(50)]
+        [MaxLength(CategoryMaxLenght)]
         public string Name { get; set; }
 
         public IEnumerable<Discussion> Discussions { get; set; }

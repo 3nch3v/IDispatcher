@@ -5,20 +5,22 @@
 
     using Dispatcher.Data.Common.Models;
 
+    using static Dispatcher.Common.GlobalConstants.Forum;
+
     public class Discussion : BaseDeletableModel<int>
     {
         public Discussion()
         {
             this.Posts = new HashSet<Comment>();
-            this.Votes = new HashSet<Vote>();
+            this.Votes = new HashSet<DiscussionVote>();
         }
 
         [Required]
-        [StringLength(100, MinimumLength = 3)]
+        [MaxLength(TitleMaxLenght)]
         public string Title { get; set; }
 
         [Required]
-        [StringLength(5000, MinimumLength = 50)]
+        [MaxLength(DescriptionMAxLenght)]
         public string Description { get; set; }
 
         public bool IsSolved { get; set; }
@@ -34,6 +36,6 @@
 
         public virtual ICollection<Comment> Posts { get; set; }
 
-        public virtual ICollection<Vote> Votes { get; set; }
+        public virtual ICollection<DiscussionVote> Votes { get; set; }
     }
 }

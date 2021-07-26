@@ -5,6 +5,8 @@
 
     using Dispatcher.Data.Common.Models;
 
+    using static Dispatcher.Common.GlobalConstants.File;
+
     public class ProfilePicture : BaseDeletableModel<string>
     {
         public ProfilePicture()
@@ -13,15 +15,11 @@
         }
 
         [Required]
-        [MaxLength(2048)]
+        [MaxLength(FileMaxLenght)]
         public string FilePath { get; set; }
 
         [Required]
-        [MaxLength(2048)]
-        public string PhysicalFilePath { get; set; }
-
-        [Required]
-        [MaxLength(5)]
+        [MaxLength(ExtensionMaxLenght)]
         public string Extension { get; set; }
 
         [Required]

@@ -1,6 +1,7 @@
 ﻿namespace Dispatcher.Data.Configurations
 {
     using Dispatcher.Data.Models;
+    using Dispatcher.Data.Models.UserInfoModels;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -27,6 +28,13 @@
                 .WithOne()
                 .HasForeignKey(e => e.UserId)
                 .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
+
+            appUser
+                .HasOne(u => u.ProfilePicture)
+                .WithOne(i => i.User)
+                .HasForeignKey<ProfilePicture>(u => u.UserId)
+                .IsRequired(false)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

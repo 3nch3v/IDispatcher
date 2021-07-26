@@ -26,7 +26,7 @@
             </aside>
             <div class="col-xs-12 col-sm-12 col-md-8 col-lg-9 col-xl-9">
                 <div>
-                    <div class="card mb-4 col-md-12 offser-md-6" style=" -webkit-box-shadow: -10px 0px 13px -7px #000000, 10px 0px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0); box-shadow: -10px 0px 13px -7px #000000, 10px 0px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0);">
+                    <div class="card mb-4 col-md-12 offser-md-6" style="border-radius: 8px ; -webkit-box-shadow: -8px -3px 15px 5px rgba(0,0,0,0.18); box-shadow: -8px -3px 15px 5px rgba(0,0,0,0.18);">
                         <div class="card-body p-2 p-sm-3">
                             <div class="media forum-item">
                                 <a asp-controller="Profiles" asp-action="Profile" asp-route-userId="@Model.UserId">
@@ -34,7 +34,9 @@
                                 </a>
                                 <div class="media-body">
                                     <div class="d-flex flex-row justify-content-between mx-md-2">
-                                        <h6><strong>@Model.Title</strong></h6>
+                                        <h5>
+                                            <strong>@Model.Title</strong>
+                                        </h5>
                                         <div class="tm-gold-text">
                                             @if (Model.IsSolved) {<text>Solved</text> }
                                             else{ <text>Unsolved</text>}
@@ -97,7 +99,7 @@
                     @foreach (var post in Model.Posts)
                     {
 
-                        <div class="card mb-3 col-md-12 offser-md-6" style=" -webkit-box-shadow: -10px 0px 13px -7px #000000, 10px 0px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0); box-shadow: -10px 0px 13px -7px #000000, 10px 0px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0);">
+                        <div class="card mb-3 col-md-12 offser-md-6" style="border-radius: 8px; -webkit-box-shadow: -8px -3px 15px 5px rgba(0,0,0,0.18); box-shadow: -8px -3px 15px 5px rgba(0,0,0,0.18);">
                             <div class="card-body p-2 p-sm-3">
                                 <div class="media forum-item">
                                     <a asp-controller="Profiles" asp-action="Profile" asp-route-userId="@post.UserId">
@@ -127,7 +129,7 @@
                         </div>
                     }
                 </div>
-                <div class="form-control-plaintext mt-4 mb-4 pb-5" style=" -webkit-box-shadow: -10px 0px 13px -7px #000000, 10px 0px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0); box-shadow: -10px 0px 13px -7px #000000, 10px 0px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0);">
+                <div class="form-control-plaintext mt-4 mb-4 pb-5" style="border-radius: 8px; -webkit-box-shadow: -8px -3px 15px 5px rgba(0,0,0,0.18); box-shadow: -8px -3px 15px 5px rgba(0,0,0,0.18);">
                     <form method="post" asp-controller="Forum" asp-action="Comment" class="col-md-12 offser-md-6">
                         <div class="form-group">
                             <label for="Comment">Comment</label>

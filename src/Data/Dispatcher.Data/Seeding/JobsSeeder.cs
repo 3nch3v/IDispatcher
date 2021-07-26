@@ -5,7 +5,7 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    using Dispatcher.Data.Models.AdvertisementModels;
+    using Dispatcher.Data.Models.JobModels;
     using Microsoft.Extensions.Configuration;
 
     public class JobsSeeder : ISeeder

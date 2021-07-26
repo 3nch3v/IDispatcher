@@ -9,100 +9,96 @@
     this.ViewData["ActivePage"] = ManageNavPages.Index;
 }
 
-<h4>@this.ViewBag.Title</h4>
-<partial name="_StatusMessage" model="Model.StatusMessage" />
+<div class="p-4" style="-webkit-box-shadow: 0px 0px 28px -15px rgba(0,0,0,0.85); box-shadow: 0px 0px 28px -15px rgba(0,0,0,0.85);">
+    <h4>@this.ViewBag.Title</h4>
+    <partial name="_StatusMessage" model="Model.StatusMessage" />
 
-<form id="profile-form" method="post" enctype="multipart/form-data">
-    <div class="row">
-        <div class="col-md-6">
+    <form id="profile-form" method="post" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-md-6">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Username"></label>
+                    <input asp-for="Username" class="form-control" disabled />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.FirstName"></label>
+                    <input asp-for="Input.FirstName" class="form-control" />
+                    <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.LastName"></label>
+                    <input asp-for="Input.LastName" class="form-control" />
+                    <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.Education"></label>
+                    <input asp-for="Input.Education" class="form-control" />
+                    <span asp-validation-for="Input.Education" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.ComponyName"></label>
+                    <input asp-for="Input.ComponyName" class="form-control" />
+                    <span asp-validation-for="Input.ComponyName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.Interest"></label>
+                    <textarea asp-for="Input.Interest" class="form-control" rows="2"></textarea>
+                    <span asp-validation-for="Input.Interest" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.Contact"></label>
+                    <textarea asp-for="Input.Contact" class="form-control" rows="2"></textarea>
+                    <span asp-validation-for="Input.Contact" class="text-danger"></span>
+                </div>
 
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Username"></label>
-                <input asp-for="Username" class="form-control" disabled />
-            </div>
+                <div class="form-group">
+                    <label asp-for="Input.PhoneNumber"></label>
+                    <input asp-for="Input.PhoneNumber" class="form-control" />
+                    <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                </div>
 
-            <div class="form-group">
-                <label asp-for="Input.FirstName"></label>
-                <input asp-for="Input.FirstName" class="form-control" />
-                <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                <div class="form-group">
+                    <label asp-for="Input.WebsiteUrl"></label>
+                    <input asp-for="Input.WebsiteUrl" class="form-control" rows="3" />
+                    <span asp-validation-for="Input.WebsiteUrl" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.GithubUrl"></label>
+                    <input asp-for="Input.GithubUrl" class="form-control" rows="3" />
+                    <span asp-validation-for="Input.GithubUrl" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.FacebookUrl"></label>
+                    <input asp-for="Input.FacebookUrl" class="form-control" rows="3" />
+                    <span asp-validation-for="Input.FacebookUrl" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.InstagramUrl"></label>
+                    <input asp-for="Input.InstagramUrl" class="form-control" rows="3" />
+                    <span asp-validation-for="Input.InstagramUrl" class="text-danger"></span>
+                </div>
+                <button id="update-profile-button" type="submit" class="tm-btn">Save</button>
             </div>
-            <div class="form-group">
-                <label asp-for="Input.LastName"></label>
-                <input asp-for="Input.LastName" class="form-control" />
-                <span asp-validation-for="Input.LastName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.Education"></label>
-                <input asp-for="Input.Education" class="form-control" />
-                <span asp-validation-for="Input.Education" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.ComponyName"></label>
-                <input asp-for="Input.ComponyName" class="form-control" />
-                <span asp-validation-for="Input.ComponyName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.Interests"></label>
-                <textarea asp-for="Input.Interests" class="form-control" rows="2"></textarea>
-                <span asp-validation-for="Input.Interests" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.Contacts"></label>
-                <textarea asp-for="Input.Contacts" class="form-control" rows="2"></textarea>
-                <span asp-validation-for="Input.Contacts" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Input.PhoneNumber"></label>
-                <input asp-for="Input.PhoneNumber" class="form-control" />
-                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Input.WebsiteUrl"></label>
-                <input asp-for="Input.WebsiteUrl" class="form-control" rows="3" />
-                <span asp-validation-for="Input.WebsiteUrl" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.GithubUrl"></label>
-                <input asp-for="Input.GithubUrl" class="form-control" rows="3" />
-                <span asp-validation-for="Input.GithubUrl" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.FacebookUrl"></label>
-                <input asp-for="Input.FacebookUrl" class="form-control" rows="3" />
-                <span asp-validation-for="Input.FacebookUrl" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.InstagramUrl"></label>
-                <input asp-for="Input.InstagramUrl" class="form-control" rows="3" />
-                <span asp-validation-for="Input.InstagramUrl" class="text-danger"></span>
-            </div>
-
-            <button id="update-profile-button" type="submit" class="tm-btn">Save</button>
-        </div>
-
-        <div class="col-md-6">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Input.UploadPicture" style="width: 100%;"></label>
-                <img src="@Model.Input.ProfilePicture" id="profilePicture"
-                     style="width:350px;height:350px;
+            <div class="col-md-6">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Input.UploadPicture" style="width: 100%; margin-bottom: 20px; margin-left: 120px">Profile picture</label>
+                    <img src="@Model.Input.ProfilePicture" id="profilePicture"
+                         style="width:350px;height:350px;
                      object-fit:cover">
-                <input type="file"
-                       accept=".jpg,.jpeg,.png,.gif,.bmp"
-                       asp-for="Input.UploadPicture"
-                       class="form-control"
-                       style="border:0px!important;padding: 0px;padding-top: 10px;padding-bottom: 30px;"
-                       onchange="document.getElementById('profilePicture').src = window.URL.createObjectURL(this.files[0])" />
-                <span asp-validation-for="Input.UploadPicture" class="text-danger"></span>
+                    <input type="file"
+                           accept=".jpg,.jpeg,.png,.gif,.bmp"
+                           asp-for="Input.UploadPicture"
+                           class="btn-block"
+                           style="border:0px!important; margin: 20px 30px;"
+                           onchange="document.getElementById('profilePicture').src = window.URL.createObjectURL(this.files[0])" />
+                    <span asp-validation-for="Input.UploadPicture" class="text-danger"></span>
+                </div>
             </div>
         </div>
-
-    </div>
-
-</form>
+    </form>
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

@@ -8,50 +8,56 @@
     string currUserId = this.userManager.GetUserId(this.User);
 }
 
-<div style="max-width: 1200px; margin:30px auto;">
-    <div class="d-flex justify-content-between">
-        <div class="navbar-brand"><h3 class="tm-gold-text"><a class="tm-gold-text" asp-controller="Blogs" asp-action="AllPosts"><i class="fa fa-arrow-left"></i> Back to Blog Posts</a></h3></div>
+<div style="max-width: 1200px; ">
+    <div class="navbar-brand">
+        <h3 class="tm-gold-text">
+            <a class="tm-gold-text" asp-controller="Blogs" asp-action="AllPosts">
+                <i class="fa fa-arrow-left"></i> Back to Blog Posts
+            </a>
+        </h3>
+    </div>
+    <div style="margin: 20px auto; padding: 30px; background: #E9ECEF; -webkit-box-shadow: -3px 0px 33px 6px rgba(0,0,0,0.17); box-shadow: -3px 0px 33px 6px rgba(0,0,0,0.17); ">
         @if (currUserId == Model.UserId)
         {
-            <div>
-                <span>
-                    <a asp-controller="Blogs" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Edit</a>
-                </span><text>&nbsp;&nbsp;&nbsp;</text>
-                <span>
-                    <a asp-controller="Blogs" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Delete</a>
-                </span>
-            </div>
-        }
-    </div>
-    <br>
-    <div>
-        <div>
-            <div style="margin-bottom: 20px;">
-                <h2>@Model.Title</h2>
-            </div>
-            <div>
-                @if (Model.VideoLink != null)
-                {
-                    <div class="embed-responsive embed-responsive-16by9" style="max-width: 500px; float: left; margin-right: 30px;">
-                        @Html.Raw(Model.VideoLink)
-                    </div>
-                }
-                else if (!string.IsNullOrWhiteSpace(Model.FilePath))
-                {
-                    <div>
-                        <img src="@Model.FilePath" class="card-img-top" alt="@Model.Title" style="max-width: 500px; float: left; margin-right: 30px;">
-                    </div>
-                }
-
+            <div class="d-flex justify-content-end">
                 <div>
-                    <p>@Html.Raw(Model.SanitizedBody)</p>
+                    <a asp-controller="Blogs" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Edit</a>
+                </div><text>&nbsp;&nbsp;&nbsp;</text>
+                <div>
+                    <a asp-controller="Blogs" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Delete</a>
                 </div>
             </div>
-        </div>
+        }
         <br>
-        <div class="d-flex flex-row justify-content-between">
-            <span>Created on @Model.CreatedOn.ToString("g")</span>
-            <span>Created by <a class="tm-gold-text" asp-controller="Profiles" asp-action="Profile" asp-route-userId="@Model.UserId">@Model.UserUsername</a></span>
+        <div>
+            <div>
+                <div style="margin-top: -30px; margin-bottom: 20px">
+                    <h1 class="tm-gold-text">@Model.Title</h1>
+                </div>
+                <div>
+                    @if (Model.VideoLink != null)
+                    {
+                        <div class="embed-responsive embed-responsive-16by9" style="max-width: 500px; float: left; margin-right: 30px;">
+                            @Html.Raw(Model.VideoLink)
+                        </div>
+                    }
+                    else if (!string.IsNullOrWhiteSpace(Model.FullFilePath))
+                    {
+                        <div>
+                            <img src="@Model.FullFilePath" class="card-img-top" alt="@Model.Title" style="max-width: 500px; float: left; margin-right: 30px;">
+                        </div>
+                    }
+
+                    <div>
+                        <p>@Html.Raw(Model.SanitizedBody)</p>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="d-flex flex-row justify-content-between">
+                <span>Created on @Model.CreatedOn.ToString("g")</span>
+                <span>Created by <a class="tm-gold-text" asp-controller="Profiles" asp-action="Profile" asp-route-userId="@Model.UserId">@Model.UserUsername</a></span>
+            </div>
         </div>
     </div>
 </div>

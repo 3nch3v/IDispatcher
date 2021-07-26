@@ -2,6 +2,8 @@
 {
     using System.Collections.Generic;
 
+    using Dispatcher.Data.Models.UserInfoModels;
+
     public class ProfileDataDto
     {
         public string Id { get; set; }
@@ -14,11 +16,11 @@
 
         public string Education { get; set; }
 
-        public string ComponyName { get; set; }
+        public string CompanyName { get; set; }
 
-        public string Interests { get; set; }
+        public string Interest { get; set; }
 
-        public string Contacts { get; set; }
+        public string Contact { get; set; }
 
         public string WebsiteUrl { get; set; }
 
@@ -28,9 +30,9 @@
 
         public string InstagramUrl { get; set; }
 
-        public virtual ICollection<ProfileCustomersReviewsDto> CumstomerReviews { get; set; }
+        public ProfilePicture ProfilePicture { get; set; }
 
-        public ICollection<ProfilePicturesDto> ProfilePictures { get; set; }
+        public virtual ICollection<ProfileCustomersReviewsDto> CumstomerReviews { get; set; }
 
         public virtual ICollection<ProfileAdvertisementsDto> Advertisements { get; set; }
 

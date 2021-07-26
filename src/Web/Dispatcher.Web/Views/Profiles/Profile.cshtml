@@ -5,12 +5,12 @@
     this.ViewBag.Title = "Profile";
     var path = Model.ProfilePictures.OrderByDescending(x => x.CreatedOn).FirstOrDefault()?.FilePath;
 }
-<div class="container mt-4">
+<div class="container mt-4 mb-4 p-3" style="-webkit-box-shadow: 0px 0px 28px -11px rgba(0,0,0,0.85); box-shadow: 0px 0px 28px -11px rgba(0,0,0,0.85);">
     <div class="main-body">
         <div class="row gutters-sm">
             <div class="col-md-4 mb-3">
                 <div class="card">
-                    <div class="card-body">
+                    <div class="card-body" style="-webkit-box-shadow: 0px 0px 28px -15px rgba(0,0,0,0.85); box-shadow: 0px 0px 28px -15px rgba(0,0,0,0.85);">
                         <div class="d-flex flex-column align-items-center text-center">
                             @if (path != null)
                             {
@@ -24,7 +24,7 @@
                                 <h4>@Model.FullName</h4>
                                 @if (@Model.CumstomerReviews.Any())
                                 {
-                                    <h5><i class="fa fa-star" aria-hidden="true">@Model.CumstomerReviews.Average(x => x.StarsCount).ToString("f2")</i></h5>
+                                    <h5><i class="fa fa-star tm-gold-text" aria-hidden="true"> @Model.CumstomerReviews.Average(x => x.StarsCount).ToString("f2")</i></h5>
                                 }
 
                                 <p class="text-secondary mb-1">@Model.Education</p>
@@ -34,93 +34,91 @@
                     </div>
                 </div>
 
-                <div class="card mt-3">
+                <div class="card mt-3" style="-webkit-box-shadow: 0px 0px 28px -15px rgba(0,0,0,0.85); box-shadow: 0px 0px 28px -15px rgba(0,0,0,0.85);">
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap p-1">
                             <p class="profile-info">
-                                <i class="fa fa-tasks"> Interests</i>
+                                <i class="fa fa-tasks"> <span class="tm-gold-text">Interests</span></i>
                             </p>
                             <p class="profile-info">@Model.Interests</p>
                         </li>
                     </ul>
                 </div>
-                <div class="card mt-3">
-                    <ul class="list-group list-group-flush">
+                <div style="-webkit-box-shadow: 0px 0px 28px -15px rgba(0,0,0,0.85); box-shadow: 0px 0px 28px -15px rgba(0,0,0,0.85);">
+                    <div class="card mt-3">
+                        <ul class="list-group list-group-flush">
 
-                        @if (Model.Contacts != null)
-                        {
-                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap p-1">
-                                <p class="profile-info">
-                                    <i class="fa fa-address-card"> Contact</i>
-                                </p>
-                                <p class="profile-info">@Model.Contacts</p>
-                            </li>
-                        }
-                        @if (Model.PhoneNumber != null)
-                        {
-                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap p-1">
-                                <p class="profile-info">
-                                    <i class="fa fa-phone-square"> Phonenumber</i>
-                                </p>
-                                <p class="profile-info">@Model.PhoneNumber</p>
-                            </li>
-                        }
-                    </ul>
+                            @if (Model.Contacts != null)
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap p-1">
+                                    <p class="profile-info">
+                                        <i class="fa fa-address-card"> <span class="tm-gold-text">Contact</span></i>
+                                    </p>
+                                    <p class="profile-info">@Model.Contacts</p>
+                                </li>
+                            }
+                            @if (Model.PhoneNumber != null)
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap p-1">
+                                    <p class="profile-info">
+                                        <i class="fa fa-phone-square"> <span class="tm-gold-text">Phonenumber</span></i>
+                                    </p>
+                                    <p class="profile-info">@Model.PhoneNumber</p>
+                                </li>
+                            }
+                            @if (Model.WebsiteUrl != null)
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap p-1">
+                                    <p class="profile-info">
+                                        <i class="fa fa-internet-explorer"> <span class="tm-gold-text">Website</span></i>
+                                    </p>
+                                    <p class="profile-info">
+                                        <a href="#" onclick="window.open('//@Model.WebsiteUrl')">@Model.WebsiteUrl</a>
+                                    </p>
+                                </li>
+                            }
+                            @if (Model.GithubUrl != null)
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap p-1">
+                                    <p class="profile-info">
+                                        <i class="fa fa-github"> <span class="tm-gold-text">Github</span></i>
+                                    </p>
+                                    <p class="profile-info">
+                                        <a href="#" onclick="window.open('//@Model.GithubUrl')">@Model.GithubUrl</a>
+                                    </p>
+                                </li>
+                            }
+                            @if (Model.FacebookUrl != null)
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap p-1">
+                                    <p class="profile-info">
+                                        <i class="fa fa-facebook"> <span class="tm-gold-text">Facebook</span></i>
+                                    </p>
+                                    <p class="profile-info">
+                                        <a href="#" onclick="window.open('//@Model.FacebookUrl')">@Model.FacebookUrl</a>
+                                    </p>
+                                </li>
+                            }
+                            @if (Model.InstagramUrl != null)
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap p-1">
+                                    <p class="profile-info">
+                                        <i class="fa fa-instagram"> <span class="tm-gold-text">Instagram</span></i>
+                                    </p>
+                                    <p class="profile-info">
+                                        <a href="#" onclick="window.open('//@Model.InstagramUrl')">@Model.InstagramUrl</a>
+                                    </p>
+                                </li>
+                            }
+                        </ul>
+                    </div>
                 </div>
-                <div class="card mt-3">
-                    <ul class="list-group list-group-flush">
-
-                        @if (Model.WebsiteUrl != null)
-                        {
-                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap p-1">
-                                <p class="profile-info">
-                                    <i class="fa fa-internet-explorer"> Website</i>
-                                </p>
-                                <p class="profile-info">
-                                    <a href="#" onclick="window.open('//@Model.WebsiteUrl')">@Model.WebsiteUrl</a>
-                                </p>
-                            </li>
-                        }
-                        @if (Model.GithubUrl != null)
-                        {
-                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap p-1">
-                                <p class="profile-info">
-                                    <i class="fa fa-github"> Github</i>
-                                </p>
-                                <p class="profile-info">
-                                    <a href="#" onclick="window.open('//@Model.GithubUrl')">@Model.GithubUrl</a>
-                                </p>
-                            </li>
-                        }
-                        @if (Model.FacebookUrl != null)
-                        {
-                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap p-1">
-                                <p class="profile-info">
-                                    <i class="fa fa-facebook"> Facebook</i>
-                                </p>
-                                <p class="profile-info">
-                                    <a href="#" onclick="window.open('//@Model.FacebookUrl')">@Model.FacebookUrl</a>
-                                </p>
-                            </li>
-                        }
-                        @if (Model.InstagramUrl != null)
-                        {
-                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap p-1">
-                                <p class="profile-info">
-                                    <i class="fa fa-instagram"> Instagram</i>
-                                </p>
-                                <p class="profile-info">
-                                    <a href="#" onclick="window.open('//@Model.InstagramUrl')">@Model.InstagramUrl</a>
-                                </p>
-                            </li>
-                        }
-                    </ul>
-                </div>
-                <div class="card mt-3">
+               
+                <div class="card mt-3" style="-webkit-box-shadow: 0px 0px 28px -15px rgba(0,0,0,0.85); box-shadow: 0px 0px 28px -15px rgba(0,0,0,0.85);">
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap p-1">
                             <p class="profile-info">
-                                <i class="fa fa-commenting" aria-hidden="true"> Reviews:</i>
+                                <i class="fa fa-commenting" aria-hidden="true"> <span class="tm-gold-text">Reviews:</span></i>
                             </p>
                             <br>
                             <p class="profile-info">
@@ -131,11 +129,11 @@
                         </li>
                     </ul>
                 </div>
-                <div class="card mt-3">
+                <div class="card mt-3" style="-webkit-box-shadow: 0px 0px 28px -15px rgba(0,0,0,0.85); box-shadow: 0px 0px 28px -15px rgba(0,0,0,0.85);">
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap p-1">
                             <p class="profile-info">
-                                <i class="fa fa-cube">  Blog posts:</i>
+                                <i class="fa fa-cube">  <span class="tm-gold-text">Blog posts:</span></i>
                             </p>
                         </li>
 
@@ -161,8 +159,8 @@
             </div>
             <div class="col-md-8">
                 <div class="card mb-3">
-                    <div class="card-body">
-                        <h5>Projects</h5>
+                    <div class="card-body" style="-webkit-box-shadow: 0px 0px 28px -15px rgba(0,0,0,0.85); box-shadow: 0px 0px 28px -15px rgba(0,0,0,0.85);">
+                        <h5 class="tm-gold-text">Projects</h5>
                         <hr>
                         @if (Model.Projects.Count > 0)
                         {
@@ -206,8 +204,8 @@
                 </div>
 
                 <div class="card mb-3">
-                    <div class="card-body">
-                        <h5>Advertisements</h5>
+                    <div class="card-body" style="-webkit-box-shadow: 0px 0px 28px -15px rgba(0,0,0,0.85); box-shadow: 0px 0px 28px -15px rgba(0,0,0,0.85);">
+                        <h5 class="tm-gold-text">Advertisements</h5>
                         <hr>
                         @if (Model.Advertisements.Count > 0)
                         {
@@ -235,11 +233,11 @@
                     </div>
                 </div>
 
-                <div class="row gutters-sm">
-                    <div class="col-sm-6 mb-3">
-                        <div class="card h-100">
+                <div class="row gutters-sm" >
+                    <div class="col-sm-6 mb-3" >
+                        <div class="card h-100" style="-webkit-box-shadow: 0px 0px 28px -15px rgba(0,0,0,0.85); box-shadow: 0px 0px 28px -15px rgba(0,0,0,0.85);">
                             <div class="card-body">
-                                <h5>Job Advertisements</h5>
+                                <h5 class="tm-gold-text">Job Advertisements</h5>
                                 <hr>
      
                                 @if (Model.Jobs.Count > 0)
@@ -263,8 +261,8 @@
 
                     <div class="col-sm-6 mb-3">
                         <div class="card h-100">
-                            <div class="card-body">
-                                <h5>Forum Discussions</h5>
+                            <div class="card-body" style="-webkit-box-shadow: 0px 0px 28px -15px rgba(0,0,0,0.85); box-shadow: 0px 0px 28px -15px rgba(0,0,0,0.85);">
+                                <h5 class="tm-gold-text">Forum Discussions</h5>
                                 <hr>
                                 @if (Model.Discussions.Count > 0)
                                 {

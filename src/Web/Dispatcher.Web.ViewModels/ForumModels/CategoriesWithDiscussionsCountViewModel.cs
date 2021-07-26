@@ -4,8 +4,8 @@
 
     public class CategoriesWithDiscussionsCountViewModel
     {
-        public IEnumerable<SingleCategoryViewModel> Categories { get; set; }
-
         public int UnsolvedCount { get; set; }
+
+        public IEnumerable<SingleCategoryViewModel> Categories { get; set; }
     }
 }

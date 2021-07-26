@@ -4,21 +4,24 @@
 
     using Dispatcher.Data.Common.Models;
 
+    using static Dispatcher.Common.GlobalConstants.File;
+    using static Dispatcher.Common.GlobalConstants.Project;
+
     public class Project : BaseDeletableModel<int>
     {
         [Required]
-        [StringLength(100, MinimumLength = 3)]
+        [MaxLength(NameMaxLenght)]
         public string Name { get; set; }
 
-        [MaxLength(2048)]
+        [MaxLength(UrlMaxLenght)]
         public string Url { get; set; }
 
         [Required]
-        [StringLength(100, MinimumLength = 3)]
+        [MaxLength(RoleMaxLenght)]
         public string UserRole { get; set; }
 
         [Required]
-        [StringLength(500, MinimumLength = 3)]
+        [MaxLength(DescriptionMaxLenght)]
         public string Description { get; set; }
 
         [Required]

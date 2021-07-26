@@ -21,6 +21,10 @@
 
         public string FilePath { get; set; }
 
+        public string Extension { get; set; }
+
+        public string FullFilePath => $"{this.FilePath}{this.Extension}";
+
         public bool IsWithPicture { get; set; }
 }
 }

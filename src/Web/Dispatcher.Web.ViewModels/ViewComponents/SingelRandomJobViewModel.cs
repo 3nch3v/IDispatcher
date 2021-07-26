@@ -4,7 +4,7 @@
     using System.Net;
     using System.Text.RegularExpressions;
 
-    using Dispatcher.Data.Models.AdvertisementModels;
+    using Dispatcher.Data.Models.JobModels;
     using Dispatcher.Services.Mapping;
     using Ganss.XSS;
 

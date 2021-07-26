@@ -173,8 +173,7 @@
             if (this.ModelState.IsValid)
             {
                 var userId = this.userManager.GetUserId(this.User);
-                input.UserId = userId;
-                await this.commentService.CreateAsync<PostInputViewModel>(input);
+                await this.commentService.CreateAsync<PostInputViewModel>(input, userId);
             }
 
             return this.RedirectToAction(nameof(this.ForumDiscussion), new { id = input.DiscussionId });

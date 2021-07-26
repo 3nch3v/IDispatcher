@@ -5,8 +5,8 @@
 
     using Dispatcher.Data.Common.Models;
 
-    using static Dispatcher.Common.GlobalConstants;
     using static Dispatcher.Common.GlobalConstants.Advertisement;
+    using static Dispatcher.Common.GlobalConstants.File;
 
     public class Advertisement : BaseDeletableModel<int>
     {
@@ -29,11 +29,6 @@
 
         [MaxLength(UrlMaxLenght)]
         public string PictureUrl { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether remove it, you dont use it.
-        /// </summary>
-        public bool IsActive { get; set; }
 
         [Required]
         [ForeignKey(nameof(User))]

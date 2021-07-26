@@ -4,8 +4,8 @@
 
     using Dispatcher.Data.Common.Models;
 
-    using static Dispatcher.Common.GlobalConstants;
     using static Dispatcher.Common.GlobalConstants.Blog;
+    using static Dispatcher.Common.GlobalConstants.File;
 
     public class Blog : BaseDeletableModel<int>
     {
@@ -21,7 +21,7 @@
         public string FilePath { get; set; }
 
         [MaxLength(UrlMaxLenght)]
-        public string PhysicalFilePath { get; set; }
+        public string Extension { get; set; }
 
         [MaxLength(UrlMaxLenght)]
         public string VideoLink { get; set; }

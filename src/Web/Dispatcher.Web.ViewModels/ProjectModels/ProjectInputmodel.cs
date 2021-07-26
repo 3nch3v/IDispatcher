@@ -5,21 +5,24 @@
     using Dispatcher.Data.Models.UserInfoModels;
     using Dispatcher.Services.Mapping;
 
+    using static Dispatcher.Common.GlobalConstants.File;
+    using static Dispatcher.Common.GlobalConstants.Project;
+
     public class ProjectInputmodel : IMapTo<Project>
     {
         [Required]
-        [StringLength(100, MinimumLength = 3)]
+        [StringLength(NameMaxLenght, MinimumLength = NameMinLenght)]
         public string Name { get; set; }
 
-        [MaxLength(2048)]
+        [MaxLength(UrlMaxLenght)]
         public string Url { get; set; }
 
         [Required]
-        [StringLength(100, MinimumLength = 3)]
+        [StringLength(RoleMaxLenght, MinimumLength = RoleMinLenght)]
         public string UserRole { get; set; }
 
         [Required]
-        [StringLength(500, MinimumLength = 3)]
+        [StringLength(DescriptionMaxLenght, MinimumLength = DescriptionMinLenght)]
         public string Description { get; set; }
     }
 }

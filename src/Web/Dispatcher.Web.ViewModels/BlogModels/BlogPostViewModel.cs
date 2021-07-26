@@ -22,7 +22,9 @@
 
         public string FilePath { get; set; }
 
-        public string PhysicalFilePath { get; set; }
+        public string Extension { get; set; }
+
+        public string FullFilePath => $"{this.FilePath}{this.Extension}";
 
         public string VideoLink { get; set; }
 

@@ -51,9 +51,9 @@
                     FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Education = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    ComponyName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    Interests = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
-                    Contacts = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    CompanyName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Interest = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Contact = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     WebsiteUrl = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: true),
                     GithubUrl = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: true),
                     FacebookUrl = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: true),
@@ -62,6 +62,7 @@
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ProfilePictureId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -100,41 +101,6 @@
                 });
 
             migrationBuilder.CreateTable(
-                name: "Groups",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Groups", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Settings",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Settings", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -166,7 +132,6 @@
                     Description = table.Column<string>(type: "nvarchar(max)", maxLength: 5000, nullable: false),
                     Compensation = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     PictureUrl = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: true),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -282,9 +247,10 @@
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Body = table.Column<string>(type: "nvarchar(max)", maxLength: 100000, nullable: false),
+                    Body = table.Column<string>(type: "nvarchar(max)", maxLength: 10000, nullable: false),
                     FilePath = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: true),
                     PhysicalFilePath = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: true),
+                    Extension = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: true),
                     VideoLink = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -358,30 +324,6 @@
                     table.PrimaryKey("PK_Jobs", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Jobs_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Messages",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Body = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Messages", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Messages_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -474,37 +416,7 @@
                 });
 
             migrationBuilder.CreateTable(
-                name: "UsersGroups",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    GroupId = table.Column<int>(type: "int", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UsersGroups", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UsersGroups_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_UsersGroups_Groups_GroupId",
-                        column: x => x.GroupId,
-                        principalTable: "Groups",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Posts",
+                name: "Comments",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -519,15 +431,15 @@
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Posts", x => x.Id);
+                    table.PrimaryKey("PK_Comments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Posts_AspNetUsers_UserId",
+                        name: "FK_Comments_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Posts_Discussions_DiscussionId",
+                        name: "FK_Comments_Discussions_DiscussionId",
                         column: x => x.DiscussionId,
                         principalTable: "Discussions",
                         principalColumn: "Id",
@@ -535,47 +447,13 @@
                 });
 
             migrationBuilder.CreateTable(
-                name: "MessagesRecipients",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    MessageId = table.Column<int>(type: "int", nullable: false),
-                    UserGroupId = table.Column<int>(type: "int", nullable: true),
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MessagesRecipients", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_MessagesRecipients_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_MessagesRecipients_Messages_MessageId",
-                        column: x => x.MessageId,
-                        principalTable: "Messages",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_MessagesRecipients_UsersGroups_UserGroupId",
-                        column: x => x.UserGroupId,
-                        principalTable: "UsersGroups",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Votes",
+                name: "DiscussionVotes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    DiscussionId = table.Column<int>(type: "int", nullable: true),
-                    PostId = table.Column<int>(type: "int", nullable: true),
+                    DiscussionId = table.Column<int>(type: "int", nullable: false),
                     Like = table.Column<int>(type: "int", nullable: false),
                     Dislike = table.Column<int>(type: "int", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -583,23 +461,47 @@
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Votes", x => x.Id);
+                    table.PrimaryKey("PK_DiscussionVotes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Votes_AspNetUsers_UserId",
+                        name: "FK_DiscussionVotes_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Votes_Discussions_DiscussionId",
+                        name: "FK_DiscussionVotes_Discussions_DiscussionId",
                         column: x => x.DiscussionId,
                         principalTable: "Discussions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CommentVotes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CommentId = table.Column<int>(type: "int", nullable: false),
+                    Like = table.Column<int>(type: "int", nullable: false),
+                    Dislike = table.Column<int>(type: "int", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CommentVotes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Votes_Posts_PostId",
-                        column: x => x.PostId,
-                        principalTable: "Posts",
+                        name: "FK_CommentVotes_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_CommentVotes_Comments_CommentId",
+                        column: x => x.CommentId,
+                        principalTable: "Comments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -689,6 +591,31 @@
                 column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Comments_DiscussionId",
+                table: "Comments",
+                column: "DiscussionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_IsDeleted",
+                table: "Comments",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_UserId",
+                table: "Comments",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CommentVotes_CommentId",
+                table: "CommentVotes",
+                column: "CommentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CommentVotes_UserId",
+                table: "CommentVotes",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CustomersReviews_AppraiserId",
                 table: "CustomersReviews",
                 column: "AppraiserId");
@@ -719,9 +646,14 @@
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Groups_IsDeleted",
-                table: "Groups",
-                column: "IsDeleted");
+                name: "IX_DiscussionVotes_DiscussionId",
+                table: "DiscussionVotes",
+                column: "DiscussionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DiscussionVotes_UserId",
+                table: "DiscussionVotes",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Jobs_IsDeleted",
@@ -734,46 +666,6 @@
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Messages_IsDeleted",
-                table: "Messages",
-                column: "IsDeleted");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Messages_UserId",
-                table: "Messages",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_MessagesRecipients_MessageId",
-                table: "MessagesRecipients",
-                column: "MessageId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_MessagesRecipients_UserGroupId",
-                table: "MessagesRecipients",
-                column: "UserGroupId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_MessagesRecipients_UserId",
-                table: "MessagesRecipients",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Posts_DiscussionId",
-                table: "Posts",
-                column: "DiscussionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Posts_IsDeleted",
-                table: "Posts",
-                column: "IsDeleted");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Posts_UserId",
-                table: "Posts",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ProfilesPictures_IsDeleted",
                 table: "ProfilesPictures",
                 column: "IsDeleted");
@@ -781,7 +673,8 @@
             migrationBuilder.CreateIndex(
                 name: "IX_ProfilesPictures_UserId",
                 table: "ProfilesPictures",
-                column: "UserId");
+                column: "UserId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Projects_IsDeleted",
@@ -791,41 +684,6 @@
             migrationBuilder.CreateIndex(
                 name: "IX_Projects_UserId",
                 table: "Projects",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Settings_IsDeleted",
-                table: "Settings",
-                column: "IsDeleted");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UsersGroups_GroupId",
-                table: "UsersGroups",
-                column: "GroupId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UsersGroups_IsDeleted",
-                table: "UsersGroups",
-                column: "IsDeleted");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UsersGroups_UserId",
-                table: "UsersGroups",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Votes_DiscussionId",
-                table: "Votes",
-                column: "DiscussionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Votes_PostId",
-                table: "Votes",
-                column: "PostId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Votes_UserId",
-                table: "Votes",
                 column: "UserId");
         }
 
@@ -853,13 +711,16 @@
                 name: "Blogs");
 
             migrationBuilder.DropTable(
+                name: "CommentVotes");
+
+            migrationBuilder.DropTable(
                 name: "CustomersReviews");
 
             migrationBuilder.DropTable(
-                name: "Jobs");
+                name: "DiscussionVotes");
 
             migrationBuilder.DropTable(
-                name: "MessagesRecipients");
+                name: "Jobs");
 
             migrationBuilder.DropTable(
                 name: "ProfilesPictures");
@@ -868,28 +729,13 @@
                 name: "Projects");
 
             migrationBuilder.DropTable(
-                name: "Settings");
-
-            migrationBuilder.DropTable(
-                name: "Votes");
-
-            migrationBuilder.DropTable(
                 name: "AdvertisementTypes");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Messages");
-
-            migrationBuilder.DropTable(
-                name: "UsersGroups");
-
-            migrationBuilder.DropTable(
-                name: "Posts");
-
-            migrationBuilder.DropTable(
-                name: "Groups");
+                name: "Comments");
 
             migrationBuilder.DropTable(
                 name: "Discussions");

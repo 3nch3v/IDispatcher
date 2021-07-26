@@ -14,24 +14,24 @@
             <a class="tm-gold-text" asp-controller="Jobs" asp-action="AllJobs"><i class="fa fa-arrow-left"></i> Back to the Jobs</a>
         </h3>
     </div>
-    @if (currUserId == Model.UserId)
-    {
-        <div class="row mr-xl-5">
-            <div class="mr-4">
-                <a asp-controller="Jobs" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Edit</a>
-            </div>
-            <div>
-                <a asp-controller="Jobs" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Delete</a>
-            </div>
-        </div>
-    }
 </div>
 
 <div class="container-fluid" style="margin: 30px auto;">
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-8 col-lg-9 col-xl-9">
-            <div class="tm-blog-post">
+            <div class="tm-blog-post p-4 mb-4" style="border-radius:6px ; -webkit-box-shadow: 2px 8px 28px -13px rgba(0,0,0,0.41); box-shadow: 2px 8px 28px -13px rgba(0,0,0,0.41); ">
                 <div>
+                    @if (currUserId == Model.UserId)
+                    {
+                        <div class="d-flex justify-content-end mb-2">
+                            <div class="mr-4">
+                                <a asp-controller="Jobs" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Edit</a>
+                            </div>
+                            <div>
+                                <a asp-controller="Jobs" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Delete</a>
+                            </div>
+                        </div>
+                    }
                     <div>
                         <h3 style="margin-bottom:50px;" class="tm-gold-text">@Model.Title</h3>
                     </div>

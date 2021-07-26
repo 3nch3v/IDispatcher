@@ -17,21 +17,21 @@
                 </a>
             </h3>
         </div>
-        @if (currUserId == Model.UserId)
-        {
-            <div>
-                <a asp-controller="Ads" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Edit</a>
-                <a asp-controller="Ads" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-secondary" style="margin-left: 20px; margin-right: 60px;">Delete</a>
-            </div>
-        }
     </div>
 
     <div class="container-fluid">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-8 col-lg-9 col-xl-9">
-                <div class="ad-info-container">
+                <div class="ad-info-container p-4 mb-4" style="border-radius:6px ; -webkit-box-shadow: 2px 8px 28px -13px rgba(0,0,0,0.41); box-shadow: 2px 8px 28px -13px rgba(0,0,0,0.41); ">
+                    @if (currUserId == Model.UserId)
+                    {
+                        <div class="d-flex justify-content-end">
+                            <a asp-controller="Ads" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-secondary mr-4">Edit</a>
+                            <a asp-controller="Ads" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Delete</a>
+                        </div>
+                    }
                     <div style="margin: 15px 0px;">
-                        <h3 class="tm-gold-text">@Model.Title</h3>
+                        <h1 class="tm-gold-text">@Model.Title</h1>
                     </div>
                     <div>
                         @if (!string.IsNullOrWhiteSpace(Model.PictureUrl))

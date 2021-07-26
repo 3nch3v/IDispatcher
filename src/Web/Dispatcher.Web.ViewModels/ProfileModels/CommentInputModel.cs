@@ -6,17 +6,19 @@
     using Dispatcher.Data.Models.UserInfoModels;
     using Dispatcher.Services.Mapping;
 
+    using static Dispatcher.Common.GlobalConstants.User;
+
     public class CommentInputModel : IMapTo<CustomerReview>
     {
         [Required]
         public string UserId { get; set; }
 
         [Required]
-        [Range(1, 5)]
+        [Range(MinStars, MaxStars)]
         public int StarsCount { get; set; }
 
         [Required]
-        [MaxLength(500)]
+        [StringLength(CommentMaxLenght, MinimumLength = CommentMinLenght)]
         public string Comment { get; set; }
     }
 }

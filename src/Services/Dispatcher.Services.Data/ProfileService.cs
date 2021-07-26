@@ -42,9 +42,9 @@
                     LastName = u.LastName,
                     PhoneNumber = u.PhoneNumber,
                     Education = u.Education,
-                    ComponyName = u.ComponyName,
-                    Interests = u.Interests,
-                    Contacts = u.Contacts,
+                    CompanyName = u.CompanyName,
+                    Interest = u.Interest,
+                    Contact = u.Contact,
                     WebsiteUrl = u.WebsiteUrl,
                     GithubUrl = u.GithubUrl,
                     FacebookUrl = u.FacebookUrl,
@@ -54,12 +54,7 @@
                         {
                             StarsCount = x.StarsCount,
                         }).ToArray(),
-                    ProfilePictures = u.ProfilePictures
-                        .Select(x => new ProfilePicturesDto
-                        {
-                            FilePath = x.FilePath,
-                            CreatedOn = x.CreatedOn,
-                        }).ToArray(),
+                    ProfilePicture = u.ProfilePicture,
                     Advertisements = u.Advertisements
                         .Select(x => new ProfileAdvertisementsDto
                         {
@@ -172,13 +167,14 @@
                 Extension = fileExtension,
             };
 
-            string filePath = $"{ProfilePicturePath}/{profilePicture.Id}{fileExtension}";
+            string filePath = $"{ProfilePicturePath}/{profilePicture.Id}";
+
             string physicalFilePath = $"{pictureDirectory}/{profilePicture.Id}{fileExtension}";
 
             profilePicture.FilePath = filePath;
-            profilePicture.PhysicalFilePath = physicalFilePath;
 
             using var fileStream = new FileStream(physicalFilePath, FileMode.Create);
+
             await input.Picture.CopyToAsync(fileStream);
 
             await this.profilePicturesRepository.AddAsync(profilePicture);
@@ -189,7 +185,6 @@
         {
             var picture = this.profilePicturesRepository.All()
                 .Where(x => x.UserId == id)
-                .OrderByDescending(x => x.CreatedOn)
                 .FirstOrDefault();
 
             if (picture == null)

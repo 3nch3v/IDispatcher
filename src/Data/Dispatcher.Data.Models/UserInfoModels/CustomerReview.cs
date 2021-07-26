@@ -5,13 +5,15 @@
 
     using Dispatcher.Data.Common.Models;
 
+    using static Dispatcher.Common.GlobalConstants.User;
+
     public class CustomerReview : BaseDeletableModel<int>
     {
-        [Range(1, 5)]
+        [Range(MinStars, MaxStars)]
         public int StarsCount { get; set; }
 
         [Required]
-        [StringLength(500, MinimumLength = 3)]
+        [MaxLength(CommentMaxLenght)]
         public string Comment { get; set; }
 
         [Required]
