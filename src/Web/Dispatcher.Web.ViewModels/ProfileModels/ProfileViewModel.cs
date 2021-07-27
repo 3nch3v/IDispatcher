@@ -4,9 +4,12 @@
 
     using Dispatcher.Data.Models;
     using Dispatcher.Data.Models.Dtos;
+    using Dispatcher.Data.Models.UserInfoModels;
     using Dispatcher.Services.Mapping;
 
-    public class ProfileViewModel : IMapFrom<ApplicationUser>, IMapFrom<ProfileDataDto>
+    using static Dispatcher.Common.GlobalConstants.User;
+
+    public class ProfileViewModel : IMapFrom<ApplicationUser>, IMapFrom<ProfileDataDto>, IMapFrom<ProfilePicture>
     {
         public string Id { get; set; }
 
@@ -34,9 +37,9 @@
 
         public string InstagramUrl { get; set; }
 
-        public virtual ICollection<ProfileCustomersReviewsViewModel> CumstomerReviews { get; set; }
+        public string ProfilePicture { get; set; }
 
-        public ICollection<ProfilePicturesCollectionViewModel> ProfilePictures { get; set; }
+        public virtual ICollection<ProfileCustomersReviewsViewModel> CumstomerReviews { get; set; }
 
         public virtual ICollection<ProfileAdvertisementsViewModel> Advertisements { get; set; }
 

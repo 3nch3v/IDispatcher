@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Text.RegularExpressions;
     using System.Threading.Tasks;
 
     using Dispatcher.Data.Common.Repositories;
@@ -12,28 +13,38 @@
     using Dispatcher.Services.Data.Contracts;
     using Dispatcher.Services.Mapping;
 
-    using static Dispatcher.Common.GlobalConstants.Blog;
+    using static Dispatcher.Common.GlobalConstants.Attributes;
 
     public class BlogsService : IBlogService
     {
         private readonly IDeletableEntityRepository<Blog> blogsRepository;
+        private readonly IDeletableEntityRepository<BlogImage> blogImagesRepository;
 
-        public BlogsService(IDeletableEntityRepository<Blog> blogsRepository)
+        public BlogsService(
+            IDeletableEntityRepository<Blog> blogsRepository,
+            IDeletableEntityRepository<BlogImage> blogImagesRepository)
         {
             this.blogsRepository = blogsRepository;
+            this.blogImagesRepository = blogImagesRepository;
         }
 
         public async Task CreateAsync<T>(T input, string userId, string pictureDirectory)
         {
             var blogPostDto = AutoMapperConfig.MapperInstance.Map<BlogPostDto>(input);
-            blogPostDto.PictureDirectory = pictureDirectory;
 
             var post = AutoMapperConfig.MapperInstance.Map<Blog>(input);
             post.UserId = userId;
 
+            if (!string.IsNullOrEmpty(post.VideoLink))
+            {
+                var groups = Regex.Match(post.VideoLink, YouTubeRegexPattern).Groups;
+                var videoId = groups["VideoId"].Value;
+                post.YouTubeVideoId = videoId;
+            }
+
             if (blogPostDto.Picture != null)
             {
-                await this.FileSaverAsync(post, blogPostDto);
+                await this.FileSaverAsync(post, blogPostDto, pictureDirectory);
             }
 
             await this.blogsRepository.AddAsync(post);
@@ -43,17 +54,31 @@
         public async Task UpdateAsync<T>(T input, int id, string pictureDirectory)
         {
             var blogPostDto = AutoMapperConfig.MapperInstance.Map<BlogPostDto>(input);
-            blogPostDto.PictureDirectory = pictureDirectory;
 
             var post = this.blogsRepository.All().FirstOrDefault(p => p.Id == id);
-            post.Title = blogPostDto.Title;
-            post.Body = blogPostDto.Body;
-            post.VideoLink = blogPostDto.VideoLink;
+
+            if (!string.IsNullOrEmpty(blogPostDto.VideoLink) && blogPostDto.VideoLink != post.VideoLink)
+            {
+                var groups = Regex.Match(blogPostDto.VideoLink, YouTubeRegexPattern).Groups;
+                var videoId = groups["VideoId"].Value;
+                post.YouTubeVideoId = videoId;
+            }
+
+            if (blogPostDto.Title != post.Title)
+            {
+                post.Title = blogPostDto.Title;
+            }
+
+            if (blogPostDto.Body != post.Body)
+            {
+                post.Body = blogPostDto.Body;
+            }
+
             post.ModifiedOn = DateTime.UtcNow;
 
             if (blogPostDto.Picture != null)
             {
-                await this.FileSaverAsync(post, blogPostDto);
+                await this.FileSaverAsync(post, blogPostDto, pictureDirectory);
             }
 
             await this.blogsRepository.SaveChangesAsync();
@@ -69,8 +94,11 @@
 
         public IEnumerable<T> GetAllBlogPosts<T>(int page, int pageEntitiesCount)
         {
+
+            var posts1 = this.blogsRepository.All().FirstOrDefault();
+
             var posts = this.blogsRepository
-                .AllAsNoTracking()
+                .All()
                 .OrderByDescending(j => j.CreatedOn)
                 .Skip((page - 1) * pageEntitiesCount)
                 .Take(pageEntitiesCount)
@@ -114,18 +142,23 @@
             return post.UserId;
         }
 
-        private async Task FileSaverAsync(Blog post, BlogPostDto input)
+        private async Task FileSaverAsync(Blog post, BlogPostDto input, string pictureDirectory)
         {
-            string fileName = Guid.NewGuid().ToString();
             string fileExtension = Path.GetExtension(input.Picture.FileName);
-            string physicalFilePath = $"{input.PictureDirectory}/{fileName}{fileExtension}";
 
-            post.FilePath = $"{BlogPicturePath}/{fileName}";
-            post.Extension = fileExtension;
+            var image = new BlogImage
+            {
+                Extension = fileExtension,
+                BlogId = post.Id,
+            };
+
+            string physicalFilePath = $"{pictureDirectory}/{image.Id}{fileExtension}";
 
             using var fileStream = new FileStream(physicalFilePath, FileMode.Create);
-
             await input.Picture.CopyToAsync(fileStream);
+
+            await this.blogImagesRepository.AddAsync(image);
+            await this.blogImagesRepository.SaveChangesAsync();
         }
     }
 }

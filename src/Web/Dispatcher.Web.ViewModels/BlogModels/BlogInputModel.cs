@@ -10,7 +10,7 @@
 
     using static Dispatcher.Common.GlobalConstants.Attributes;
     using static Dispatcher.Common.GlobalConstants.Blog;
-    using static Dispatcher.Common.GlobalConstants.File;
+    using static Dispatcher.Common.GlobalConstants.Data;
 
     public class BlogInputModel : IMapTo<Blog>, IMapTo<BlogPostDto>
     {

@@ -44,6 +44,8 @@
 
         public DbSet<Blog> Blogs { get; set; }
 
+        public DbSet<BlogImage> BlogsImages { get; set; }
+
         public DbSet<Category> Categories { get; set; }
 
         public DbSet<DiscussionVote> DiscussionVotes { get; set; }

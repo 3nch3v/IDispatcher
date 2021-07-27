@@ -6,7 +6,7 @@
     using Dispatcher.Data.Models.JobModels;
     using Dispatcher.Services.Mapping;
 
-    using static Dispatcher.Common.GlobalConstants.File;
+    using static Dispatcher.Common.GlobalConstants.Data;
     using static Dispatcher.Common.GlobalConstants.Job;
 
     public class JobInputModel : IMapTo<Job>

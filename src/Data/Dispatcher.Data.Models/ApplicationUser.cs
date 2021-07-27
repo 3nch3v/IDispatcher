@@ -13,7 +13,7 @@
     using Dispatcher.Data.Models.UserInfoModels;
     using Microsoft.AspNetCore.Identity;
 
-    using static Dispatcher.Common.GlobalConstants.File;
+    using static Dispatcher.Common.GlobalConstants.Data;
     using static Dispatcher.Common.GlobalConstants.User;
 
     public class ApplicationUser : IdentityUser, IAuditInfo, IDeletableEntity

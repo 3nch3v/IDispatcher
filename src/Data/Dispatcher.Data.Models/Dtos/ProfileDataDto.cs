@@ -30,7 +30,7 @@
 
         public string InstagramUrl { get; set; }
 
-        public ProfilePicture ProfilePicture { get; set; }
+        public string ProfilePicture { get; set; }
 
         public virtual ICollection<ProfileCustomersReviewsDto> CumstomerReviews { get; set; }
 

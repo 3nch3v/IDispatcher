@@ -74,9 +74,9 @@
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Edit(EditJobInputModel input, int id)
+        public async Task<IActionResult> Edit(EditJobInputModel input)
         {
-            if (!this.HasPermission(id))
+            if (!this.HasPermission(input.Id))
             {
                 return this.RedirectToAction("Error", "Home");
             }
@@ -91,9 +91,9 @@
                 return this.View(input);
             }
 
-            await this.jobService.UpdateAsync<EditJobInputModel>(input, id);
+            await this.jobService.UpdateAsync<EditJobInputModel>(input, input.Id);
 
-            return this.RedirectToAction(nameof(this.Job), new { id });
+            return this.RedirectToAction(nameof(this.Job), new { input.Id });
         }
 
         [Authorize]

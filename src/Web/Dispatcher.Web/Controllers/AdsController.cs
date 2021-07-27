@@ -108,7 +108,7 @@
             }
 
             await this.adsService.UpdateAsync<AdInputModel>(input, id);
-            return this.RedirectToAction(nameof(this.AllAds));
+            return this.RedirectToAction(nameof(this.Ad), new { id });
         }
 
         [Authorize]

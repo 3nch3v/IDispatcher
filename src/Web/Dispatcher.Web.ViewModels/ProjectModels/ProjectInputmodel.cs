@@ -5,7 +5,7 @@
     using Dispatcher.Data.Models.UserInfoModels;
     using Dispatcher.Services.Mapping;
 
-    using static Dispatcher.Common.GlobalConstants.File;
+    using static Dispatcher.Common.GlobalConstants.Data;
     using static Dispatcher.Common.GlobalConstants.Project;
 
     public class ProjectInputmodel : IMapTo<Project>

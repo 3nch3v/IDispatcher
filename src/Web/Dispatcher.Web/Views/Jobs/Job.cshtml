@@ -47,7 +47,7 @@
                 <hr>
                 <div class="d-flex justify-content-between">
                     <span>@Model.CompanyName</span>
-                    <span><a asp-controller="Profiles" asp-action="Profile" class="tm-gold-text">@Model.Contact</a></span>
+                    <span><a asp-controller="Profiles" asp-action="Profile" asp-route-userId="@Model.UserId" class="tm-gold-text">@Model.Contact</a></span>
                 </div>
                 <div class="d-flex justify-content-between">
                     <span>@Model.Location</span>

@@ -14,7 +14,7 @@
         public string UserId { get; set; }
 
         [Required]
-        [Range(MinStars, MaxStars)]
+        [Range(MinStars, MaxStars, ErrorMessage = InvalidStarsCount)]
         public int StarsCount { get; set; }
 
         [Required]

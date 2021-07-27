@@ -5,7 +5,7 @@
 
     using Dispatcher.Data.Common.Models;
 
-    using static Dispatcher.Common.GlobalConstants.File;
+    using static Dispatcher.Common.GlobalConstants.Data;
 
     public class ProfilePicture : BaseDeletableModel<string>
     {
@@ -13,10 +13,6 @@
         {
             this.Id = Guid.NewGuid().ToString();
         }
-
-        [Required]
-        [MaxLength(FileMaxLenght)]
-        public string FilePath { get; set; }
 
         [Required]
         [MaxLength(ExtensionMaxLenght)]

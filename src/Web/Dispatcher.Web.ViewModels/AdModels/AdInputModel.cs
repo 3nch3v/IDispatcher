@@ -7,10 +7,11 @@
     using Dispatcher.Services.Mapping;
 
     using static Dispatcher.Common.GlobalConstants.Advertisement;
-    using static Dispatcher.Common.GlobalConstants.File;
+    using static Dispatcher.Common.GlobalConstants.Data;
 
     public class AdInputModel : IMapTo<Advertisement>
     {
+        [Range(TypeMinRange, TypeMaxRange, ErrorMessage = InvalidType)]
         public int AdvertisementTypeId { get; set; }
 
         [Required]

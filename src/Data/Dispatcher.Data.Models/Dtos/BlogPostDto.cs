@@ -21,9 +21,6 @@
         [RegularExpression(YouTubeRegexPattern, ErrorMessage = "Please enter valid YouTube embed code!")]
         public string VideoLink { get; set; }
 
-        [MaxLength(2048)]
-        public string PictureDirectory { get; set; }
-
         [MaxFileSize(5 * 1024 * 1024)]
         [FileAllowedExtensions(new[] { ".jpg", ".jpeg", ".png", ".gif", ".bmp" })]
         public IFormFile Picture { get; set; }

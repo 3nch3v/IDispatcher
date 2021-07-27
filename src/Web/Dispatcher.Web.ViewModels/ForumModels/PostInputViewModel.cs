@@ -5,12 +5,14 @@
     using Dispatcher.Data.Models.ForumModels;
     using Dispatcher.Services.Mapping;
 
+    using static Dispatcher.Common.GlobalConstants.Forum;
+
     public class PostInputViewModel : IMapTo<Comment>
     {
         public int DiscussionId { get; set; }
 
         [Required]
-        [StringLength(5000, MinimumLength = 2)]
+        [StringLength(CommentMaxLenght, MinimumLength = CommentMinLenght)]
         public string Content { get; set; }
     }
 }

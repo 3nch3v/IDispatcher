@@ -8,7 +8,9 @@
     using Dispatcher.Services.Mapping;
     using Ganss.XSS;
 
-    public class BlogPostViewModel : IMapFrom<Blog>
+    using static Dispatcher.Common.GlobalConstants.Blog;
+
+    public class BlogPostViewModel : IMapFrom<Blog>, IMapFrom<BlogImage>
     {
         public int Id { get; set; }
 
@@ -20,13 +22,11 @@
 
         public string ClearBody => WebUtility.HtmlDecode(Regex.Replace(new HtmlSanitizer().Sanitize(this.Body), "<[^>]+>", string.Empty));
 
-        public string FilePath { get; set; }
+        public BlogImage BlogImage { get; set; }
 
-        public string Extension { get; set; }
+        public string FullFilePath => this.BlogImage == null ? null : $"{BlogPicturePath}/{this.BlogImage.Id}{this.BlogImage.Extension}";
 
-        public string FullFilePath => $"{this.FilePath}{this.Extension}";
-
-        public string VideoLink { get; set; }
+        public string YouTubeVideoId { get; set; }
 
         public DateTime CreatedOn { get; set; }
 

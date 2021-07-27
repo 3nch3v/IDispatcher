@@ -6,7 +6,7 @@
     using Dispatcher.Data.Common.Models;
 
     using static Dispatcher.Common.GlobalConstants.Advertisement;
-    using static Dispatcher.Common.GlobalConstants.File;
+    using static Dispatcher.Common.GlobalConstants.Data;
 
     public class Advertisement : BaseDeletableModel<int>
     {

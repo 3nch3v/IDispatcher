@@ -4,7 +4,7 @@
 
     using Dispatcher.Data.Common.Models;
 
-    using static Dispatcher.Common.GlobalConstants.File;
+    using static Dispatcher.Common.GlobalConstants.Data;
     using static Dispatcher.Common.GlobalConstants.Job;
 
     public class Job : BaseDeletableModel<int>

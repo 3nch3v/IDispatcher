@@ -7,6 +7,8 @@
     using Dispatcher.Services.Mapping;
     using Ganss.XSS;
 
+    using static Dispatcher.Common.GlobalConstants.Blog;
+
     public class SingleRandomBlogPostModel : IMapFrom<Blog>
     {
         public int Id { get; set; }
@@ -19,11 +21,9 @@
 
         public string ClearBody => WebUtility.HtmlDecode(Regex.Replace(this.SanitizedBody, "<[^>]+>", string.Empty));
 
-        public string FilePath { get; set; }
+        public BlogImage BlogImage { get; set; }
 
-        public string Extension { get; set; }
-
-        public string FullFilePath => $"{this.FilePath}{this.Extension}";
+        public string FullFilePath => this.BlogImage == null ? null : $"{BlogPicturePath}/{this.BlogImage.Id}{this.BlogImage.Extension}";
 
         public bool IsWithPicture { get; set; }
 }

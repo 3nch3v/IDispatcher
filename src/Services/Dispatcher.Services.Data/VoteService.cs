@@ -21,7 +21,7 @@
 
         public async Task VoteAsync(string userId, int discussionId, string voteType)
         {
-            var vote = this.votes.AllAsNoTracking().FirstOrDefault(x => x.DiscussionId == discussionId && x.UserId == userId);
+            var vote = this.votes.All().FirstOrDefault(x => x.DiscussionId == discussionId && x.UserId == userId);
 
             if (vote is null)
             {

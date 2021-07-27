@@ -54,7 +54,7 @@
                         {
                             StarsCount = x.StarsCount,
                         }).ToArray(),
-                    ProfilePicture = u.ProfilePicture,
+                    ProfilePicture = $"{ProfilePicturePath}/{u.ProfilePicture.Id}{u.ProfilePicture.Extension}",
                     Advertisements = u.Advertisements
                         .Select(x => new ProfileAdvertisementsDto
                         {
@@ -167,14 +167,9 @@
                 Extension = fileExtension,
             };
 
-            string filePath = $"{ProfilePicturePath}/{profilePicture.Id}";
-
             string physicalFilePath = $"{pictureDirectory}/{profilePicture.Id}{fileExtension}";
 
-            profilePicture.FilePath = filePath;
-
             using var fileStream = new FileStream(physicalFilePath, FileMode.Create);
-
             await input.Picture.CopyToAsync(fileStream);
 
             await this.profilePicturesRepository.AddAsync(profilePicture);
@@ -183,7 +178,7 @@
 
         public string GetProfilePicturePath(string id)
         {
-            var picture = this.profilePicturesRepository.All()
+            var picture = this.profilePicturesRepository.AllAsNoTracking()
                 .Where(x => x.UserId == id)
                 .FirstOrDefault();
 
@@ -192,7 +187,7 @@
                 return DefaultAvatarPath;
             }
 
-            return picture.FilePath;
+            return $"{ProfilePicturePath}/{picture.Id}{picture.Extension}";
         }
     }
 }

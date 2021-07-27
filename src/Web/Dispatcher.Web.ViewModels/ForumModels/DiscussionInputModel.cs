@@ -10,6 +10,9 @@
 
     public class DiscussionInputModel : IMapTo<Discussion>
     {
+        [Range(TypeMinRange, TypeMaxRange, ErrorMessage = InvalidCategory)]
+        public int CategoryId { get; set; }
+
         [Required]
         [StringLength(TitleMaxLenght, MinimumLength = TitleMinLenght)]
         public string Title { get; set; }
@@ -17,9 +20,6 @@
         [Required]
         [StringLength(DescriptionMAxLenght, MinimumLength = DescriptionMinLenght)]
         public string Description { get; set; }
-
-        [Range(1, 6)]
-        public int CategoryId { get; set; }
 
         public IEnumerable<CategoryDropDownViewModel> Categories { get; set; }
     }

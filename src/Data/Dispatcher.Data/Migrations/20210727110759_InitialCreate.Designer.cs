@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dispatcher.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210726184437_InitialCreate")]
+    [Migration("20210727110759_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -278,6 +278,9 @@ namespace Dispatcher.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("BlogImageId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Body")
                         .IsRequired()
                         .HasMaxLength(10000)
@@ -289,23 +292,11 @@ namespace Dispatcher.Data.Migrations
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Extension")
-                        .HasMaxLength(2048)
-                        .HasColumnType("nvarchar(2048)");
-
-                    b.Property<string>("FilePath")
-                        .HasMaxLength(2048)
-                        .HasColumnType("nvarchar(2048)");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("PhysicalFilePath")
-                        .HasMaxLength(2048)
-                        .HasColumnType("nvarchar(2048)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -320,6 +311,10 @@ namespace Dispatcher.Data.Migrations
                         .HasMaxLength(2048)
                         .HasColumnType("nvarchar(2048)");
 
+                    b.Property<string>("YouTubeVideoId")
+                        .HasMaxLength(2048)
+                        .HasColumnType("nvarchar(2048)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("IsDeleted");
@@ -327,6 +322,40 @@ namespace Dispatcher.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Blogs");
+                });
+
+            modelBuilder.Entity("Dispatcher.Data.Models.BlogModels.BlogImage", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("BlogId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Extension")
+                        .HasMaxLength(2048)
+                        .HasColumnType("nvarchar(2048)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BlogId")
+                        .IsUnique();
+
+                    b.HasIndex("IsDeleted");
+
+                    b.ToTable("BlogsImages");
                 });
 
             modelBuilder.Entity("Dispatcher.Data.Models.ForumModels.Category", b =>
@@ -645,21 +674,11 @@ namespace Dispatcher.Data.Migrations
                         .HasMaxLength(5)
                         .HasColumnType("nvarchar(5)");
 
-                    b.Property<string>("FilePath")
-                        .IsRequired()
-                        .HasMaxLength(2048)
-                        .HasColumnType("nvarchar(2048)");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("PhysicalFilePath")
-                        .IsRequired()
-                        .HasMaxLength(2048)
-                        .HasColumnType("nvarchar(2048)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -858,6 +877,16 @@ namespace Dispatcher.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Dispatcher.Data.Models.BlogModels.BlogImage", b =>
+                {
+                    b.HasOne("Dispatcher.Data.Models.BlogModels.Blog", "Blog")
+                        .WithOne("BlogImage")
+                        .HasForeignKey("Dispatcher.Data.Models.BlogModels.BlogImage", "BlogId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Blog");
                 });
 
             modelBuilder.Entity("Dispatcher.Data.Models.ForumModels.Comment", b =>
@@ -1068,6 +1097,11 @@ namespace Dispatcher.Data.Migrations
                     b.Navigation("Projects");
 
                     b.Navigation("Roles");
+                });
+
+            modelBuilder.Entity("Dispatcher.Data.Models.BlogModels.Blog", b =>
+                {
+                    b.Navigation("BlogImage");
                 });
 
             modelBuilder.Entity("Dispatcher.Data.Models.ForumModels.Category", b =>

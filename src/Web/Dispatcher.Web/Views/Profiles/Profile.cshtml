@@ -3,7 +3,6 @@
 
 @{
     this.ViewBag.Title = "Profile";
-    var path = Model.ProfilePictures.OrderByDescending(x => x.CreatedOn).FirstOrDefault()?.FilePath;
 }
 <div class="container mt-4 mb-4 p-3" style="-webkit-box-shadow: 0px 0px 28px -11px rgba(0,0,0,0.85); box-shadow: 0px 0px 28px -11px rgba(0,0,0,0.85);">
     <div class="main-body">
@@ -12,13 +11,13 @@
                 <div class="card">
                     <div class="card-body" style="-webkit-box-shadow: 0px 0px 28px -15px rgba(0,0,0,0.85); box-shadow: 0px 0px 28px -15px rgba(0,0,0,0.85);">
                         <div class="d-flex flex-column align-items-center text-center">
-                            @if (path != null)
+                            @if (!string.IsNullOrEmpty(Model.ProfilePicture))
                             {
-                                <img src="@path" alt="Admin" class="rounded-circle" width="150" /> 
+                                <img src="@Model.ProfilePicture" alt="Profile Picture" class="rounded-circle" width="150" /> 
                             }
                             else
                             { 
-                                <img src="~/img/3_avatar-512.png" alt="Admin" class="rounded-circle" width="150" />
+                                <img src="~/img/3_avatar-512.png" alt="Profile Picture" class="rounded-circle" width="150" />
                             }
                             <div class="mt-3">
                                 <h4>@Model.FullName</h4>

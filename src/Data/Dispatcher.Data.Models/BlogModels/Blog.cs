@@ -5,7 +5,7 @@
     using Dispatcher.Data.Common.Models;
 
     using static Dispatcher.Common.GlobalConstants.Blog;
-    using static Dispatcher.Common.GlobalConstants.File;
+    using static Dispatcher.Common.GlobalConstants.Data;
 
     public class Blog : BaseDeletableModel<int>
     {
@@ -18,13 +18,14 @@
         public string Body { get; set; }
 
         [MaxLength(UrlMaxLenght)]
-        public string FilePath { get; set; }
-
-        [MaxLength(UrlMaxLenght)]
-        public string Extension { get; set; }
-
-        [MaxLength(UrlMaxLenght)]
         public string VideoLink { get; set; }
+
+        [MaxLength(UrlMaxLenght)]
+        public string YouTubeVideoId { get; set; }
+
+        public string BlogImageId { get; set; }
+
+        public virtual BlogImage BlogImage { get; set; }
 
         [Required]
         public string UserId { get; set; }

@@ -8,6 +8,8 @@
 
         public static class Advertisement
         {
+            public const string InvalidType = "Invalid ad type.";
+
             public const int TitleMaxLength = 100;
 
             public const int TitleMinLength = 3;
@@ -17,13 +19,17 @@
             public const int DescriptionMinLength = 100;
 
             public const int CompensationMaxLenght = 50;
+
+            public const int TypeMinRange = 1;
+
+            public const int TypeMaxRange = 4;
         }
 
         public static class Attributes
         {
-            public const string YouTubeRegexPattern = @"^<iframe width=""[0-9]+"" height=""[0-9]+"" src=""https:\/\/www\.youtube\.[a-z]{2,}\/embed\/[A-z0-9]+"" title=""YouTube video player"" frameborder=""0"" allow=""accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"" allowfullscreen><\/iframe>$";
+            public const string YouTubeRegexPattern = @"^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)(?<VideoId>[\w\-]+)(\S+)?$";
 
-            public const string YouTubeError = "Please enter valid YouTube embed code!";
+            public const string YouTubeError = "Please enter valid YouTube link!";
 
             public static readonly string[] AllowedPictureTypes = { ".jpg", ".jpeg", ".png", ".gif", ".bmp" };
         }
@@ -43,7 +49,7 @@
             public const int CategoryMaxLenght = 50;
         }
 
-        public static class File
+        public static class Data
         {
             public const int UrlMaxLenght = 2048;
 
@@ -52,6 +58,8 @@
             public const int FileMaxLenght = 2048;
 
             public const int FileMaxSize = 5 * 1024 * 1024;
+
+            public const string EmbedVideoPattern = @"<iframe width=""914"" height=""514"" src=""https://www.youtube.com/embed/VideoId"" title=""YouTube video player"" frameborder=""0"" allow=""accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"" allowfullscreen></iframe>";
         }
 
         public static class Forum
@@ -61,6 +69,8 @@
             public const string Dislike = "Dislike";
 
             public const string Unsolved = "Unsolved";
+
+            public const string InvalidCategory = "Invalid category.";
 
             public const int DescriptionMinLenght = 50;
 
@@ -73,6 +83,10 @@
             public const int TitleMinLenght = 3;
 
             public const int TitleMaxLenght = 100;
+
+            public const int TypeMinRange = 1;
+
+            public const int TypeMaxRange = 6;
         }
 
         public static class Job
@@ -149,6 +163,8 @@
             public const string InvalidLoginAttemt = "Invalid login attempt.";
 
             public const string InvalidUsernameOrEmail = "The selected username or email is not available.";
+
+            public const string InvalidStarsCount = "The stars count should be between 1 and 5.";
 
             public const int CommentMinLenght = 3;
 

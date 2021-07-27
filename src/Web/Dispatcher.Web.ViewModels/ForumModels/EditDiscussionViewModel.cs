@@ -1,6 +1,5 @@
 ﻿namespace Dispatcher.Web.ViewModels.ForumModels
 {
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     using Dispatcher.Data.Models.ForumModels;
