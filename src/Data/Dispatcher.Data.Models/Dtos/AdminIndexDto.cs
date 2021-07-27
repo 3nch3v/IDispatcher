@@ -4,10 +4,6 @@
 
     public class AdminIndexDto
     {
-        public IEnumerable<string> SearchDataTypes { get; set; }
-
-        public IEnumerable<string> SearchMethodTypes { get; set; }
-
         public int UsersCount { get; set; }
 
         public int AdsCount { get; set; }
@@ -21,5 +17,10 @@
         public int CommentsCount { get; set; }
 
         public int ReviewsCount { get; set; }
+
+        public IEnumerable<string> SearchDataTypes { get; set; }
+
+        public IEnumerable<string> SearchMethodTypes { get; set; }
+
     }
 }

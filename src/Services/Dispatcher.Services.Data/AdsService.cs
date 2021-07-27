@@ -26,25 +26,43 @@
 
         public async Task CreateAsync<T>(T input, string userId)
         {
-            var newAd = AutoMapperConfig.MapperInstance.Map<Advertisement>(input);
-            newAd.UserId = userId;
+            var ad = AutoMapperConfig.MapperInstance.Map<Advertisement>(input);
+            ad.UserId = userId;
 
-            await this.advertisementRepository.AddAsync(newAd);
+            await this.advertisementRepository.AddAsync(ad);
             await this.advertisementRepository.SaveChangesAsync();
         }
 
         public async Task UpdateAsync<T>(T input, int id)
         {
-            var updatedAd = AutoMapperConfig.MapperInstance.Map<Advertisement>(input);
+            var update = AutoMapperConfig.MapperInstance.Map<Advertisement>(input);
 
             var ad = this.advertisementRepository.All().FirstOrDefault(a => a.Id == id);
 
-            ad.Title = updatedAd.Title;
-            ad.Description = updatedAd.Description;
-            ad.AdvertisementTypeId = updatedAd.AdvertisementTypeId;
-            ad.Title = updatedAd.Title;
-            ad.Compensation = updatedAd.Compensation;
-            ad.PictureUrl = updatedAd.PictureUrl;
+            if (ad.Title != update.Title)
+            {
+                ad.Title = update.Title;
+            }
+
+            if (ad.Description != update.Description)
+            {
+                ad.Description = update.Description;
+            }
+
+            if (ad.AdvertisementTypeId != update.AdvertisementTypeId)
+            {
+                ad.AdvertisementTypeId = update.AdvertisementTypeId;
+            }
+
+            if (ad.Compensation != update.Compensation)
+            {
+                ad.Compensation = update.Compensation;
+            }
+
+            if (ad.PictureUrl != update.PictureUrl)
+            {
+                ad.PictureUrl = update.PictureUrl;
+            }
 
             await this.advertisementRepository.SaveChangesAsync();
         }

@@ -12,16 +12,20 @@
 
     public class VoteService : IVoteService
     {
-        private readonly IRepository<DiscussionVote> votes;
+        private readonly IRepository<DiscussionVote> discussionsVotes;
+        private readonly IRepository<CommentVote> commentsVotes;
 
-        public VoteService(IRepository<DiscussionVote> votes)
+        public VoteService(
+            IRepository<DiscussionVote> discussionsVotes,
+            IRepository<CommentVote> commentsVotes)
         {
-            this.votes = votes;
+            this.discussionsVotes = discussionsVotes;
+            this.commentsVotes = commentsVotes;
         }
 
-        public async Task VoteAsync(string userId, int discussionId, string voteType)
+        public async Task VoteDiscussionAsync(string userId, int discussionId, string voteType)
         {
-            var vote = this.votes.All().FirstOrDefault(x => x.DiscussionId == discussionId && x.UserId == userId);
+            var vote = this.discussionsVotes.All().FirstOrDefault(x => x.DiscussionId == discussionId && x.UserId == userId);
 
             if (vote is null)
             {
@@ -33,7 +37,7 @@
                     Dislike = voteType == Dislike ? 1 : default,
                 };
 
-                await this.votes.AddAsync(vote);
+                await this.discussionsVotes.AddAsync(vote);
             }
             else
             {
@@ -49,14 +53,68 @@
                 }
             }
 
-            await this.votes.SaveChangesAsync();
+            await this.discussionsVotes.SaveChangesAsync();
         }
 
-        public VoteResultsDto GetVoteResults(int discussionId)
+        public async Task VoteCommensAsync(string userId, int commentId, string voteType)
         {
-            var votes = this.votes
+            var vote = this.commentsVotes.All().FirstOrDefault(x => x.CommentId == commentId && x.UserId == userId);
+
+            if (vote is null)
+            {
+                vote = new CommentVote
+                {
+                    CommentId = commentId,
+                    UserId = userId,
+                    Like = voteType == Like ? 1 : default,
+                    Dislike = voteType == Dislike ? 1 : default,
+                };
+
+                await this.commentsVotes.AddAsync(vote);
+            }
+            else
+            {
+                if (vote.Like == 1 && voteType == Dislike)
+                {
+                    vote.Like -= 1;
+                    vote.Dislike += 1;
+                }
+                else if (vote.Dislike == 1 && voteType == Like)
+                {
+                    vote.Like += 1;
+                    vote.Dislike -= 1;
+                }
+            }
+
+            await this.discussionsVotes.SaveChangesAsync();
+        }
+
+        public VoteResultsDto GetDiscussionVotes(int discussionId)
+        {
+            var votes = this.discussionsVotes
                 .AllAsNoTracking()
                 .Where(x => x.DiscussionId == discussionId)
+                .Select(x => new
+                {
+                    Likes = x.Like,
+                    Dislikes = x.Dislike,
+                })
+                .ToList();
+
+            var results = new VoteResultsDto
+            {
+                Likes = votes.Sum(x => x.Likes),
+                Dislikes = votes.Sum(x => x.Dislikes),
+            };
+
+            return results;
+        }
+
+        public VoteResultsDto GetCommentVotes(int commentId)
+        {
+            var votes = this.commentsVotes
+                .AllAsNoTracking()
+                .Where(x => x.CommentId == commentId)
                 .Select(x => new
                 {
                     Likes = x.Like,

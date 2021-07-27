@@ -31,16 +31,39 @@
 
         public async Task UpdateAsync<T>(T input, int id)
         {
-            var updatedJob = AutoMapperConfig.MapperInstance.Map<Job>(input);
+            var update = AutoMapperConfig.MapperInstance.Map<Job>(input);
 
             var job = this.jobRepository.All().FirstOrDefault(j => j.Id == id);
 
-            job.Title = updatedJob.Title;
-            job.JobBody = updatedJob.JobBody;
-            job.CompanyName = updatedJob.CompanyName;
-            job.Location = updatedJob.Location;
-            job.Contact = updatedJob.Contact;
-            job.LogoUrl = updatedJob.LogoUrl;
+            if (job.Title != update.Title)
+            {
+                job.Title = update.Title;
+            }
+
+            if (job.JobBody != update.JobBody)
+            {
+                job.JobBody = update.JobBody;
+            }
+
+            if (job.CompanyName != update.CompanyName)
+            {
+                job.CompanyName = update.CompanyName;
+            }
+
+            if (job.Location != update.Location)
+            {
+                job.Location = update.Location;
+            }
+
+            if (job.Contact != update.Contact)
+            {
+                job.Contact = update.Contact;
+            }
+
+            if (job.LogoUrl != update.LogoUrl)
+            {
+                job.LogoUrl = update.LogoUrl;
+            }
 
             await this.jobRepository.SaveChangesAsync();
         }

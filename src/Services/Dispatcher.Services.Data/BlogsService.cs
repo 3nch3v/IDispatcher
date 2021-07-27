@@ -30,55 +30,55 @@
 
         public async Task CreateAsync<T>(T input, string userId, string pictureDirectory)
         {
-            var blogPostDto = AutoMapperConfig.MapperInstance.Map<BlogPostDto>(input);
+            var blogDto = AutoMapperConfig.MapperInstance.Map<BlogPostDto>(input);
+            var blog = AutoMapperConfig.MapperInstance.Map<Blog>(input);
+            blog.UserId = userId;
 
-            var post = AutoMapperConfig.MapperInstance.Map<Blog>(input);
-            post.UserId = userId;
-
-            if (!string.IsNullOrEmpty(post.VideoLink))
+            if (!string.IsNullOrEmpty(blog.VideoLink))
             {
-                var groups = Regex.Match(post.VideoLink, YouTubeRegexPattern).Groups;
+                var groups = Regex.Match(blog.VideoLink, YouTubeRegexPattern).Groups;
                 var videoId = groups["VideoId"].Value;
-                post.YouTubeVideoId = videoId;
+                blog.YouTubeVideoId = videoId;
             }
 
-            if (blogPostDto.Picture != null)
+            if (blogDto.Picture != null)
             {
-                await this.FileSaverAsync(post, blogPostDto, pictureDirectory);
+                await this.FileSaverAsync(blog, blogDto, pictureDirectory);
             }
 
-            await this.blogsRepository.AddAsync(post);
+            await this.blogsRepository.AddAsync(blog);
             await this.blogsRepository.SaveChangesAsync();
         }
 
         public async Task UpdateAsync<T>(T input, int id, string pictureDirectory)
         {
-            var blogPostDto = AutoMapperConfig.MapperInstance.Map<BlogPostDto>(input);
+            var blogDto = AutoMapperConfig.MapperInstance.Map<BlogPostDto>(input);
 
-            var post = this.blogsRepository.All().FirstOrDefault(p => p.Id == id);
+            var blog = this.blogsRepository.All().FirstOrDefault(p => p.Id == id);
 
-            if (!string.IsNullOrEmpty(blogPostDto.VideoLink) && blogPostDto.VideoLink != post.VideoLink)
+            if (!string.IsNullOrEmpty(blogDto.VideoLink) && blogDto.VideoLink != blog.VideoLink)
             {
-                var groups = Regex.Match(blogPostDto.VideoLink, YouTubeRegexPattern).Groups;
+                var groups = Regex.Match(blogDto.VideoLink, YouTubeRegexPattern).Groups;
                 var videoId = groups["VideoId"].Value;
-                post.YouTubeVideoId = videoId;
+                blog.YouTubeVideoId = videoId;
+                blog.VideoLink = blogDto.VideoLink;
             }
 
-            if (blogPostDto.Title != post.Title)
+            if (blogDto.Title != blog.Title)
             {
-                post.Title = blogPostDto.Title;
+                blog.Title = blogDto.Title;
             }
 
-            if (blogPostDto.Body != post.Body)
+            if (blogDto.Body != blog.Body)
             {
-                post.Body = blogPostDto.Body;
+                blog.Body = blogDto.Body;
             }
 
-            post.ModifiedOn = DateTime.UtcNow;
+            blog.ModifiedOn = DateTime.UtcNow;
 
-            if (blogPostDto.Picture != null)
+            if (blogDto.Picture != null)
             {
-                await this.FileSaverAsync(post, blogPostDto, pictureDirectory);
+                await this.FileSaverAsync(blog, blogDto, pictureDirectory);
             }
 
             await this.blogsRepository.SaveChangesAsync();
@@ -86,18 +86,15 @@
 
         public async Task DeleteAsync(int id)
         {
-            var deletePost = this.blogsRepository.All().FirstOrDefault(p => p.Id == id);
+            var blog = this.blogsRepository.All().FirstOrDefault(p => p.Id == id);
 
-            this.blogsRepository.Delete(deletePost);
+            this.blogsRepository.Delete(blog);
             await this.blogsRepository.SaveChangesAsync();
         }
 
         public IEnumerable<T> GetAllBlogPosts<T>(int page, int pageEntitiesCount)
         {
-
-            var posts1 = this.blogsRepository.All().FirstOrDefault();
-
-            var posts = this.blogsRepository
+            var blog = this.blogsRepository
                 .All()
                 .OrderByDescending(j => j.CreatedOn)
                 .Skip((page - 1) * pageEntitiesCount)
@@ -105,27 +102,27 @@
                 .To<T>()
                 .ToList();
 
-            return posts;
+            return blog;
         }
 
         public T GetById<T>(int id)
         {
-            var post = this.blogsRepository.AllAsNoTracking()
+            var blog = this.blogsRepository.AllAsNoTracking()
                 .Where(b => b.Id == id)
                 .To<T>()
                 .FirstOrDefault();
 
-            return post;
+            return blog;
         }
 
         public T RandomBlogPost<T>()
         {
-            var blogPost = this.blogsRepository.AllAsNoTracking()
+            var blog = this.blogsRepository.AllAsNoTracking()
                 .OrderBy(x => Guid.NewGuid())
                 .To<T>()
                 .FirstOrDefault();
 
-            return blogPost;
+            return blog;
         }
 
         public int BlogPostsCount()
@@ -135,29 +132,55 @@
 
         public string GetCreatorId(int id)
         {
-            var post = this.blogsRepository.AllAsNoTracking()
+            var blog = this.blogsRepository.AllAsNoTracking()
                 .Where(b => b.Id == id)
                 .FirstOrDefault();
 
-            return post.UserId;
+            return blog.UserId;
         }
 
-        private async Task FileSaverAsync(Blog post, BlogPostDto input, string pictureDirectory)
+        private async Task FileSaverAsync(Blog blog, BlogPostDto input, string pictureDirectory)
         {
-            string fileExtension = Path.GetExtension(input.Picture.FileName);
+            bool isInitialInstance = false;
 
-            var image = new BlogImage
+            var picture = this.blogImagesRepository.All().FirstOrDefault(i => i.BlogId == blog.Id);
+
+            string physicalFilePath = $"{pictureDirectory}/";
+
+            if (picture != null)
             {
-                Extension = fileExtension,
-                BlogId = post.Id,
-            };
+                physicalFilePath += $"{picture.Id}{picture.Extension}";
 
-            string physicalFilePath = $"{pictureDirectory}/{image.Id}{fileExtension}";
+                FileInfo file = new FileInfo(physicalFilePath);
+
+                if (file.Exists)
+                {
+                    file.Delete();
+                }
+            }
+            else if (picture == null)
+            {
+                picture = new BlogImage
+                {
+                    BlogId = blog.Id,
+                };
+
+                isInitialInstance = true;
+            }
+
+            string newExtension = Path.GetExtension(input.Picture.FileName);
+            picture.Extension = newExtension;
+
+            physicalFilePath = $"{pictureDirectory}/{picture.Id}{newExtension}";
 
             using var fileStream = new FileStream(physicalFilePath, FileMode.Create);
             await input.Picture.CopyToAsync(fileStream);
 
-            await this.blogImagesRepository.AddAsync(image);
+            if (isInitialInstance)
+            {
+                await this.blogImagesRepository.AddAsync(picture);
+            }
+
             await this.blogImagesRepository.SaveChangesAsync();
         }
     }

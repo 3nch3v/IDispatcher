@@ -36,13 +36,28 @@
 
         public async Task UpdateAsync<T>(T input, int id)
         {
-            var updatedProject = AutoMapperConfig.MapperInstance.Map<Project>(input);
+            var update = AutoMapperConfig.MapperInstance.Map<Project>(input);
             var project = this.projectRepository.All().FirstOrDefault(p => p.Id == id);
 
-            project.Name = updatedProject.Name;
-            project.Description = updatedProject.Description;
-            project.Url = updatedProject.Url;
-            project.UserRole = updatedProject.UserRole;
+            if (project.Name != update.Name)
+            {
+                project.Name = update.Name;
+            }
+
+            if (project.Description != update.Description)
+            {
+                project.Description = update.Description;
+            }
+
+            if (project.Url != update.Url)
+            {
+                project.Url = update.Url;
+            }
+
+            if (project.UserRole != update.UserRole)
+            {
+                project.UserRole = update.UserRole;
+            }
 
             await this.projectRepository.SaveChangesAsync();
         }

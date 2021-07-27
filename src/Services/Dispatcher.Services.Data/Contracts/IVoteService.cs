@@ -6,8 +6,12 @@
 
     public interface IVoteService
     {
-        Task VoteAsync(string userId, int discussionId, string voteType);
+        Task VoteDiscussionAsync(string userId, int discussionId, string voteType);
 
-        VoteResultsDto GetVoteResults(int discussionId);
+        Task VoteCommensAsync(string userId, int commentId, string voteType);
+
+        VoteResultsDto GetDiscussionVotes(int discussionId);
+
+        VoteResultsDto GetCommentVotes(int commentId);
     }
 }

@@ -36,13 +36,24 @@
 
         public async Task UpdateAsync<T>(T input, int id)
         {
-            var updatedDiscussion = AutoMapperConfig.MapperInstance.Map<Discussion>(input);
+            var update = AutoMapperConfig.MapperInstance.Map<Discussion>(input);
 
             var discussion = this.forumRepository.All().FirstOrDefault(d => d.Id == id);
 
-            discussion.Title = updatedDiscussion.Title;
-            discussion.Description = updatedDiscussion.Description;
-            discussion.CategoryId = updatedDiscussion.CategoryId;
+            if (discussion.Title != update.Title)
+            {
+                discussion.Title = update.Title;
+            }
+
+            if (discussion.Description != update.Description)
+            {
+                discussion.Description = update.Description;
+            }
+
+            if (discussion.CategoryId != update.CategoryId)
+            {
+                discussion.CategoryId = update.CategoryId;
+            }
 
             await this.forumRepository.SaveChangesAsync();
         }
@@ -67,20 +78,19 @@
         {
             if (categoty == "All")
             {
-                return this.forumRepository.AllAsNoTracking().Count();
+                return this.forumRepository.AllAsNoTracking()
+                    .Count();
             }
             else if (categoty == Unsolved)
             {
                 return this.forumRepository.AllAsNoTracking()
-                             .Where(x => x.IsSolved == false)
-                             .Count();
+                    .Where(x => x.IsSolved == false)
+                    .Count();
             }
-            else
-            {
-                return this.forumRepository.AllAsNoTracking()
-                             .Where(x => x.Category.Name == categoty)
-                             .Count();
-            }
+
+            return this.forumRepository.AllAsNoTracking()
+                .Where(x => x.Category.Name == categoty)
+                .Count();
         }
 
         public T GetById<T>(int id)

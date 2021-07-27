@@ -4,8 +4,8 @@
 
     public class AdminRequestDataDto
     {
-        public IEnumerable<SearchDataDto> Data { get; set; }
-
         public string DataType { get; set; }
+
+        public IEnumerable<SearchDataDto> Data { get; set; }
     }
 }

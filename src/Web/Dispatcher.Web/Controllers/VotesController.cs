@@ -29,14 +29,27 @@
         public async Task<ActionResult<VoteResultsModel>> Post(VoteInputModel input)
         {
             var userId = this.userManager.GetUserId(this.User);
-            await this.voteServices.VoteAsync(userId, input.DiscussionId,  input.VoteType);
-            var votesDto = this.voteServices.GetVoteResults(input.DiscussionId);
 
-            return new VoteResultsModel
+            var result = new VoteResultsModel();
+
+            if (input.DiscussionId != default)
             {
-                Likes = votesDto.Likes,
-                Dislikes = votesDto.Dislikes,
-            };
+                await this.voteServices.VoteDiscussionAsync(userId, input.DiscussionId, input.VoteType);
+                var votesDto = this.voteServices.GetDiscussionVotes(input.DiscussionId);
+
+                result.Likes = votesDto.Likes;
+                result.Dislikes = votesDto.Dislikes;
+            }
+            else if (input.CommentId != default)
+            {
+                await this.voteServices.VoteCommensAsync(userId, input.CommentId, input.VoteType);
+                var votesDto = this.voteServices.GetCommentVotes(input.CommentId);
+
+                result.Likes = votesDto.Likes;
+                result.Dislikes = votesDto.Dislikes;
+            }
+
+            return result;
         }
     }
 }

@@ -54,7 +54,7 @@
                         {
                             StarsCount = x.StarsCount,
                         }).ToArray(),
-                    ProfilePicture = $"{ProfilePicturePath}/{u.ProfilePicture.Id}{u.ProfilePicture.Extension}",
+                    ProfilePicture = u.ProfilePicture.Id == null ? null : $"{ProfilePicturePath}/{u.ProfilePicture.Id}{u.ProfilePicture.Extension}",
                     Advertisements = u.Advertisements
                         .Select(x => new ProfileAdvertisementsDto
                         {
@@ -159,20 +159,47 @@
 
         public async Task SavePictureAsync(ProfilePictureInputModel input, string pictureDirectory)
         {
-            string fileExtension = Path.GetExtension(input.Picture.FileName);
+            bool isInitialInstance = false;
 
-            ProfilePicture profilePicture = new()
+            var picture = this.profilePicturesRepository.All().FirstOrDefault(u => u.UserId == input.UserId);
+
+            string physicalFilePath = $"{pictureDirectory}/";
+
+            if (picture != null)
             {
-                UserId = input.UserId,
-                Extension = fileExtension,
-            };
+                physicalFilePath += $"{picture.Id}{picture.Extension}";
 
-            string physicalFilePath = $"{pictureDirectory}/{profilePicture.Id}{fileExtension}";
+                FileInfo file = new FileInfo(physicalFilePath);
+
+                if (file.Exists)
+                {
+                    file.Delete();
+                }
+            }
+            else if (picture == null)
+            {
+                picture = new ProfilePicture
+                {
+                    UserId = input.UserId,
+                };
+
+                isInitialInstance = true;
+            }
+
+            string newFileExtension = Path.GetExtension(input.Picture.FileName);
+
+            picture.Extension = newFileExtension;
+
+            physicalFilePath = $"{pictureDirectory}/{picture.Id}{newFileExtension}";
 
             using var fileStream = new FileStream(physicalFilePath, FileMode.Create);
             await input.Picture.CopyToAsync(fileStream);
 
-            await this.profilePicturesRepository.AddAsync(profilePicture);
+            if (isInitialInstance)
+            {
+                await this.profilePicturesRepository.AddAsync(picture);
+            }
+
             await this.profilePicturesRepository.SaveChangesAsync();
         }
 

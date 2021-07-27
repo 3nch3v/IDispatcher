@@ -7,6 +7,7 @@
 @{
     this.ViewBag.Title = "Forum Discussions";
     string currUserId = this.userManager.GetUserId(this.User);
+    int currRowId = 1;
 }
 
 <nav class="navbar navbar-light bg-transparent justify-content-between">
@@ -106,14 +107,53 @@
                                         <img src="@post.ProfilePicture" class="mr-3 rounded-circle" width="50" alt="User" />
                                     </a>
                                     <div class="media-body">
-                                        <p class="text-secondary">@Html.Raw(post.SanitizedContent)</p>
+                                        <div>
+                                            <p class="text-secondary">@Html.Raw(post.SanitizedContent)</p>
+                                        </div>
+                                        @*<div class="d-flex flex-row justify-content-between">
+            <span>@post.CreatedOn.ToString("g")</span>
+            <a asp-controller="Profiles" asp-action="Profile" asp-route-userId="@Model.UserId" class="tm-gold-text">
+                @post.UserUsername
+            </a>
+        </div>*@
+                                    <div class="d-flex flex-row justify-content-between">
+                                        <div>@post.CreatedOn.ToString("g")</div>
+                                        <div class="text-muted small text-center align-self-center">
 
-                                        <div class="d-flex flex-row justify-content-between">
-                                            <span>@post.CreatedOn.ToString("g")</span>
+
+                                            <form id="commentVotesForm" method="post"></form>
+
+                                            <div class="text-muted small text-center align-self-center">
+                                                <div id="click" class="d-none d-sm-inline-block">
+
+                                                    <a href="#a" onclick="likeComment(@post.Id, @currRowId)">
+                                                        <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+                                                    </a>
+
+                                                </div>
+
+                                                <span id="likesCount_@(currRowId)">@post.Likes</span>
+
+                                                <div id="click" class="d-none d-sm-inline-block">
+
+                                                    <a href="#a" onclick="dislikeComment(@post.Id, @currRowId)">
+                                                        <i class="fa fa-thumbs-down" aria-hidden="true"></i>
+                                                    </a>
+
+                                                </div>
+
+                                                <span id="dislikesCount_@(currRowId)">@post.Dislikes</span>
+                                            </div>
+
+                                            <text hidden>@(currRowId++)</text>
+                                        </div>
+
+                                        <div>
                                             <a asp-controller="Profiles" asp-action="Profile" asp-route-userId="@Model.UserId" class="tm-gold-text">
                                                 @post.UserUsername
                                             </a>
                                         </div>
+                                    </div>
                                     </div>
 
                                     @if (currUserId == post.UserId)
@@ -146,4 +186,5 @@
 
 @section Scripts {
     <script src="~/js/vote-single.js"></script>
+    <script src="~/js/comment-vote.js"></script>
 }
