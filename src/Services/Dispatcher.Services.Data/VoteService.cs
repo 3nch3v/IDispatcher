@@ -25,7 +25,9 @@
 
         public async Task VoteDiscussionAsync(string userId, int discussionId, string voteType)
         {
-            var vote = this.discussionsVotes.All().FirstOrDefault(x => x.DiscussionId == discussionId && x.UserId == userId);
+            var vote = this.discussionsVotes.All()
+                .FirstOrDefault(x => x.DiscussionId == discussionId
+                                        && x.UserId == userId);
 
             if (vote is null)
             {
@@ -58,7 +60,9 @@
 
         public async Task VoteCommensAsync(string userId, int commentId, string voteType)
         {
-            var vote = this.commentsVotes.All().FirstOrDefault(x => x.CommentId == commentId && x.UserId == userId);
+            var vote = this.commentsVotes.All()
+                .FirstOrDefault(x => x.CommentId == commentId
+                                     && x.UserId == userId);
 
             if (vote is null)
             {

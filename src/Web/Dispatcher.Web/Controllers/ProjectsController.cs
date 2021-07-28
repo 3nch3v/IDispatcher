@@ -52,7 +52,7 @@
         {
             if (!this.HasPermission(id))
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.Unauthorized();
             }
 
             var project = this.projectServices.GetById<EditProjectInputModul>(id);
@@ -66,7 +66,7 @@
         {
             if (!this.HasPermission(id))
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.Unauthorized();
             }
 
             if (!this.ModelState.IsValid)
@@ -86,7 +86,7 @@
         {
             if (!this.HasPermission(id))
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.Unauthorized();
             }
 
             await this.projectServices.DeleteAsync(id);
@@ -104,8 +104,8 @@
         private bool HasPermission(int dataId)
         {
             var hasPermission = this.permissionsValidator.HasPermission(
-              this.projectServices.GetCreatorId(dataId),
-              this.userManager.GetUserId(this.User));
+                this.projectServices.GetCreatorId(dataId),
+                this.userManager.GetUserId(this.User));
 
             return hasPermission.Result;
         }

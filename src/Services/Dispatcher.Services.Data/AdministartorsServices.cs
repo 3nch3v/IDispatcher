@@ -71,6 +71,7 @@
         public async Task DeleteUserAsync(string id)
         {
             var user = this.usersRepository.All().FirstOrDefault(u => u.Id == id);
+
             this.DeleteUsersData(id);
 
             this.usersRepository.Delete(user);

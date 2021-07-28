@@ -1,12 +1,14 @@
 ﻿namespace Dispatcher.Web.ViewModels.ForumModels
 {
     using System;
+    using System.Linq;
 
+    using AutoMapper;
     using Dispatcher.Data.Models.ForumModels;
     using Dispatcher.Services.Mapping;
     using Ganss.XSS;
 
-    public class SinglePostViewModel : IMapFrom<Comment>, IMapTo<Comment>
+    public class SinglePostViewModel : IMapFrom<Comment>, IMapTo<Comment>, IHaveCustomMappings
     {
         public int Id { get; set; }
 
@@ -25,5 +27,16 @@
         public int Dislikes { get; set; }
 
         public DateTime CreatedOn { get; set; }
+
+        public void CreateMappings(IProfileExpression configuration)
+        {
+            configuration.CreateMap<Comment, SinglePostViewModel>()
+               .ForMember(
+                   x => x.Likes,
+                   opts => opts.MapFrom(src => src.Votes.Sum(x => x.Like)))
+               .ForMember(
+                   x => x.Dislikes,
+                   opts => opts.MapFrom(src => src.Votes.Sum(x => x.Dislike)));
+        }
     }
 }

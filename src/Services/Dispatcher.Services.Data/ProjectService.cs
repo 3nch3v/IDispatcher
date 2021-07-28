@@ -20,6 +20,7 @@
         public async Task CreateAsync<T>(T input, string id)
         {
             var project = AutoMapperConfig.MapperInstance.Map<Project>(input);
+
             project.UserId = id;
 
             await this.projectRepository.AddAsync(project);
@@ -37,6 +38,7 @@
         public async Task UpdateAsync<T>(T input, int id)
         {
             var update = AutoMapperConfig.MapperInstance.Map<Project>(input);
+
             var project = this.projectRepository.All().FirstOrDefault(p => p.Id == id);
 
             if (project.Name != update.Name)

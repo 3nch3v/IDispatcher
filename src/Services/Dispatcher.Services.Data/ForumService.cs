@@ -28,6 +28,7 @@
         public async Task CreateAsync<T>(T input, string id)
         {
             var discussion = AutoMapperConfig.MapperInstance.Map<Discussion>(input);
+
             discussion.UserId = id;
 
             await this.forumRepository.AddAsync(discussion);
@@ -71,6 +72,7 @@
             var discussion = this.forumRepository.All().FirstOrDefault(d => d.Id == id);
 
             discussion.IsSolved = true;
+
             await this.forumRepository.SaveChangesAsync();
         }
 

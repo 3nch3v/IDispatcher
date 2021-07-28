@@ -23,6 +23,7 @@
         public async Task CreateAsync<T>(T input, string id)
         {
             var job = AutoMapperConfig.MapperInstance.Map<Job>(input);
+
             job.UserId = id;
 
             await this.jobRepository.AddAsync(job);
@@ -114,7 +115,10 @@
 
         public IEnumerable<T> SearchResults<T>(int page, int pageEntitiesCount, string keyWords)
         {
-            string[] searchingKeyWords = keyWords.ToLower().Split(' ', StringSplitOptions.RemoveEmptyEntries).ToArray();
+            string[] searchingKeyWords = keyWords
+                .ToLower()
+                .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                .ToArray();
 
             var query = this.jobRepository.AllAsNoTracking().AsQueryable();
 

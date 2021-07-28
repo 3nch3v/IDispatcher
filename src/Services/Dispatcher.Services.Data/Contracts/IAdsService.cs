@@ -8,7 +8,7 @@
 
         int SearchCount();
 
-        IEnumerable<T> SearchResults<T>(int page, int pageEntitiesCount, string searchParams);
+        IEnumerable<T> SearchResult<T>(int page, int pageEntitiesCount, string searchParams);
 
         IEnumerable<T> GetAllAds<T>(int page, int pageEntitiesCount);
 

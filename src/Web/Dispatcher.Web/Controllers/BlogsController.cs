@@ -58,10 +58,12 @@
             }
 
             string pictureDirectory = $"{this.environment.WebRootPath}{BlogPicturePath}";
+
             var userId = this.userManager.GetUserId(this.User);
+
             await this.blogServie.CreateAsync<BlogInputModel>(input, userId, pictureDirectory);
 
-            return this.RedirectToAction(nameof(this.AllPosts));
+            return this.RedirectToAction(nameof(this.All));
         }
 
         [Authorize]
@@ -69,10 +71,11 @@
         {
             if (!this.HasPermission(id))
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.Unauthorized();
             }
 
             var editPost = this.blogServie.GetById<EditBlogPostInputmodel>(id);
+
             return this.View(editPost);
         }
 
@@ -82,7 +85,7 @@
         {
             if (!this.HasPermission(id))
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.Unauthorized();
             }
 
             if (!this.stringValidator.IsStringValidDecoded(input.Body, BodyMinLength))
@@ -93,10 +96,12 @@
             if (!this.ModelState.IsValid)
             {
                 var editPost = this.blogServie.GetById<EditBlogPostInputmodel>(id);
+
                 return this.View(editPost);
             }
 
             string pictureDirectory = $"{this.environment.WebRootPath}{BlogPicturePath}";
+
             await this.blogServie.UpdateAsync<EditBlogPostInputmodel>(input, id, pictureDirectory);
 
             return this.RedirectToAction(nameof(this.Post), new { id });
@@ -107,20 +112,22 @@
         {
             if (!this.HasPermission(id))
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.Unauthorized();
             }
 
             await this.blogServie.DeleteAsync(id);
-            return this.RedirectToAction(nameof(this.AllPosts));
+
+            return this.RedirectToAction(nameof(this.All));
         }
 
         public IActionResult Post(int id)
         {
             var post = this.blogServie.GetById<BlogPostViewModel>(id);
+
             return this.View(post);
         }
 
-        public IActionResult AllPosts(int page = DefaultPageNumber)
+        public IActionResult All(int page = DefaultPageNumber)
         {
             var posts = new AllBlogPostsViewModel()
             {
@@ -135,8 +142,8 @@
         private bool HasPermission(int dataId)
         {
             var hasPermission = this.permissionsValidator.HasPermission(
-              this.blogServie.GetCreatorId(dataId),
-              this.userManager.GetUserId(this.User));
+                this.blogServie.GetCreatorId(dataId),
+                this.userManager.GetUserId(this.User));
 
             return hasPermission.Result;
         }

@@ -54,9 +54,10 @@
             }
 
             var userId = this.userManager.GetUserId(this.User);
+
             await this.jobService.CreateAsync(input, userId);
 
-            return this.RedirectToAction(nameof(this.AllJobs));
+            return this.RedirectToAction(nameof(this.All));
         }
 
         [Authorize]
@@ -64,7 +65,7 @@
         {
             if (!this.HasPermission(id))
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.Unauthorized();
             }
 
             var job = this.jobService.GetById<EditJobInputModel>(id);
@@ -78,7 +79,7 @@
         {
             if (!this.HasPermission(input.Id))
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.Unauthorized();
             }
 
             if (!this.stringValidator.IsStringValidDecoded(input.JobBody, BodyMinLength))
@@ -101,15 +102,15 @@
         {
             if (!this.HasPermission(id))
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.Unauthorized();
             }
 
             await this.jobService.DeleteAsync(id);
 
-            return this.RedirectToAction(nameof(this.AllJobs));
+            return this.RedirectToAction(nameof(this.All));
         }
 
-        public IActionResult AllJobs(int page = DefaultPageNumber)
+        public IActionResult All(int page = DefaultPageNumber)
         {
             var jobs = new AllJobsViewModel
             {
@@ -126,7 +127,7 @@
         {
             if (string.IsNullOrWhiteSpace(keyWords))
             {
-                return this.RedirectToAction(nameof(this.AllJobs));
+                return this.RedirectToAction(nameof(this.All));
             }
 
             this.TempData["keyWords"] = keyWords;
@@ -151,8 +152,8 @@
         private bool HasPermission(int dataId)
         {
             var hasPermission = this.permissionsValidator.HasPermission(
-              this.jobService.GetCreatorId(dataId),
-              this.userManager.GetUserId(this.User));
+                this.jobService.GetCreatorId(dataId),
+                this.userManager.GetUserId(this.User));
 
             return hasPermission.Result;
         }

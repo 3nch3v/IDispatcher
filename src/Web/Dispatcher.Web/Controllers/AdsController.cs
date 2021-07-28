@@ -36,13 +36,12 @@
         [Authorize]
         public IActionResult Create()
         {
-            var adTypes = this.adsService.GetAllAdTypes<AdTypesViewModel>();
-            var adInputModel = new AdInputModel
+            var input = new AdInputModel
             {
-                AdTypes = adTypes,
+                AdTypes = this.adsService.GetAllAdTypes<AdTypesViewModel>(),
             };
 
-            return this.View(adInputModel);
+            return this.View(input);
         }
 
         [HttpPost]
@@ -56,19 +55,19 @@
 
             if (!this.ModelState.IsValid)
             {
-                var adTypes = this.adsService.GetAllAdTypes<AdTypesViewModel>();
-                var adInputModel = new AdInputModel
+                var invalidInput = new AdInputModel
                 {
-                    AdTypes = adTypes,
+                    AdTypes = this.adsService.GetAllAdTypes<AdTypesViewModel>(),
                 };
 
-                return this.View(adInputModel);
+                return this.View(invalidInput);
             }
 
-            var user = await this.userManager.GetUserAsync(this.User);
-            await this.adsService.CreateAsync<AdInputModel>(input, user.Id);
+            var userId = this.userManager.GetUserId(this.User);
 
-            return this.RedirectToAction(nameof(this.AllAds));
+            await this.adsService.CreateAsync<AdInputModel>(input, userId);
+
+            return this.RedirectToAction(nameof(this.All));
         }
 
         [Authorize]
@@ -76,10 +75,11 @@
         {
             if (!this.HasPermission(id))
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.Unauthorized();
             }
 
             var ad = this.adsService.GetById<EditAdViewModel>(id);
+
             ad.AdTypes = this.adsService.GetAllAdTypes<AdTypesViewModel>();
 
             return this.View(ad);
@@ -91,7 +91,7 @@
         {
             if (!this.HasPermission(id))
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.Unauthorized();
             }
 
             if (!this.stringValidator.IsStringValidDecoded(input.Description, DescriptionMinLength))
@@ -102,12 +102,14 @@
             if (!this.ModelState.IsValid)
             {
                 var ad = this.adsService.GetById<EditAdViewModel>(id);
+
                 ad.AdTypes = this.adsService.GetAllAdTypes<AdTypesViewModel>();
 
                 return this.View(ad);
             }
 
             await this.adsService.UpdateAsync<AdInputModel>(input, id);
+
             return this.RedirectToAction(nameof(this.Ad), new { id });
         }
 
@@ -116,20 +118,22 @@
         {
             if (!this.HasPermission(id))
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.Unauthorized();
             }
 
             await this.adsService.DeleteAsync(id);
-            return this.RedirectToAction(nameof(this.AllAds));
+
+            return this.RedirectToAction(nameof(this.All));
         }
 
         public IActionResult Ad(int id)
         {
             var ad = this.adsService.GetById<AdViewModel>(id);
+
             return this.View(ad);
         }
 
-        public IActionResult AllAds(int page = DefaultPageNumber)
+        public IActionResult All(int page = DefaultPageNumber)
         {
             var ads = new AllAdsViewModel
             {
@@ -145,14 +149,14 @@
         {
             if (string.IsNullOrWhiteSpace(keyWords))
             {
-                return this.RedirectToAction(nameof(this.AllAds));
+                return this.RedirectToAction(nameof(this.All));
             }
 
             this.TempData["KeyWords"] = keyWords;
 
             var ads = new AllAdsViewModel
             {
-                Ads = this.adsService.SearchResults<AdViewModel>(page, AdsCount, this.TempData["KeyWords"].ToString()),
+                Ads = this.adsService.SearchResult<AdViewModel>(page, AdsCount, this.TempData["KeyWords"].ToString()),
                 AdsCount = this.adsService.SearchCount(),
                 Page = page,
             };
@@ -163,8 +167,8 @@
         private bool HasPermission(int dataId)
         {
             var hasPermission = this.permissionsValidator.HasPermission(
-              this.adsService.GetCreatorId(dataId),
-              this.userManager.GetUserId(this.User));
+                this.adsService.GetCreatorId(dataId),
+                this.userManager.GetUserId(this.User));
 
             return hasPermission.Result;
         }

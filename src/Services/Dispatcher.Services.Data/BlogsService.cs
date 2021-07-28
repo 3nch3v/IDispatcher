@@ -19,31 +19,38 @@
     {
         private readonly IDeletableEntityRepository<Blog> blogsRepository;
         private readonly IDeletableEntityRepository<BlogImage> blogImagesRepository;
+        private readonly IFilesService filesService;
 
         public BlogsService(
             IDeletableEntityRepository<Blog> blogsRepository,
-            IDeletableEntityRepository<BlogImage> blogImagesRepository)
+            IDeletableEntityRepository<BlogImage> blogImagesRepository,
+            IFilesService filesService)
         {
             this.blogsRepository = blogsRepository;
             this.blogImagesRepository = blogImagesRepository;
+            this.filesService = filesService;
         }
 
         public async Task CreateAsync<T>(T input, string userId, string pictureDirectory)
         {
             var blogDto = AutoMapperConfig.MapperInstance.Map<BlogPostDto>(input);
             var blog = AutoMapperConfig.MapperInstance.Map<Blog>(input);
+
             blog.UserId = userId;
 
             if (!string.IsNullOrEmpty(blog.VideoLink))
             {
                 var groups = Regex.Match(blog.VideoLink, YouTubeRegexPattern).Groups;
                 var videoId = groups["VideoId"].Value;
+
                 blog.YouTubeVideoId = videoId;
             }
 
             if (blogDto.Picture != null)
             {
-                await this.FileSaverAsync(blog, blogDto, pictureDirectory);
+                var image = await this.CreateImageAsync(blog, blogDto, pictureDirectory);
+
+                blog.BlogImage = image;
             }
 
             await this.blogsRepository.AddAsync(blog);
@@ -56,14 +63,6 @@
 
             var blog = this.blogsRepository.All().FirstOrDefault(p => p.Id == id);
 
-            if (!string.IsNullOrEmpty(blogDto.VideoLink) && blogDto.VideoLink != blog.VideoLink)
-            {
-                var groups = Regex.Match(blogDto.VideoLink, YouTubeRegexPattern).Groups;
-                var videoId = groups["VideoId"].Value;
-                blog.YouTubeVideoId = videoId;
-                blog.VideoLink = blogDto.VideoLink;
-            }
-
             if (blogDto.Title != blog.Title)
             {
                 blog.Title = blogDto.Title;
@@ -74,11 +73,25 @@
                 blog.Body = blogDto.Body;
             }
 
-            blog.ModifiedOn = DateTime.UtcNow;
+            if (!string.IsNullOrEmpty(blogDto.VideoLink) && blogDto.VideoLink != blog.VideoLink)
+            {
+                var groups = Regex.Match(blogDto.VideoLink, YouTubeRegexPattern).Groups;
+                var videoId = groups["VideoId"].Value;
+
+                blog.YouTubeVideoId = videoId;
+                blog.VideoLink = blogDto.VideoLink;
+            }
+            else
+            {
+                blog.YouTubeVideoId = default;
+                blog.VideoLink = default;
+            }
 
             if (blogDto.Picture != null)
             {
-                await this.FileSaverAsync(blog, blogDto, pictureDirectory);
+                var image = await this.CreateImageAsync(blog, blogDto, pictureDirectory);
+
+                blog.BlogImage = image;
             }
 
             await this.blogsRepository.SaveChangesAsync();
@@ -139,49 +152,26 @@
             return blog.UserId;
         }
 
-        private async Task FileSaverAsync(Blog blog, BlogPostDto input, string pictureDirectory)
+        private async Task<BlogImage> CreateImageAsync(Blog blog, BlogPostDto input, string pictureDirectory)
         {
-            bool isInitialInstance = false;
-
             var picture = this.blogImagesRepository.All().FirstOrDefault(i => i.BlogId == blog.Id);
 
-            string physicalFilePath = $"{pictureDirectory}/";
+            string pictureExtension = Path.GetExtension(input.Picture.FileName);
 
             if (picture != null)
             {
-                physicalFilePath += $"{picture.Id}{picture.Extension}";
-
-                FileInfo file = new FileInfo(physicalFilePath);
-
-                if (file.Exists)
-                {
-                    file.Delete();
-                }
+                this.filesService.DeleteFile(pictureDirectory, picture.Id, picture.Extension);
             }
-            else if (picture == null)
+            else
             {
-                picture = new BlogImage
-                {
-                    BlogId = blog.Id,
-                };
-
-                isInitialInstance = true;
+                picture = new BlogImage();
             }
 
-            string newExtension = Path.GetExtension(input.Picture.FileName);
-            picture.Extension = newExtension;
+            picture.Extension = pictureExtension;
 
-            physicalFilePath = $"{pictureDirectory}/{picture.Id}{newExtension}";
+            await this.filesService.SaveFileAsync(input.Picture, pictureDirectory, picture.Id, pictureExtension);
 
-            using var fileStream = new FileStream(physicalFilePath, FileMode.Create);
-            await input.Picture.CopyToAsync(fileStream);
-
-            if (isInitialInstance)
-            {
-                await this.blogImagesRepository.AddAsync(picture);
-            }
-
-            await this.blogImagesRepository.SaveChangesAsync();
+            return picture;
         }
     }
 }

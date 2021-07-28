@@ -11,7 +11,7 @@
 <div style="max-width: 1200px; ">
     <div class="navbar-brand">
         <h3 class="tm-gold-text">
-            <a class="tm-gold-text" asp-controller="Blogs" asp-action="AllPosts">
+            <a class="tm-gold-text" asp-controller="Blogs" asp-action="All">
                 <i class="fa fa-arrow-left"></i> Back to Blog Posts
             </a>
         </h3>
@@ -44,7 +44,7 @@
                     else if (!string.IsNullOrWhiteSpace(Model.FullFilePath))
                     {
                         <div>
-                            <img src="@Model.FullFilePath" class="card-img-top" alt="@Model.Title" style="max-width: 500px; float: left; margin-right: 30px;">
+                            <img src="@Model.FullFilePath" class="card-img-top" alt="@Model.Title" style="max-width: 350px; float: left; margin-right: 30px;">
                         </div>
                     }
 

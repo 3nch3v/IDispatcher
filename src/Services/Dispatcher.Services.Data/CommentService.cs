@@ -20,6 +20,7 @@
         public async Task CreateAsync<T>(T input, string userId)
         {
             var comment = AutoMapperConfig.MapperInstance.Map<Comment>(input);
+
             comment.UserId = userId;
 
             await this.commentsRepository.AddAsync(comment);

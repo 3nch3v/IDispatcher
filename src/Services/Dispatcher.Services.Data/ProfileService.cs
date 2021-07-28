@@ -20,15 +20,18 @@
         private readonly IDeletableEntityRepository<ApplicationUser> usersRepository;
         private readonly IDeletableEntityRepository<CustomerReview> commentsRepository;
         private readonly IDeletableEntityRepository<ProfilePicture> profilePicturesRepository;
+        private readonly IFilesService filesService;
 
         public ProfileService(
             IDeletableEntityRepository<ApplicationUser> usersRepository,
             IDeletableEntityRepository<CustomerReview> commentsRepository,
-            IDeletableEntityRepository<ProfilePicture> profilePicturesRepository)
+            IDeletableEntityRepository<ProfilePicture> profilePicturesRepository,
+            IFilesService filesService)
         {
             this.usersRepository = usersRepository;
             this.commentsRepository = commentsRepository;
             this.profilePicturesRepository = profilePicturesRepository;
+            this.filesService = filesService;
         }
 
         public ProfileDataDto GetUserById(string id)
@@ -108,6 +111,7 @@
         public async Task CommentAsync<T>(string appraiserId, T input)
         {
             var comment = AutoMapperConfig.MapperInstance.Map<CustomerReview>(input);
+
             comment.AppraiserId = appraiserId;
 
             await this.commentsRepository.AddAsync(comment);
@@ -163,18 +167,11 @@
 
             var picture = this.profilePicturesRepository.All().FirstOrDefault(u => u.UserId == input.UserId);
 
-            string physicalFilePath = $"{pictureDirectory}/";
+            string pictureExtension = Path.GetExtension(input.Picture.FileName);
 
             if (picture != null)
             {
-                physicalFilePath += $"{picture.Id}{picture.Extension}";
-
-                FileInfo file = new FileInfo(physicalFilePath);
-
-                if (file.Exists)
-                {
-                    file.Delete();
-                }
+                this.filesService.DeleteFile(pictureDirectory, picture.Id, picture.Extension);
             }
             else if (picture == null)
             {
@@ -186,14 +183,9 @@
                 isInitialInstance = true;
             }
 
-            string newFileExtension = Path.GetExtension(input.Picture.FileName);
+            picture.Extension = pictureExtension;
 
-            picture.Extension = newFileExtension;
-
-            physicalFilePath = $"{pictureDirectory}/{picture.Id}{newFileExtension}";
-
-            using var fileStream = new FileStream(physicalFilePath, FileMode.Create);
-            await input.Picture.CopyToAsync(fileStream);
+            await this.filesService.SaveFileAsync(input.Picture, pictureDirectory, picture.Id, pictureExtension);
 
             if (isInitialInstance)
             {
@@ -205,7 +197,8 @@
 
         public string GetProfilePicturePath(string id)
         {
-            var picture = this.profilePicturesRepository.AllAsNoTracking()
+            var picture = this.profilePicturesRepository
+                .AllAsNoTracking()
                 .Where(x => x.UserId == id)
                 .FirstOrDefault();
 

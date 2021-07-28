@@ -30,6 +30,7 @@
             }
 
             var userDataDto = this.profileService.GetUserById(userId);
+
             var userProfile = AutoMapperConfig.MapperInstance.Map<ProfileViewModel>(userDataDto);
 
             return this.View(userProfile);
@@ -42,10 +43,11 @@
 
             if (userId != loggedInUserId)
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.Unauthorized();
             }
 
             var dataManagerDto = this.profileService.GetUserData(userId);
+
             var dataManager = AutoMapperConfig.MapperInstance.Map<DataManagerViewModel>(dataManagerDto);
 
             return this.View(dataManager);

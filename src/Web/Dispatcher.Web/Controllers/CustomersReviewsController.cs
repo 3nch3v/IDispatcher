@@ -22,7 +22,7 @@
             this.userManager = userManager;
         }
 
-        public IActionResult AllCustomersReviews(string id)
+        public IActionResult All(string id)
         {
             var comments = new AllCommentsViewModel
             {
@@ -38,7 +38,7 @@
         {
             if (!this.ModelState.IsValid)
             {
-                return this.RedirectToAction(nameof(this.AllCustomersReviews), new { id = userId });
+                return this.RedirectToAction(nameof(this.All), new { id = userId });
             }
 
             var loggedInUserId = this.userManager.GetUserId(this.User);
@@ -49,7 +49,7 @@
                 await this.profileServices.CommentAsync<CommentInputModel>(loggedInUserId, input);
             }
 
-            return this.RedirectToAction(nameof(this.AllCustomersReviews), new { id = userId });
+            return this.RedirectToAction(nameof(this.All), new { id = userId });
         }
     }
 }

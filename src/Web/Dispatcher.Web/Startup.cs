@@ -83,6 +83,7 @@
             services.AddTransient<ICommentService, CommentService>();
             services.AddTransient<IAdministartorsServices, AdministartorsServices>();
             services.AddTransient<IPermissionsValidatorService, PermissionsValidatorService>();
+            services.AddTransient<IFilesService, FilesService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

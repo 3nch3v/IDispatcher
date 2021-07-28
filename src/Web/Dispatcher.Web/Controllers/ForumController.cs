@@ -71,9 +71,10 @@
             }
 
             var userId = this.userManager.GetUserId(this.User);
+
             await this.forumService.CreateAsync<DiscussionInputModel>(input, userId);
 
-            return this.RedirectToAction(nameof(this.ForumDiscussions));
+            return this.RedirectToAction(nameof(this.All));
         }
 
         [Authorize]
@@ -81,10 +82,11 @@
         {
             if (!this.HasPermission(id))
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.Unauthorized();
             }
 
             var discussion = this.forumService.GetById<EditDiscussionViewModel>(id);
+
             discussion.Categories = this.forumService.GetCategories<CategoryDropDownViewModel>();
 
             return this.View(discussion);
@@ -96,7 +98,7 @@
         {
             if (!this.HasPermission(id))
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.Unauthorized();
             }
 
             if (!this.stringValidator.IsStringValidDecoded(input.Description, DescriptionMinLenght))
@@ -107,13 +109,17 @@
             if (!this.ModelState.IsValid)
             {
                 var discussion = this.forumService.GetById<EditDiscussionViewModel>(id);
+
                 var categories = this.forumService.GetCategories<CategoryDropDownViewModel>();
+
                 discussion.Categories = categories;
+
                 return this.View(discussion);
             }
 
             await this.forumService.UpdateAsync<DiscussionInputModel>(input, id);
-            return this.RedirectToAction(nameof(this.ForumDiscussion), new { id });
+
+            return this.RedirectToAction(nameof(this.Discussion), new { id });
         }
 
         [Authorize]
@@ -121,23 +127,25 @@
         {
             if (!this.HasPermission(id))
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.Unauthorized();
             }
 
             await this.forumService.DeleteAsync(id);
-            return this.RedirectToAction(nameof(this.ForumDiscussions));
+
+            return this.RedirectToAction(nameof(this.All));
         }
 
-        public IActionResult ForumDiscussion(int id)
+        public IActionResult Discussion(int id)
         {
             var discussion = this.forumService.GetById<SingleForumDiscussionsViewModel>(id);
+
             discussion.ProfilePicture = this.profileService.GetProfilePicturePath(discussion.UserId);
             discussion.Posts.ToList().ForEach(x => x.ProfilePicture = this.profileService.GetProfilePicturePath(x.UserId));
 
             return this.View(discussion);
         }
 
-        public IActionResult ForumDiscussions(string category = "All", int page = DefaultPageNumber)
+        public IActionResult All(string category = "All", int page = DefaultPageNumber)
         {
             this.TempData["Category"] = category;
 
@@ -159,12 +167,12 @@
         {
             if (!this.HasPermission(id))
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.Unauthorized();
             }
 
             await this.forumService.SetDiscussionToSolvedAsync(id);
 
-            return this.RedirectToAction(nameof(this.ForumDiscussion), new { id });
+            return this.RedirectToAction(nameof(this.Discussion), new { id });
         }
 
         [Authorize]
@@ -173,39 +181,40 @@
             if (this.ModelState.IsValid)
             {
                 var userId = this.userManager.GetUserId(this.User);
+
                 await this.commentService.CreateAsync<PostInputViewModel>(input, userId);
             }
 
-            return this.RedirectToAction(nameof(this.ForumDiscussion), new { id = input.DiscussionId });
+            return this.RedirectToAction(nameof(this.Discussion), new { id = input.DiscussionId });
         }
 
         [Authorize]
         public async Task<IActionResult> DeleteComment(int id, int discussionId)
         {
             var hasPermission = this.permissionsValidator.HasPermission(
-              this.commentService.GetCreatorId(id),
-              this.userManager.GetUserId(this.User));
+                this.commentService.GetCreatorId(id),
+                this.userManager.GetUserId(this.User));
 
             if (!hasPermission.Result)
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.Unauthorized();
             }
 
             await this.commentService.DeleteAsync(id);
 
             if (discussionId == default)
             {
-                return this.RedirectToAction(nameof(this.ForumDiscussions));
+                return this.RedirectToAction(nameof(this.All));
             }
 
-            return this.RedirectToAction(nameof(this.ForumDiscussion), new { id = discussionId });
+            return this.RedirectToAction(nameof(this.Discussion), new { id = discussionId });
         }
 
         private bool HasPermission(int dataId)
         {
             var hasPermission = this.permissionsValidator.HasPermission(
-              this.forumService.GetCreatorId(dataId),
-              this.userManager.GetUserId(this.User));
+                this.forumService.GetCreatorId(dataId),
+                this.userManager.GetUserId(this.User));
 
             return hasPermission.Result;
         }

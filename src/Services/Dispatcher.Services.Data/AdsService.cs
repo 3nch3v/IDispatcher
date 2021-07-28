@@ -118,18 +118,21 @@
             return randomAds;
         }
 
-        public IEnumerable<T> SearchResults<T>(int page, int pageEntitiesCount, string keyWords)
+        public IEnumerable<T> SearchResult<T>(int page, int pageEntitiesCount, string keyWords)
         {
-            string[] searchingKeyWords = keyWords.ToLower().Split(' ', StringSplitOptions.RemoveEmptyEntries).ToArray();
+            string[] searchingKeyWords = keyWords.
+                ToLower()
+                .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                .ToArray();
 
             var query = this.advertisementRepository.AllAsNoTracking().AsQueryable();
 
             foreach (var word in searchingKeyWords)
             {
                 query = query.Where(a => a.Title.ToLower().Contains(word)
-                || a.Description.ToLower().Contains(word)
-                || searchingKeyWords.Contains(a.AdvertisementType.Type)
-                || a.Compensation.Contains(word));
+                                 || a.Description.ToLower().Contains(word)
+                                 || searchingKeyWords.Contains(a.AdvertisementType.Type)
+                                 || a.Compensation.Contains(word));
             }
 
             this.searchResultCount = query.Count();

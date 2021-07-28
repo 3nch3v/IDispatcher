@@ -121,7 +121,7 @@
                             </p>
                             <br>
                             <p class="profile-info">
-                                <a asp-controller="CustomersReviews" asp-action="AllCustomersReviews" asp-route-id="@Model.Id">
+                                <a asp-controller="CustomersReviews" asp-action="All" asp-route-id="@Model.Id">
                                     @Model.CumstomerReviews.Count comments
                                 </a>
                             </p>  
@@ -268,7 +268,7 @@
                                     @foreach (var discussion in Model.Discussions)
                                     {
                                         <p class="discussion-title">
-                                            <a asp-controller="Forum" asp-action="ForumDiscussion" asp-route-id="@discussion.Id">@discussion.Title</a>
+                                            <a asp-controller="Forum" asp-action="Discussion" asp-route-id="@discussion.Id">@discussion.Title</a>
                                         </p>
                                         <hr>
                                     }

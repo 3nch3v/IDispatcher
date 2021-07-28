@@ -4,9 +4,9 @@
 
     switch (this.ViewData["Location"] as string)
     {
-        case "Blogs": controller = "Blogs"; action = "AllPosts"; break;
-        case "Ads": controller = "Ads"; action = "AllAds"; break;
-        case "Jobs": controller = "Jobs"; action = "AllJobs"; break;
+        case "Blogs": controller = "Blogs"; action = "All"; break;
+        case "Ads": controller = "Ads"; action = "All"; break;
+        case "Jobs": controller = "Jobs"; action = "All"; break;
         case "SearchAd": controller = "Ads"; action = "Search"; break;
         case "SearchJob": controller = "Jobs"; action = "Search"; break;
         default: controller = "Home"; action = "Error"; break;
