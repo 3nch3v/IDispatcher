@@ -9,16 +9,17 @@
 
     using Dispatcher.Data.Common.Repositories;
     using Dispatcher.Data.Models;
+    using Dispatcher.Services.Messaging;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
-    using Microsoft.AspNetCore.Identity.UI.Services;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
     using Microsoft.AspNetCore.WebUtilities;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
 
+    using static Dispatcher.Common.GlobalConstants.EmailConfirm;
     using static Dispatcher.Common.GlobalConstants.User;
 
     [AllowAnonymous]
@@ -109,7 +110,9 @@
                         values: new { area = "Identity", userId = user.Id, code, returnUrl },
                         protocol: this.Request.Scheme);
 
-                    await this.emailSender.SendEmailAsync(this.Input.Email, "Confirm your email", $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    string callback = HtmlEncoder.Default.Encode(callbackUrl);
+
+                    await this.emailSender.SendEmailAsync(FromEmail, From, this.Input.Email, Subject, string.Format(EmailContent, callback));
 
                     if (this.userManager.Options.SignIn.RequireConfirmedAccount)
                     {

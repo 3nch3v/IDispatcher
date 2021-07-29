@@ -151,7 +151,7 @@
             {
                 string pictureDirectory = $"{this.environment.WebRootPath}{ProfilePicturePath}";
 
-                await this.profileServices.SavePictureAsync(
+                await this.profileServices.SetProfilePictureAsync(
                     new ProfilePictureInputModel
                     {
                         UserId = user.Id,

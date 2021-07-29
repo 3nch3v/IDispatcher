@@ -144,9 +144,6 @@
                 return this.RedirectToAction("Error", "Home");
             }
 
-            discussion.ProfilePicture = this.profileService.GetProfilePicturePath(discussion.UserId);
-            discussion.Posts.ToList().ForEach(x => x.ProfilePicture = this.profileService.GetProfilePicturePath(x.UserId));
-
             return this.View(discussion);
         }
 
@@ -160,9 +157,6 @@
                 ForumDiscussionsCount = this.forumService.GetDiscussionsCount(category),
                 Page = page,
             };
-
-            forumDiscussions.AllForumDiscussions.ToList()
-                .ForEach(x => x.ProfilePicture = this.profileService.GetProfilePicturePath(x.UserId));
 
             return this.View(forumDiscussions);
         }

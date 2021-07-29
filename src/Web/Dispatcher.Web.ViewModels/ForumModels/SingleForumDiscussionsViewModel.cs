@@ -5,11 +5,15 @@
     using System.Linq;
 
     using AutoMapper;
+    using Dispatcher.Data.Models;
     using Dispatcher.Data.Models.ForumModels;
+    using Dispatcher.Data.Models.UserInfoModels;
     using Dispatcher.Services.Mapping;
     using Ganss.XSS;
 
-    public class SingleForumDiscussionsViewModel : IMapFrom<Discussion>, IHaveCustomMappings
+    using static Dispatcher.Common.GlobalConstants.User;
+
+    public class SingleForumDiscussionsViewModel : IMapFrom<Discussion>, IMapFrom<ApplicationUser>, IHaveCustomMappings
     {
         public int Id { get; set; }
 
@@ -27,11 +31,11 @@
 
         public string CategoryName { get; set; }
 
-        public string UserId { get; set; }
-
         public string UserUsername { get; set; }
 
-        public string ProfilePicture { get; set; }
+        public ProfilePicture UserProfilePicture { get; set; }
+
+        public string ProfilePicture => this.UserProfilePicture == null ? null : $"{ProfilePicturePath}/{this.UserProfilePicture.Id}{this.UserProfilePicture.Extension}";
 
         public DateTime CreatedOn { get; set; }
 

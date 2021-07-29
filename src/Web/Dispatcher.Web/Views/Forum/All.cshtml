@@ -31,7 +31,14 @@
                         <div class="p-2 p-sm-3">
                             <div class="media forum-item">
                                 <a asp-controller="Forum" asp-action="Discussion" asp-route-id="@forumDiscussion.Id">
-                                    <img src="@forumDiscussion.ProfilePicture" class="mr-3 rounded-circle" width="50" alt="User" />
+                                    @if (string.IsNullOrWhiteSpace(forumDiscussion.ProfilePicture))
+                                    {
+                                        <img src="~/img/3_avatar-512.png" class="mr-3 rounded-circle" width="50" alt="User" />
+                                    }
+                                    else
+                                    {
+                                        <img src="@forumDiscussion.ProfilePicture" class="mr-3 rounded-circle" width="50" alt="User" />
+                                    }
                                 </a>
                                 <div class="media-body">
                                     <h5 class="mt-2">
@@ -59,21 +66,43 @@
 
                                             <form id="votesForm" method="post"></form>
 
-                                            <div class="text-muted small text-center align-self-center">
-                                                <span id="click" class="d-none d-sm-inline-block">
-                                                    <a href="#a" onclick="like(@forumDiscussion.Id, @currRowId)">
-                                                        <i class="fa fa-thumbs-o-up fa-lg"></i>
-                                                    </a>
-                                                </span>
-                                                <span class="mr-2" id="likesCount_@(currRowId)" style="font-size: 14px; font-weight: bold;">@forumDiscussion.Likes</span>
+                                            @if (this.User.Identity.IsAuthenticated)
+                                            {
+                                                <div class="text-muted small text-center align-self-center">
+                                                    <span id="click" class="d-none d-sm-inline-block" title="I like it!">
+                                                        <a href="#a" onclick="like(@forumDiscussion.Id, @currRowId)">
+                                                            <i class="fa fa-thumbs-o-up fa-lg"></i>
+                                                        </a>
+                                                    </span>
+                                                    <span class="mr-2" id="likesCount_@(currRowId)" style="font-size: 14px; font-weight: bold;">@forumDiscussion.Likes</span>
 
-                                                <span id="click" class="d-none d-sm-inline-block">
-                                                    <a href="#a" onclick="dislike(@forumDiscussion.Id, @currRowId)">
-                                                        <i class="fa fa-thumbs-o-down fa-lg"></i>
-                                                    </a>
-                                                </span>
-                                                <span id="dislikesCount_@(currRowId)" style="font-size: 14px; font-weight:bold;">@forumDiscussion.Dislikes</span>
-                                            </div>
+                                                    <span id="click" class="d-none d-sm-inline-block" title="Do not like.">
+                                                        <a href="#a" onclick="dislike(@forumDiscussion.Id, @currRowId)">
+                                                            <i class="fa fa-thumbs-o-down fa-lg"></i>
+                                                        </a>
+                                                    </span>
+                                                    <span id="dislikesCount_@(currRowId)" style="font-size: 14px; font-weight:bold;">@forumDiscussion.Dislikes</span>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="text-muted small text-center align-self-center">
+                                                    <span id="click" class="d-none d-sm-inline-block" title="I like it!">
+                                                        <a asp-area="Identity" asp-page="/Account/Login">
+                                                            <i class="fa fa-thumbs-o-up fa-lg"></i>
+                                                        </a>
+                                                    </span>
+                                                    <span class="mr-2" style="font-size: 14px; font-weight: bold;">@forumDiscussion.Likes</span>
+
+                                                    <span id="click" class="d-none d-sm-inline-block" title="Do not like.">
+                                                        <a asp-area="Identity" asp-page="/Account/Login">
+                                                            <i class="fa fa-thumbs-o-down fa-lg"></i>
+                                                        </a>
+                                                    </span>
+                                                    <span style="font-size: 14px; font-weight:bold;">@forumDiscussion.Dislikes</span>
+                                                </div>
+                                            }
+
                                             <text hidden>@(currRowId++)</text>
                                         </div>
                                         <span>

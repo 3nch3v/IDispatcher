@@ -1,11 +1,8 @@
-﻿@using Dispatcher.Data.Models
-@using Microsoft.AspNetCore.Identity;
-@model Dispatcher.Web.ViewModels.JobModels.SigleJobViewModel
-@inject UserManager<ApplicationUser> userManager
+﻿@model Dispatcher.Web.ViewModels.JobModels.SigleJobViewModel
 
 @{
     this.ViewBag.Title = this.Model.Title;
-    string currUserId = this.userManager.GetUserId(this.User);
+    var currUsername = this.User.Identity.Name;
 }
 
 <div class="col-12">
@@ -23,7 +20,7 @@
             <div class="col-xs-12 col-sm-12 col-md-8 col-lg-9 col-xl-9">
                 <div class="tm-blog-post shadow p-3 mb-5 bg-white rounded pl-4 pr-4 pt-2">
                     <div>
-                        @if (currUserId == Model.UserId)
+                        @if (currUsername == Model.UserUsername)
                         {
                             <div class="d-flex justify-content-end mb-2">
                                 <div class="mr-4">
@@ -48,7 +45,7 @@
                     <hr>
                     <div class="d-flex justify-content-between mb-2">
                         <span>@Model.CompanyName</span>
-                        <span><a asp-controller="Profiles" asp-action="Profile" asp-route-userId="@Model.UserId" class="tm-gold-text">@Model.Contact</a></span>
+                        <span><a asp-controller="Profiles" asp-action="Profile" asp-route-username="@Model.UserUsername" class="tm-gold-text">@Model.Contact</a></span>
                     </div>
                     <div class="d-flex justify-content-between pb-4">
                         <span>@Model.Location</span>

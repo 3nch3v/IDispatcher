@@ -1,12 +1,9 @@
 ﻿@using Dispatcher.Web.ViewModels.ForumModels
-@using Dispatcher.Data.Models
-@using Microsoft.AspNetCore.Identity;
 @model SingleForumDiscussionsViewModel
-@inject UserManager<ApplicationUser> userManager
 
 @{
     this.ViewBag.Title = "Forum Discussions";
-    string currUserId = this.userManager.GetUserId(this.User);
+    string currUsername = this.User.Identity.Name;
     int currRowId = 1;
 }
 
@@ -30,8 +27,15 @@
                     <div class="card mb-4 col-md-12 offser-md-6 rounded" style="-webkit-box-shadow: -8px -3px 15px 5px rgba(0,0,0,0.18); box-shadow: -8px -3px 15px 5px rgba(0,0,0,0.18);">
                         <div class="card-body p-2 p-sm-3">
                             <div class="media forum-item">
-                                <a asp-controller="Profiles" asp-action="Profile" asp-route-userId="@Model.UserId">
-                                    <img src="@Model.ProfilePicture" class="mr-3 rounded-circle" width="50" alt="User" />
+                                <a asp-controller="Profiles" asp-action="Profile" asp-route-username="@Model.UserUsername">
+                                    @if (string.IsNullOrWhiteSpace(Model.ProfilePicture))
+                                    {
+                                        <img src="~/img/3_avatar-512.png" class="mr-3 rounded-circle" width="50" alt="User" />
+                                    }
+                                    else
+                                    {
+                                        <img src="@Model.ProfilePicture" class="mr-3 rounded-circle" width="50" alt="User" />
+                                    }
                                 </a>
                                 <div class="media-body">
                                     <div class="d-flex flex-row justify-content-between mx-md-2">
@@ -53,31 +57,52 @@
                                         </div>
 
                                         <form id="votesForm" method="post"></form>
+                                        @if (this.User.Identity.IsAuthenticated)
+                                        {
+                                            <div class="ml-auto mr-auto">
+                                                <div id="click" class="d-none d-sm-inline-block" title="I like it!">
+                                                    <a href="#a" onclick="like(@Model.Id)">
+                                                        <i class="fa fa-thumbs-o-up fa-lg"></i>
+                                                    </a>
+                                                </div>
+                                                <span class="mr-2" id="likesCount" style="font-size: 14px; font-weight: bold;">@Model.Likes</span>
 
-                                        <div class="ml-auto mr-auto">
-                                            <div id="click" class="d-none d-sm-inline-block">
-                                                <a href="#a" onclick="like(@Model.Id)">
-                                                    <i class="fa fa-thumbs-o-up fa-lg"></i>
-                                                </a>
+                                                <span id="click" class="d-none d-sm-inline-block" title="Do not like.">
+                                                    <a href="#a" onclick="dislike(@Model.Id)">
+                                                        <i class="fa fa-thumbs-o-down fa-lg"></i>
+                                                    </a>
+                                                </span>
+                                                <span id="dislikesCount" style="font-size: 14px; font-weight: bold;">@Model.Dislikes</span>
                                             </div>
-                                            <span class="mr-2" id="likesCount" style="font-size: 14px; font-weight: bold;">@Model.Likes</span>
+                                        }
+                                        else
+                                        {
+                                            <div class="text-muted small text-center align-self-center">
+                                                <span id="click" class="d-none d-sm-inline-block" title="I like it!">
+                                                    <a asp-area="Identity" asp-page="/Account/Login">
+                                                        <i class="fa fa-thumbs-o-up fa-lg"></i>
+                                                    </a>
+                                                </span>
+                                                <span class="mr-2" style="font-size: 14px; font-weight: bold;">@Model.Likes</span>
 
-                                            <span id="click" class="d-none d-sm-inline-block">
-                                                <a href="#a" onclick="dislike(@Model.Id)">
-                                                    <i class="fa fa-thumbs-o-down fa-lg"></i>
-                                                </a>
-                                            </span>
-                                            <span id="dislikesCount" style="font-size: 14px; font-weight: bold;">@Model.Dislikes</span>
-                                        </div>
+                                                <span id="click" class="d-none d-sm-inline-block" title="Do not like.">
+                                                    <a asp-area="Identity" asp-page="/Account/Login">
+                                                        <i class="fa fa-thumbs-o-down fa-lg"></i>
+                                                    </a>
+                                                </span>
+                                                <span style="font-size: 14px; font-weight:bold;">@Model.Dislikes</span>
+                                            </div>
+                                        }
+
                                         <div>
-                                            <a asp-controller="Profiles" asp-action="Profile" asp-route-userId="@Model.UserId" class="tm-gold-text">
+                                            <a asp-controller="Profiles" asp-action="Profile" asp-route-username="@Model.UserUsername" class="tm-gold-text">
                                                 @Model.UserUsername
                                             </a>
                                         </div>
                                     </div>
                                 </div>
 
-                                @if (currUserId == Model.UserId)
+                                @if (currUsername == Model.UserUsername)
                                 {
                                     <div>
                                         <div>
@@ -106,8 +131,15 @@
                         <div class="card mb-3 col-md-12 offser-md-6 rounded" style="-webkit-box-shadow: -8px -3px 15px 5px rgba(0,0,0,0.18); box-shadow: -8px -3px 15px 5px rgba(0,0,0,0.18);">
                             <div class="card-body p-2 p-sm-3">
                                 <div class="media forum-item">
-                                    <a asp-controller="Profiles" asp-action="Profile" asp-route-userId="@post.UserId">
-                                        <img src="@post.ProfilePicture" class="mr-3 rounded-circle" width="50" alt="User" />
+                                    <a asp-controller="Profiles" asp-action="Profile" asp-route-username="@post.UserUsername">
+                                        @if (string.IsNullOrWhiteSpace(post.ProfilePicture))
+                                        {
+                                            <img src="~/img/3_avatar-512.png" class="mr-3 rounded-circle" width="50" alt="User" />
+                                        }
+                                        else
+                                        {
+                                            <img src="@post.ProfilePicture" class="mr-3 rounded-circle" width="50" alt="User" />
+                                        }
                                     </a>
                                     <div class="media-body">
                                         <div>
@@ -115,33 +147,56 @@
                                         </div>
                                         <div class="d-flex flex-row justify-content-between">
                                             <div>@post.CreatedOn.ToString("g")</div>
-                                            <div class="ml-auto mr-auto">
-                                                <div class="text-muted text-center align-self-center">
-                                                    <div id="click" class="d-none d-sm-inline-block">
-                                                        <a href="#a" onclick="likeComment(@post.Id, @currRowId)">
+                                            @if (this.User.Identity.IsAuthenticated)
+                                            {<div class="ml-auto mr-auto">
+                                                    <div class="text-muted text-center align-self-center">
+                                                        <div id="click" class="d-none d-sm-inline-block" title="I like it!">
+                                                            <a href="#a" onclick="likeComment(@post.Id, @currRowId)">
+                                                                <i class="fa fa-thumbs-o-up fa-lg"></i>
+                                                            </a>
+                                                        </div>
+                                                        <span id="likesCount_@(currRowId)" class="mr-2" style="font-size: 14px; font-weight: bold;">@post.Likes</span>
+
+                                                        <div id="click" class="d-none d-sm-inline-block" title="Do not like.">
+                                                            <a href="#a" onclick="dislikeComment(@post.Id, @currRowId)">
+                                                                <i class="fa fa-thumbs-o-down fa-lg"></i>
+                                                            </a>
+                                                        </div>
+                                                        <span id="dislikesCount_@(currRowId)" style="font-size: 14px; font-weight: bold;">@post.Dislikes</span>
+                                                    </div>
+                                                    <text hidden>@(currRowId++)</text>
+                                                </div>
+
+                                            }
+                                            else
+                                            {
+                                                <div class="text-muted small text-center align-self-center">
+                                                    <span id="click" class="d-none d-sm-inline-block" title="I like it!">
+                                                        <a asp-area="Identity" asp-page="/Account/Login">
                                                             <i class="fa fa-thumbs-o-up fa-lg"></i>
                                                         </a>
-                                                    </div>
-                                                    <span id="likesCount_@(currRowId)" class="mr-2" style="font-size: 14px; font-weight: bold;">@post.Likes</span>
+                                                    </span>
+                                                    <span class="mr-2" style="font-size: 14px; font-weight: bold;">@post.Likes</span>
 
-                                                    <div id="click" class="d-none d-sm-inline-block">
-                                                        <a href="#a" onclick="dislikeComment(@post.Id, @currRowId)">
+                                                    <span id="click" class="d-none d-sm-inline-block" title="Do not like.">
+                                                        <a asp-area="Identity" asp-page="/Account/Login">
                                                             <i class="fa fa-thumbs-o-down fa-lg"></i>
                                                         </a>
-                                                    </div>
-                                                    <span id="dislikesCount_@(currRowId)" style="font-size: 14px; font-weight: bold;">@post.Dislikes</span>
+                                                    </span>
+                                                    <span style="font-size: 14px; font-weight:bold;">@post.Dislikes</span>
                                                 </div>
-                                                <text hidden>@(currRowId++)</text>
-                                            </div>
+                                            }
+
+
                                             <div>
-                                                <a asp-controller="Profiles" asp-action="Profile" asp-route-userId="@Model.UserId" class="tm-gold-text">
+                                                <a asp-controller="Profiles" asp-action="Profile" asp-route-username="@post.UserUsername" class="tm-gold-text">
                                                     @post.UserUsername
                                                 </a>
                                             </div>
                                         </div>
                                     </div>
 
-                                    @if (currUserId == post.UserId)
+                                    @if (currUsername == post.UserUsername)
                                     {
                                         <div>
                                             <a asp-controller="Forum" asp-action="DeleteComment" asp-route-id="@post.Id" asp-route-discussionId="@Model.Id" title="Delete" style="background-color:#FFFFFF;color:#000000;text-decoration:none">

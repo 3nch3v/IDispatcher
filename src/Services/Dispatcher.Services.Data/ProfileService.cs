@@ -34,10 +34,10 @@
             this.filesService = filesService;
         }
 
-        public ProfileDataDto GetUserById(string id)
+        public ProfileDataDto GetUserById(string userId)
         {
             var userData = this.usersRepository.AllAsNoTracking()
-                .Where(u => u.Id == id)
+                .Where(u => u.Id == userId)
                 .Select(u => new ProfileDataDto
                 {
                     Id = u.Id,
@@ -57,7 +57,7 @@
                         {
                             StarsCount = x.StarsCount,
                         }).ToArray(),
-                    ProfilePicture = u.ProfilePicture.Id == null ? null : $"{ProfilePicturePath}/{u.ProfilePicture.Id}{u.ProfilePicture.Extension}",
+                    ProfilePicture = u.ProfilePicture == null ? null : $"{ProfilePicturePath}/{u.ProfilePicture.Id}{u.ProfilePicture.Extension}",
                     Advertisements = u.Advertisements
                         .Select(x => new ProfileAdvertisementsDto
                         {
@@ -161,7 +161,7 @@
             return userData;
         }
 
-        public async Task SavePictureAsync(ProfilePictureInputModel input, string pictureDirectory)
+        public async Task SetProfilePictureAsync(ProfilePictureInputModel input, string pictureDirectory)
         {
             bool isInitialInstance = false;
 

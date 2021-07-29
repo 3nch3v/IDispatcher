@@ -21,6 +21,5 @@
         public IEnumerable<string> SearchDataTypes { get; set; }
 
         public IEnumerable<string> SearchMethodTypes { get; set; }
-
     }
 }

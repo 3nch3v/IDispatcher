@@ -10,7 +10,7 @@
     {
         string GetProfilePicturePath(string id);
 
-        ProfileDataDto GetUserById(string id);
+        ProfileDataDto GetUserById(string userId);
 
         DataManagerDto GetUserData(string id);
 
@@ -18,6 +18,6 @@
 
         Task CommentAsync<T>(string appraiserId, T input);
 
-        Task SavePictureAsync(ProfilePictureInputModel input, string pictureDirectory);
+        Task SetProfilePictureAsync(ProfilePictureInputModel input, string pictureDirectory);
     }
 }

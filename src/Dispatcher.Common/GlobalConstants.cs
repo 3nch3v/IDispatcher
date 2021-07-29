@@ -190,5 +190,16 @@
 
             public const int ContactMaxLenght = 200;
         }
+
+        public static class EmailConfirm
+        {
+            public const string FromEmail = "en4ev_ivan@abv.bg";
+
+            public const string From = "Dispatcher";
+
+            public const string Subject = "Confirm your email";
+
+            public const string EmailContent = "Please confirm your account by <a href='{0}'>clicking here</a>.";
+        }
     }
 }

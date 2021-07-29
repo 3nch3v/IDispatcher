@@ -5,8 +5,11 @@
 
     using AutoMapper;
     using Dispatcher.Data.Models.ForumModels;
+    using Dispatcher.Data.Models.UserInfoModels;
     using Dispatcher.Services.Mapping;
     using Ganss.XSS;
+
+    using static Dispatcher.Common.GlobalConstants.User;
 
     public class SinglePostViewModel : IMapFrom<Comment>, IMapTo<Comment>, IHaveCustomMappings
     {
@@ -14,13 +17,13 @@
 
         public string UserUsername { get; set; }
 
-        public string UserId { get; set; }
-
         public string Content { get; set; }
 
         public string SanitizedContent => new HtmlSanitizer().Sanitize(this.Content);
 
-        public string ProfilePicture { get; set; }
+        public ProfilePicture UserProfilePicture { get; set; }
+
+        public string ProfilePicture => this.UserProfilePicture == null ? null : $"{ProfilePicturePath}/{this.UserProfilePicture.Id}{this.UserProfilePicture.Extension}";
 
         public int Likes { get; set; }
 
