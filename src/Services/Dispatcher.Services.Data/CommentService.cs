@@ -42,7 +42,7 @@
                 .Where(c => c.Id == dataId)
                 .FirstOrDefault();
 
-            return comment.UserId;
+            return comment?.UserId;
         }
     }
 }

@@ -146,6 +146,11 @@
         {
             var job = this.jobService.GetById<SigleJobViewModel>(id);
 
+            if (job == null)
+            {
+                return this.RedirectToAction("Error", "Home");
+            }
+
             return this.View(job);
         }
 

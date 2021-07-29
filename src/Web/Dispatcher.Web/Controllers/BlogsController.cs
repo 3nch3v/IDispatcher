@@ -124,6 +124,11 @@
         {
             var post = this.blogServie.GetById<BlogPostViewModel>(id);
 
+            if (post == null)
+            {
+                return this.RedirectToAction("Error", "Home");
+            }
+
             return this.View(post);
         }
 

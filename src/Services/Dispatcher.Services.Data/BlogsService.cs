@@ -149,7 +149,7 @@
                 .Where(b => b.Id == id)
                 .FirstOrDefault();
 
-            return blog.UserId;
+            return blog?.UserId;
         }
 
         private async Task<BlogImage> CreateImageAsync(Blog blog, BlogPostDto input, string pictureDirectory)

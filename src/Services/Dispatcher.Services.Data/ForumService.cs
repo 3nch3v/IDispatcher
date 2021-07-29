@@ -162,7 +162,7 @@
                 .Where(d => d.Id == dataId)
                 .FirstOrDefault();
 
-            return discussion.UserId;
+            return discussion?.UserId;
         }
     }
 }

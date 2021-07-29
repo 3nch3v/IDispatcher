@@ -154,7 +154,7 @@
                 .Where(a => a.Id == id)
                 .FirstOrDefault();
 
-            return ad.UserId;
+            return ad?.UserId;
         }
 
         public int SearchCount()

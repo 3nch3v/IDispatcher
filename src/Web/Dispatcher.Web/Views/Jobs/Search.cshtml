@@ -1,5 +1,4 @@
-﻿@using Dispatcher.Common
-@model Dispatcher.Web.ViewModels.JobModels.AllJobsViewModel
+﻿@model Dispatcher.Web.ViewModels.JobModels.AllJobsViewModel
 
 <p hidden>@this.TempData["keyWords"];</p>
 
@@ -10,7 +9,7 @@
     this.ViewData["KeyWords"] = this.TempData["KeyWords"];
 }
 
-<div class="container-fluid">
+<div class="container-fluid col-12">
     <nav class="navbar navbar-light bg-transparent justify-content-between">
         <div class="navbar-brand">
             <h2 class="tm-gold-text">@this.ViewBag.Title</h2>
@@ -26,7 +25,7 @@
 
     @if (Model.JobsCount > 0)
     {
-        <h3 style="text-align: center; margin: 25px auto;">@Model.JobsCount jobs found for "@this.ViewData["KeyWords"]"</h3>
+        <h3 class="text-center mt-2 mb-4 ml-5">@Model.JobsCount jobs found for "@this.ViewData["KeyWords"]"</h3>
 
         <div>
             <partial name="_RenderJobsPartial" model="this.Model">
@@ -34,7 +33,7 @@
     }
     else
     {
-        <div style="margin: 20px auto; text-align: center;">
+        <div class="text-center mt-4">
             <h1>0 search results found for "@this.ViewData["KeyWords"]"</h1>
             <p>Sorry, we couldn't find any results for your search</p>
             <h3 class="tm-gold-text">
@@ -42,5 +41,4 @@
             </h3>
         </div>
     }
-
 </div>

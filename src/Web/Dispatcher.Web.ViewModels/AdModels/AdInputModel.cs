@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
+    using Dispatcher.Data.Common.CustomAttributes;
     using Dispatcher.Data.Models.AdvertisementModels;
     using Dispatcher.Services.Mapping;
 
@@ -27,6 +28,7 @@
         public string Compensation { get; set; }
 
         [MaxLength(UrlMaxLenght)]
+        [UrlAllowedExtensions(new string[] { ".jpg", ".jpeg", ".png", ".gif", ".bmp" })]
         public string PictureUrl { get; set; }
 
         public IEnumerable<AdTypesViewModel> AdTypes { get; set; }

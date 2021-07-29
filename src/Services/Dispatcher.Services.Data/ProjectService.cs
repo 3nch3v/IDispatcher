@@ -80,7 +80,7 @@
               .Where(p => p.Id == dataId)
               .FirstOrDefault();
 
-            return project.UserId;
+            return project?.UserId;
         }
     }
 }

@@ -17,7 +17,7 @@
                 <div>
                     @foreach (var comment in Model.Comments)
                     {
-                        <div class="card mb-4 col-md-12 offser-md-6" style=" -webkit-box-shadow: -10px 0px 13px -7px #000000, 10px 0px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0); box-shadow: -10px 0px 13px -7px #000000, 10px 0px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0);">
+                        <div class="card mb-4 col-md-12 offser-md-6 shadow p-3 mb-2 bg-light rounded ">
                             <div class="card-body p-2 p-sm-3">
                                 @for (int i = 0; i < comment.StarsCount; i++)
                                 {
@@ -56,12 +56,12 @@
 
             @if (Model.UserId != currUserId)
             {            
-                <div class="form-control-plaintext" style=" -webkit-box-shadow: -10px 0px 13px -7px #000000, 10px 0px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0); box-shadow: -10px 0px 13px -7px #000000, 10px 0px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0);">
+                <div class="form-control-plaintext shadow p-3 mb-2 bg-light rounded">
                     <form method="post" asp-controller="CustomersReviews" asp-action="Comment" class="col-md-12 offser-md-6">
                         <input name="userId" value="@Model.UserId" type="hidden">
                         <div class="form-group justify-content-between">
                             <label for="Comment" class="justify-content-end">Comment and </label>
-                            <select name="StarsCount" class="star-rating" pattern="[1-5]" required>
+                            <select name="StarsCount" class="star-rating bg-light p-1 ml-2 mb-2" pattern="[1-5]" required>
                                 <option value="">Select a rating</option>
                                 <option value="5">Excellent</option>
                                 <option value="4">Very Good</option>
@@ -69,7 +69,7 @@
                                 <option value="2">Poor</option>
                                 <option value="1">Terrible</option>
                             </select>
-                            <textarea name="Comment" class="form-control" rows="3" required minlength="2" pattern=".*\S+.*" title="This field is required"></textarea>
+                            <textarea name="Comment" class="form-control bg-light" rows="3" required minlength="2" pattern=".*\S+.*" title="This field is required"></textarea>
                         </div>
                         <button type="submit" class="tm-btn text-uppercase form-control" style="border-radius: 6px; padding-bottom: 30px;">Comment</button>
                     </form>

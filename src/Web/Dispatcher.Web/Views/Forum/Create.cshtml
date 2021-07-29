@@ -5,14 +5,14 @@
     this.ViewBag.Title = "Start new Discussion";
 }
 
-<div class="create-discussion-main" style="max-width: 900px; margin: 30px auto; padding: 30px; border-radius: 10px; background: #F9FCFF; -webkit-box-shadow: -3px 0px 33px 6px rgba(0,0,0,0.17); box-shadow: -3px 0px 33px 6px rgba(0,0,0,0.17); ">
-    <div class="create-blog-title" style="margin-bottom:20px; margin-left: 10px;">
+<div class="shadow p-3 mb-5 bg-light rounded col-9 m-auto">
+    <div class="ml-2 mb-4 mt-2">
         <h3>@this.ViewBag.Title</h3>
     </div>
     <form method="post" asp-controller="Forum" asp-action="Create" class="col-md-12 offser-md-8">
         <div class="form-group">
-            <label asp-for="CategoryId">Category</label>
-            <p><select class="form-control-sm" asp-for="CategoryId" asp-items="Model.Categories.Select(t => new SelectListItem(t.Name, t.Id.ToString()))"></select></p>
+            <label asp-for="CategoryId">Category:</label>
+            <select class="form-control-sm ml-3 pr-5" asp-for="CategoryId" asp-items="Model.Categories.Select(t => new SelectListItem(t.Name, t.Id.ToString()))"></select>
             <span asp-validation-for="CategoryId" class="text-danger"></span>
         </div>
         <div class="form-group">
@@ -25,7 +25,7 @@
             <textarea asp-for="Description" class="form-control" required minlength="50" rows="10"></textarea>
             <span asp-validation-for="Description" class="text-danger"></span>
         </div>
-        <button type="submit" class="tm-btn text-uppercase">Create</button>
+        <button type="submit" class="tm-btn text-uppercase mb-2 mt-3">Create</button>
     </form>
 </div>
 

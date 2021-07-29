@@ -3,8 +3,11 @@
     this.ViewBag.Title = "Edit";
 }
 
-<div class="edit-blog-main" style="max-width: 900px; margin: 30px auto; padding: 30px; border-radius: 10px; background: #F9FCFF; -webkit-box-shadow: -3px 0px 33px 6px rgba(0,0,0,0.17); box-shadow: -3px 0px 33px 6px rgba(0,0,0,0.17); ">
-    <h3 lass="edit-blog-title" style="margin-bottom:20px; margin-left: 10px;">@this.ViewBag.Title</h3>
+<div class="shadow p-3 mb-5 bg-light rounded col-9 m-auto">
+    <div class="ml-1 mb-4 mt-2">
+        <h3 lass="edit-blog-title" style="margin-bottom:20px; margin-left: 10px;">@this.ViewBag.Title</h3>
+    </div>
+    
     <div>
         <form method="post" enctype="multipart/form-data" class="col-md-12 offser-md-8">
             <div class="form-group">
@@ -44,7 +47,7 @@
                 <span asp-validation-for="Picture" class="text-danger"></span>
             </div>
             <input type="hidden" asp-for="Id" />
-            <input type="submit" class="tm-btn text-uppercase" value="Save" />
+            <input type="submit" class="tm-btn text-uppercase mb-3 mt-2" value="Save" />
         </form>
     </div>
 </div>

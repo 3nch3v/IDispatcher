@@ -4,12 +4,12 @@
 @{
     this.ViewBag.Title = "Profile";
 }
-<div class="container mt-4 mb-4 p-3" style="-webkit-box-shadow: 0px 0px 28px -11px rgba(0,0,0,0.85); box-shadow: 0px 0px 28px -11px rgba(0,0,0,0.85);">
+<div class="container mt-4 mb-4 p-3 shadow p-3 bg-white rounded" >
     <div class="main-body">
         <div class="row gutters-sm">
             <div class="col-md-4 mb-3">
                 <div class="card">
-                    <div class="card-body" style="-webkit-box-shadow: 0px 0px 28px -15px rgba(0,0,0,0.85); box-shadow: 0px 0px 28px -15px rgba(0,0,0,0.85);">
+                    <div class="card-body shadow p-3 bg-white rounded" >
                         <div class="d-flex flex-column align-items-center text-center">
                             @if (!string.IsNullOrEmpty(Model.ProfilePicture))
                             {
@@ -33,7 +33,7 @@
                     </div>
                 </div>
 
-                <div class="card mt-3" style="-webkit-box-shadow: 0px 0px 28px -15px rgba(0,0,0,0.85); box-shadow: 0px 0px 28px -15px rgba(0,0,0,0.85);">
+                <div class="card mt-3 shadow bg-white rounded">
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap p-1">
                             <p class="profile-info">
@@ -43,7 +43,7 @@
                         </li>
                     </ul>
                 </div>
-                <div style="-webkit-box-shadow: 0px 0px 28px -15px rgba(0,0,0,0.85); box-shadow: 0px 0px 28px -15px rgba(0,0,0,0.85);">
+                <div class="shadow bg-white rounded">
                     <div class="card mt-3">
                         <ul class="list-group list-group-flush">
 
@@ -113,7 +113,7 @@
                     </div>
                 </div>
                
-                <div class="card mt-3" style="-webkit-box-shadow: 0px 0px 28px -15px rgba(0,0,0,0.85); box-shadow: 0px 0px 28px -15px rgba(0,0,0,0.85);">
+                <div class="card mt-3 shadow bg-white rounded">
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap p-1">
                             <p class="profile-info">
@@ -128,7 +128,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="card mt-3" style="-webkit-box-shadow: 0px 0px 28px -15px rgba(0,0,0,0.85); box-shadow: 0px 0px 28px -15px rgba(0,0,0,0.85);">
+                <div class="card mt-3 shadow bg-white rounded">
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap p-1">
                             <p class="profile-info">
@@ -158,7 +158,7 @@
             </div>
             <div class="col-md-8">
                 <div class="card mb-3">
-                    <div class="card-body" style="-webkit-box-shadow: 0px 0px 28px -15px rgba(0,0,0,0.85); box-shadow: 0px 0px 28px -15px rgba(0,0,0,0.85);">
+                    <div class="card-body shadow bg-white rounded" >
                         <h5 class="tm-gold-text">Projects</h5>
                         <hr>
                         @if (Model.Projects.Count > 0)
@@ -203,7 +203,7 @@
                 </div>
 
                 <div class="card mb-3">
-                    <div class="card-body" style="-webkit-box-shadow: 0px 0px 28px -15px rgba(0,0,0,0.85); box-shadow: 0px 0px 28px -15px rgba(0,0,0,0.85);">
+                    <div class="card-body shadow bg-white rounded">
                         <h5 class="tm-gold-text">Advertisements</h5>
                         <hr>
                         @if (Model.Advertisements.Count > 0)
@@ -234,7 +234,7 @@
 
                 <div class="row gutters-sm" >
                     <div class="col-sm-6 mb-3" >
-                        <div class="card h-100" style="-webkit-box-shadow: 0px 0px 28px -15px rgba(0,0,0,0.85); box-shadow: 0px 0px 28px -15px rgba(0,0,0,0.85);">
+                        <div class="card h-100 shadow bg-white rounded" >
                             <div class="card-body">
                                 <h5 class="tm-gold-text">Job Advertisements</h5>
                                 <hr>
@@ -253,14 +253,13 @@
                                 {
                                     <p class="profile-info">No job ads available...</p>
                                 }
-
                             </div>
                         </div>
                     </div>
 
                     <div class="col-sm-6 mb-3">
                         <div class="card h-100">
-                            <div class="card-body" style="-webkit-box-shadow: 0px 0px 28px -15px rgba(0,0,0,0.85); box-shadow: 0px 0px 28px -15px rgba(0,0,0,0.85);">
+                            <div class="card-body shadow bg-white rounded" >
                                 <h5 class="tm-gold-text">Forum Discussions</h5>
                                 <hr>
                                 @if (Model.Discussions.Count > 0)

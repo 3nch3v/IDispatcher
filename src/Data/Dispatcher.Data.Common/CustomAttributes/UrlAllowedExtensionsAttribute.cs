@@ -14,7 +14,7 @@
             this.extensions = extensions;
         }
 
-        public string GetErrorMessage => $"This photo extension is not allowed!";
+        public string GetErrorMessage => $"Unsupported Format! The allowed picture formats are: .jpg, .jpeg, .png, .gif, .bmp;";
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {

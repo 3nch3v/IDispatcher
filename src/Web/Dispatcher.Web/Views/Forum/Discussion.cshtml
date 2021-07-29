@@ -27,7 +27,7 @@
             </aside>
             <div class="col-xs-12 col-sm-12 col-md-8 col-lg-9 col-xl-9">
                 <div>
-                    <div class="card mb-4 col-md-12 offser-md-6" style="border-radius: 8px ; -webkit-box-shadow: -8px -3px 15px 5px rgba(0,0,0,0.18); box-shadow: -8px -3px 15px 5px rgba(0,0,0,0.18);">
+                    <div class="card mb-4 col-md-12 offser-md-6 rounded" style="-webkit-box-shadow: -8px -3px 15px 5px rgba(0,0,0,0.18); box-shadow: -8px -3px 15px 5px rgba(0,0,0,0.18);">
                         <div class="card-body p-2 p-sm-3">
                             <div class="media forum-item">
                                 <a asp-controller="Profiles" asp-action="Profile" asp-route-userId="@Model.UserId">
@@ -39,31 +39,35 @@
                                             <strong>@Model.Title</strong>
                                         </h5>
                                         <div class="tm-gold-text">
-                                            @if (Model.IsSolved) {<text>Solved</text> }
-                                            else{ <text>Unsolved</text>}
+                                            @if (Model.IsSolved)
+                                            {<text>Solved</text> }
+                                        else
+                                        { <text>Unsolved</text>}
                                         </div>
                                     </div>
                                     <p class="text-secondary">@Html.Raw(Model.SanitizedDescription)</p>
 
                                     <div class="d-flex flex-row justify-content-between">
-                                        <div>@Model.CreatedOn.ToString("g")</div>
+                                        <div>
+                                            @Model.CreatedOn.ToString("g")
+                                        </div>
 
                                         <form id="votesForm" method="post"></form>
 
-                                        <div class="text-muted small text-center align-self-center">
+                                        <div class="ml-auto mr-auto">
                                             <div id="click" class="d-none d-sm-inline-block">
                                                 <a href="#a" onclick="like(@Model.Id)">
-                                                    <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+                                                    <i class="fa fa-thumbs-o-up fa-lg"></i>
                                                 </a>
                                             </div>
-                                            <span id="likesCount">@Model.Likes</span>
+                                            <span class="mr-2" id="likesCount" style="font-size: 14px; font-weight: bold;">@Model.Likes</span>
 
                                             <span id="click" class="d-none d-sm-inline-block">
                                                 <a href="#a" onclick="dislike(@Model.Id)">
-                                                    <i class="fa fa-thumbs-down" aria-hidden="true"></i>
+                                                    <i class="fa fa-thumbs-o-down fa-lg"></i>
                                                 </a>
                                             </span>
-                                            <span id="dislikesCount">@Model.Dislikes</span>
+                                            <span id="dislikesCount" style="font-size: 14px; font-weight: bold;">@Model.Dislikes</span>
                                         </div>
                                         <div>
                                             <a asp-controller="Profiles" asp-action="Profile" asp-route-userId="@Model.UserId" class="tm-gold-text">
@@ -77,17 +81,17 @@
                                 {
                                     <div>
                                         <div>
-                                            <a asp-controller="Forum" asp-action="SetToSolved" asp-route-id="@Model.Id" title="Is it solved?" style="background-color:#FFFFFF;color:#000000;text-decoration:none">
+                                            <a asp-controller="Forum" asp-action="SetToSolved" asp-route-id="@Model.Id" title="Is it solved?" class="ml-1" style="background-color:#FFFFFF;color:#000000;text-decoration:none">
                                                 <i class="fa fa-check-circle" aria-hidden="true"></i>
                                             </a>
                                         </div>
                                         <div>
-                                            <a asp-controller="Forum" asp-action="Edit" asp-route-id="@Model.Id" title="Edit" style="background-color:#FFFFFF;color:#000000;text-decoration:none">
+                                            <a asp-controller="Forum" asp-action="Edit" asp-route-id="@Model.Id" title="Edit" class="ml-1" style="background-color:#FFFFFF;color:#000000;text-decoration:none">
                                                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                             </a>
                                         </div>
                                         <div>
-                                            <a asp-controller="Forum" asp-action="Delete" asp-route-id="@Model.Id" title="Delete" style="background-color:#FFFFFF;color:#000000;text-decoration:none">
+                                            <a asp-controller="Forum" asp-action="Delete" asp-route-id="@Model.Id" title="Delete" class="ml-1" style="background-color:#FFFFFF;color:#000000;text-decoration:none">
                                                 <i class="fa fa-trash" aria-hidden="true"></i>
                                             </a>
                                         </div>
@@ -96,11 +100,10 @@
                             </div>
                         </div>
                     </div>
-
+                    <form id="commentVotesForm" method="post"></form>
                     @foreach (var post in Model.Posts)
                     {
-
-                        <div class="card mb-3 col-md-12 offser-md-6" style="border-radius: 8px; -webkit-box-shadow: -8px -3px 15px 5px rgba(0,0,0,0.18); box-shadow: -8px -3px 15px 5px rgba(0,0,0,0.18);">
+                        <div class="card mb-3 col-md-12 offser-md-6 rounded" style="-webkit-box-shadow: -8px -3px 15px 5px rgba(0,0,0,0.18); box-shadow: -8px -3px 15px 5px rgba(0,0,0,0.18);">
                             <div class="card-body p-2 p-sm-3">
                                 <div class="media forum-item">
                                     <a asp-controller="Profiles" asp-action="Profile" asp-route-userId="@post.UserId">
@@ -108,52 +111,34 @@
                                     </a>
                                     <div class="media-body">
                                         <div>
-                                            <p class="text-secondary">@Html.Raw(post.SanitizedContent)</p>
+                                            <p>@Html.Raw(post.SanitizedContent)</p>
                                         </div>
-                                        @*<div class="d-flex flex-row justify-content-between">
-            <span>@post.CreatedOn.ToString("g")</span>
-            <a asp-controller="Profiles" asp-action="Profile" asp-route-userId="@Model.UserId" class="tm-gold-text">
-                @post.UserUsername
-            </a>
-        </div>*@
-                                    <div class="d-flex flex-row justify-content-between">
-                                        <div>@post.CreatedOn.ToString("g")</div>
-                                        <div class="text-muted small text-center align-self-center">
+                                        <div class="d-flex flex-row justify-content-between">
+                                            <div>@post.CreatedOn.ToString("g")</div>
+                                            <div class="ml-auto mr-auto">
+                                                <div class="text-muted text-center align-self-center">
+                                                    <div id="click" class="d-none d-sm-inline-block">
+                                                        <a href="#a" onclick="likeComment(@post.Id, @currRowId)">
+                                                            <i class="fa fa-thumbs-o-up fa-lg"></i>
+                                                        </a>
+                                                    </div>
+                                                    <span id="likesCount_@(currRowId)" class="mr-2" style="font-size: 14px; font-weight: bold;">@post.Likes</span>
 
-
-                                            <form id="commentVotesForm" method="post"></form>
-
-                                            <div class="text-muted small text-center align-self-center">
-                                                <div id="click" class="d-none d-sm-inline-block">
-
-                                                    <a href="#a" onclick="likeComment(@post.Id, @currRowId)">
-                                                        <i class="fa fa-thumbs-up" aria-hidden="true"></i>
-                                                    </a>
-
+                                                    <div id="click" class="d-none d-sm-inline-block">
+                                                        <a href="#a" onclick="dislikeComment(@post.Id, @currRowId)">
+                                                            <i class="fa fa-thumbs-o-down fa-lg"></i>
+                                                        </a>
+                                                    </div>
+                                                    <span id="dislikesCount_@(currRowId)" style="font-size: 14px; font-weight: bold;">@post.Dislikes</span>
                                                 </div>
-
-                                                <span id="likesCount_@(currRowId)">@post.Likes</span>
-
-                                                <div id="click" class="d-none d-sm-inline-block">
-
-                                                    <a href="#a" onclick="dislikeComment(@post.Id, @currRowId)">
-                                                        <i class="fa fa-thumbs-down" aria-hidden="true"></i>
-                                                    </a>
-
-                                                </div>
-
-                                                <span id="dislikesCount_@(currRowId)">@post.Dislikes</span>
+                                                <text hidden>@(currRowId++)</text>
                                             </div>
-
-                                            <text hidden>@(currRowId++)</text>
+                                            <div>
+                                                <a asp-controller="Profiles" asp-action="Profile" asp-route-userId="@Model.UserId" class="tm-gold-text">
+                                                    @post.UserUsername
+                                                </a>
+                                            </div>
                                         </div>
-
-                                        <div>
-                                            <a asp-controller="Profiles" asp-action="Profile" asp-route-userId="@Model.UserId" class="tm-gold-text">
-                                                @post.UserUsername
-                                            </a>
-                                        </div>
-                                    </div>
                                     </div>
 
                                     @if (currUserId == post.UserId)
@@ -169,7 +154,7 @@
                         </div>
                     }
                 </div>
-                <div class="form-control-plaintext mt-4 mb-4 pb-5" style="border-radius: 8px; -webkit-box-shadow: -8px -3px 15px 5px rgba(0,0,0,0.18); box-shadow: -8px -3px 15px 5px rgba(0,0,0,0.18);">
+                <div class="form-control-plaintext mt-4 mb-4 pb-5 rounded" style="-webkit-box-shadow: -8px -3px 15px 5px rgba(0,0,0,0.18); box-shadow: -8px -3px 15px 5px rgba(0,0,0,0.18);">
                     <form method="post" asp-controller="Forum" asp-action="Comment" class="col-md-12 offser-md-6">
                         <div class="form-group">
                             <label for="Comment">Comment</label>

@@ -159,7 +159,7 @@
                .Where(j => j.Id == dataId)
                .FirstOrDefault();
 
-            return job.UserId;
+            return job?.UserId;
         }
     }
 }

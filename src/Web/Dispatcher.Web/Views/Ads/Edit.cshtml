@@ -6,8 +6,8 @@
     this.ViewBag.Title = "Edit your ad";
 }
 
-<div class="edit-ab-main" style="max-width: 900px; margin: 30px auto; padding: 30px; border-radius: 10px; background: #F9FCFF; -webkit-box-shadow: -3px 0px 33px 6px rgba(0,0,0,0.17); box-shadow: -3px 0px 33px 6px rgba(0,0,0,0.17); ">
-    <div style="margin-bottom:20px; margin-left: 10px;">
+<div class="shadow p-3 mb-5 bg-light rounded col-9 m-auto">
+    <div class="ml-2 mb-4 mt-2">
         <h3>@this.ViewBag.Title</h3>
     </div>
     <div>
@@ -37,7 +37,7 @@
                 <input asp-for="PictureUrl" class="form-control">
                 <span asp-validation-for="PictureUrl" class="text-danger"></span>
             </div>
-            <button type="submit" class="tm-btn text-uppercase">Save</button>
+            <button type="submit" class="tm-btn text-uppercase mb-3 mt-3">Save</button>
         </form>
     </div>
 </div>

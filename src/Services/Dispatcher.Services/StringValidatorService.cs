@@ -10,7 +10,7 @@
     {
         public bool IsStringValidDecoded(string input, int requiredStringLength)
         {
-            string decodedString = this.HtmlDecoder(input);
+            string decodedString = string.IsNullOrWhiteSpace(input) ? null : this.HtmlDecoder(input);
 
             if (string.IsNullOrWhiteSpace(decodedString)
                 || decodedString.Length < requiredStringLength)

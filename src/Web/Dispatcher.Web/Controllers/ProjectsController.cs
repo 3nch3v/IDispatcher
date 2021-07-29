@@ -98,6 +98,11 @@
         {
             var project = this.projectServices.GetById<SingleProjectViewModel>(id);
 
+            if (project == null)
+            {
+                return this.RedirectToAction("Error", "Home");
+            }
+
             return this.View(project);
         }
 

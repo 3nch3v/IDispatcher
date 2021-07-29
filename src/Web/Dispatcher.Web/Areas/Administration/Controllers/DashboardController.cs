@@ -22,6 +22,7 @@
         public IActionResult Index()
         {
             var data = this.administartorsServices.GetIndexData();
+
             var indexData = AutoMapperConfig.MapperInstance.Map<IndexViewModel>(data);
 
             return this.View(indexData);

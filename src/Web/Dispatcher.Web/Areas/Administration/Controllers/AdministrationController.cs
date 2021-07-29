@@ -39,12 +39,14 @@
         public async Task<IActionResult> DeleteUser(string id)
         {
             await this.administartorsServices.DeleteUserAsync(id);
+
             return this.RedirectToAction("Index", "Dashboard");
         }
 
         public async Task<IActionResult> DeleteReview(int id)
         {
             await this.administartorsServices.DeleteReviewAsync(id);
+
             return this.RedirectToAction("Index", "Dashboard");
         }
     }

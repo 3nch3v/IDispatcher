@@ -7,10 +7,10 @@
 
 <div style="max-width: 1200px; margin: 30px auto; padding: 30px; background: #E9ECEF; border-radius: 8px; -webkit-box-shadow: -3px 0px 33px 6px rgba(0,0,0,0.17); box-shadow: -3px 0px 33px 6px rgba(0,0,0,0.17); ">
     <nav class="navbar navbar-light bg-transparent justify-content-between">
-        <div class="navbar-brand">
-            <h3 class="tm-gold-text">
+        <div class="navbar-brand ml-5">
+            <h2 class="tm-gold-text">
                 <a class="tm-gold-text" asp-controller="Blogs" asp-action="All">@this.ViewBag.Title</a>
-            </h3>
+            </h2>
         </div>
         <div>
             <a asp-controller="Blogs" asp-action="Create" type="button" class="btn btn-outline-secondary">Creat New Post</a>
@@ -25,25 +25,25 @@
                         <div class="media">
                             @if (!string.IsNullOrWhiteSpace(post.FullFilePath))
                             {
-                             <div>
+                             <div class="col-3 ml-auto mr-auto mt-3">
                                 <a class="tm-gold-text" asp-action="Post" asp-route-id="@post.Id">
-                                    <img class="mr-4 img-fluid post-thumb d-none d-md-flex" src="@Url.Content(post.FullFilePath)" alt="image" style="width: 150px; max-height: 150px; object-fit: cover; ">
+                                    <img src="@Url.Content(post.FullFilePath)" alt="image" class="w-75">
                                 </a>
                              </div> 
                             }
                             else if (post.YouTubeVideoId != null)
                             {
-                                <div>
+                                <div class="col-3 ml-auto mr-auto mt-3">
                                     <a class="tm-gold-text" asp-action="Post" asp-route-id="@post.Id">
-                                        <img class="mr-4 img-fluid post-thumb d-none d-md-flex" src="~/img/blog-pictures/video-default-icon.png" alt="image" style="width: 150px; max-height: 150px; object-fit: cover; ">
+                                        <img src="~/img/blog-pictures/video-default-icon.png" alt="image" class="w-75">
                                     </a>
                                 </div> 
                             }
                             else
                             {
-                                <div>
+                                <div class="col-3 ml-auto mr-auto mt-3">
                                     <a class="tm-gold-text" asp-action="Post" asp-route-id="@post.Id">
-                                        <img class="mr-4 img-fluid post-thumb d-none d-md-flex" src="~/img/blog-pictures/blog-post-default-pic.jpg" alt="image" style="width: 150px; max-height: 150px; object-fit: cover; ">
+                                        <img src="~/img/blog-pictures/blog-post-default-pic.jpg" alt="image" class="w-75">
                                     </a>
                                 </div>
                             }

@@ -17,23 +17,24 @@
 </nav>
 
 <div class="tm-section">
-    <div class="container-fluid">
-        <div class="row">
-            <aside class="col-xs-12 col-sm-12 col-md-4 col-lg-3 col-xl-3 tm-aside-r">
-                <vc:forum-side-bar></vc:forum-side-bar>
-            </aside>
-            <div class="col-xs-12 col-sm-12 col-md-8 col-lg-9 col-xl-9">
+    <div class="d-flex">
+        <aside class="col-xs-12 col-sm-12 col-md-4 col-lg-3 col-xl-3 tm-aside-r">
+            <vc:forum-side-bar></vc:forum-side-bar>
+        </aside>
+        <div class="col-9">
+
+            <div>
 
                 @foreach (var forumDiscussion in Model.AllForumDiscussions)
                 {
-                    <div class="card mb-4 col-md-12 offser-md-6" style="border-radius: 8px; -webkit-box-shadow: -8px -3px 15px 5px rgba(0,0,0,0.18); box-shadow: -8px -3px 15px 5px rgba(0,0,0,0.18);">
-                        <div class="card-body p-2 p-sm-3">
+                    <div class="card mb-4 col-md-12 offser-md-6 rounded" style="-webkit-box-shadow: -8px -3px 15px 5px rgba(0,0,0,0.18); box-shadow: -8px -3px 15px 5px rgba(0,0,0,0.18);">
+                        <div class="p-2 p-sm-3">
                             <div class="media forum-item">
                                 <a asp-controller="Forum" asp-action="Discussion" asp-route-id="@forumDiscussion.Id">
                                     <img src="@forumDiscussion.ProfilePicture" class="mr-3 rounded-circle" width="50" alt="User" />
                                 </a>
                                 <div class="media-body">
-                                    <h5>
+                                    <h5 class="mt-2">
                                         <a asp-controller="Forum" asp-action="Discussion" asp-route-id="@forumDiscussion.Id" class="tm-gold-text tm-title">
                                             <strong>@forumDiscussion.Title</strong>
                                         </a>
@@ -41,7 +42,7 @@
                                     <p class="text-secondary">
                                         @if (forumDiscussion.SanitizedDescription.Length > 200)
                                         {
-                                            @Html.Raw(forumDiscussion.SanitizedDescription.Substring(0, 200)) 
+                                            @Html.Raw(forumDiscussion.SanitizedDescription.Substring(0, 200))
                                         }
                                         else
                                         {
@@ -54,24 +55,24 @@
                                     </a>
                                     <div class="d-flex flex-row justify-content-between">
                                         <span>@forumDiscussion.CreatedOn.ToString("g")</span>
-                                        <div class="text-muted small text-center align-self-center">
+                                        <div class="ml-auto mr-auto">
 
                                             <form id="votesForm" method="post"></form>
 
                                             <div class="text-muted small text-center align-self-center">
                                                 <span id="click" class="d-none d-sm-inline-block">
                                                     <a href="#a" onclick="like(@forumDiscussion.Id, @currRowId)">
-                                                        <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+                                                        <i class="fa fa-thumbs-o-up fa-lg"></i>
                                                     </a>
                                                 </span>
-                                                <span id="likesCount_@(currRowId)">@forumDiscussion.Likes</span>
+                                                <span class="mr-2" id="likesCount_@(currRowId)" style="font-size: 14px; font-weight: bold;">@forumDiscussion.Likes</span>
 
                                                 <span id="click" class="d-none d-sm-inline-block">
                                                     <a href="#a" onclick="dislike(@forumDiscussion.Id, @currRowId)">
-                                                        <i class="fa fa-thumbs-down" aria-hidden="true"></i>
+                                                        <i class="fa fa-thumbs-o-down fa-lg"></i>
                                                     </a>
                                                 </span>
-                                                <span id="dislikesCount_@(currRowId)">@forumDiscussion.Dislikes</span>
+                                                <span id="dislikesCount_@(currRowId)" style="font-size: 14px; font-weight:bold;">@forumDiscussion.Dislikes</span>
                                             </div>
                                             <text hidden>@(currRowId++)</text>
                                         </div>
@@ -98,42 +99,42 @@
                 }
 
             </div>
+            @if (Model.AllForumDiscussions.Count() > 0)
+            {
+                <nav>
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item @if (!Model.HasPreviousPage) { <text> disabled </text> }">
+                            <a asp-controller="Forum" asp-action="All" asp-route-category="@TempData["Category"]" asp-route-page="@Model.PreviousPage" class="page-link tm-gold-text">Previous</a>
+                        </li>
 
+                        @if (Model.HasPreviousPage)
+                        {
+                            <li class="page-item">
+                                <a asp-controller="Forum" asp-action="All" asp-route-category="@TempData["Category"]" asp-route-page="@(Model.Page - 1)" class="page-link tm-gold-text">@(Model.Page - 1)</a>
+                            </li>
+                        }
+
+                        <li class="page-item">
+                            <a asp-controller="Forum" asp-action="All" asp-route-category="@TempData["Category"]" asp-route-page="@Model.Page" class="page-link tm-gold-text">@Model.Page</a>
+                        </li>
+
+                        @if (Model.HasNextPage)
+                        {
+                            <li class="page-item">
+                                <a asp-controller="Forum" asp-action="All" asp-route-category="@TempData["Category"]" asp-route-page="@(Model.Page + 1)" class="page-link tm-gold-text">@(Model.Page + 1)</a>
+                            </li>
+                        }
+
+                        <li class="page-item  @if (!Model.HasNextPage) { <text> disabled </text> }">
+                            <a asp-controller="Forum" asp-action="All" asp-route-category="@TempData["Category"]" asp-route-page="@Model.NextPage" class="page-link tm-gold-text">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            }
 
         </div>
     </div>
-    @if (Model.AllForumDiscussions.Count() > 0)
-    {
-        <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-center">
-                <li class="page-item @if (!Model.HasPreviousPage) { <text> disabled </text> }">
-                    <a asp-controller="Forum" asp-action="All" asp-route-category="@TempData["Category"]" asp-route-page="@Model.PreviousPage" class="page-link tm-gold-text">Previous</a>
-                </li>
-
-                @if (Model.HasPreviousPage)
-                {
-                    <li class="page-item">
-                        <a asp-controller="Forum" asp-action="All" asp-route-category="@TempData["Category"]" asp-route-page="@(Model.Page - 1)" class="page-link tm-gold-text">@(Model.Page - 1)</a>
-                    </li>
-                }
-
-                <li class="page-item">
-                    <a asp-controller="Forum" asp-action="All" asp-route-category="@TempData["Category"]" asp-route-page="@Model.Page" class="page-link tm-gold-text">@Model.Page</a>
-                </li>
-
-                @if (Model.HasNextPage)
-                {
-                    <li class="page-item">
-                        <a asp-controller="Forum" asp-action="All" asp-route-category="@TempData["Category"]" asp-route-page="@(Model.Page + 1)" class="page-link tm-gold-text">@(Model.Page + 1)</a>
-                    </li>
-                }
-
-                <li class="page-item  @if (!Model.HasNextPage) { <text> disabled </text> }">
-                    <a asp-controller="Forum" asp-action="All" asp-route-category="@TempData["Category"]" asp-route-page="@Model.NextPage" class="page-link tm-gold-text">Next</a>
-                </li>
-            </ul>
-        </nav>
-    }
+   
 </div>
 
 @section Scripts {

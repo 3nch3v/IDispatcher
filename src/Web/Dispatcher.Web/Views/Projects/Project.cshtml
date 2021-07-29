@@ -5,10 +5,10 @@
     this.ViewBag.Title = "User's Project";
 }
 
-<div class="jumbotron row justify-content-between" style="margin-top: 50px; -webkit-box-shadow: -8px -3px 15px 5px rgba(0,0,0,0.18); box-shadow: -8px -3px 15px 5px rgba(0,0,0,0.18);">
+<div class="jumbotron row justify-content-between shadow p-3 mb-5 rounded mt-5 p-3" >
     <div @(Model.Url == null ? @"class='col-md-12'" : @"class='col-md-6'")>
-        <h2 class="display-4">@Model.Name</h2>
-        <p>Role: @Model.UserRole</p>
+        <h2 class="display-4 ml-4 mt-4">@Model.Name</h2>
+        <p class="ml-4">Role: @Model.UserRole</p>
     </div>
     @if (Model.Url != null)
     {
@@ -18,8 +18,8 @@
     }
 
     <div>
-        <hr class="my-5">
-        <p>@Model.SanitizedDescription</p>
+        <hr class="my-4">
+        <p class="text-justify">@Model.SanitizedDescription</p>
     </div>
 </div>
 

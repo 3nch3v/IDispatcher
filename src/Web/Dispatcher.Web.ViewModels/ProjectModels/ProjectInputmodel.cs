@@ -2,6 +2,7 @@
 {
     using System.ComponentModel.DataAnnotations;
 
+    using Dispatcher.Data.Common.CustomAttributes;
     using Dispatcher.Data.Models.UserInfoModels;
     using Dispatcher.Services.Mapping;
 
@@ -15,6 +16,7 @@
         public string Name { get; set; }
 
         [MaxLength(UrlMaxLenght)]
+        [UrlAllowedExtensions(new string[] { ".jpg", ".jpeg", ".png", ".gif", ".bmp" })]
         public string Url { get; set; }
 
         [Required]

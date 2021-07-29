@@ -130,6 +130,11 @@
         {
             var ad = this.adsService.GetById<AdViewModel>(id);
 
+            if (ad == null)
+            {
+                return this.RedirectToAction("Error", "Home");
+            }
+
             return this.View(ad);
         }
 

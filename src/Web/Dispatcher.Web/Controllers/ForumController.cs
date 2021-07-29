@@ -139,6 +139,11 @@
         {
             var discussion = this.forumService.GetById<SingleForumDiscussionsViewModel>(id);
 
+            if (discussion == null)
+            {
+                return this.RedirectToAction("Error", "Home");
+            }
+
             discussion.ProfilePicture = this.profileService.GetProfilePicturePath(discussion.UserId);
             discussion.Posts.ToList().ForEach(x => x.ProfilePicture = this.profileService.GetProfilePicturePath(x.UserId));
 
