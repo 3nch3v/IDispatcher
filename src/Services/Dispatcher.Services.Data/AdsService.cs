@@ -9,19 +9,23 @@
     using Dispatcher.Data.Models.AdvertisementModels;
     using Dispatcher.Services.Data.Contracts;
     using Dispatcher.Services.Mapping;
+    using Microsoft.Extensions.Caching.Memory;
 
     public class AdsService : IAdsService
     {
         private readonly IDeletableEntityRepository<Advertisement> advertisementRepository;
         private readonly IDeletableEntityRepository<AdvertisementType> adTypesRepository;
+        private readonly IMemoryCache memoryCache;
         private int searchResultCount;
 
         public AdsService(
             IDeletableEntityRepository<Advertisement> advertisementRepository,
-            IDeletableEntityRepository<AdvertisementType> adTypesRepository)
+            IDeletableEntityRepository<AdvertisementType> adTypesRepository,
+            IMemoryCache memoryCache)
         {
             this.advertisementRepository = advertisementRepository;
             this.adTypesRepository = adTypesRepository;
+            this.memoryCache = memoryCache;
         }
 
         public async Task CreateAsync<T>(T input, string userId)
@@ -109,13 +113,19 @@
 
         public IEnumerable<T> RandomAds<T>(int adsCount)
         {
-            var randomAds = this.advertisementRepository.AllAsNoTracking()
-                .OrderBy(a => Guid.NewGuid())
-                .To<T>()
-                .Take(adsCount)
-                .ToList();
+            var ads = this.memoryCache
+                .GetOrCreate("RandomAds", entry =>
+                {
+                    entry.SlidingExpiration = TimeSpan.FromSeconds(3);
+                    return this.advertisementRepository
+                            .AllAsNoTracking()
+                            .OrderBy(a => Guid.NewGuid())
+                            .To<T>()
+                            .Take(adsCount)
+                            .ToList();
+                });
 
-            return randomAds;
+            return ads;
         }
 
         public IEnumerable<T> SearchResult<T>(int page, int pageEntitiesCount, string keyWords)

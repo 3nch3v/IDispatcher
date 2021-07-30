@@ -21,7 +21,7 @@
 
         public IActionResult Index()
         {
-            var data = this.administartorsServices.GetIndexData();
+            var data = this.administartorsServices.GetStatistic();
 
             var indexData = AutoMapperConfig.MapperInstance.Map<IndexViewModel>(data);
 

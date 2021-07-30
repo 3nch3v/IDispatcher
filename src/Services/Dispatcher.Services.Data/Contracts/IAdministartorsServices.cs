@@ -6,7 +6,7 @@
 
     public interface IAdministartorsServices
     {
-        AdminIndexDto GetIndexData();
+        AdminIndexDto GetStatistic();
 
         AdminRequestDataDto GetData(string searchData, string searchMethod, string searchTerm);
 

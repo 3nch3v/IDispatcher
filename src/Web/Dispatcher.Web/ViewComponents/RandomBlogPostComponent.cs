@@ -15,7 +15,7 @@
 
         public IViewComponentResult Invoke(bool isWithPicture)
         {
-            var blogPost = this.blogService.RandomBlogPost<SingleRandomBlogPostModel>();
+            var blogPost = this.blogService.RandomBlog<SingleRandomBlogPostModel>();
             blogPost.IsWithPicture = isWithPicture;
             return this.View(blogPost);
         }

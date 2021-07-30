@@ -48,6 +48,8 @@
                         options.MinimumSameSitePolicy = SameSiteMode.None;
                     });
 
+            services.AddMemoryCache();
+
             services.AddControllersWithViews(
                 options =>
                     {
@@ -111,8 +113,11 @@
             else
             {
                 app.UseExceptionHandler("/Home/Error");
+                app.UseStatusCodePagesWithReExecute("/Home/Error", "?code={0}");
                 app.UseHsts();
             }
+
+            app.UseResponseCaching();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

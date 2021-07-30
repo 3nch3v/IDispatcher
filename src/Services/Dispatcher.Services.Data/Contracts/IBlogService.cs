@@ -20,7 +20,7 @@
 
         T GetById<T>(int id);
 
-        T RandomBlogPost<T>();
+        T RandomBlog<T>();
 
         IEnumerable<T> GetAllBlogPosts<T>(int page, int pageEntitiesCount);
     }

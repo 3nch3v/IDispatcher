@@ -9,15 +9,20 @@
     using Dispatcher.Data.Models.JobModels;
     using Dispatcher.Services.Data.Contracts;
     using Dispatcher.Services.Mapping;
+    using Microsoft.Extensions.Caching.Memory;
 
     public class JobsService : IJobService
     {
         private readonly IDeletableEntityRepository<Job> jobRepository;
+        private readonly IMemoryCache memoryCache;
         private int searchResultCount;
 
-        public JobsService(IDeletableEntityRepository<Job> jobRepository)
+        public JobsService(
+            IDeletableEntityRepository<Job> jobRepository,
+            IMemoryCache memoryCache)
         {
             this.jobRepository = jobRepository;
+            this.memoryCache = memoryCache;
         }
 
         public async Task CreateAsync<T>(T input, string id)
@@ -103,12 +108,17 @@
 
         public IEnumerable<T> GetRandomJobs<T>(int count)
         {
-            var jobs = this.jobRepository
-               .AllAsNoTracking()
-               .OrderByDescending(j => Guid.NewGuid())
-               .To<T>()
-               .Take(count)
-               .ToList();
+            var jobs = this.memoryCache
+                .GetOrCreate("RandomJobs", entry =>
+                {
+                    entry.SlidingExpiration = TimeSpan.FromSeconds(7);
+                    return this.jobRepository
+                        .AllAsNoTracking()
+                        .OrderByDescending(j => Guid.NewGuid())
+                        .To<T>()
+                        .Take(count)
+                        .ToList();
+                });
 
             return jobs;
         }

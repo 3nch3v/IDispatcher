@@ -15,6 +15,7 @@
     using Dispatcher.Data.Models.JobModels;
     using Dispatcher.Data.Models.UserInfoModels;
     using Dispatcher.Services.Data.Contracts;
+    using Microsoft.Extensions.Caching.Memory;
 
     public class AdministartorsServices : IAdministartorsServices
     {
@@ -27,6 +28,7 @@
         private readonly IDeletableEntityRepository<CustomerReview> customersReviesRepository;
         private readonly IDeletableEntityRepository<ProfilePicture> profilePicturesRepository;
         private readonly IDeletableEntityRepository<Project> projectsRepository;
+        private readonly IMemoryCache memoryCache;
 
         public AdministartorsServices(
             IDeletableEntityRepository<Advertisement> advertisementsRepository,
@@ -37,7 +39,8 @@
             IDeletableEntityRepository<Comment> commentsRepository,
             IDeletableEntityRepository<CustomerReview> customersReviesRepository,
             IDeletableEntityRepository<ProfilePicture> profilePicturesRepository,
-            IDeletableEntityRepository<Project> projectsRepository)
+            IDeletableEntityRepository<Project> projectsRepository,
+            IMemoryCache memoryCache)
         {
             this.advertisementsRepository = advertisementsRepository;
             this.usersRepository = usersRepository;
@@ -48,24 +51,19 @@
             this.customersReviesRepository = customersReviesRepository;
             this.profilePicturesRepository = profilePicturesRepository;
             this.projectsRepository = projectsRepository;
+            this.memoryCache = memoryCache;
         }
 
-        public AdminIndexDto GetIndexData()
+        public AdminIndexDto GetStatistic()
         {
-            var data = new AdminIndexDto
-            {
-                SearchDataTypes = Enum.GetNames(typeof(RepositoriesDataTypes)).ToList(),
-                SearchMethodTypes = Enum.GetNames(typeof(SearchMethod)).ToList(),
-                UsersCount = this.usersRepository.AllAsNoTracking().Count(),
-                AdsCount = this.advertisementsRepository.AllAsNoTracking().Count(),
-                JobsCount = this.jobRepository.AllAsNoTracking().Count(),
-                BlogsCount = this.blogRepository.AllAsNoTracking().Count(),
-                DiscussionsCount = this.discussionsRepository.AllAsNoTracking().Count(),
-                CommentsCount = this.commentsRepository.AllAsNoTracking().Count(),
-                ReviewsCount = this.customersReviesRepository.AllAsNoTracking().Count(),
-            };
+            var dashboardData = this.memoryCache
+                .GetOrCreate("StatisticCache", entry =>
+                {
+                    entry.SlidingExpiration = TimeSpan.FromSeconds(60);
+                    return this.GetData();
+                });
 
-            return data;
+            return dashboardData;
         }
 
         public async Task DeleteUserAsync(string id)
@@ -95,264 +93,31 @@
 
             if (dataTypeResult == RepositoriesDataTypes.Advertisement)
             {
-                var dataQuery = this.advertisementsRepository.AllAsNoTracking().AsQueryable();
-
-                if (methodResult == SearchMethod.Id)
-                {
-                    if (int.TryParse(searchTerm, out int id))
-                    {
-                        dataQuery = dataQuery
-                        .Where(a => a.Id == id)
-                        .AsQueryable();
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                }
-                else if (methodResult == SearchMethod.Username)
-                {
-                    dataQuery = dataQuery
-                        .Where(a => a.User.UserName == searchTerm)
-                       .AsQueryable();
-                }
-                else if (methodResult == SearchMethod.Title)
-                {
-                    dataQuery = dataQuery
-                       .Where(a => a.Title == searchTerm)
-                       .AsQueryable();
-                }
-
-                data = dataQuery
-                     .Select(d => new SearchDataDto
-                     {
-                         Id = d.Id.ToString(),
-                         Title = d.Title,
-                         Content = d.Description,
-                         Username = d.User.UserName,
-                     })
-                     .ToList();
+                data = this.GetAdvertisement(methodResult, searchTerm);
             }
             else if (dataTypeResult == RepositoriesDataTypes.BlogPost)
             {
-                var dataQuery = this.blogRepository.AllAsNoTracking().AsQueryable();
-
-                if (methodResult == SearchMethod.Id)
-                {
-                    if (int.TryParse(searchTerm, out int id))
-                    {
-                        dataQuery = dataQuery
-                        .Where(a => a.Id == id)
-                        .AsQueryable();
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                }
-                else if (methodResult == SearchMethod.Username)
-                {
-                    dataQuery = dataQuery
-                        .Where(a => a.User.UserName == searchTerm)
-                       .AsQueryable();
-                }
-                else if (methodResult == SearchMethod.Title)
-                {
-                    dataQuery = dataQuery
-                       .Where(a => a.Title == searchTerm)
-                       .AsQueryable();
-                }
-
-                data = dataQuery
-                    .Select(d => new SearchDataDto
-                    {
-                        Id = d.Id.ToString(),
-                        Title = d.Title,
-                        Content = d.Body,
-                        Username = d.User.UserName,
-                    })
-                    .ToList();
+                data = this.GetBlog(methodResult, searchTerm);
             }
             else if (dataTypeResult == RepositoriesDataTypes.Job)
             {
-                var dataQuery = this.jobRepository.AllAsNoTracking().AsQueryable();
-
-                if (methodResult == SearchMethod.Id)
-                {
-                    if (int.TryParse(searchTerm, out int id))
-                    {
-                        dataQuery = dataQuery
-                        .Where(a => a.Id == id)
-                        .AsQueryable();
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                }
-                else if (methodResult == SearchMethod.Username)
-                {
-                    dataQuery = dataQuery
-                        .Where(a => a.User.UserName == searchTerm)
-                       .AsQueryable();
-                }
-                else if (methodResult == SearchMethod.Title)
-                {
-                    dataQuery = dataQuery
-                       .Where(a => a.Title == searchTerm)
-                       .AsQueryable();
-                }
-
-                data = dataQuery
-                    .Select(d => new SearchDataDto
-                    {
-                        Id = d.Id.ToString(),
-                        Title = d.Title,
-                        Content = d.JobBody,
-                        Username = d.User.UserName,
-                    })
-                    .ToList();
+                data = this.GetJob(methodResult, searchTerm);
             }
             else if (dataTypeResult == RepositoriesDataTypes.ForumPost)
             {
-                var dataQuery = this.discussionsRepository.AllAsNoTracking().AsQueryable();
-
-                if (methodResult == SearchMethod.Id)
-                {
-                    if (int.TryParse(searchTerm, out int id))
-                    {
-                        dataQuery = dataQuery
-                        .Where(a => a.Id == id)
-                        .AsQueryable();
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                }
-                else if (methodResult == SearchMethod.Username)
-                {
-                    dataQuery = dataQuery
-                        .Where(a => a.User.UserName == searchTerm)
-                       .AsQueryable();
-                }
-                else if (methodResult == SearchMethod.Title)
-                {
-                    dataQuery = dataQuery
-                       .Where(a => a.Title == searchTerm)
-                       .AsQueryable();
-                }
-
-                data = dataQuery
-                    .Select(d => new SearchDataDto
-                    {
-                        Id = d.Id.ToString(),
-                        Title = d.Title,
-                        Content = d.Description,
-                        Username = d.User.UserName,
-                    })
-                    .ToList();
+                data = this.GetForum(methodResult, searchTerm);
             }
             else if (dataTypeResult == RepositoriesDataTypes.ForumComment)
             {
-                var dataQuery = this.commentsRepository.AllAsNoTracking().AsQueryable();
-
-                if (methodResult == SearchMethod.Id)
-                {
-                    if (int.TryParse(searchTerm, out int id))
-                    {
-                        dataQuery = dataQuery
-                        .Where(a => a.Id == id)
-                        .AsQueryable();
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                }
-                else if (methodResult == SearchMethod.Username)
-                {
-                    dataQuery = dataQuery
-                        .Where(a => a.User.UserName == searchTerm)
-                       .AsQueryable();
-                }
-                else if (methodResult == SearchMethod.Title)
-                {
-                    dataQuery = dataQuery
-                       .Where(a => a.Discussion.Title == searchTerm)
-                       .AsQueryable();
-                }
-
-                data = dataQuery
-                    .Select(d => new SearchDataDto
-                    {
-                        Id = d.Id.ToString(),
-                        Title = d.Discussion.Title,
-                        Content = d.Content,
-                        Username = d.User.UserName,
-                    })
-                    .ToList();
+                data = this.GetForumComment(methodResult, searchTerm);
             }
             else if (dataTypeResult == RepositoriesDataTypes.User)
             {
-                var dataQuery = this.usersRepository.AllAsNoTracking().AsQueryable();
-
-                if (methodResult == SearchMethod.Id)
-                {
-                    dataQuery = dataQuery
-                        .Where(a => a.Id == searchTerm)
-                        .AsQueryable();
-                }
-                else if (methodResult == SearchMethod.Username || methodResult == SearchMethod.Title)
-                {
-                    dataQuery = dataQuery
-                        .Where(a => a.UserName == searchTerm)
-                       .AsQueryable();
-                }
-
-                data = dataQuery
-                    .Select(d => new SearchDataDto
-                    {
-                        Id = d.Id,
-                        Title = d.Email,
-                        Content = $"{d.FirstName} {d.LastName}",
-                        Username = d.UserName,
-                    })
-                    .ToList();
+                data = this.GetUser(methodResult, searchTerm);
             }
             else if (dataTypeResult == RepositoriesDataTypes.Review)
             {
-                var dataQuery = this.customersReviesRepository.AllAsNoTracking().AsQueryable();
-
-                if (methodResult == SearchMethod.Id)
-                {
-                    if (int.TryParse(searchTerm, out int id))
-                    {
-                        dataQuery = dataQuery
-                        .Where(a => a.Id == id)
-                        .AsQueryable();
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                }
-                else if (methodResult == SearchMethod.Username || methodResult == SearchMethod.Title)
-                {
-                    dataQuery = dataQuery
-                        .Where(a => a.User.UserName == searchTerm)
-                       .AsQueryable();
-                }
-
-                data = dataQuery
-                    .Select(d => new SearchDataDto
-                    {
-                        Id = d.Id.ToString(),
-                        Title = d.Appraiser.UserName,
-                        Content = d.Comment,
-                        Username = d.User.UserName,
-                    })
-                    .ToList();
+                data = this.GetReview(methodResult, searchTerm);
             }
 
             var dataDto = new AdminRequestDataDto
@@ -362,6 +127,22 @@
             };
 
             return dataDto;
+        }
+
+        private AdminIndexDto GetData()
+        {
+            return new AdminIndexDto
+            {
+                SearchDataTypes = Enum.GetNames(typeof(RepositoriesDataTypes)).ToList(),
+                SearchMethodTypes = Enum.GetNames(typeof(SearchMethod)).ToList(),
+                UsersCount = this.usersRepository.AllAsNoTracking().Count(),
+                AdsCount = this.advertisementsRepository.AllAsNoTracking().Count(),
+                JobsCount = this.jobRepository.AllAsNoTracking().Count(),
+                BlogsCount = this.blogRepository.AllAsNoTracking().Count(),
+                DiscussionsCount = this.discussionsRepository.AllAsNoTracking().Count(),
+                CommentsCount = this.commentsRepository.AllAsNoTracking().Count(),
+                ReviewsCount = this.customersReviesRepository.AllAsNoTracking().Count(),
+            };
         }
 
         private void DeleteUsersData(string id)
@@ -437,6 +218,274 @@
             {
                 this.commentsRepository.Delete(comment);
             }
+        }
+
+        private IEnumerable<SearchDataDto> GetReview(SearchMethod methodResult, string searchTerm)
+        {
+            var dataQuery = this.customersReviesRepository.AllAsNoTracking().AsQueryable();
+
+            if (methodResult == SearchMethod.Id)
+            {
+                if (int.TryParse(searchTerm, out int id))
+                {
+                    dataQuery = dataQuery
+                    .Where(a => a.Id == id)
+                    .AsQueryable();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else if (methodResult == SearchMethod.Username || methodResult == SearchMethod.Title)
+            {
+                dataQuery = dataQuery
+                    .Where(a => a.User.UserName == searchTerm)
+                   .AsQueryable();
+            }
+
+            return dataQuery
+                .Select(d => new SearchDataDto
+                {
+                    Id = d.Id.ToString(),
+                    Title = d.Appraiser.UserName,
+                    Content = d.Comment,
+                    Username = d.User.UserName,
+                })
+                .ToList();
+        }
+
+        private IEnumerable<SearchDataDto> GetUser(SearchMethod methodResult, string searchTerm)
+        {
+            var dataQuery = this.usersRepository.AllAsNoTracking().AsQueryable();
+
+            if (methodResult == SearchMethod.Id)
+            {
+                dataQuery = dataQuery
+                    .Where(a => a.Id == searchTerm)
+                    .AsQueryable();
+            }
+            else if (methodResult == SearchMethod.Username || methodResult == SearchMethod.Title)
+            {
+                dataQuery = dataQuery
+                    .Where(a => a.UserName == searchTerm)
+                   .AsQueryable();
+            }
+
+            return dataQuery
+                .Select(d => new SearchDataDto
+                {
+                    Id = d.Id,
+                    Title = d.Email,
+                    Content = $"{d.FirstName} {d.LastName}",
+                    Username = d.UserName,
+                })
+                .ToList();
+        }
+
+        private IEnumerable<SearchDataDto> GetForumComment(SearchMethod methodResult, string searchTerm)
+        {
+            var dataQuery = this.commentsRepository.AllAsNoTracking().AsQueryable();
+
+            if (methodResult == SearchMethod.Id)
+            {
+                if (int.TryParse(searchTerm, out int id))
+                {
+                    dataQuery = dataQuery
+                    .Where(a => a.Id == id)
+                    .AsQueryable();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else if (methodResult == SearchMethod.Username)
+            {
+                dataQuery = dataQuery
+                    .Where(a => a.User.UserName == searchTerm)
+                   .AsQueryable();
+            }
+            else if (methodResult == SearchMethod.Title)
+            {
+                dataQuery = dataQuery
+                   .Where(a => a.Discussion.Title == searchTerm)
+                   .AsQueryable();
+            }
+
+            return dataQuery
+                .Select(d => new SearchDataDto
+                {
+                    Id = d.Id.ToString(),
+                    Title = d.Discussion.Title,
+                    Content = d.Content,
+                    Username = d.User.UserName,
+                })
+                .ToList();
+        }
+
+        private IEnumerable<SearchDataDto> GetForum(SearchMethod methodResult, string searchTerm)
+        {
+            var dataQuery = this.discussionsRepository.AllAsNoTracking().AsQueryable();
+
+            if (methodResult == SearchMethod.Id)
+            {
+                if (int.TryParse(searchTerm, out int id))
+                {
+                    dataQuery = dataQuery
+                    .Where(a => a.Id == id)
+                    .AsQueryable();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else if (methodResult == SearchMethod.Username)
+            {
+                dataQuery = dataQuery
+                    .Where(a => a.User.UserName == searchTerm)
+                   .AsQueryable();
+            }
+            else if (methodResult == SearchMethod.Title)
+            {
+                dataQuery = dataQuery
+                   .Where(a => a.Title == searchTerm)
+                   .AsQueryable();
+            }
+
+            return dataQuery
+                .Select(d => new SearchDataDto
+                {
+                    Id = d.Id.ToString(),
+                    Title = d.Title,
+                    Content = d.Description,
+                    Username = d.User.UserName,
+                })
+                .ToList();
+        }
+
+        private IEnumerable<SearchDataDto> GetJob(SearchMethod methodResult, string searchTerm)
+        {
+            var dataQuery = this.jobRepository.AllAsNoTracking().AsQueryable();
+
+            if (methodResult == SearchMethod.Id)
+            {
+                if (int.TryParse(searchTerm, out int id))
+                {
+                    dataQuery = dataQuery
+                    .Where(a => a.Id == id)
+                    .AsQueryable();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else if (methodResult == SearchMethod.Username)
+            {
+                dataQuery = dataQuery
+                    .Where(a => a.User.UserName == searchTerm)
+                   .AsQueryable();
+            }
+            else if (methodResult == SearchMethod.Title)
+            {
+                dataQuery = dataQuery
+                   .Where(a => a.Title == searchTerm)
+                   .AsQueryable();
+            }
+
+            return dataQuery
+                .Select(d => new SearchDataDto
+                {
+                    Id = d.Id.ToString(),
+                    Title = d.Title,
+                    Content = d.JobBody,
+                    Username = d.User.UserName,
+                })
+                .ToList();
+        }
+
+        private IEnumerable<SearchDataDto> GetBlog(SearchMethod methodResult, string searchTerm)
+        {
+            var dataQuery = this.blogRepository.AllAsNoTracking().AsQueryable();
+
+            if (methodResult == SearchMethod.Id)
+            {
+                if (int.TryParse(searchTerm, out int id))
+                {
+                    dataQuery = dataQuery
+                    .Where(a => a.Id == id)
+                    .AsQueryable();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else if (methodResult == SearchMethod.Username)
+            {
+                dataQuery = dataQuery
+                    .Where(a => a.User.UserName == searchTerm)
+                   .AsQueryable();
+            }
+            else if (methodResult == SearchMethod.Title)
+            {
+                dataQuery = dataQuery
+                   .Where(a => a.Title == searchTerm)
+                   .AsQueryable();
+            }
+
+            return dataQuery
+                .Select(d => new SearchDataDto
+                {
+                    Id = d.Id.ToString(),
+                    Title = d.Title,
+                    Content = d.Body,
+                    Username = d.User.UserName,
+                })
+                .ToList();
+        }
+
+        private IEnumerable<SearchDataDto> GetAdvertisement(SearchMethod methodResult, string searchTerm)
+        {
+            var dataQuery = this.advertisementsRepository.AllAsNoTracking().AsQueryable();
+
+            if (methodResult == SearchMethod.Id)
+            {
+                if (int.TryParse(searchTerm, out int id))
+                {
+                    dataQuery = dataQuery
+                    .Where(a => a.Id == id)
+                    .AsQueryable();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else if (methodResult == SearchMethod.Username)
+            {
+                dataQuery = dataQuery
+                    .Where(a => a.User.UserName == searchTerm)
+                   .AsQueryable();
+            }
+            else if (methodResult == SearchMethod.Title)
+            {
+                dataQuery = dataQuery
+                   .Where(a => a.Title == searchTerm)
+                   .AsQueryable();
+            }
+
+            return dataQuery
+                 .Select(d => new SearchDataDto
+                 {
+                     Id = d.Id.ToString(),
+                     Title = d.Title,
+                     Content = d.Description,
+                     Username = d.User.UserName,
+                 })
+                 .ToList();
         }
     }
 }

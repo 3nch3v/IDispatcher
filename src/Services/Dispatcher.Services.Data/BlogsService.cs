@@ -12,6 +12,7 @@
     using Dispatcher.Data.Models.Dtos;
     using Dispatcher.Services.Data.Contracts;
     using Dispatcher.Services.Mapping;
+    using Microsoft.Extensions.Caching.Memory;
 
     using static Dispatcher.Common.GlobalConstants.Attributes;
 
@@ -20,15 +21,18 @@
         private readonly IDeletableEntityRepository<Blog> blogsRepository;
         private readonly IDeletableEntityRepository<BlogImage> blogImagesRepository;
         private readonly IFilesService filesService;
+        private readonly IMemoryCache memoryCache;
 
         public BlogsService(
             IDeletableEntityRepository<Blog> blogsRepository,
             IDeletableEntityRepository<BlogImage> blogImagesRepository,
-            IFilesService filesService)
+            IFilesService filesService,
+            IMemoryCache memoryCache)
         {
             this.blogsRepository = blogsRepository;
             this.blogImagesRepository = blogImagesRepository;
             this.filesService = filesService;
+            this.memoryCache = memoryCache;
         }
 
         public async Task CreateAsync<T>(T input, string userId, string pictureDirectory)
@@ -128,12 +132,17 @@
             return blog;
         }
 
-        public T RandomBlogPost<T>()
+        public T RandomBlog<T>()
         {
-            var blog = this.blogsRepository.AllAsNoTracking()
-                .OrderBy(x => Guid.NewGuid())
-                .To<T>()
-                .FirstOrDefault();
+            var blog = this.memoryCache
+                .GetOrCreate("RandomBlog", entry =>
+                {
+                    entry.SlidingExpiration = TimeSpan.FromSeconds(10);
+                    return this.blogsRepository.AllAsNoTracking()
+                            .OrderBy(x => Guid.NewGuid())
+                            .To<T>()
+                            .FirstOrDefault();
+                });
 
             return blog;
         }

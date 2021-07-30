@@ -62,6 +62,23 @@
             public const string EmbedVideoPattern = @"<iframe width=""914"" height=""514"" src=""https://www.youtube.com/embed/VideoId"" title=""YouTube video player"" frameborder=""0"" allow=""accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"" allowfullscreen></iframe>";
         }
 
+        public static class ErrorMessage
+        {
+            public const string BadRequest = "The server cannot or will not process the request due to a client error";
+
+            public const string NotFound = "Sorry, we can not find the page you are looking for.";
+
+            public const string Unauthorised = "You are not authorised for this action";
+
+            public const string Forbidden = "You are not authorised for this action";
+
+            public const string ServerError = "Internal Server Error";
+
+            public const string BadGateway = "The server was acting as a gateway or proxy and received an invalid response from the upstream server.";
+
+            public const string HttpNotSupported = "HTTP Version Not Supported";
+        }
+
         public static class Forum
         {
             public const string Like = "Like";
