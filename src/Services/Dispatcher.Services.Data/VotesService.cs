@@ -90,7 +90,7 @@
                 }
             }
 
-            await this.discussionsVotes.SaveChangesAsync();
+            await this.commentsVotes.SaveChangesAsync();
         }
 
         public VoteResultsDto GetDiscussionVotes(int discussionId)

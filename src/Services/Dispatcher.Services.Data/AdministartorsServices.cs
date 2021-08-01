@@ -60,7 +60,7 @@
                 .GetOrCreate("StatisticCache", entry =>
                 {
                     entry.SlidingExpiration = TimeSpan.FromSeconds(60);
-                    return this.GetData();
+                    return this.Statistics();
                 });
 
             return dashboardData;
@@ -129,7 +129,7 @@
             return dataDto;
         }
 
-        private AdminIndexDto GetData()
+        private AdminIndexDto Statistics()
         {
             return new AdminIndexDto
             {

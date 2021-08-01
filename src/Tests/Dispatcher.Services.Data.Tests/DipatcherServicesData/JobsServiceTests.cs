@@ -12,9 +12,9 @@
     using Microsoft.Extensions.Caching.Memory;
     using Xunit;
 
-    public class JonsServiceTests
+    public class JobsServiceTests
     {
-        public JonsServiceTests()
+        public JobsServiceTests()
         {
             AutoMapperConfig.RegisterMappings(typeof(JobDto).Assembly, typeof(Job).Assembly);
         }

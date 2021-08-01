@@ -1,11 +1,5 @@
 ﻿namespace Dispatcher.Services.Data.Tests
 {
-    using System.Threading.Tasks;
-
-    using Dispatcher.Data;
-
-    using Microsoft.EntityFrameworkCore;
-
     using Xunit;
 
     public class TestsExamples
@@ -26,8 +20,9 @@
         }
 
         [Fact]
-        public async Task GetCountShouldReturnCorrectNumberUsingDbContext()
+        public void GetCountShouldReturnCorrectNumberUsingDbContext()
         {
+            ///// async Task
             ////var options = new DbContextOptionsBuilder<ApplicationDbContext>()
             ////    .UseInMemoryDatabase(databaseName: "SettingsTestDb").Options;
             ////using var dbContext = new ApplicationDbContext(options);

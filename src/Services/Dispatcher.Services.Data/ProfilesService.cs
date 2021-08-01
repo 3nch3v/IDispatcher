@@ -97,27 +97,6 @@
             return userData;
         }
 
-        public IEnumerable<T> GetComments<T>(string id)
-        {
-            var comments = this.commentsRepository.AllAsNoTracking()
-                .Where(x => x.UserId == id)
-                .OrderBy(x => x.CreatedOn)
-                .To<T>()
-                .ToList();
-
-            return comments;
-        }
-
-        public async Task CommentAsync<T>(string appraiserId, T input)
-        {
-            var comment = AutoMapperConfig.MapperInstance.Map<CustomerReview>(input);
-
-            comment.AppraiserId = appraiserId;
-
-            await this.commentsRepository.AddAsync(comment);
-            await this.commentsRepository.SaveChangesAsync();
-        }
-
         public DataManagerDto GetUserData(string id)
         {
             var userData = this.usersRepository.AllAsNoTracking()
@@ -161,6 +140,42 @@
             return userData;
         }
 
+        public string GetProfilePicturePath(string id)
+        {
+            var picture = this.profilePicturesRepository
+                .AllAsNoTracking()
+                .Where(x => x.UserId == id)
+                .FirstOrDefault();
+
+            if (picture == null)
+            {
+                return DefaultAvatarPath;
+            }
+
+            return $"{ProfilePicturePath}/{picture.Id}{picture.Extension}";
+        }
+
+        public IEnumerable<T> GetComments<T>(string id)
+        {
+            var comments = this.commentsRepository.AllAsNoTracking()
+                .Where(x => x.UserId == id)
+                .OrderBy(x => x.CreatedOn)
+                .To<T>()
+                .ToList();
+
+            return comments;
+        }
+
+        public async Task CommentAsync<T>(string appraiserId, T input)
+        {
+            var comment = AutoMapperConfig.MapperInstance.Map<CustomerReview>(input);
+
+            comment.AppraiserId = appraiserId;
+
+            await this.commentsRepository.AddAsync(comment);
+            await this.commentsRepository.SaveChangesAsync();
+        }
+
         public async Task SetProfilePictureAsync(ProfilePictureInputModel input, string pictureDirectory)
         {
             bool isInitialInstance = false;
@@ -193,21 +208,6 @@
             }
 
             await this.profilePicturesRepository.SaveChangesAsync();
-        }
-
-        public string GetProfilePicturePath(string id)
-        {
-            var picture = this.profilePicturesRepository
-                .AllAsNoTracking()
-                .Where(x => x.UserId == id)
-                .FirstOrDefault();
-
-            if (picture == null)
-            {
-                return DefaultAvatarPath;
-            }
-
-            return $"{ProfilePicturePath}/{picture.Id}{picture.Extension}";
         }
     }
 }
