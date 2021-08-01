@@ -18,17 +18,17 @@
     public class ForumController : Controller
     {
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly IForumService forumService;
-        private readonly IProfileService profileService;
-        private readonly ICommentService commentService;
+        private readonly IForumsService forumService;
+        private readonly IProfilesService profileService;
+        private readonly ICommentsService commentService;
         private readonly IStringValidatorService stringValidator;
         private readonly IPermissionsValidatorService permissionsValidator;
 
         public ForumController(
             UserManager<ApplicationUser> userManager,
-            IForumService forumService,
-            IProfileService profileService,
-            ICommentService commentService,
+            IForumsService forumService,
+            IProfilesService profileService,
+            ICommentsService commentService,
             IStringValidatorService stringValidatorService,
             IPermissionsValidatorService permissionsValidator)
         {
@@ -55,7 +55,7 @@
         [Authorize]
         public async Task<IActionResult> Create(DiscussionInputModel input)
         {
-            if (!this.stringValidator.IsStringValidDecoded(input.Description, DescriptionMinLenght))
+            if (!this.stringValidator.IsStringValid(input.Description, DescriptionMinLenght))
             {
                 this.ModelState.AddModelError("Error", EmptyBody);
             }
@@ -101,7 +101,7 @@
                 return this.Unauthorized();
             }
 
-            if (!this.stringValidator.IsStringValidDecoded(input.Description, DescriptionMinLenght))
+            if (!this.stringValidator.IsStringValid(input.Description, DescriptionMinLenght))
             {
                 this.ModelState.AddModelError("Error", EmptyBody);
             }

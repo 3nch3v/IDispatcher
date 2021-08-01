@@ -2,6 +2,6 @@
 {
     public interface IStringValidatorService
     {
-        bool IsStringValidDecoded(string input, int requiredStringLength);
+        bool IsStringValid(string input, int requiredStringLength);
     }
 }

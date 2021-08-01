@@ -48,7 +48,7 @@
         [Authorize]
         public async Task<IActionResult> Create(AdInputModel input)
         {
-            if (!this.stringValidator.IsStringValidDecoded(input.Description, DescriptionMinLength))
+            if (!this.stringValidator.IsStringValid(input.Description, DescriptionMinLength))
             {
                 this.ModelState.AddModelError("Error", EmptyBody);
             }
@@ -94,7 +94,7 @@
                 return this.Unauthorized();
             }
 
-            if (!this.stringValidator.IsStringValidDecoded(input.Description, DescriptionMinLength))
+            if (!this.stringValidator.IsStringValid(input.Description, DescriptionMinLength))
             {
                 this.ModelState.AddModelError("Error", EmptyBody);
             }
@@ -142,7 +142,7 @@
         {
             var ads = new AllAdsViewModel
             {
-                Ads = this.adsService.GetAllAds<AdViewModel>(page, AdsCount),
+                Ads = this.adsService.GetAll<AdViewModel>(page, AdsCount),
                 AdsCount = this.adsService.AdsCount(),
                 Page = page,
             };

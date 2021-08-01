@@ -4,7 +4,7 @@
 
     using Dispatcher.Data.Models.Dtos;
 
-    public interface IVoteService
+    public interface IVotesService
     {
         Task VoteDiscussionAsync(string userId, int discussionId, string voteType);
 

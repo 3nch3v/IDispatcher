@@ -6,9 +6,9 @@
 
     public class RandomBlogPostComponent : ViewComponent
     {
-        private readonly IBlogService blogService;
+        private readonly IBlogsService blogService;
 
-        public RandomBlogPostComponent(IBlogService blogService)
+        public RandomBlogPostComponent(IBlogsService blogService)
         {
             this.blogService = blogService;
         }

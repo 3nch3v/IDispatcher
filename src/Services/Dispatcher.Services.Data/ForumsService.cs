@@ -12,12 +12,12 @@
 
     using static Dispatcher.Common.GlobalConstants.Forum;
 
-    public class ForumService : IForumService
+    public class ForumsService : IForumsService
     {
         private readonly IDeletableEntityRepository<Discussion> forumRepository;
         private readonly IDeletableEntityRepository<Category> categoriesRepository;
 
-        public ForumService(
+        public ForumsService(
             IDeletableEntityRepository<Discussion> forumRepository,
             IDeletableEntityRepository<Category> categoriesRepository)
         {

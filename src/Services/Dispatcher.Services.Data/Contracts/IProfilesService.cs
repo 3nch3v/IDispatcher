@@ -6,7 +6,7 @@
     using Dispatcher.Data.Models.Dtos;
     using Dispatcher.Web.ViewModels.ProfileModels;
 
-    public interface IProfileService
+    public interface IProfilesService
     {
         string GetProfilePicturePath(string id);
 

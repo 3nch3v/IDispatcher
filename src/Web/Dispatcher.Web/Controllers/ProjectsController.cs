@@ -13,12 +13,12 @@
     public class ProjectsController : Controller
     {
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly IProjectService projectServices;
+        private readonly IProjectsService projectServices;
         private readonly IPermissionsValidatorService permissionsValidator;
 
         public ProjectsController(
             UserManager<ApplicationUser> userManager,
-            IProjectService projectServices,
+            IProjectsService projectServices,
             IPermissionsValidatorService permissionsValidator)
         {
             this.projectServices = projectServices;

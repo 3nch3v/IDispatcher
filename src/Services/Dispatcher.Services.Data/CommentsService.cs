@@ -8,11 +8,11 @@
     using Dispatcher.Services.Data.Contracts;
     using Dispatcher.Services.Mapping;
 
-    public class CommentService : ICommentService
+    public class CommentsService : ICommentsService
     {
         private readonly IDeletableEntityRepository<Comment> commentsRepository;
 
-        public CommentService(IDeletableEntityRepository<Comment> commentsRepository)
+        public CommentsService(IDeletableEntityRepository<Comment> commentsRepository)
         {
             this.commentsRepository = commentsRepository;
         }

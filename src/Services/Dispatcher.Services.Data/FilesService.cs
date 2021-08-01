@@ -8,14 +8,21 @@
 
     public class FilesService : IFilesService
     {
-        public async Task SaveFileAsync(IFormFile picture, string pictureDirectory, string pictureId, string pictureExtension)
+        public async Task SaveFileAsync(
+            IFormFile picture,
+            string pictureDirectory,
+            string pictureId,
+            string pictureExtension)
         {
             string physicalFilePath = $"{pictureDirectory}/{pictureId}{pictureExtension}";
             var fileStream = new FileStream(physicalFilePath, FileMode.Create);
             await picture.CopyToAsync(fileStream);
         }
 
-        public void DeleteFile(string pictureDirectory, string pictureId, string pictureExtension)
+        public void DeleteFile(
+            string pictureDirectory,
+            string pictureId,
+            string pictureExtension)
         {
             string physicalFilePath = $"{pictureDirectory}/{pictureId}{pictureExtension}";
 

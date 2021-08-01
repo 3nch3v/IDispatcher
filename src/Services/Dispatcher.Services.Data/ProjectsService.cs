@@ -8,11 +8,11 @@
     using Dispatcher.Services.Data.Contracts;
     using Dispatcher.Services.Mapping;
 
-    public class ProjectService : IProjectService
+    public class ProjectsService : IProjectsService
     {
         private readonly IDeletableEntityRepository<Project> projectRepository;
 
-        public ProjectService(IDeletableEntityRepository<Project> projectRepository)
+        public ProjectsService(IDeletableEntityRepository<Project> projectRepository)
         {
             this.projectRepository = projectRepository;
         }

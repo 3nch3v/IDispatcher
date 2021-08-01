@@ -6,9 +6,9 @@
 
     public class RandomJobsViewComponent : ViewComponent
     {
-        private readonly IJobService jobService;
+        private readonly IJobsService jobService;
 
-        public RandomJobsViewComponent(IJobService jobService)
+        public RandomJobsViewComponent(IJobsService jobService)
         {
             this.jobService = jobService;
         }

@@ -17,13 +17,13 @@
     public class JobsController : Controller
     {
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly IJobService jobService;
+        private readonly IJobsService jobService;
         private readonly IStringValidatorService stringValidator;
         private readonly IPermissionsValidatorService permissionsValidator;
 
         public JobsController(
             UserManager<ApplicationUser> userManager,
-            IJobService jobService,
+            IJobsService jobService,
             IStringValidatorService stringValidatorService,
             IPermissionsValidatorService permissionsValidator)
         {
@@ -43,7 +43,7 @@
         [Authorize]
         public async Task<IActionResult> Create(JobInputModel input)
         {
-            if (!this.stringValidator.IsStringValidDecoded(input.JobBody, BodyMinLength))
+            if (!this.stringValidator.IsStringValid(input.JobBody, BodyMinLength))
             {
                 this.ModelState.AddModelError("Error", EmptyBody);
             }
@@ -82,7 +82,7 @@
                 return this.Unauthorized();
             }
 
-            if (!this.stringValidator.IsStringValidDecoded(input.JobBody, BodyMinLength))
+            if (!this.stringValidator.IsStringValid(input.JobBody, BodyMinLength))
             {
                 this.ModelState.AddModelError("Error", EmptyBody);
             }

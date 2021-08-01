@@ -11,11 +11,11 @@
 
     public class CustomersReviewsController : Controller
     {
-        private readonly IProfileService profileServices;
+        private readonly IProfilesService profileServices;
         private readonly UserManager<ApplicationUser> userManager;
 
         public CustomersReviewsController(
-            IProfileService profileServices,
+            IProfilesService profileServices,
             UserManager<ApplicationUser> userManager)
         {
             this.profileServices = profileServices;

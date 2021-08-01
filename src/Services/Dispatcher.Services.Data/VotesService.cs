@@ -10,12 +10,12 @@
 
     using static Dispatcher.Common.GlobalConstants.Forum;
 
-    public class VoteService : IVoteService
+    public class VotesService : IVotesService
     {
         private readonly IRepository<DiscussionVote> discussionsVotes;
         private readonly IRepository<CommentVote> commentsVotes;
 
-        public VoteService(
+        public VotesService(
             IRepository<DiscussionVote> discussionsVotes,
             IRepository<CommentVote> commentsVotes)
         {

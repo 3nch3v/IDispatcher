@@ -16,7 +16,7 @@
 
     using static Dispatcher.Common.GlobalConstants.Attributes;
 
-    public class BlogsService : IBlogService
+    public class BlogsService : IBlogsService
     {
         private readonly IDeletableEntityRepository<Blog> blogsRepository;
         private readonly IDeletableEntityRepository<BlogImage> blogImagesRepository;
@@ -137,7 +137,7 @@
             var blog = this.memoryCache
                 .GetOrCreate("RandomBlog", entry =>
                 {
-                    entry.SlidingExpiration = TimeSpan.FromSeconds(10);
+                    entry.SlidingExpiration = TimeSpan.FromSeconds(7);
                     return this.blogsRepository.AllAsNoTracking()
                             .OrderBy(x => Guid.NewGuid())
                             .To<T>()

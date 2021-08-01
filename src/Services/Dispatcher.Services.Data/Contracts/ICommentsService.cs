@@ -2,7 +2,7 @@
 {
     using System.Threading.Tasks;
 
-    public interface ICommentService
+    public interface ICommentsService
     {
         string GetCreatorId(int dataId);
 

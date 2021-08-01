@@ -1,21 +1,14 @@
 ﻿namespace Dispatcher.Services.Data.Tests
 {
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
 
     using Dispatcher.Data;
-    using Dispatcher.Data.Common.Repositories;
-    using Dispatcher.Data.Models;
-    using Dispatcher.Data.Repositories;
 
     using Microsoft.EntityFrameworkCore;
 
-    using Moq;
-
     using Xunit;
 
-    public class SettingsServiceTests
+    public class TestsExamples
     {
         [Fact]
         public void GetCountShouldReturnCorrectNumber()
@@ -35,17 +28,32 @@
         [Fact]
         public async Task GetCountShouldReturnCorrectNumberUsingDbContext()
         {
-            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-                .UseInMemoryDatabase(databaseName: "SettingsTestDb").Options;
-            using var dbContext = new ApplicationDbContext(options);
+            ////var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+            ////    .UseInMemoryDatabase(databaseName: "SettingsTestDb").Options;
+            ////using var dbContext = new ApplicationDbContext(options);
             ////dbContext.Settings.Add(new Setting());
             ////dbContext.Settings.Add(new Setting());
             ////dbContext.Settings.Add(new Setting());
-            await dbContext.SaveChangesAsync();
+            ////await dbContext.SaveChangesAsync();
 
             ////using var repository = new EfDeletableEntityRepository<Setting>(dbContext);
             ////var service = new SettingsService(repository);
             ////Assert.Equal(3, service.GetCount());
+        }
+
+        [Fact]
+        public void AdsCountShouldeReturnCorrectCountWithMock()
+        {
+            ////    var repository = new Mock<IDeletableEntityRepository<Advertisement>>();
+            ////    repository.Setup(r => r.AllAsNoTracking()).Returns(new List<Advertisement>
+            ////                                                {
+            ////                                                    new Advertisement(),
+            ////                                                    new Advertisement(),
+            ////                                                    new Advertisement(),
+            ////                                                }.AsQueryable());
+
+            ////    var service = new AdsService(repository.Object, null, null);
+            ////    Assert.Equal(3, service.AdsCount());
         }
     }
 }

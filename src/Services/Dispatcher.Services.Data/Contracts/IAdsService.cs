@@ -10,7 +10,7 @@
 
         IEnumerable<T> SearchResult<T>(int page, int pageEntitiesCount, string searchParams);
 
-        IEnumerable<T> GetAllAds<T>(int page, int pageEntitiesCount);
+        IEnumerable<T> GetAll<T>(int page, int pageEntitiesCount);
 
         IEnumerable<T> GetAllAdTypes<T>();
 

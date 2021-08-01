@@ -12,11 +12,11 @@
 
     public class ProfilesController : Controller
     {
-        private readonly IProfileService profileService;
+        private readonly IProfilesService profileService;
         private readonly UserManager<ApplicationUser> userManager;
 
         public ProfilesController(
-            IProfileService profileService,
+            IProfilesService profileService,
             UserManager<ApplicationUser> userManager)
         {
             this.profileService = profileService;

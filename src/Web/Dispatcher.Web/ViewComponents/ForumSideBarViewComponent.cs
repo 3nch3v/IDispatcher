@@ -8,9 +8,9 @@
 
     public class ForumSideBarViewComponent : ViewComponent
     {
-        private readonly IForumService forumServices;
+        private readonly IForumsService forumServices;
 
-        public ForumSideBarViewComponent(IForumService forumServices)
+        public ForumSideBarViewComponent(IForumsService forumServices)
         {
             this.forumServices = forumServices;
         }

@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    public interface IJobService : IBaseService
+    public interface IJobsService : IBaseService
     {
         int JobsCount();
 

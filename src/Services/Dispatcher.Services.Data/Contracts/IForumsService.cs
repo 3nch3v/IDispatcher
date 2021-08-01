@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    public interface IForumService : IBaseService
+    public interface IForumsService : IBaseService
     {
         int GetDiscussionsCount(string category);
 

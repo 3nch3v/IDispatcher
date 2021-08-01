@@ -29,6 +29,8 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Data\Dispatcher.Data\Dispatcher.Data.csproj" />
     <ProjectReference Include="..\..\Services\Dispatcher.Services.Data\Dispatcher.Services.Data.csproj" />
+    <ProjectReference Include="..\..\Services\Dispatcher.Services\Dispatcher.Services.csproj" />
+    <ProjectReference Include="..\..\Web\Dispatcher.Web\Dispatcher.Web.csproj" />
   </ItemGroup>
 
 </Project>

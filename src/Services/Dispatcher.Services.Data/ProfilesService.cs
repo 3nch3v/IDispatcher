@@ -15,14 +15,14 @@
 
     using static Dispatcher.Common.GlobalConstants.User;
 
-    public class ProfileService : IProfileService
+    public class ProfilesService : IProfilesService
     {
         private readonly IDeletableEntityRepository<ApplicationUser> usersRepository;
         private readonly IDeletableEntityRepository<CustomerReview> commentsRepository;
         private readonly IDeletableEntityRepository<ProfilePicture> profilePicturesRepository;
         private readonly IFilesService filesService;
 
-        public ProfileService(
+        public ProfilesService(
             IDeletableEntityRepository<ApplicationUser> usersRepository,
             IDeletableEntityRepository<CustomerReview> commentsRepository,
             IDeletableEntityRepository<ProfilePicture> profilePicturesRepository,

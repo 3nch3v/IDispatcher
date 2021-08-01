@@ -20,13 +20,13 @@
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
-        private readonly IProfileService profileServices;
+        private readonly IProfilesService profileServices;
         private readonly IWebHostEnvironment environment;
 
         public IndexModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            IProfileService profileServices,
+            IProfilesService profileServices,
             IWebHostEnvironment environment)
         {
             this.userManager = userManager;

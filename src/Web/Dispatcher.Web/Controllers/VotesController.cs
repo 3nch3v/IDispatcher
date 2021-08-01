@@ -14,11 +14,11 @@
     public class VotesController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly IVoteService voteServices;
+        private readonly IVotesService voteServices;
 
         public VotesController(
             UserManager<ApplicationUser> userManager,
-            IVoteService voteServices)
+            IVotesService voteServices)
         {
             this.userManager = userManager;
             this.voteServices = voteServices;

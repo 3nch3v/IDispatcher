@@ -11,7 +11,7 @@
     using Dispatcher.Services.Mapping;
     using Microsoft.Extensions.Caching.Memory;
 
-    public class JobsService : IJobService
+    public class JobsService : IJobsService
     {
         private readonly IDeletableEntityRepository<Job> jobRepository;
         private readonly IMemoryCache memoryCache;
@@ -111,7 +111,7 @@
             var jobs = this.memoryCache
                 .GetOrCreate("RandomJobs", entry =>
                 {
-                    entry.SlidingExpiration = TimeSpan.FromSeconds(7);
+                    entry.SlidingExpiration = TimeSpan.FromSeconds(3);
                     return this.jobRepository
                         .AllAsNoTracking()
                         .OrderByDescending(j => Guid.NewGuid())

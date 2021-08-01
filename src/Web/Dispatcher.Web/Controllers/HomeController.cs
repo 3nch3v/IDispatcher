@@ -22,21 +22,23 @@
         [ResponseCache(Duration = 60, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error(int code)
         {
-            switch (code)
-            {
-                case 400: this.ViewBag.ErrorMessage = ErrorMessage.BadRequest; break;
-                case 401: this.ViewBag.ErrorMessage = ErrorMessage.Unauthorised; break;
-                case 403: this.ViewBag.ErrorMessage = ErrorMessage.Forbidden; break;
-                case 404: this.ViewBag.ErrorMessage = ErrorMessage.NotFound; break;
-                case 500: this.ViewBag.ErrorMessage = ErrorMessage.ServerError; break;
-                case 502: this.ViewBag.ErrorMessage = ErrorMessage.BadGateway; break;
-                case 505: this.ViewBag.ErrorMessage = ErrorMessage.HttpNotSupported; break;
-                default:
-                    this.ViewBag.ErrorMessage = ErrorMessage.NotFound;
-                    break;
-            }
-
+            this.ViewBag.ErrorMessage = this.GetMessage(code);
             return this.View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? this.HttpContext.TraceIdentifier });
+        }
+
+        private string GetMessage(int code)
+        {
+            return code switch
+            {
+                400 => ErrorMessage.BadRequest,
+                401 => ErrorMessage.Unauthorised,
+                403 => ErrorMessage.Forbidden,
+                404 => ErrorMessage.NotFound,
+                500 => ErrorMessage.ServerError,
+                502 => ErrorMessage.BadGateway,
+                505 => ErrorMessage.HttpNotSupported,
+                _ => this.ViewBag.ErrorMessage = ErrorMessage.NotFound,
+            };
         }
     }
 }

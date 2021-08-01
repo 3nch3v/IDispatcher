@@ -3,10 +3,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    using Dispatcher.Data.Models.BlogModels;
-    using Dispatcher.Data.Models.Dtos;
-
-    public interface IBlogService
+    public interface IBlogsService
     {
         Task CreateAsync<T>(T input, string id, string pictureDirectory);
 

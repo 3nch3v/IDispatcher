@@ -18,14 +18,14 @@
     public class BlogsController : Controller
     {
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly IBlogService blogServie;
+        private readonly IBlogsService blogServie;
         private readonly IWebHostEnvironment environment;
         private readonly IStringValidatorService stringValidator;
         private readonly IPermissionsValidatorService permissionsValidator;
 
         public BlogsController(
             UserManager<ApplicationUser> userManager,
-            IBlogService blogServie,
+            IBlogsService blogServie,
             IWebHostEnvironment environment,
             IStringValidatorService stringValidator,
             IPermissionsValidatorService permissionsValidator)
@@ -47,7 +47,7 @@
         [Authorize]
         public async Task<IActionResult> Create(BlogInputModel input)
         {
-            if (!this.stringValidator.IsStringValidDecoded(input.Body, BodyMinLength))
+            if (!this.stringValidator.IsStringValid(input.Body, BodyMinLength))
             {
                 this.ModelState.AddModelError("Error", EmptyBody);
             }
@@ -88,7 +88,7 @@
                 return this.Unauthorized();
             }
 
-            if (!this.stringValidator.IsStringValidDecoded(input.Body, BodyMinLength))
+            if (!this.stringValidator.IsStringValid(input.Body, BodyMinLength))
             {
                 this.ModelState.AddModelError("Error", EmptyBody);
             }

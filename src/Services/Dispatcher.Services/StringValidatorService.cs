@@ -8,7 +8,7 @@
 
     public class StringValidatorService : IStringValidatorService
     {
-        public bool IsStringValidDecoded(string input, int requiredStringLength)
+        public bool IsStringValid(string input, int requiredStringLength)
         {
             string decodedString = string.IsNullOrWhiteSpace(input) ? null : this.HtmlDecoder(input);
 

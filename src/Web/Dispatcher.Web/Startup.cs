@@ -67,22 +67,22 @@
 
             services.AddSingleton(this.configuration);
 
-            services.AddAutoMapper(typeof(IBlogService));
+            services.AddAutoMapper(typeof(IBlogsService));
 
             services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddScoped<IDbQueryRunner, DbQueryRunner>();
 
             services.AddTransient<IEmailSender>(x => new SendGridEmailSender(this.configuration["SendGrid:ApiKey"]));
-            services.AddTransient<IBlogService, BlogsService>();
-            services.AddTransient<IJobService, JobsService>();
+            services.AddTransient<IBlogsService, BlogsService>();
+            services.AddTransient<IJobsService, JobsService>();
             services.AddTransient<IAdsService, AdsService>();
-            services.AddTransient<IProjectService, ProjectService>();
-            services.AddTransient<IForumService, ForumService>();
-            services.AddTransient<IVoteService, VoteService>();
-            services.AddTransient<IProfileService, ProfileService>();
+            services.AddTransient<IProjectsService, ProjectsService>();
+            services.AddTransient<IForumsService, ForumsService>();
+            services.AddTransient<IVotesService, VotesService>();
+            services.AddTransient<IProfilesService, ProfilesService>();
             services.AddTransient<IStringValidatorService, StringValidatorService>();
-            services.AddTransient<ICommentService, CommentService>();
+            services.AddTransient<ICommentsService, CommentsService>();
             services.AddTransient<IAdministartorsServices, AdministartorsServices>();
             services.AddTransient<IPermissionsValidatorService, PermissionsValidatorService>();
             services.AddTransient<IFilesService, FilesService>();
