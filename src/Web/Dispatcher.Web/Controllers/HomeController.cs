@@ -19,7 +19,7 @@
             return this.View();
         }
 
-        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.None, NoStore = true)]
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error(int code)
         {
             this.ViewBag.ErrorMessage = this.GetMessage(code);
