@@ -20,20 +20,14 @@ The focus of the project is the ability to build a back-end project with the ASP
 
 
 === Project map ====
-
-- das
-- ds
-- ds
- - das
- - sda
-
- Home
-  	- Find Talent
-        -	Search
-        -	Create
-        - Read Ad    
-           - Edit (only owner)
-    	      - Delete (only owner)
+Home
+- Find Talent
+  -	Search
+  -	Create
+  - Read Ad    
+    - Edit (only owner)
+    - Delete (only owner)
+    
   =>	Find Job
         o	Search
         o	Create
