@@ -22,12 +22,12 @@ The focus of the project is the ability to build a back-end project with the ASP
 === Project map ====
 
  Home
-  =>	Find Talent
-        o	Search
-        o	Create
-        o	Read Ad    
-             - Edit (only owner)
-    	        - Delete (only owner)
+  *=>	Find Talent
+        *o	Search
+        *o	Create
+        *o	Read Ad    
+             *- Edit (only owner)
+    	        *- Delete (only owner)
   =>	Find Job
         o	Search
         o	Create
