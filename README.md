@@ -1,6 +1,6 @@
-==================================
+===========================================
 # IDispatcher ASP.NET Core Project
-==================================
+===========================================
 
 IDispatcher is my web project defence for the module ASP.NET Core in SoftUni.
 It is a website for freelancers, employers and customers, with a forum and blog section.
@@ -19,9 +19,9 @@ The focus of the project is the ability to build a back-end project with the ASP
  - Unit Tests 
 
 
-###=== Project map ====
+### === Project map ====
 
-###### Home 
+##### Home 
 
 - Find Talent
   -	Search
