@@ -19,8 +19,10 @@ The focus of the project is the ability to build a back-end project with the ASP
  - Unit Tests 
 
 
-=== Project map ====
-Home
+###=== Project map ====
+
+###### Home 
+
 - Find Talent
   -	Search
   -	Create
@@ -28,37 +30,41 @@ Home
     - Edit (only owner)
     - Delete (only owner)
     
-  =>	Find Job
-        o	Search
-        o	Create
-        o	Read Ad
-            -	Edit (only owner)
-            -	Delete (only owner)
-  =>	Forum
-        o	Create
-        o	Read a post
-           -	Edit (only owner)
-           -	Delete (only owner)
-           -	Set to Solved (only owner)
-           -	Comment
-           -	Vote
-  =>	Blog
-        o	Create
-        o	Read/Watch video
-           -	Edit (only owner)
-           -	Delete (only owner)
-  =>	Register
-  =>	Login
-  =>	Edit profile
-        o	Profile
-        o	Email
-        o	Password
-        o	Data manager
-            -	Add (all data types)
-            -	Delete (all data types)
-            -	Edit (all data types)
-        o	Profile review
-  =>	Logout
-  =>	Admin (only for Admin users)
-        o Administration (Admin Dashboard)
-            - Data Access (all kinds of data)
+- Find Job
+  - Search
+  - Create
+  - Read Ad
+    -	Edit (only owner)
+    -	Delete (only owner)
+    
+- Forum
+  - Create
+  - Read a post
+    - Edit (only owner)
+    - Delete (only owner)
+    - Set to Solved (only owner)
+    - Comment
+    - Vote
+   
+- Blog
+  - Create
+  - Read/Watch video
+    - Edit (only owner)
+    - Delete (only owner)
+	    
+- Register
+- Login
+- Edit profile
+  - Profile
+  - Email
+  - Password
+  - Data manager
+    - Add (all data types)
+    - Delete (all data types)
+    - Edit (all data types)
+  - Profile review
+
+- Logout
+- Admin (only for Admin users)
+  - Administration (Admin Dashboard)
+    - Data Access (all kinds of data)
