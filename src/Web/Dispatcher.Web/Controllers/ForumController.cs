@@ -1,11 +1,11 @@
 ﻿namespace Dispatcher.Web.Controllers
 {
-    using System.Linq;
     using System.Threading.Tasks;
 
     using Dispatcher.Data.Models;
     using Dispatcher.Services.Contracts;
     using Dispatcher.Services.Data.Contracts;
+    using Dispatcher.Web.Infrastructure;
     using Dispatcher.Web.ViewModels.ForumModels;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
@@ -14,6 +14,7 @@
     using static Dispatcher.Common.GlobalConstants;
     using static Dispatcher.Common.GlobalConstants.Forum;
     using static Dispatcher.Common.GlobalConstants.PageEntities;
+    using static Dispatcher.Common.GlobalConstants.User;
 
     public class ForumController : Controller
     {
@@ -22,22 +23,19 @@
         private readonly IProfilesService profileService;
         private readonly ICommentsService commentService;
         private readonly IStringValidatorService stringValidator;
-        private readonly IPermissionsValidatorService permissionsValidator;
 
         public ForumController(
             UserManager<ApplicationUser> userManager,
             IForumsService forumService,
             IProfilesService profileService,
             ICommentsService commentService,
-            IStringValidatorService stringValidatorService,
-            IPermissionsValidatorService permissionsValidator)
+            IStringValidatorService stringValidatorService)
         {
             this.forumService = forumService;
             this.userManager = userManager;
             this.profileService = profileService;
             this.commentService = commentService;
             this.stringValidator = stringValidatorService;
-            this.permissionsValidator = permissionsValidator;
         }
 
         [Authorize]
@@ -153,7 +151,8 @@
 
             var forumDiscussions = new ForumDiscussionsViewModel
             {
-                AllForumDiscussions = this.forumService.GetAllForumDiscussions<SingleForumDiscussionsViewModel>(page, ForumCount, this.TempData["Category"].ToString()),
+                AllForumDiscussions = this.forumService
+                    .GetAllForumDiscussions<SingleForumDiscussionsViewModel>(page, ForumCount, this.TempData["Category"].ToString()),
                 ForumDiscussionsCount = this.forumService.GetDiscussionsCount(category),
                 Page = page,
             };
@@ -190,11 +189,7 @@
         [Authorize]
         public async Task<IActionResult> DeleteComment(int id, int discussionId)
         {
-            var hasPermission = this.permissionsValidator.HasPermission(
-                this.commentService.GetCreatorId(id),
-                this.userManager.GetUserId(this.User));
-
-            if (!hasPermission.Result)
+            if (!this.HasPermission(id))
             {
                 return this.Unauthorized();
             }
@@ -210,12 +205,9 @@
         }
 
         private bool HasPermission(int dataId)
-        {
-            var hasPermission = this.permissionsValidator.HasPermission(
-                this.forumService.GetCreatorId(dataId),
-                this.userManager.GetUserId(this.User));
-
-            return hasPermission.Result;
-        }
+            => PermissionsValidator.HasPermission(
+                    this.forumService.GetCreatorId(dataId),
+                    this.userManager.GetUserId(this.User),
+                    this.User.IsInRole(AdministratorRole));
     }
 }

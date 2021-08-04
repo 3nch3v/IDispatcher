@@ -1,6 +1,6 @@
 ﻿namespace Dispatcher.Services.Data.Tests.CustumAttributes
 {
-    using Dispatcher.Data.Common.CustomAttributes;
+    using Dispatcher.Web.Infrastructure.CustomAttributes;
     using Xunit;
 
     public class UrlAllowedExtensionsAttributeTests

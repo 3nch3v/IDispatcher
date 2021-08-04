@@ -1,10 +1,12 @@
 ﻿namespace Dispatcher.Web.Controllers
 {
+    using System.IO;
     using System.Threading.Tasks;
 
     using Dispatcher.Data.Models;
     using Dispatcher.Services.Contracts;
     using Dispatcher.Services.Data.Contracts;
+    using Dispatcher.Web.Infrastructure;
     using Dispatcher.Web.ViewModels.BlogModels;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Hosting;
@@ -14,6 +16,7 @@
     using static Dispatcher.Common.GlobalConstants;
     using static Dispatcher.Common.GlobalConstants.Blog;
     using static Dispatcher.Common.GlobalConstants.PageEntities;
+    using static Dispatcher.Common.GlobalConstants.User;
 
     public class BlogsController : Controller
     {
@@ -21,20 +24,17 @@
         private readonly IBlogsService blogServie;
         private readonly IWebHostEnvironment environment;
         private readonly IStringValidatorService stringValidator;
-        private readonly IPermissionsValidatorService permissionsValidator;
 
         public BlogsController(
             UserManager<ApplicationUser> userManager,
             IBlogsService blogServie,
             IWebHostEnvironment environment,
-            IStringValidatorService stringValidator,
-            IPermissionsValidatorService permissionsValidator)
+            IStringValidatorService stringValidator)
         {
             this.blogServie = blogServie;
             this.userManager = userManager;
             this.environment = environment;
             this.stringValidator = stringValidator;
-            this.permissionsValidator = permissionsValidator;
         }
 
         [Authorize]
@@ -57,11 +57,15 @@
                 return this.View(input);
             }
 
-            string pictureDirectory = $"{this.environment.WebRootPath}{BlogPicturePath}";
+            byte[] picture = await input.Picture.GetBytes();
+
+            string picturePath = $"{this.environment.WebRootPath}{BlogPicturePath}";
+
+            string pictureExtension = Path.GetExtension(input.Picture.FileName);
 
             var userId = this.userManager.GetUserId(this.User);
 
-            await this.blogServie.CreateAsync<BlogInputModel>(input, userId, pictureDirectory);
+            await this.blogServie.CreateAsync<BlogInputModel>(input, userId, picture, picturePath, pictureExtension);
 
             return this.RedirectToAction(nameof(this.All));
         }
@@ -81,9 +85,9 @@
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Edit(int id, EditBlogPostInputmodel input)
+        public async Task<IActionResult> Edit(int blogId, EditBlogPostInputmodel input)
         {
-            if (!this.HasPermission(id))
+            if (!this.HasPermission(blogId))
             {
                 return this.Unauthorized();
             }
@@ -95,16 +99,20 @@
 
             if (!this.ModelState.IsValid)
             {
-                var editPost = this.blogServie.GetById<EditBlogPostInputmodel>(id);
+                var editPost = this.blogServie.GetById<EditBlogPostInputmodel>(blogId);
 
                 return this.View(editPost);
             }
 
-            string pictureDirectory = $"{this.environment.WebRootPath}{BlogPicturePath}";
+            byte[] picture = await input.Picture.GetBytes();
 
-            await this.blogServie.UpdateAsync<EditBlogPostInputmodel>(input, id, pictureDirectory);
+            string picturePath = $"{this.environment.WebRootPath}{BlogPicturePath}";
 
-            return this.RedirectToAction(nameof(this.Post), new { id });
+            string pictureExtension = Path.GetExtension(input.Picture.FileName);
+
+            await this.blogServie.UpdateAsync<EditBlogPostInputmodel>(input, blogId, picture, picturePath, pictureExtension);
+
+            return this.RedirectToAction(nameof(this.Post), new { blogId });
         }
 
         [Authorize]
@@ -145,12 +153,9 @@
         }
 
         private bool HasPermission(int dataId)
-        {
-            var hasPermission = this.permissionsValidator.HasPermission(
-                this.blogServie.GetCreatorId(dataId),
-                this.userManager.GetUserId(this.User));
-
-            return hasPermission.Result;
-        }
+            => PermissionsValidator.HasPermission(
+                    this.blogServie.GetCreatorId(dataId),
+                    this.userManager.GetUserId(this.User),
+                    this.User.IsInRole(AdministratorRole));
     }
 }

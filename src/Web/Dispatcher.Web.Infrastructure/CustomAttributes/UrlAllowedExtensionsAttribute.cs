@@ -1,4 +1,4 @@
-﻿namespace Dispatcher.Data.Common.CustomAttributes
+﻿namespace Dispatcher.Web.Infrastructure.CustomAttributes
 {
     using System;
     using System.ComponentModel.DataAnnotations;
@@ -14,7 +14,7 @@
             this.extensions = extensions;
         }
 
-        public string GetErrorMessage => $"Unsupported Format! The allowed picture formats are: .jpg, .jpeg, .png, .gif, .bmp;";
+        public static string GetErrorMessage => $"Unsupported Format! The allowed picture formats are: .jpg, .jpeg, .png, .gif, .bmp;";
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
@@ -26,7 +26,7 @@
 
                 if (!this.extensions.Contains(extension.ToLower()))
                 {
-                    return new ValidationResult(this.GetErrorMessage);
+                    return new ValidationResult(GetErrorMessage);
                 }
             }
 

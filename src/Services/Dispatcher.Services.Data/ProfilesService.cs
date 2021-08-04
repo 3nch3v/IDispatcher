@@ -1,7 +1,6 @@
 ﻿namespace Dispatcher.Services.Data
 {
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -11,7 +10,6 @@
     using Dispatcher.Data.Models.UserInfoModels;
     using Dispatcher.Services.Data.Contracts;
     using Dispatcher.Services.Mapping;
-    using Dispatcher.Web.ViewModels.ProfileModels;
 
     using static Dispatcher.Common.GlobalConstants.User;
 
@@ -176,35 +174,33 @@
             await this.commentsRepository.SaveChangesAsync();
         }
 
-        public async Task SetProfilePictureAsync(ProfilePictureInputModel input, string pictureDirectory)
+        public async Task SetProfilePictureAsync(string userId, byte[] picture, string pictureExtension,  string picturePath)
         {
             bool isInitialInstance = false;
 
-            var picture = this.profilePicturesRepository.All().FirstOrDefault(u => u.UserId == input.UserId);
+            var pictureData = this.profilePicturesRepository.All().FirstOrDefault(u => u.UserId == userId);
 
-            string pictureExtension = Path.GetExtension(input.Picture.FileName);
-
-            if (picture != null)
+            if (pictureData != null)
             {
-                this.filesService.DeleteFile(pictureDirectory, picture.Id, picture.Extension);
+                this.filesService.DeleteFile(picturePath, pictureData.Id, pictureData.Extension);
             }
-            else if (picture == null)
+            else
             {
-                picture = new ProfilePicture
+                pictureData = new ProfilePicture
                 {
-                    UserId = input.UserId,
+                    UserId = userId,
                 };
 
                 isInitialInstance = true;
             }
 
-            picture.Extension = pictureExtension;
+            pictureData.Extension = pictureExtension;
 
-            await this.filesService.SaveFileAsync(input.Picture, pictureDirectory, picture.Id, pictureExtension);
+            await this.filesService.SaveFileAsync(picture, picturePath, pictureData.Id, pictureExtension);
 
             if (isInitialInstance)
             {
-                await this.profilePicturesRepository.AddAsync(picture);
+                await this.profilePicturesRepository.AddAsync(pictureData);
             }
 
             await this.profilePicturesRepository.SaveChangesAsync();

@@ -4,7 +4,6 @@
     using System.Threading.Tasks;
 
     using Dispatcher.Data.Models.Dtos;
-    using Dispatcher.Web.ViewModels.ProfileModels;
 
     public interface IProfilesService
     {
@@ -18,6 +17,6 @@
 
         Task CommentAsync<T>(string appraiserId, T input);
 
-        Task SetProfilePictureAsync(ProfilePictureInputModel input, string pictureDirectory);
+        Task SetProfilePictureAsync(string userId, byte[] picture, string pictureExtension, string picturePath);
     }
 }

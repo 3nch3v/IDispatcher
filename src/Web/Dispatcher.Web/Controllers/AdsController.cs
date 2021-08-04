@@ -5,6 +5,7 @@
     using Dispatcher.Data.Models;
     using Dispatcher.Services.Contracts;
     using Dispatcher.Services.Data.Contracts;
+    using Dispatcher.Web.Infrastructure;
     using Dispatcher.Web.ViewModels.AdModels;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
@@ -13,23 +14,21 @@
     using static Dispatcher.Common.GlobalConstants;
     using static Dispatcher.Common.GlobalConstants.Advertisement;
     using static Dispatcher.Common.GlobalConstants.PageEntities;
+    using static Dispatcher.Common.GlobalConstants.User;
 
     public class AdsController : Controller
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IAdsService adsService;
         private readonly IStringValidatorService stringValidator;
-        private readonly IPermissionsValidatorService permissionsValidator;
 
         public AdsController(
              UserManager<ApplicationUser> userManager,
              IAdsService adsService,
-             IStringValidatorService stringValidator,
-             IPermissionsValidatorService permissionsValidator)
+             IStringValidatorService stringValidator)
         {
             this.adsService = adsService;
             this.stringValidator = stringValidator;
-            this.permissionsValidator = permissionsValidator;
             this.userManager = userManager;
         }
 
@@ -170,12 +169,9 @@
         }
 
         private bool HasPermission(int dataId)
-        {
-            var hasPermission = this.permissionsValidator.HasPermission(
-                this.adsService.GetCreatorId(dataId),
-                this.userManager.GetUserId(this.User));
-
-            return hasPermission.Result;
-        }
+            => PermissionsValidator.HasPermission(
+                    this.adsService.GetCreatorId(dataId),
+                    this.userManager.GetUserId(this.User),
+                    this.User.IsInRole(AdministratorRole));
     }
 }

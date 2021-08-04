@@ -35,9 +35,8 @@
             this.memoryCache = memoryCache;
         }
 
-        public async Task CreateAsync<T>(T input, string userId, string pictureDirectory)
+        public async Task CreateAsync<T>(T input, string userId, byte[] picture, string picturePath, string pictureExtension)
         {
-            var blogDto = AutoMapperConfig.MapperInstance.Map<BlogPostDto>(input);
             var blog = AutoMapperConfig.MapperInstance.Map<Blog>(input);
 
             blog.UserId = userId;
@@ -50,9 +49,9 @@
                 blog.YouTubeVideoId = videoId;
             }
 
-            if (blogDto.Picture != null)
+            if (picture != null)
             {
-                var image = await this.CreateImageAsync(blog, blogDto, pictureDirectory);
+                var image = await this.CreateImageAsync(blog, picture, picturePath, pictureExtension);
 
                 blog.BlogImage = image;
             }
@@ -61,7 +60,7 @@
             await this.blogsRepository.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync<T>(T input, int id, string pictureDirectory)
+        public async Task UpdateAsync<T>(T input, int id, byte[] picture, string picturePath, string pictureExtension)
         {
             var blogDto = AutoMapperConfig.MapperInstance.Map<BlogPostDto>(input);
 
@@ -93,7 +92,7 @@
 
             if (blogDto.Picture != null)
             {
-                var image = await this.CreateImageAsync(blog, blogDto, pictureDirectory);
+                var image = await this.CreateImageAsync(blog, picture, picturePath, pictureExtension);
 
                 blog.BlogImage = image;
             }
@@ -161,26 +160,24 @@
             return blog?.UserId;
         }
 
-        private async Task<BlogImage> CreateImageAsync(Blog blog, BlogPostDto input, string pictureDirectory)
+        private async Task<BlogImage> CreateImageAsync(Blog blog, byte[] picture, string picturePath, string pictureExtension)
         {
-            var picture = this.blogImagesRepository.All().FirstOrDefault(i => i.BlogId == blog.Id);
+            var pictureData = this.blogImagesRepository.All().FirstOrDefault(i => i.BlogId == blog.Id);
 
-            string pictureExtension = Path.GetExtension(input.Picture.FileName);
-
-            if (picture != null)
+            if (pictureData != null)
             {
-                this.filesService.DeleteFile(pictureDirectory, picture.Id, picture.Extension);
+                this.filesService.DeleteFile(picturePath, pictureData.Id, pictureData.Extension);
             }
             else
             {
-                picture = new BlogImage();
+                pictureData = new BlogImage();
             }
 
-            picture.Extension = pictureExtension;
+            pictureData.Extension = pictureExtension;
 
-            await this.filesService.SaveFileAsync(input.Picture, pictureDirectory, picture.Id, pictureExtension);
+            await this.filesService.SaveFileAsync(picture, picturePath, pictureData.Id, pictureExtension);
 
-            return picture;
+            return pictureData;
         }
     }
 }

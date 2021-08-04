@@ -4,19 +4,18 @@
     using System.Threading.Tasks;
 
     using Dispatcher.Services.Data.Contracts;
-    using Microsoft.AspNetCore.Http;
 
     public class FilesService : IFilesService
     {
         public async Task SaveFileAsync(
-            IFormFile picture,
+            byte[] picture,
             string pictureDirectory,
             string pictureId,
             string pictureExtension)
         {
             string physicalFilePath = $"{pictureDirectory}/{pictureId}{pictureExtension}";
-            var fileStream = new FileStream(physicalFilePath, FileMode.Create);
-            await picture.CopyToAsync(fileStream);
+
+            await File.WriteAllBytesAsync(physicalFilePath, picture);
         }
 
         public void DeleteFile(

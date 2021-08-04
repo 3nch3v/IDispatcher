@@ -1,12 +1,13 @@
 ﻿namespace Dispatcher.Web.Areas.Identity.Pages.Account.Manage
 {
     using System.ComponentModel.DataAnnotations;
+    using System.IO;
     using System.Threading.Tasks;
 
-    using Dispatcher.Data.Common.CustomAttributes;
     using Dispatcher.Data.Models;
     using Dispatcher.Services.Data.Contracts;
-    using Dispatcher.Web.ViewModels.ProfileModels;
+    using Dispatcher.Web.Infrastructure;
+    using Dispatcher.Web.Infrastructure.CustomAttributes;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
@@ -149,15 +150,13 @@
 
             if (this.Input.UploadPicture != null)
             {
-                string pictureDirectory = $"{this.environment.WebRootPath}{ProfilePicturePath}";
+                string picturePath = $"{this.environment.WebRootPath}{ProfilePicturePath}";
 
                 await this.profileServices.SetProfilePictureAsync(
-                    new ProfilePictureInputModel
-                    {
-                        UserId = user.Id,
-                        Picture = this.Input.UploadPicture,
-                    },
-                    pictureDirectory);
+                         user.Id,
+                         await FormFileExtensions.GetBytes(this.Input.UploadPicture),
+                         Path.GetExtension(this.Input.UploadPicture.FileName),
+                         picturePath);
             }
 
             await this.userManager.UpdateAsync(user);

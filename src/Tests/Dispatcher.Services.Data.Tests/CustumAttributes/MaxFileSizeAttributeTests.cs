@@ -3,7 +3,7 @@
     using System.IO;
     using System.Text;
 
-    using Dispatcher.Data.Common.CustomAttributes;
+    using Dispatcher.Web.Infrastructure.CustomAttributes;
     using Microsoft.AspNetCore.Http;
     using Xunit;
 

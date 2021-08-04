@@ -84,7 +84,6 @@
             services.AddTransient<IStringValidatorService, StringValidatorService>();
             services.AddTransient<ICommentsService, CommentsService>();
             services.AddTransient<IAdministartorsServices, AdministartorsServices>();
-            services.AddTransient<IPermissionsValidatorService, PermissionsValidatorService>();
             services.AddTransient<IFilesService, FilesService>();
         }
 

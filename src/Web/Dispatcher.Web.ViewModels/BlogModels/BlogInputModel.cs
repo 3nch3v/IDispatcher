@@ -2,10 +2,10 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    using Dispatcher.Data.Common.CustomAttributes;
     using Dispatcher.Data.Models.BlogModels;
     using Dispatcher.Data.Models.Dtos;
     using Dispatcher.Services.Mapping;
+    using Dispatcher.Web.Infrastructure.CustomAttributes;
     using Microsoft.AspNetCore.Http;
 
     using static Dispatcher.Common.GlobalConstants.Attributes;

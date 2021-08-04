@@ -5,11 +5,11 @@
 
     public interface IBlogsService
     {
-        Task CreateAsync<T>(T input, string id, string pictureDirectory);
+        Task CreateAsync<T>(T input, string id, byte[] picture, string picturePath, string pictureExtension);
 
         Task DeleteAsync(int id);
 
-        Task UpdateAsync<T>(T input, int id, string pictureDirectory);
+        Task UpdateAsync<T>(T input, int id, byte[] picture, string picturePath, string pictureExtension);
 
         string GetCreatorId(int dataId);
 

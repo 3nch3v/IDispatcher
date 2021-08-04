@@ -1,4 +1,4 @@
-﻿namespace Dispatcher.Data.Common.CustomAttributes
+﻿namespace Dispatcher.Web.Infrastructure.CustomAttributes
 {
     using System;
     using System.ComponentModel.DataAnnotations;

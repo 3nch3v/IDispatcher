@@ -1,10 +1,8 @@
 ﻿namespace Dispatcher.Services.Data.Tests.DipatcherServicesData
 {
     using System.IO;
-    using System.Text;
     using System.Threading.Tasks;
 
-    using Microsoft.AspNetCore.Http;
     using Xunit;
 
     public class FilesServiceTests
@@ -13,7 +11,7 @@
         public async Task SaveFileAsyncShouldSaveSuccessfullyGivenFileInTheSystem()
         {
             var service = new FilesService();
-            IFormFile file = new FormFile(new MemoryStream(Encoding.UTF8.GetBytes("dummy file")), 0, 2, "Data", "test.txt");
+            byte[] file = new byte[1];
             string path = Directory.GetCurrentDirectory();
 
             await service.SaveFileAsync(file, path, "test", ".txt");

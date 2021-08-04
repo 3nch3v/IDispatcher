@@ -2,9 +2,9 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    using Dispatcher.Data.Common.CustomAttributes;
     using Dispatcher.Data.Models.UserInfoModels;
     using Dispatcher.Services.Mapping;
+    using Dispatcher.Web.Infrastructure.CustomAttributes;
 
     using static Dispatcher.Common.GlobalConstants.Data;
     using static Dispatcher.Common.GlobalConstants.Project;
