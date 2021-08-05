@@ -154,7 +154,7 @@
 
                 await this.profileServices.SetProfilePictureAsync(
                          user.Id,
-                         await FormFileExtensions.GetBytes(this.Input.UploadPicture),
+                         await FormFileExtensions.GetBytesAsync(this.Input.UploadPicture),
                          Path.GetExtension(this.Input.UploadPicture.FileName),
                          picturePath);
             }

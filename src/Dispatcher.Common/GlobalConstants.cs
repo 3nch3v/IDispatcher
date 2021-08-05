@@ -2,7 +2,7 @@
 {
     public static class GlobalConstants
     {
-        public const string SystemName = "Dispatcher";
+        public const string SystemName = "iDispatcher";
 
         public const string EmptyBody = "The description can not be white space!";
 

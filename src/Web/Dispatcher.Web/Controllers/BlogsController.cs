@@ -37,6 +37,8 @@
             this.stringValidator = stringValidator;
         }
 
+        public string PicturePath => $"{this.environment.WebRootPath}{BlogPicturePath}";
+
         [Authorize]
         public IActionResult Create()
         {
@@ -57,15 +59,13 @@
                 return this.View(input);
             }
 
-            byte[] picture = await input.Picture.GetBytes();
+            byte[] picture = input.Picture == null ? null : await input.Picture.GetBytesAsync();
 
-            string picturePath = $"{this.environment.WebRootPath}{BlogPicturePath}";
-
-            string pictureExtension = Path.GetExtension(input.Picture.FileName);
+            string pictureExtension = input.Picture == null ? null : Path.GetExtension(input.Picture.FileName);
 
             var userId = this.userManager.GetUserId(this.User);
 
-            await this.blogServie.CreateAsync<BlogInputModel>(input, userId, picture, picturePath, pictureExtension);
+            await this.blogServie.CreateAsync<BlogInputModel>(input, userId, picture, this.PicturePath, pictureExtension);
 
             return this.RedirectToAction(nameof(this.All));
         }
@@ -85,9 +85,9 @@
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Edit(int blogId, EditBlogPostInputmodel input)
+        public async Task<IActionResult> Edit(EditBlogPostInputmodel input)
         {
-            if (!this.HasPermission(blogId))
+            if (!this.HasPermission(input.Id))
             {
                 return this.Unauthorized();
             }
@@ -99,20 +99,18 @@
 
             if (!this.ModelState.IsValid)
             {
-                var editPost = this.blogServie.GetById<EditBlogPostInputmodel>(blogId);
+                var editPost = this.blogServie.GetById<EditBlogPostInputmodel>(input.Id);
 
                 return this.View(editPost);
             }
 
-            byte[] picture = await input.Picture.GetBytes();
+            byte[] picture = input.Picture == null ? null : await input.Picture.GetBytesAsync();
 
-            string picturePath = $"{this.environment.WebRootPath}{BlogPicturePath}";
+            string pictureExtension = input.Picture == null ? null : Path.GetExtension(input.Picture.FileName);
 
-            string pictureExtension = Path.GetExtension(input.Picture.FileName);
+            await this.blogServie.UpdateAsync<EditBlogPostInputmodel>(input, input.Id, picture, this.PicturePath, pictureExtension);
 
-            await this.blogServie.UpdateAsync<EditBlogPostInputmodel>(input, blogId, picture, picturePath, pictureExtension);
-
-            return this.RedirectToAction(nameof(this.Post), new { blogId });
+            return this.RedirectToAction(nameof(this.Post), new { input.Id });
         }
 
         [Authorize]
