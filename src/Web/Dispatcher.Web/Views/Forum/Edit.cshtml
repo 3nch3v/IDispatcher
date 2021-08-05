@@ -10,6 +10,7 @@
         <h3>@this.ViewBag.Title</h3>
     </div>
     <form method="post" asp-controller="Forum" asp-action="Edit" class="col-md-12 offser-md-8">
+        <div asp-validation-summary="All" class="text-danger"></div>
         <div class="form-group">
             <label asp-for="CategoryId">Category</label>
             <p><select class="form-control-sm" asp-for="CategoryId" asp-items="Model.Categories.Select(t => new SelectListItem(t.Name, t.Id.ToString()))"></select></p>

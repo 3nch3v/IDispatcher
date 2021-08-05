@@ -190,23 +190,12 @@
 
         [Theory]
         [InlineData(1)]
-        public void AdSchouldReturnAdViewModelWhenTheAdIdIsCorrect(int adId)
+        public void AdSchouldReturnErrorWhenTheAdIdIsNotCorrectOrMissing(int adId)
             => MyMvc.Controller<AdsController>()
                 .WithoutData()
                 .Calling(c => c.Ad(adId))
                 .ShouldReturn()
                 .RedirectToAction("Error", "Home");
-
-        [Theory]
-        [InlineData(1)]
-        public void Test(int adId)
-            => MyController<AdsController>
-                .Instance()
-                .WithData(dbContext => dbContext
-                    .WithSet<Advertisement>(a => a.Add(GetAd())))
-                .Calling(c => c.Ad(adId))
-                .ShouldReturn()
-                .View();
 
         private static AdInputModel GetValidInputModel()
         {

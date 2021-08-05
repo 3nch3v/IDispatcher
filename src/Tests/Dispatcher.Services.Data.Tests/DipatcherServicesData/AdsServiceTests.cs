@@ -22,10 +22,10 @@
         [Fact]
         public async Task CreateAsyncShouldAddNewAdInDb()
         {
-            var service = this.GetService(this.GetAdsRepository());
-            var newAd = this.GetInputModel();
+            var service = GetService(GetAdsRepository());
+            var newAd = GetInputModel();
 
-            await service.CreateAsync<AdInputModel>(newAd, this.GetUserId());
+            await service.CreateAsync<AdInputModel>(newAd, GetUserId());
             var actualCount = service.AdsCount();
 
             Assert.Equal(5, actualCount);
@@ -34,8 +34,8 @@
         [Fact]
         public async Task UpdateAsyncShouldChangeAdInDb()
         {
-            var service = this.GetService(this.GetAdsRepository());
-            var updateModel = this.GetInputModel();
+            var service = GetService(GetAdsRepository());
+            var updateModel = GetInputModel();
 
             await service.UpdateAsync<AdInputModel>(updateModel, 1);
             var actualResult = service.GetById<Ad>(1);
@@ -46,7 +46,7 @@
         [Fact]
         public async Task DeleteShouldWorkProperly()
         {
-            var service = this.GetService(this.GetAdsRepository());
+            var service = GetService(GetAdsRepository());
 
             await service.DeleteAsync(1);
             var actualCount = service.AdsCount();
@@ -57,7 +57,7 @@
         [Fact]
         public void AdsCountShouldReturnAllAdsCountInDb()
         {
-            var service = this.GetService(this.GetAdsRepository());
+            var service = GetService(GetAdsRepository());
 
             var actualCount = service.AdsCount();
 
@@ -67,7 +67,7 @@
         [Fact]
         public void GetByIdShouldReturnCorrectEntityWithTheGivenAdId()
         {
-            var service = this.GetService(this.GetAdsRepository());
+            var service = GetService(GetAdsRepository());
 
             var actualAd = service.GetById<Ad>(2);
 
@@ -77,7 +77,7 @@
         [Fact]
         public void GetAllShouldReturnAllAdsInDb()
         {
-            var service = this.GetService(this.GetAdsRepository());
+            var service = GetService(GetAdsRepository());
 
             var actualAds = service.GetAll<Ad>(1, 5);
 
@@ -87,7 +87,7 @@
         [Fact]
         public void GetCreatorShouldReturnCorrectUserId()
         {
-            var service = this.GetService(this.GetAdsRepository());
+            var service = GetService(GetAdsRepository());
 
             var actualUserId = service.GetCreatorId(1);
 
@@ -97,7 +97,7 @@
         [Fact]
         public void GetAllAdTypesShouldReturnListWithAllAllowedAdTypesInDb()
         {
-            var service = this.GetService(null, this.GetAdTypesRepository());
+            var service = GetService(null, GetAdTypesRepository());
 
             var actualTypes = service.GetAllAdTypes<AdTypesViewModel>();
 
@@ -107,7 +107,7 @@
         [Fact]
         public void SearchShouldReturnAllAdsWithTheGivenTerms()
         {
-            var service = this.GetService(this.GetAdsRepository());
+            var service = GetService(GetAdsRepository());
 
             var actualResult = service.SearchResult<Ad>(1, 5, "Test3");
             var actualSearchCount = service.SearchCount();
@@ -117,7 +117,7 @@
             Assert.Equal(3, actualAd.Id);
         }
 
-        private IAdsService GetService(
+        private static IAdsService GetService(
           IDeletableEntityRepository<Advertisement> advertisementRepository = null,
           IDeletableEntityRepository<AdvertisementType> adTypesRepository = null,
           IMemoryCache memoryCache = null)
@@ -127,23 +127,24 @@
             return service;
         }
 
-        private EfDeletableEntityRepository<Advertisement> GetAdsRepository()
+        private static AdInputModel GetInputModel()
         {
-            var dbContext = this.PrepareDb().Result;
-            var repository = new EfDeletableEntityRepository<Advertisement>(dbContext);
-
-            return repository;
+            return new AdInputModel()
+            {
+                AdvertisementTypeId = 1,
+                Title = "Input",
+                Description = "We Work Remotely is a niche job board for remote jobseekers. It’s the largest, most experienced and dedicated remote only job board ",
+                Compensation = "$400",
+                PictureUrl = "https://www.wpbeginner.com/wp-content/uploads/2021/05/webcomlogo.png",
+            };
         }
 
-        private EfDeletableEntityRepository<AdvertisementType> GetAdTypesRepository()
+        private static string GetUserId()
         {
-            var dbContext = this.PrepareDb().Result;
-            var repository = new EfDeletableEntityRepository<AdvertisementType>(dbContext);
-
-            return repository;
+            return "7699db4d-e91c-4dcd-9672-7b88b8484930";
         }
 
-        private async Task<ApplicationDbContext> PrepareDb()
+        private static async Task<ApplicationDbContext> PrepareDb()
         {
             var data = DataBaseMock.Instance;
             data.Advertisements.Add(new Advertisement()
@@ -208,21 +209,20 @@
             return data;
         }
 
-        private AdInputModel GetInputModel()
+        private static EfDeletableEntityRepository<Advertisement> GetAdsRepository()
         {
-            return new AdInputModel()
-            {
-                AdvertisementTypeId = 1,
-                Title = "Input",
-                Description = "We Work Remotely is a niche job board for remote jobseekers. It’s the largest, most experienced and dedicated remote only job board ",
-                Compensation = "$400",
-                PictureUrl = "https://www.wpbeginner.com/wp-content/uploads/2021/05/webcomlogo.png",
-            };
+            var dbContext = PrepareDb().Result;
+            var repository = new EfDeletableEntityRepository<Advertisement>(dbContext);
+
+            return repository;
         }
 
-        private string GetUserId()
+        private static EfDeletableEntityRepository<AdvertisementType> GetAdTypesRepository()
         {
-            return "7699db4d-e91c-4dcd-9672-7b88b8484930";
+            var dbContext = PrepareDb().Result;
+            var repository = new EfDeletableEntityRepository<AdvertisementType>(dbContext);
+
+            return repository;
         }
 
         public class Ad : IMapFrom<Advertisement>

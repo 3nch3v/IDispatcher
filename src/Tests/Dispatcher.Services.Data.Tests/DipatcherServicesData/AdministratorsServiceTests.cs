@@ -24,7 +24,7 @@
         [Fact]
         public void GetDataShouldReturnCorrectEntitybyCall()
         {
-            var dbContext = this.PrepareDb().Result;
+            var dbContext = PrepareDb().Result;
             var adsRepository = new EfDeletableEntityRepository<Advertisement>(dbContext);
             var usersRepository = new EfDeletableEntityRepository<ApplicationUser>(dbContext);
             var jobsRepository = new EfDeletableEntityRepository<Job>(dbContext);
@@ -34,7 +34,7 @@
             var customersReviewsRepository = new EfDeletableEntityRepository<CustomerReview>(dbContext);
             var profilePicturesRepository = new EfDeletableEntityRepository<ProfilePicture>(dbContext);
             var projectsRepository = new EfDeletableEntityRepository<Project>(dbContext);
-            var service = this.GetService(
+            var service = GetService(
                                     adsRepository,
                                     usersRepository,
                                     jobsRepository,
@@ -65,7 +65,7 @@
         [Fact]
         public async Task DeleteUserAsyncShouldSoftDeleteTheUserAndUsersData()
         {
-            var dbContext = this.PrepareDb().Result;
+            var dbContext = PrepareDb().Result;
             var adsRepository = new EfDeletableEntityRepository<Advertisement>(dbContext);
             var usersRepository = new EfDeletableEntityRepository<ApplicationUser>(dbContext);
             var jobsRepository = new EfDeletableEntityRepository<Job>(dbContext);
@@ -75,7 +75,7 @@
             var customersReviewsRepository = new EfDeletableEntityRepository<CustomerReview>(dbContext);
             var profilePicturesRepository = new EfDeletableEntityRepository<ProfilePicture>(dbContext);
             var projectsRepository = new EfDeletableEntityRepository<Project>(dbContext);
-            var service = this.GetService(
+            var service = GetService(
                                     adsRepository,
                                     usersRepository,
                                     jobsRepository,
@@ -111,9 +111,9 @@
         [Fact]
         public async Task DeleteReviewAsyncShuldDeleteReviewByGivenId()
         {
-            var dbContext = this.PrepareDb().Result;
+            var dbContext = PrepareDb().Result;
             var customersReviewsRepository = new EfDeletableEntityRepository<CustomerReview>(dbContext);
-            var service = this.GetService(null, null, null, null, null, null, customersReviewsRepository, null, null);
+            var service = GetService(null, null, null, null, null, null, customersReviewsRepository, null, null);
 
             await service.DeleteReviewAsync(1);
 
@@ -121,7 +121,7 @@
             Assert.Equal(1, actualReviewsCount);
         }
 
-        private IAdministartorsServices GetService(
+        private static IAdministartorsServices GetService(
             IDeletableEntityRepository<Advertisement> advertisementsRepository = null,
             IDeletableEntityRepository<ApplicationUser> usersRepository = null,
             IDeletableEntityRepository<Job> jobRepository = null,
@@ -148,7 +148,7 @@
             return service;
         }
 
-        private async Task<ApplicationDbContext> PrepareDb()
+        private static async Task<ApplicationDbContext> PrepareDb()
         {
             var data = DataBaseMock.Instance;
 

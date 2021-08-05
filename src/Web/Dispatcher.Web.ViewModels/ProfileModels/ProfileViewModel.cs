@@ -7,8 +7,6 @@
     using Dispatcher.Data.Models.UserInfoModels;
     using Dispatcher.Services.Mapping;
 
-    using static Dispatcher.Common.GlobalConstants.User;
-
     public class ProfileViewModel : IMapFrom<ApplicationUser>, IMapFrom<ProfileDataDto>, IMapFrom<ProfilePicture>
     {
         public string Id { get; set; }
@@ -25,7 +23,7 @@
 
         public string CompanyName { get; set; }
 
-        public string Interests { get; set; }
+        public string Interest { get; set; }
 
         public string Contacts { get; set; }
 

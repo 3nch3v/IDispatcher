@@ -67,7 +67,7 @@
 
             services.AddSingleton(this.configuration);
 
-            services.AddAutoMapper(typeof(IBlogsService));
+            services.AddAutoMapper(typeof(Startup));
 
             services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));

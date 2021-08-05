@@ -11,7 +11,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Hangfire" Version="1.7.24" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.10.0" />
+    <PackageReference Include="Moq" Version="4.16.1" />
     <PackageReference Include="MyTested.AspNetCore.Mvc.Universe" Version="5.0.0" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
@@ -29,6 +31,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Services\Dispatcher.Services.Mapping\Dispatcher.Services.Mapping.csproj" />
+    <ProjectReference Include="..\..\Web\Dispatcher.Web.ViewModels\Dispatcher.Web.ViewModels.csproj" />
     <ProjectReference Include="..\..\Web\Dispatcher.Web\Dispatcher.Web.csproj" />
   </ItemGroup>
 

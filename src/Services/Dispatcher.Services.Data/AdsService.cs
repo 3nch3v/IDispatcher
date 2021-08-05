@@ -82,7 +82,7 @@
         public T GetById<T>(int id)
         {
             var ad = this.advertisementRepository
-                .All()
+                .AllAsNoTracking()
                 .Where(a => a.Id == id)
                 .To<T>()
                 .FirstOrDefault();
