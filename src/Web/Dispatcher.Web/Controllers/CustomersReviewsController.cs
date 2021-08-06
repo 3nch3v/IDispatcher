@@ -34,6 +34,7 @@
         }
 
         [Authorize]
+        [HttpPost]
         public async Task<IActionResult> Comment(CommentInputModel input, string userId)
         {
             if (!this.ModelState.IsValid)

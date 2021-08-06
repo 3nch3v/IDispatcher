@@ -5,13 +5,11 @@
 
     using static Dispatcher.Common.GlobalConstants;
 
-    public class AllAdsViewModel
+    public class AllAdvertisementsViewModel
     {
-        public int AdsCount { get; set; }
-
         public int PageEntitiesCount => PageEntities.AdsCount;
 
-        public int PagesCount => (int)Math.Ceiling(this.AdsCount * 1.0 / this.PageEntitiesCount);
+        public int PagesCount => (int)Math.Ceiling(this.AdvertisementsCount * 1.0 / this.PageEntitiesCount);
 
         public int Page { get; set; }
 
@@ -23,6 +21,8 @@
 
         public int NextPage => this.Page + 1;
 
-        public IEnumerable<AdViewModel> Ads { get; set; }
+        public int AdvertisementsCount { get; set; }
+
+        public IEnumerable<AdvertisementViewModel> Advertisements { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿namespace Dispatcher.Web.ViewModels.AdModels
 {
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
@@ -10,7 +11,7 @@
     using static Dispatcher.Common.GlobalConstants.Advertisement;
     using static Dispatcher.Common.GlobalConstants.Data;
 
-    public class AdInputModel : IMapTo<Advertisement>
+    public class AdvertisementInputModel : IMapTo<Advertisement>
     {
         [Range(TypeMinRange, TypeMaxRange, ErrorMessage = InvalidType)]
         public int AdvertisementTypeId { get; set; }
@@ -31,6 +32,6 @@
         [UrlAllowedExtensions(new string[] { ".jpg", ".jpeg", ".png", ".gif", ".bmp" })]
         public string PictureUrl { get; set; }
 
-        public IEnumerable<AdTypesViewModel> AdTypes { get; set; }
+        public IEnumerable<AdvertisementTypeViewModel> AdvertisementTypes { get; set; }
     }
 }

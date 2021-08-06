@@ -8,7 +8,7 @@
     using Dispatcher.Services.Mapping;
     using Ganss.XSS;
 
-    public class AdViewModel : IMapFrom<Advertisement>
+    public class AdvertisementViewModel : IMapFrom<Advertisement>
     {
         public int Id { get; set; }
 

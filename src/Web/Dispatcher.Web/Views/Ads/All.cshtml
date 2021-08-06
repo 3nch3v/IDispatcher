@@ -1,5 +1,5 @@
 ﻿@using Dispatcher.Web.ViewModels.AdModels
-@model AllAdsViewModel
+@model AllAdvertisementsViewModel
 
 @{
     this.ViewBag.Title = "The Talents";
@@ -20,7 +20,7 @@
     </nav>
 
     <div class="card-group">
-        @foreach (var ad in Model.Ads)
+        @foreach (var ad in Model.Advertisements)
         {
             <partial name="_AdCardPartial" model="ad" />
         }

@@ -1,9 +1,13 @@
 ﻿namespace Dispatcher.Web.Tests.Controllers
 {
+    using System.Linq;
+    using System.Reflection;
+
     using Dispatcher.Data.Models;
     using Dispatcher.Data.Models.AdvertisementModels;
     using Dispatcher.Services.Mapping;
     using Dispatcher.Web.Controllers;
+    using Dispatcher.Web.ViewModels;
     using Dispatcher.Web.ViewModels.AdModels;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
@@ -15,32 +19,34 @@
     {
         public AdsControllerTests()
         {
-            AutoMapperConfig.RegisterMappings(typeof(AdViewModel).Assembly, typeof(Advertisement).Assembly);
-            AutoMapperConfig.RegisterMappings(typeof(Advertisement).Assembly, typeof(AdViewModel).Assembly);
+            AutoMapperConfig.RegisterMappings(typeof(ErrorViewModel).GetTypeInfo().Assembly);
         }
 
         public static string UserId => "1b99c696-64f5-443a-ae1e-6b4a1bc8f2cb";
 
         [Fact]
-        public void CreateShouldHaveAuthorizeAttribute()
-           => MyMvc
-           .Controller<AdsController>(instance => instance
-               .WithUser())
-           .Calling(c => c.Create())
-           .ShouldHave()
-           .ActionAttributes(a => a
-               .ContainingAttributeOfType<AuthorizeAttribute>())
-           .AndAlso()
-           .ShouldReturn()
-           .View(view => view
-               .WithModelOfType<AdInputModel>());
+        public void CreateShouldHaveAuthorizeAttributeAndReturnViewWithTheAdTypes()
+           => MyController<AdsController>
+            .Instance()
+            .WithUser(u => u.WithIdentifier(UserId))
+            .WithData(GetAdType())
+            .Calling(c => c.Create())
+            .ShouldHave()
+            .ActionAttributes(a => a
+                .ContainingAttributeOfType<AuthorizeAttribute>())
+            .AndAlso()
+            .ShouldReturn()
+            .View(view => view
+                .WithModelOfType<AdvertisementInputModel>(v => v
+                 .AdvertisementTypes.Count() == 1
+                 && v.AdvertisementTypes.First().Type == "TestType"));
 
         [Fact]
         public void CreateShouldHaveAuthorizeAndHttpPostAttributesShouldReturnViewWhenModelStateIsInvalid()
             => MyMvc
             .Controller<AdsController>(instance => instance
                 .WithUser())
-            .Calling(c => c.Create(new AdInputModel()))
+            .Calling(c => c.Create(new AdvertisementInputModel()))
             .ShouldHave()
             .ActionAttributes(a => a
                .ContainingAttributeOfType<AuthorizeAttribute>())
@@ -54,7 +60,7 @@
             .AndAlso()
             .ShouldReturn()
             .View(view => view.
-                WithModelOfType<AdInputModel>());
+                WithModelOfType<AdvertisementInputModel>());
 
         [Fact]
         public void CreateShouldHaveAuthorizeAndHttpPostAttributesShouldRedirectToAllWhenModelStateIsValid()
@@ -84,7 +90,8 @@
                 .WithUser(u => u.WithIdentifier(UserId))
                 .WithData(
                     GetUser(),
-                    GetAd())
+                    GetAd(),
+                    GetAdType())
                 .Calling(c => c.Edit(adId))
                 .ShouldHave()
                 .ActionAttributes(a => a
@@ -92,8 +99,8 @@
                 .AndAlso()
                 .ShouldReturn()
                 .View(v => v
-                    .WithModelOfType<EditAdViewModel>(m => m.Id
-                        .ShouldBe(adId)));
+                    .WithModelOfType<EditAdvertisementViewModel>(m => m.Id == adId
+                    && m.AdvertisementTypes.Count() == 1));
 
         [Fact]
         public void EditShouldHaveAuthorizeAttributeAndShouldReturnUnauthorizedWhenUserIdNotOwner()
@@ -115,11 +122,12 @@
         public void EditShouldHaveAuthorizeAndHttpPostAttributesAndShouldReturnBackInputViewWhenThemodelStateIsInvalid(int adId)
             => MyController<AdsController>
                 .Instance()
-                .WithUser(u => u.WithIdentifier("1b99c696-64f5-443a-ae1e-6b4a1bc8f2cb"))
+                .WithUser(u => u.WithIdentifier(UserId))
                 .WithData(
                     GetUser(),
-                    GetAd())
-                .Calling(c => c.Edit(new AdInputModel { }, adId))
+                    GetAd(),
+                    GetAdType())
+                .Calling(c => c.Edit(new AdvertisementInputModel { }, adId))
                 .ShouldHave()
                 .ActionAttributes(a => a
                     .ContainingAttributeOfType<AuthorizeAttribute>())
@@ -128,9 +136,12 @@
                 .ActionAttributes(a => a.
                     ContainingAttributeOfType<HttpPostAttribute>())
                 .AndAlso()
+                .ShouldHave()
+                .InvalidModelState()
+                .AndAlso()
                 .ShouldReturn()
                 .View(v => v
-                    .WithModelOfType<EditAdViewModel>(m => m.Id
+                    .WithModelOfType<EditAdvertisementViewModel>(m => m.Id
                         .ShouldBe(adId)));
 
         [Theory]
@@ -150,6 +161,9 @@
               .ShouldHave()
               .ActionAttributes(a => a.
                     ContainingAttributeOfType<HttpPostAttribute>())
+              .AndAlso()
+              .ShouldHave()
+              .ValidModelState()
               .AndAlso()
               .ShouldReturn()
               .RedirectToAction("Ad");
@@ -197,9 +211,46 @@
                 .ShouldReturn()
                 .RedirectToAction("Error", "Home");
 
-        private static AdInputModel GetValidInputModel()
+        [Theory]
+        [InlineData(1)]
+        public void AdSchouldReturnTheAdWithTheCalledIdWhenTheAdIdIsCorrect(int adId)
+            => MyMvc.Controller<AdsController>()
+                .WithData(GetAd())
+                .Calling(c => c.Ad(adId))
+                .ShouldReturn()
+                .View(view => view
+                    .WithModelOfType<AdvertisementViewModel>(v => v
+                        .Id.ShouldBe(1)));
+
+        [Fact]
+        public void AllSchouldReturnViewWithTheDefaultEntitiesCountPerPage()
+            => MyMvc.Controller<AdsController>()
+                .WithData(GetAd())
+                .Calling(c => c.All(1))
+                .ShouldReturn()
+                .View(view => view
+                    .WithModelOfType<AllAdvertisementsViewModel>(v => v.Advertisements.Count() == 1));
+
+        [Fact]
+        public void SearchShouldRedirectToAllAdsWhenSearchTermIsNull()
+          => MyMvc.Controller<AdsController>()
+                .WithData(GetAd())
+                .Calling(c => c.Search(null, 1))
+                .ShouldReturn()
+                .RedirectToAction("All");
+
+        [Fact]
+        public void SearchShouldReturnViewWithAdsWhenSearchTermIsValid()
+         => MyMvc.Controller<AdsController>()
+               .WithData(GetAd())
+               .Calling(c => c.Search("Id", 1))
+               .ShouldReturn()
+               .View(v => v
+                    .WithModelOfType<AllAdvertisementsViewModel>());
+
+        private static AdvertisementInputModel GetValidInputModel()
         {
-            return new AdInputModel
+            return new AdvertisementInputModel
             {
                 AdvertisementTypeId = 1,
                 Title = "My fake Ad",
@@ -241,6 +292,11 @@
                 Email = "ivan@fake.bg",
                 PasswordHash = "sdasd324olkk34dff",
             };
+        }
+
+        private static AdvertisementType GetAdType()
+        {
+            return new AdvertisementType { Id = 1, Type = "TestType" };
         }
     }
 }

@@ -25,8 +25,8 @@
                 Assembly.Load("Dispatcher.Web.ViewModels"),
                 Assembly.Load("Dispatcher.Data.Models"),
                 Assembly.Load("Dispatcher.Web"));
-            AutoMapperConfig.RegisterMappings(typeof(AdViewModel).Assembly, typeof(Advertisement).Assembly);
-            AutoMapperConfig.RegisterMappings(typeof(Advertisement).Assembly, typeof(AdViewModel).Assembly);
+            AutoMapperConfig.RegisterMappings(typeof(AdvertisementViewModel).Assembly, typeof(Advertisement).Assembly);
+            AutoMapperConfig.RegisterMappings(typeof(Advertisement).Assembly, typeof(AdvertisementViewModel).Assembly);
         }
     }
 }

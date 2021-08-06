@@ -1,5 +1,5 @@
 ﻿@using Dispatcher.Web.ViewModels.AdModels
-@model AllAdsViewModel
+@model AllAdvertisementsViewModel
 
 <p hidden>@this.TempData["KeyWords"];</p>
 @{
@@ -23,11 +23,11 @@
         </div>
     </nav>
 
-    @if (Model.AdsCount > 0)
+    @if (Model.AdvertisementsCount > 0)
     {
-        <h3 class="text-center m-2">@Model.AdsCount ads found for "@this.ViewData["KeyWords"]"</h3>
+        <h3 class="text-center m-2">@Model.AdvertisementsCount ads found for "@this.ViewData["KeyWords"]"</h3>
         <div class="row tm-row">
-            @foreach (var ad in Model.Ads)
+            @foreach (var ad in Model.Advertisements)
             {
                 <partial name="_AdCardPartial" model="ad" />
             }

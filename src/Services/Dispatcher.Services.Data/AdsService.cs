@@ -82,7 +82,7 @@
         public T GetById<T>(int id)
         {
             var ad = this.advertisementRepository
-                .AllAsNoTracking()
+                .All()
                 .Where(a => a.Id == id)
                 .To<T>()
                 .FirstOrDefault();
@@ -92,7 +92,7 @@
 
         public IEnumerable<T> GetAll<T>(int page, int pageEntitiesCount)
         {
-            var ads = this.advertisementRepository.AllAsNoTracking()
+            var ads = this.advertisementRepository.All()
                 .OrderByDescending(x => x.CreatedOn)
                 .Skip((page - 1) * pageEntitiesCount)
                 .Take(pageEntitiesCount)
@@ -174,7 +174,7 @@
 
         public int AdsCount()
         {
-            return this.advertisementRepository.AllAsNoTracking().Count();
+            return this.advertisementRepository.All().Count();
         }
     }
 }

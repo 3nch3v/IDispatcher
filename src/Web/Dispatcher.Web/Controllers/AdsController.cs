@@ -35,9 +35,9 @@
         [Authorize]
         public IActionResult Create()
         {
-            var input = new AdInputModel
+            var input = new AdvertisementInputModel
             {
-                AdTypes = this.adsService.GetAllAdTypes<AdTypesViewModel>(),
+                AdvertisementTypes = this.adsService.GetAllAdTypes<AdvertisementTypeViewModel>(),
             };
 
             return this.View(input);
@@ -45,7 +45,7 @@
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Create(AdInputModel input)
+        public async Task<IActionResult> Create(AdvertisementInputModel input)
         {
             if (!this.stringValidator.IsStringValid(input.Description, DescriptionMinLength))
             {
@@ -54,9 +54,9 @@
 
             if (!this.ModelState.IsValid)
             {
-                var invalidInput = new AdInputModel
+                var invalidInput = new AdvertisementInputModel
                 {
-                    AdTypes = this.adsService.GetAllAdTypes<AdTypesViewModel>(),
+                    AdvertisementTypes = this.adsService.GetAllAdTypes<AdvertisementTypeViewModel>(),
                 };
 
                 return this.View(invalidInput);
@@ -64,7 +64,7 @@
 
             var userId = this.userManager.GetUserId(this.User);
 
-            await this.adsService.CreateAsync<AdInputModel>(input, userId);
+            await this.adsService.CreateAsync<AdvertisementInputModel>(input, userId);
 
             return this.RedirectToAction(nameof(this.All));
         }
@@ -77,16 +77,16 @@
                 return this.Unauthorized();
             }
 
-            var ad = this.adsService.GetById<EditAdViewModel>(id);
+            var ad = this.adsService.GetById<EditAdvertisementViewModel>(id);
 
-            ad.AdTypes = this.adsService.GetAllAdTypes<AdTypesViewModel>();
+            ad.AdvertisementTypes = this.adsService.GetAllAdTypes<AdvertisementTypeViewModel>();
 
             return this.View(ad);
         }
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Edit(AdInputModel input, int id)
+        public async Task<IActionResult> Edit(AdvertisementInputModel input, int id)
         {
             if (!this.HasPermission(id))
             {
@@ -100,14 +100,14 @@
 
             if (!this.ModelState.IsValid)
             {
-                var ad = this.adsService.GetById<EditAdViewModel>(id);
+                var ad = this.adsService.GetById<EditAdvertisementViewModel>(id);
 
-                ad.AdTypes = this.adsService.GetAllAdTypes<AdTypesViewModel>();
+                ad.AdvertisementTypes = this.adsService.GetAllAdTypes<AdvertisementTypeViewModel>();
 
                 return this.View(ad);
             }
 
-            await this.adsService.UpdateAsync<AdInputModel>(input, id);
+            await this.adsService.UpdateAsync<AdvertisementInputModel>(input, id);
 
             return this.RedirectToAction(nameof(this.Ad), new { id });
         }
@@ -127,7 +127,7 @@
 
         public IActionResult Ad(int id)
         {
-            var ad = this.adsService.GetById<AdViewModel>(id);
+            var ad = this.adsService.GetById<AdvertisementViewModel>(id);
 
             if (ad == null)
             {
@@ -139,10 +139,10 @@
 
         public IActionResult All(int page = DefaultPageNumber)
         {
-            var ads = new AllAdsViewModel
+            var ads = new AllAdvertisementsViewModel
             {
-                Ads = this.adsService.GetAll<AdViewModel>(page, AdsCount),
-                AdsCount = this.adsService.AdsCount(),
+                Advertisements = this.adsService.GetAll<AdvertisementViewModel>(page, AdsCount),
+                AdvertisementsCount = this.adsService.AdsCount(),
                 Page = page,
             };
 
@@ -158,10 +158,10 @@
 
             this.TempData["KeyWords"] = keyWords;
 
-            var ads = new AllAdsViewModel
+            var ads = new AllAdvertisementsViewModel
             {
-                Ads = this.adsService.SearchResult<AdViewModel>(page, AdsCount, this.TempData["KeyWords"].ToString()),
-                AdsCount = this.adsService.SearchCount(),
+                Advertisements = this.adsService.SearchResult<AdvertisementViewModel>(page, AdsCount, this.TempData["KeyWords"].ToString()),
+                AdvertisementsCount = this.adsService.SearchCount(),
                 Page = page,
             };
 
