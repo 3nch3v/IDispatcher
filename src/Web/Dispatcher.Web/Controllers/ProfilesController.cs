@@ -35,12 +35,17 @@
             else
             {
                 var user = await this.userManager.FindByNameAsync(username);
-                userId = user.Id;
+                userId = user?.Id;
             }
 
-            var userDataDto = this.profileService.GetUserById(userId);
+            var userDto = this.profileService.GetUserById(userId);
 
-            var userProfile = AutoMapperConfig.MapperInstance.Map<ProfileViewModel>(userDataDto);
+            if (userDto == null)
+            {
+                return this.RedirectToAction("Error", "Home");
+            }
+
+            var userProfile = AutoMapperConfig.MapperInstance.Map<ProfileViewModel>(userDto);
 
             return this.View(userProfile);
         }

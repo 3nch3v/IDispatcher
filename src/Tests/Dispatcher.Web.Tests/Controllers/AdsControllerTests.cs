@@ -211,17 +211,6 @@
                 .ShouldReturn()
                 .RedirectToAction("Error", "Home");
 
-        [Theory]
-        [InlineData(1)]
-        public void AdSchouldReturnTheAdWithTheCalledIdWhenTheAdIdIsCorrect(int adId)
-            => MyMvc.Controller<AdsController>()
-                .WithData(GetAd())
-                .Calling(c => c.Ad(adId))
-                .ShouldReturn()
-                .View(view => view
-                    .WithModelOfType<AdvertisementViewModel>(v => v
-                        .Id.ShouldBe(1)));
-
         [Fact]
         public void AllSchouldReturnViewWithTheDefaultEntitiesCountPerPage()
             => MyMvc.Controller<AdsController>()
@@ -229,7 +218,7 @@
                 .Calling(c => c.All(1))
                 .ShouldReturn()
                 .View(view => view
-                    .WithModelOfType<AllAdvertisementsViewModel>(v => v.Advertisements.Count() == 1));
+                    .WithModelOfType<AllAdvertisementsViewModel>());
 
         [Fact]
         public void SearchShouldRedirectToAllAdsWhenSearchTermIsNull()
@@ -239,11 +228,15 @@
                 .ShouldReturn()
                 .RedirectToAction("All");
 
-        [Fact]
-        public void SearchShouldReturnViewWithAdsWhenSearchTermIsValid()
+        [Theory]
+        [InlineData("Id", 1)]
+        public void SearchShouldReturnViewWithAdsWhenSearchTermIsValid(string searchTerm, int id)
          => MyMvc.Controller<AdsController>()
                .WithData(GetAd())
-               .Calling(c => c.Search("Id", 1))
+               .Calling(c => c.Search(searchTerm, id))
+               .ShouldHave()
+               .TempData(t => t.Equals(searchTerm))
+               .AndAlso()
                .ShouldReturn()
                .View(v => v
                     .WithModelOfType<AllAdvertisementsViewModel>());

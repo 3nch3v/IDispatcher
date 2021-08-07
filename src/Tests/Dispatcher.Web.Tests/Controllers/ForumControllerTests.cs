@@ -25,7 +25,7 @@
         public static string UserId => "1b99c696-64f5-443a-ae1e-6b4a1bc8f2cb";
 
         [Fact]
-        public void CreateShouldHaveAuthorizeAttributeAndReturnViewWithTheAdTypes()
+        public void CreateShouldHaveAuthorizeAttributeAndReturnViewWithTheCategories()
            => MyController<ForumController>
             .Instance()
             .WithUser(u => u.WithIdentifier(UserId))
@@ -164,6 +164,138 @@
            .ShouldReturn()
            .RedirectToAction("Discussion");
 
+        [Theory]
+        [InlineData(1)]
+        public void DeleteShouldHaveAuthorizeAttributeAndShouldRedirectToAllWhenUserHasPermissions(int id)
+          => MyController<ForumController>
+              .Instance()
+              .WithUser(u => u.WithIdentifier(UserId))
+              .WithData(
+                  GetUser(),
+                  GetDiscussion())
+              .Calling(c => c.Delete(id))
+              .ShouldHave()
+              .ActionAttributes(a => a
+                  .ContainingAttributeOfType<AuthorizeAttribute>())
+              .AndAlso()
+              .ShouldReturn()
+              .RedirectToAction("All");
+
+        [Theory]
+        [InlineData(1)]
+        public void DeleteShouldHaveAuthorizeAttributeAndShouldReturnUnauthorizedWhenUserHasNoPermissionsToDeleteDiscussion(int id)
+          => MyController<ForumController>
+              .Instance()
+              .WithUser()
+              .WithData(
+                  GetUserNotOwner(),
+                  GetDiscussion())
+              .Calling(c => c.Delete(id))
+              .ShouldHave()
+              .ActionAttributes(a => a
+                  .ContainingAttributeOfType<AuthorizeAttribute>())
+              .AndAlso()
+              .ShouldReturn()
+              .Unauthorized();
+
+        [Fact]
+        public void SetToSolvedShouldHaveAuthorizeAttributeAndShouldReturnUnauthorizedWhenUserIdNotOwner()
+        => MyMvc.Controller<ForumController>()
+            .WithUser(u => u.WithUsername("Ivan"))
+            .WithData(
+                GetUserNotOwner(),
+                GetDiscussion())
+            .Calling(c => c.SetToSolved(1))
+            .ShouldHave()
+            .ActionAttributes(a => a
+                .ContainingAttributeOfType<AuthorizeAttribute>())
+            .AndAlso()
+            .ShouldReturn()
+            .Unauthorized();
+
+        [Theory]
+        [InlineData(1)]
+        public void SetToSolvedShouldHaveAuthorizeAttributeAndShouldRedirectToTheGivenDiscussionWhenUserHasPermission(int id)
+            => MyController<ForumController>
+                .Instance()
+                .WithUser(u => u.WithIdentifier(UserId))
+                .WithData(
+                    GetUser(),
+                    GetDiscussion())
+                .Calling(c => c.SetToSolved(id))
+                .ShouldHave()
+                .ActionAttributes(a => a
+                    .ContainingAttributeOfType<AuthorizeAttribute>())
+                .AndAlso()
+                .ShouldReturn()
+               .RedirectToAction("Discussion");
+
+        [Fact]
+        public void CommentShouldHaveAuthorizeAttributeAndRedirectToTheCurrentDiscussion()
+         => MyController<ForumController>
+          .Instance()
+          .WithUser(u => u.WithIdentifier(UserId))
+          .WithData(GetCategory())
+          .Calling(c => c.Comment(new PostInputViewModel { Content = "Bla bla", DiscussionId = 1, }))
+          .ShouldHave()
+          .ActionAttributes(a => a
+              .ContainingAttributeOfType<AuthorizeAttribute>())
+          .AndAlso()
+          .ShouldReturn()
+          .RedirectToAction("Discussion");
+
+        [Theory]
+        [InlineData(1)]
+        public void DeleteCommentShouldHaveAuthorizeAttributeAndShouldRedirectToTheCurrentDiscussionWhenUserHasPermissions(int id)
+        => MyController<ForumController>
+            .Instance()
+            .WithUser(u => u.WithIdentifier(UserId))
+            .WithData(
+                GetUser(),
+                GetDiscussion(),
+                GetComment())
+            .Calling(c => c.DeleteComment(id, id))
+            .ShouldHave()
+            .ActionAttributes(a => a
+                .ContainingAttributeOfType<AuthorizeAttribute>())
+            .AndAlso()
+            .ShouldReturn()
+            .RedirectToAction("Discussion");
+
+        [Theory]
+        [InlineData(1)]
+        public void DeleteCommentShouldHaveAuthorizeAttributeAndShouldRedirectToDiscussionWhenSuccess(int id)
+            => MyController<ForumController>
+                .Instance()
+                .WithUser(u => u.WithIdentifier(UserId))
+                .WithData(
+                    GetUser(),
+                    GetComment())
+                .Calling(c => c.DeleteComment(id, id))
+                .ShouldHave()
+                .ActionAttributes(a => a
+                    .ContainingAttributeOfType<AuthorizeAttribute>())
+                .AndAlso()
+                .ShouldReturn()
+                .RedirectToAction("Discussion");
+
+        [Theory]
+        [InlineData(1)]
+        public void DeleteCommentShouldHaveAuthorizeAttributeAndShouldRedirectToAllDiscussionsWhenDiscussionIdIsNotValid(int id)
+           => MyController<ForumController>
+               .Instance()
+               .WithUser(u => u.WithIdentifier(UserId))
+               .WithData(
+                   GetUser(),
+                   GetComment())
+               .Calling(c => c.DeleteComment(id, default))
+               .ShouldHave()
+               .ActionAttributes(a => a
+                   .ContainingAttributeOfType<AuthorizeAttribute>())
+               .AndAlso()
+               .ShouldReturn()
+               .RedirectToAction("All");
+
         private static IEnumerable<Category> GetCategory()
         {
             return new Category[]
@@ -226,6 +358,17 @@
                 CategoryId = 1,
                 Title = "My fake Ad",
                 Description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+            };
+        }
+
+        private static Comment GetComment()
+        {
+            return new Comment
+            {
+                Id = 1,
+                Content = "Bla bla comment",
+                DiscussionId = 1,
+                UserId = UserId,
             };
         }
     }

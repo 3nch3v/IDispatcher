@@ -1,6 +1,5 @@
 ﻿namespace Dispatcher.Web.Tests.Controllers
 {
-    using System.Linq;
     using System.Reflection;
 
     using Dispatcher.Data.Models;
@@ -24,7 +23,7 @@
         public static string UserId => "1b99c696-64f5-443a-ae1e-6b4a1bc8f2cb";
 
         [Fact]
-        public void CreateShouldHaveAuthorizeAttribute()
+        public void CreateShouldHaveAuthorizeAttributeAndShouldReturnView()
           => MyController<BlogsController>
            .Instance()
            .WithUser(u => u.WithIdentifier(UserId))
@@ -176,7 +175,7 @@
 
         [Theory]
         [InlineData(1)]
-        public void DeleteShouldHaveAuthorizeAttributeAndShouldReturnUnauthorizedWhenUserHasNoPermissionsToDeleteAd(int id)
+        public void DeleteShouldHaveAuthorizeAttributeAndShouldReturnUnauthorizedWhenUserHasNoPermissionsToDeleteBlog(int id)
            => MyController<AdsController>
                .Instance()
                .WithUser()
@@ -201,23 +200,22 @@
                .RedirectToAction("Error", "Home");
 
         [Theory]
-        [InlineData(1)]
-        public void AdSchouldReturnTheAdWithTheCalledIdWhenTheAdIdIsCorrect(int id)
+        [InlineData(23)]
+        public void BlogSchouldReturnErrorWhenTheBlogIdIsNotCorrect(int id)
            => MyMvc.Controller<BlogsController>()
                .WithData(GetBlog())
                .Calling(c => c.Post(id))
                .ShouldReturn()
-               .View(view => view
-                   .WithModelOfType<BlogPostViewModel>(v => v.Id == id));
+               .RedirectToAction("Error", "Home");
 
         [Fact]
-        public void AllSchouldReturnViewWithTheDefaultEntitiesCountPerPage()
+        public void AllSchouldReturnViewWithDiscussionEntities()
             => MyMvc.Controller<BlogsController>()
                 .WithData(GetBlog())
                 .Calling(c => c.All(1))
                 .ShouldReturn()
                 .View(view => view
-                    .WithModelOfType<AllBlogPostsViewModel>(b => b.Posts.Count() == 1));
+                    .WithModelOfType<AllBlogPostsViewModel>());
 
         private static BlogInputModel GetValidInputModel()
         {

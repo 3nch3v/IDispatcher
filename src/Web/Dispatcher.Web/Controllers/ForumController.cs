@@ -189,7 +189,10 @@
         [Authorize]
         public async Task<IActionResult> DeleteComment(int id, int discussionId)
         {
-            if (!this.HasPermission(id))
+            if (!PermissionsValidator.HasPermission(
+                    this.commentService.GetCreatorId(id),
+                    this.userManager.GetUserId(this.User),
+                    this.User.IsInRole(AdministratorRole)))
             {
                 return this.Unauthorized();
             }
