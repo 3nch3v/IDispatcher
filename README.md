@@ -63,6 +63,7 @@ The focus of the project is the ability to build a back-end project with the ASP
     - Delete (all data types)
     - Edit (all data types)
   - Profile review
+    - Comment user
 
 - Logout
 - Admin (only for Admin users)
