@@ -1,13 +1,8 @@
 ﻿namespace Dispatcher.Web.Tests.Controllers
 {
     using System.Linq;
-    using System.Reflection;
 
-    using Dispatcher.Data.Models;
-    using Dispatcher.Data.Models.AdvertisementModels;
-    using Dispatcher.Services.Mapping;
     using Dispatcher.Web.Controllers;
-    using Dispatcher.Web.ViewModels;
     using Dispatcher.Web.ViewModels.AdModels;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
@@ -15,15 +10,10 @@
     using Shouldly;
     using Xunit;
 
-    public class AdsControllerTests
+    using static Dispatcher.Web.Tests.Data;
+
+    public class AdsControllerTests : BaseControllerTests
     {
-        public AdsControllerTests()
-        {
-            AutoMapperConfig.RegisterMappings(typeof(ErrorViewModel).GetTypeInfo().Assembly);
-        }
-
-        public static string UserId => "1b99c696-64f5-443a-ae1e-6b4a1bc8f2cb";
-
         [Fact]
         public void CreateShouldHaveAuthorizeAttributeAndReturnViewWithTheAdTypes()
            => MyController<AdsController>
@@ -67,7 +57,7 @@
            => MyMvc
            .Controller<AdsController>(instance => instance
                .WithUser())
-           .Calling(c => c.Create(GetValidInputModel()))
+           .Calling(c => c.Create(GetAdValidInputModel()))
            .ShouldHave()
            .ActionAttributes(a => a
                .ContainingAttributeOfType<AuthorizeAttribute>())
@@ -153,7 +143,7 @@
               .WithData(
                   GetUser(),
                   GetAd())
-              .Calling(c => c.Edit(GetValidInputModel(), adId))
+              .Calling(c => c.Edit(GetAdValidInputModel(), adId))
               .ShouldHave()
               .ActionAttributes(a => a
                   .ContainingAttributeOfType<AuthorizeAttribute>())
@@ -240,56 +230,5 @@
                .ShouldReturn()
                .View(v => v
                     .WithModelOfType<AllAdvertisementsViewModel>());
-
-        private static AdvertisementInputModel GetValidInputModel()
-        {
-            return new AdvertisementInputModel
-            {
-                AdvertisementTypeId = 1,
-                Title = "My fake Ad",
-                Description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-                Compensation = "100 marki",
-            };
-        }
-
-        private static ApplicationUser GetUser()
-        {
-            return new ApplicationUser
-            {
-                Id = "1b99c696-64f5-443a-ae1e-6b4a1bc8f2cb",
-                UserName = "Ivan_Dev",
-                Email = "ivan@fake.bg",
-                PasswordHash = "sdasd324olkk34dff",
-            };
-        }
-
-        private static Advertisement GetAd()
-        {
-            return new Advertisement
-            {
-                Id = 1,
-                AdvertisementTypeId = 1,
-                Title = "Looking for Developers",
-                Description = "Does Upwork, Toptal, Stack Overflow sound familiar to you? If you’re looking to hire developers for your startup, you probably have already bumped into these websites and had no luck in finding the right person for the job. When you’re in the early stages of your business, making sure that you hire the right person for the role is vital. With 20% of startups failing in the first two years, and almost a quarter of failures being due to teamwork issues, getting this right is fundamental. We are familiar with the challenges, as we have been recruiting developers from all over the globe and placing them in different companies, for more than 10 years",
-                Compensation = "6000 EUR",
-                UserId = "1b99c696-64f5-443a-ae1e-6b4a1bc8f2cb",
-            };
-        }
-
-        private static ApplicationUser GetUserNotOwner()
-        {
-            return new ApplicationUser
-            {
-                Id = "TestId",
-                UserName = "Ivan",
-                Email = "ivan@fake.bg",
-                PasswordHash = "sdasd324olkk34dff",
-            };
-        }
-
-        private static AdvertisementType GetAdType()
-        {
-            return new AdvertisementType { Id = 1, Type = "TestType" };
-        }
     }
 }

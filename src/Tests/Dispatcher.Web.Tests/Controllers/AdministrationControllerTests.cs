@@ -1,17 +1,15 @@
 ﻿namespace Dispatcher.Web.Tests.Controllers
 {
-    using Dispatcher.Data.Models;
-    using Dispatcher.Data.Models.UserInfoModels;
     using Dispatcher.Web.Areas.Administration.Controllers;
     using Dispatcher.Web.ViewModels.Administration;
     using Dispatcher.Web.ViewModels.Administration.Dashboard;
     using MyTested.AspNetCore.Mvc;
     using Xunit;
 
-    public class AdministrationControllerTests
-    {
-        public static string UserId => "1b99c696-64f5-443a-ae1e-6b4a1bc8f2cb";
+    using static Dispatcher.Web.Tests.Data;
 
+    public class AdministrationControllerTests : BaseControllerTests
+    {
         [Fact]
         public void GetDataShouldRedirectToDashboardWhenSearchInputIsNotValid()
          => MyController<AdministrationController>
@@ -56,28 +54,5 @@
              .Calling(c => c.DeleteReview(id))
              .ShouldReturn()
              .RedirectToAction("Index", "Dashboard");
-
-        private static ApplicationUser GetUser()
-        {
-            return new ApplicationUser
-            {
-                Id = "1b99c696-64f5-443a-ae1e-6b4a1bc8f2cb",
-                UserName = "Ivan_Dev",
-                Email = "ivan@fake.bg",
-                PasswordHash = "sdasd324olkk34dff",
-            };
-        }
-
-        private static CustomerReview GetReview()
-        {
-            return new CustomerReview
-            {
-                Id = 1,
-                AppraiserId = "testId",
-                Comment = "Passssttt",
-                StarsCount = 3,
-                UserId = UserId,
-            };
-        }
     }
 }

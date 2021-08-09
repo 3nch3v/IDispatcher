@@ -1,27 +1,16 @@
 ﻿namespace Dispatcher.Web.Tests.Controllers
 {
-    using System.Reflection;
-
-    using Dispatcher.Data.Models;
-    using Dispatcher.Data.Models.JobModels;
-    using Dispatcher.Services.Mapping;
     using Dispatcher.Web.Controllers;
-    using Dispatcher.Web.ViewModels;
     using Dispatcher.Web.ViewModels.JobModels;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using MyTested.AspNetCore.Mvc;
     using Xunit;
 
-    public class JobsControllerTests
+    using static Dispatcher.Web.Tests.Data;
+
+    public class JobsControllerTests : BaseControllerTests
     {
-        public JobsControllerTests()
-        {
-            AutoMapperConfig.RegisterMappings(typeof(ErrorViewModel).GetTypeInfo().Assembly);
-        }
-
-        public static string UserId => "1b99c696-64f5-443a-ae1e-6b4a1bc8f2cb";
-
         [Fact]
         public void CreateShouldHaveAuthorizeAttributeAndReturnViewWithTheAdTypes()
           => MyController<JobsController>
@@ -62,7 +51,7 @@
          => MyMvc
          .Controller<JobsController>(instance => instance
              .WithUser())
-         .Calling(c => c.Create(GetValidInputModel()))
+         .Calling(c => c.Create(GetValidJobInputModel()))
          .ShouldHave()
          .ActionAttributes(a => a
              .ContainingAttributeOfType<AuthorizeAttribute>())
@@ -143,7 +132,7 @@
              .WithData(
                  GetUser(),
                  GetJob())
-             .Calling(c => c.Edit(GetEditInputModel()))
+             .Calling(c => c.Edit(GetJobEditInputModel()))
              .ShouldHave()
              .ActionAttributes(a => a
                  .ContainingAttributeOfType<AuthorizeAttribute>())
@@ -230,66 +219,5 @@
                    .ShouldReturn()
                    .View(v => v
                         .WithModelOfType<AllJobsViewModel>());
-
-        private static JobInputModel GetValidInputModel()
-        {
-            return new JobInputModel
-            {
-                Title = "Test",
-                JobBody = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-                CompanyName = "Hacker GmbH",
-                Location = "Paris",
-                Contact = "0121490458342",
-            };
-        }
-
-        private static EditJobInputModel GetEditInputModel()
-        {
-            return new EditJobInputModel
-            {
-                Id = 1,
-                Title = "Test",
-                JobBody = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-                CompanyName = "Hacker GmbH",
-                Location = "Paris",
-                Contact = "0121490458342",
-            };
-        }
-
-        private static Job GetJob()
-        {
-            return new Job
-            {
-                Id = 1,
-                Title = "Test",
-                JobBody = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-                CompanyName = "Hacker GmbH",
-                Location = "Paris",
-                Contact = "0121490458342",
-                UserId = UserId,
-            };
-        }
-
-        private static ApplicationUser GetUser()
-        {
-            return new ApplicationUser
-            {
-                Id = "1b99c696-64f5-443a-ae1e-6b4a1bc8f2cb",
-                UserName = "Ivan_Dev",
-                Email = "ivan@fake.bg",
-                PasswordHash = "sdasd324olkk34dff",
-            };
-        }
-
-        private static ApplicationUser GetUserNotOwner()
-        {
-            return new ApplicationUser
-            {
-                Id = "TestId",
-                UserName = "Ivan",
-                Email = "ivan@fake.bg",
-                PasswordHash = "sdasd324olkk34dff",
-            };
-        }
     }
 }

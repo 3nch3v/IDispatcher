@@ -1,27 +1,16 @@
 ﻿namespace Dispatcher.Web.Tests.Controllers
 {
-    using System.Reflection;
-
-    using Dispatcher.Data.Models;
-    using Dispatcher.Data.Models.UserInfoModels;
-    using Dispatcher.Services.Mapping;
     using Dispatcher.Web.Controllers;
-    using Dispatcher.Web.ViewModels;
     using Dispatcher.Web.ViewModels.ProjectModels;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using MyTested.AspNetCore.Mvc;
     using Xunit;
 
-    public class ProjectsControllerTests
+    using static Dispatcher.Web.Tests.Data;
+
+    public class ProjectsControllerTests : BaseControllerTests
     {
-        public ProjectsControllerTests()
-        {
-            AutoMapperConfig.RegisterMappings(typeof(ErrorViewModel).GetTypeInfo().Assembly);
-        }
-
-        public static string UserId => "1b99c696-64f5-443a-ae1e-6b4a1bc8f2cb";
-
         [Fact]
         public void CreateShouldHaveAuthorizeAttributeAndShouldReturnView()
         => MyController<ProjectsController>
@@ -61,7 +50,7 @@
          => MyMvc
          .Controller<ProjectsController>(instance => instance
              .WithUser())
-         .Calling(c => c.Add(GetValidInputModel()))
+         .Calling(c => c.Add(GetValidProjectInputModel()))
          .ShouldHave()
          .ActionAttributes(a => a
              .ContainingAttributeOfType<AuthorizeAttribute>())
@@ -210,59 +199,5 @@
                 .ShouldReturn()
                 .View(view => view
                     .WithModelOfType<SingleProjectViewModel>());
-
-        private static ProjectInputmodel GetValidInputModel()
-        {
-            return new ProjectInputmodel
-            {
-                Name = "Test Prject",
-                Description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. ",
-                UserRole = "Boss",
-            };
-        }
-
-        private static Project GetProject()
-        {
-            return new Project
-            {
-                Id = 1,
-                Name = "Test Prject",
-                Description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. ",
-                UserRole = "Boss",
-                UserId = UserId,
-            };
-        }
-
-        private static ProjectInputmodel GetProjectInput()
-        {
-            return new ProjectInputmodel
-            {
-                Name = "Test Prject",
-                Description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. ",
-                UserRole = "Boss",
-            };
-        }
-
-        private static ApplicationUser GetUser()
-        {
-            return new ApplicationUser
-            {
-                Id = "1b99c696-64f5-443a-ae1e-6b4a1bc8f2cb",
-                UserName = "Ivan_Dev",
-                Email = "ivan@fake.bg",
-                PasswordHash = "sdasd324olkk34dff",
-            };
-        }
-
-        private static ApplicationUser GetUserNotOwner()
-        {
-            return new ApplicationUser
-            {
-                Id = "TestId",
-                UserName = "Ivan",
-                Email = "ivan@fake.bg",
-                PasswordHash = "sdasd324olkk34dff",
-            };
-        }
     }
 }

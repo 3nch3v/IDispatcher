@@ -1,27 +1,16 @@
 ﻿namespace Dispatcher.Web.Tests.Controllers
 {
-    using System.Reflection;
-
-    using Dispatcher.Data.Models;
-    using Dispatcher.Data.Models.BlogModels;
-    using Dispatcher.Services.Mapping;
     using Dispatcher.Web.Controllers;
-    using Dispatcher.Web.ViewModels;
     using Dispatcher.Web.ViewModels.BlogModels;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using MyTested.AspNetCore.Mvc;
     using Xunit;
 
-    public class BlogsControllerTests
+    using static Dispatcher.Web.Tests.Data;
+
+    public class BlogsControllerTests : BaseControllerTests
     {
-        public BlogsControllerTests()
-        {
-            AutoMapperConfig.RegisterMappings(typeof(ErrorViewModel).GetTypeInfo().Assembly);
-        }
-
-        public static string UserId => "1b99c696-64f5-443a-ae1e-6b4a1bc8f2cb";
-
         [Fact]
         public void CreateShouldHaveAuthorizeAttributeAndShouldReturnView()
           => MyController<BlogsController>
@@ -61,7 +50,7 @@
           => MyMvc
           .Controller<BlogsController>(instance => instance
               .WithUser())
-          .Calling(c => c.Create(GetValidInputModel()))
+          .Calling(c => c.Create(GetValidBlogInputModel()))
           .ShouldHave()
           .ActionAttributes(a => a
               .ContainingAttributeOfType<AuthorizeAttribute>())
@@ -216,48 +205,5 @@
                 .ShouldReturn()
                 .View(view => view
                     .WithModelOfType<AllBlogPostsViewModel>());
-
-        private static BlogInputModel GetValidInputModel()
-        {
-            return new BlogInputModel { Title = "Test Blog", Body = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. " };
-        }
-
-        private static EditBlogPostInputmodel GetEditBlogInputmodel()
-        {
-            return new EditBlogPostInputmodel { Id = 1, Title = "Test Blog", Body = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. " };
-        }
-
-        private static ApplicationUser GetUser()
-        {
-            return new ApplicationUser
-            {
-                Id = "1b99c696-64f5-443a-ae1e-6b4a1bc8f2cb",
-                UserName = "Ivan_Dev",
-                Email = "ivan@fake.bg",
-                PasswordHash = "sdasd324olkk34dff",
-            };
-        }
-
-        private static ApplicationUser GetUserNotOwner()
-        {
-            return new ApplicationUser
-            {
-                Id = "TestId",
-                UserName = "Ivan",
-                Email = "ivan@fake.bg",
-                PasswordHash = "sdasd324olkk34dff",
-            };
-        }
-
-        private static Blog GetBlog()
-        {
-            return new Blog
-            {
-                Id = 1,
-                Title = "Looking for Developers",
-                Body = "Does Upwork, Toptal, Stack Overflow sound familiar to you? If you’re looking to hire developers for your startup, you probably have already bumped into these websites and had no luck in finding the right person for the job. When you’re in the early stages of your business, making sure that you hire the right person for the role is vital. With 20% of startups failing in the first two years, and almost a quarter of failures being due to teamwork issues, getting this right is fundamental. We are familiar with the challenges, as we have been recruiting developers from all over the globe and placing them in different companies, for more than 10 years",
-                UserId = "1b99c696-64f5-443a-ae1e-6b4a1bc8f2cb",
-            };
-        }
     }
 }

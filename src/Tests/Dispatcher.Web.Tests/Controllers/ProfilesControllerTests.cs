@@ -1,25 +1,15 @@
 ﻿namespace Dispatcher.Web.Tests.Controllers
 {
-    using System.Reflection;
-
-    using Dispatcher.Data.Models;
-    using Dispatcher.Services.Mapping;
     using Dispatcher.Web.Controllers;
-    using Dispatcher.Web.ViewModels;
     using Dispatcher.Web.ViewModels.ProfileModels;
     using Microsoft.AspNetCore.Authorization;
     using MyTested.AspNetCore.Mvc;
     using Xunit;
 
-    public class ProfilesControllerTests
+    using static Dispatcher.Web.Tests.Data;
+
+    public class ProfilesControllerTests : BaseControllerTests
     {
-        public ProfilesControllerTests()
-        {
-            AutoMapperConfig.RegisterMappings(typeof(ErrorViewModel).GetTypeInfo().Assembly);
-        }
-
-        public static string UserId => "1b99c696-64f5-443a-ae1e-6b4a1bc8f2cb";
-
         [Theory]
         [InlineData("Ivan_Dev")]
         public void ProfileSchouldRedirectToActionWhenUsernameNotFound(string username)
@@ -61,16 +51,5 @@
              .AndAlso()
              .ShouldReturn()
              .Unauthorized();
-
-        private static ApplicationUser GetUser()
-        {
-            return new ApplicationUser
-            {
-                Id = "1b99c696-64f5-443a-ae1e-6b4a1bc8f2cb",
-                UserName = "Ivan_Dev",
-                Email = "ivan@fake.bg",
-                PasswordHash = "sdasd324olkk34dff",
-            };
-        }
     }
 }
