@@ -12,7 +12,9 @@
     using Dispatcher.Web.ViewModels.BlogModels;
     using Dispatcher.Web.ViewModels.ForumModels;
     using Dispatcher.Web.ViewModels.JobModels;
+    using Dispatcher.Web.ViewModels.ProfileModels;
     using Dispatcher.Web.ViewModels.ProjectModels;
+    using Dispatcher.Web.ViewModels.VotesModels;
 
     public static class Data
     {
@@ -26,6 +28,17 @@
                 UserName = "Ivan_Dev",
                 Email = "ivan@fake.bg",
                 PasswordHash = "sdasd324olkk34dff",
+            };
+        }
+
+        public static ApplicationUser GetFakeUser()
+        {
+            return new ApplicationUser
+            {
+                Id = "fakeId",
+                Email = "fake@mail.bg",
+                UserName = "fakeUser",
+                PasswordHash = "123456",
             };
         }
 
@@ -64,7 +77,7 @@
                 Id = 1,
                 AdvertisementTypeId = 1,
                 Title = "Looking for Developers",
-                Description = "Does Upwork, Toptal, Stack Overflow sound familiar to you? If you’re looking to hire developers for your startup, you probably have already bumped into these websites and had no luck in finding the right person for the job. When you’re in the early stages of your business, making sure that you hire the right person for the role is vital. With 20% of startups failing in the first two years, and almost a quarter of failures being due to teamwork issues, getting this right is fundamental. We are familiar with the challenges, as we have been recruiting developers from all over the globe and placing them in different companies, for more than 10 years",
+                Description = "It Does Upwork, Toptal, Stack Overflow sound familiar to you? If you’re looking to hire developers for your startup, you probably have already bumped into these websites and had no luck in finding the right person for the job. When you’re in the early stages of your business, making sure that you hire the right person for the role is vital. With 20% of startups failing in the first two years, and almost a quarter of failures being due to teamwork issues, getting this right is fundamental. We are familiar with the challenges, as we have been recruiting developers from all over the globe and placing them in different companies, for more than 10 years",
                 Compensation = "6000 EUR",
                 UserId = "1b99c696-64f5-443a-ae1e-6b4a1bc8f2cb",
             };
@@ -177,6 +190,25 @@
             };
         }
 
+        public static PostInputViewModel GetDiscussionCommentInput()
+        {
+            return new PostInputViewModel
+            {
+                Content = "Bla bla",
+                DiscussionId = 1,
+            };
+        }
+
+        public static CommentInputModel GetCommenInput()
+        {
+            return new CommentInputModel
+            {
+                StarsCount = 3,
+                Comment = "Ok super",
+                UserId = UserId,
+            };
+        }
+
         public static JobInputModel GetValidJobInputModel()
         {
             return new JobInputModel
@@ -245,6 +277,32 @@
                 Name = "Test Prject",
                 Description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. ",
                 UserRole = "Boss",
+            };
+        }
+
+        public static VoteInputModel GetCommentVote()
+        {
+            return new VoteInputModel
+            {
+                CommentId = 1,
+                VoteType = "Like",
+            };
+        }
+
+        public static VoteInputModel GetDiscussionVote()
+        {
+            return new VoteInputModel
+            {
+                DiscussionId = 1,
+                VoteType = "Dislike",
+            };
+        }
+
+        public static VoteInputModel GetInvalidVote()
+        {
+            return new VoteInputModel
+            {
+                VoteType = "Dislike",
             };
         }
     }

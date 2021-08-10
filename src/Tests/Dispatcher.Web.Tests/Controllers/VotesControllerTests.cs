@@ -7,15 +7,18 @@
     using MyTested.AspNetCore.Mvc;
     using Xunit;
 
+    using static Dispatcher.Web.Tests.Data;
+
     public class VotesControllerTests
     {
-        [Fact]
-        public void VoteShouldReturnObjectWithCommentVotesCount()
+        [Theory]
+        [InlineData(1, 0)]
+        public void VoteShouldReturnObjectWithCommentVotesCount(int expextedLikes, int expectedDislikes)
          => MyController<VotesController>
            .Instance()
            .WithUser()
            .Calling(c => c
-                .Vote(new VoteInputModel() { CommentId = 1, VoteType = "Like" }))
+                .Vote(GetCommentVote()))
            .ShouldHave()
            .ActionAttributes(a => a
                .ContainingAttributeOfType<AuthorizeAttribute>())
@@ -26,16 +29,17 @@
            .AndAlso()
            .ShouldReturn()
            .Object(o => o
-                .WithModelOfType<VoteResultsModel>(v => v.Likes == 1
-                                                && v.Dislikes == 0));
+                .WithModelOfType<VoteResultsModel>(v => v.Likes == expextedLikes
+                                                  && v.Dislikes == expectedDislikes));
 
-        [Fact]
-        public void VoteShouldReturnObjectWithDiscussionVotesCount()
+        [Theory]
+        [InlineData(0, 1)]
+        public void VoteShouldReturnObjectWithDiscussionVotesCount(int expextedLikes, int expectedDislikes)
        => MyController<VotesController>
          .Instance()
          .WithUser()
          .Calling(c => c
-              .Vote(new VoteInputModel() { DiscussionId = 1, VoteType = "Dislike" }))
+              .Vote(GetDiscussionVote()))
          .ShouldHave()
          .ActionAttributes(a => a
              .ContainingAttributeOfType<AuthorizeAttribute>())
@@ -46,16 +50,17 @@
          .AndAlso()
          .ShouldReturn()
          .Object(o => o
-              .WithModelOfType<VoteResultsModel>(v => v.Likes == 0
-                                              && v.Dislikes == 1));
+              .WithModelOfType<VoteResultsModel>(v => v.Likes == expextedLikes
+                                                && v.Dislikes == expectedDislikes));
 
-        [Fact]
-        public void VoteShouldReturnObjectWithWithoutVotesIfDiscussionIdOrCommentIdIsNotValid()
+        [Theory]
+        [InlineData(0, 0)]
+        public void VoteShouldReturnObjectWithWithoutVotesIfDiscussionIdOrCommentIdIsNotValid(int expextedLikes, int expectedDislikes)
          => MyController<VotesController>
            .Instance()
            .WithUser()
            .Calling(c => c
-                .Vote(new VoteInputModel() { VoteType = "Dislike" }))
+                .Vote(GetInvalidVote()))
            .ShouldHave()
            .ActionAttributes(a => a
                .ContainingAttributeOfType<AuthorizeAttribute>())
@@ -66,7 +71,7 @@
            .AndAlso()
            .ShouldReturn()
            .Object(o => o
-                .WithModelOfType<VoteResultsModel>(v => v.Likes == 0
-                                             && v.Dislikes == 0));
+                .WithModelOfType<VoteResultsModel>(v => v.Likes == expextedLikes
+                                                  && v.Dislikes == expectedDislikes));
     }
 }

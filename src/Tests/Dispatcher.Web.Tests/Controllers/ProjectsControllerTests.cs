@@ -5,6 +5,7 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using MyTested.AspNetCore.Mvc;
+    using Shouldly;
     using Xunit;
 
     using static Dispatcher.Web.Tests.Data;
@@ -81,7 +82,8 @@
               .AndAlso()
               .ShouldReturn()
               .View(v => v
-                  .WithModelOfType<EditProjectInputModul>(m => m.Id == id));
+                  .WithModelOfType<EditProjectInputModul>(m => m.Id
+                        .ShouldBe(id)));
 
         [Fact]
         public void EditShouldHaveAuthorizeAttributeAndShouldReturnUnauthorizedWhenUserIdNotOwner()
@@ -192,7 +194,7 @@
 
         [Theory]
         [InlineData(1)]
-        public void ProjectchouldReturnTheAdWithTheCalledIdWhenTheAdIdIsCorrect(int id)
+        public void ProjectchouldReturnViewWithWhenRequestedIdIsCorrect(int id)
             => MyMvc.Controller<ProjectsController>()
                 .WithData(GetProject())
                 .Calling(c => c.Project(id))

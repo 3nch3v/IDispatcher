@@ -7,14 +7,16 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using MyTested.AspNetCore.Mvc;
+    using Shouldly;
     using Xunit;
 
     using static Dispatcher.Web.Tests.Data;
 
     public class ForumControllerTests : BaseControllerTests
     {
-        [Fact]
-        public void CreateShouldHaveAuthorizeAttributeAndReturnViewWithTheCategories()
+        [Theory]
+        [InlineData("Test", 3)]
+        public void CreateShouldHaveAuthorizeAttributeAndReturnViewWithTheCategories(string categoryName, int expectedCount)
            => MyController<ForumController>
             .Instance()
             .WithUser(u => u.WithIdentifier(UserId))
@@ -27,29 +29,29 @@
             .ShouldReturn()
             .View(view => view
                 .WithModelOfType<DiscussionInputModel>(v => v
-                .Categories.Count() == 3
-                 && v.Categories.First().Name == "Test"));
+                .Categories.Count() == expectedCount
+                 && v.Categories.First().Name == categoryName));
 
         [Fact]
-        public void CreateShouldHaveAuthorizeAndHttpPostAttributesShouldReturnViewWhenModelStateIsInvalid()
+        public void CreateShouldHaveAuthorizeAndHttpPostAttributesShouldReturnViewWhenModelStateIsNotValid()
           => MyMvc
-          .Controller<ForumController>(instance => instance
-              .WithUser())
-          .Calling(c => c.Create(new DiscussionInputModel()))
-          .ShouldHave()
-          .ActionAttributes(a => a
-             .ContainingAttributeOfType<AuthorizeAttribute>())
-          .AndAlso()
-          .ShouldHave()
-          .ActionAttributes(a => a.
-              ContainingAttributeOfType<HttpPostAttribute>())
-          .AndAlso()
-          .ShouldHave()
-          .InvalidModelState()
-          .AndAlso()
-          .ShouldReturn()
-          .View(view => view.
-              WithModelOfType<DiscussionInputModel>());
+            .Controller<ForumController>(instance => instance
+                .WithUser())
+            .Calling(c => c.Create(new DiscussionInputModel()))
+            .ShouldHave()
+            .ActionAttributes(a => a
+               .ContainingAttributeOfType<AuthorizeAttribute>())
+            .AndAlso()
+            .ShouldHave()
+            .ActionAttributes(a => a.
+                ContainingAttributeOfType<HttpPostAttribute>())
+            .AndAlso()
+            .ShouldHave()
+            .InvalidModelState()
+            .AndAlso()
+            .ShouldReturn()
+            .View(view => view.
+                WithModelOfType<DiscussionInputModel>());
 
         [Fact]
         public void CreateShouldHaveAuthorizeAndHttpPostAttributesShouldRedirectToAllWhenModelStateIsValid()
@@ -127,7 +129,8 @@
                .AndAlso()
                .ShouldReturn()
                .View(v => v
-                   .WithModelOfType<EditDiscussionViewModel>(m => m.Id == id));
+                   .WithModelOfType<EditDiscussionViewModel>(m => m.Id
+                        .ShouldBe(id)));
 
         [Theory]
         [InlineData(1)]
@@ -151,7 +154,7 @@
            .ValidModelState()
            .AndAlso()
            .ShouldReturn()
-           .RedirectToAction("Discussion");
+           .RedirectToAction("Discussion", new { id });
 
         [Theory]
         [InlineData(1)]
@@ -217,7 +220,7 @@
                     .ContainingAttributeOfType<AuthorizeAttribute>())
                 .AndAlso()
                 .ShouldReturn()
-               .RedirectToAction("Discussion");
+               .RedirectToAction("Discussion", new { id });
 
         [Fact]
         public void CommentShouldHaveAuthorizeAttributeAndRedirectToTheCurrentDiscussion()
@@ -225,13 +228,13 @@
           .Instance()
           .WithUser(u => u.WithIdentifier(UserId))
           .WithData(GetForumCategory())
-          .Calling(c => c.Comment(new PostInputViewModel { Content = "Bla bla", DiscussionId = 1, }))
+          .Calling(c => c.Comment(GetDiscussionCommentInput()))
           .ShouldHave()
           .ActionAttributes(a => a
               .ContainingAttributeOfType<AuthorizeAttribute>())
           .AndAlso()
           .ShouldReturn()
-          .RedirectToAction("Discussion");
+          .RedirectToAction("Discussion", new { id = GetDiscussionCommentInput().DiscussionId });
 
         [Theory]
         [InlineData(1)]
@@ -249,14 +252,14 @@
                 .ContainingAttributeOfType<AuthorizeAttribute>())
             .AndAlso()
             .ShouldReturn()
-            .RedirectToAction("Discussion");
+            .RedirectToAction("Discussion", new { id });
 
         [Theory]
         [InlineData(1)]
         public void DeleteCommentShouldHaveAuthorizeAttributeAndShouldRedirectToDiscussionWhenSuccess(int id)
             => MyController<ForumController>
                 .Instance()
-                .WithUser(u => u.WithIdentifier(UserId))
+                .WithUser()
                 .WithData(
                     GetUser(),
                     GetComment())
@@ -266,7 +269,7 @@
                     .ContainingAttributeOfType<AuthorizeAttribute>())
                 .AndAlso()
                 .ShouldReturn()
-                .RedirectToAction("Discussion");
+                .Unauthorized();
 
         [Theory]
         [InlineData(1)]

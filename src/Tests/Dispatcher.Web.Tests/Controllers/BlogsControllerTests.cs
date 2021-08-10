@@ -1,10 +1,13 @@
 ﻿namespace Dispatcher.Web.Tests.Controllers
 {
+    using System.Linq;
+
     using Dispatcher.Web.Controllers;
     using Dispatcher.Web.ViewModels.BlogModels;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using MyTested.AspNetCore.Mvc;
+    using Shouldly;
     using Xunit;
 
     using static Dispatcher.Web.Tests.Data;
@@ -25,7 +28,7 @@
            .View();
 
         [Fact]
-        public void CreateShouldHaveAuthorizeAndHttpPostAttributesShouldReturnViewWhenModelStateIsInvalid()
+        public void CreateShouldHaveAuthorizeAndHttpPostAttributesShouldReturnViewWhenModelStateIsNotValid()
            => MyMvc
            .Controller<BlogsController>(instance => instance
                .WithUser())
@@ -99,7 +102,7 @@
               .Unauthorized();
 
         [Fact]
-        public void EditShouldHaveAuthorizeAndHttpPostAttributesAndShouldReturnInputViewWhenThemodelStateIsInvalid()
+        public void EditShouldHaveAuthorizeAndHttpPostAttributesAndShouldReturnInputViewWhenThemodelStateIsNotValid()
            => MyController<BlogsController>
                .Instance()
                .WithUser(u => u.WithIdentifier(UserId))
@@ -122,8 +125,9 @@
                .View(v => v
                    .WithModelOfType<EditBlogPostInputmodel>());
 
-        [Fact]
-        public void EditShouldHaveAuthorizeAndHttpPostAttributesAndShouldRedirectToTheBlogWhenUserHasPermissionAndModelStateIsValid()
+        [Theory]
+        [InlineData(1)]
+        public void EditShouldHaveAuthorizeAndHttpPostAttributesAndShouldRedirectToTheBlogWhenUserHasPermissionAndModelStateIsValid(int id)
              => MyController<BlogsController>
                 .Instance()
                 .WithUser(u => u.WithIdentifier(UserId))
@@ -143,7 +147,7 @@
                 .ValidModelState()
                 .AndAlso()
                 .ShouldReturn()
-                .RedirectToAction("Post");
+                .RedirectToAction("Post", new { id });
 
         [Theory]
         [InlineData(1)]
@@ -165,7 +169,7 @@
         [Theory]
         [InlineData(1)]
         public void DeleteShouldHaveAuthorizeAttributeAndShouldReturnUnauthorizedWhenUserHasNoPermissionsToDeleteBlog(int id)
-           => MyController<AdsController>
+           => MyController<BlogsController>
                .Instance()
                .WithUser()
                .WithData(
@@ -181,29 +185,45 @@
 
         [Theory]
         [InlineData(1)]
-        public void BlogSchouldReturnErrorWhenTheBlogIdIsNotCorrectOrMissing(int id)
-           => MyMvc.Controller<AdsController>()
+        public void PostSchouldReturnErrorWhenTheBlogIdIsNotCorrectOrMissing(int id)
+           => MyMvc.Controller<BlogsController>()
                .WithoutData()
-               .Calling(c => c.Ad(id))
+               .Calling(c => c.Post(id))
                .ShouldReturn()
                .RedirectToAction("Error", "Home");
 
         [Theory]
         [InlineData(23)]
-        public void BlogSchouldReturnErrorWhenTheBlogIdIsNotCorrect(int id)
+        public void PostSchouldReturnErrorWhenTheBlogIdIsNotCorrect(int id)
            => MyMvc.Controller<BlogsController>()
                .WithData(GetBlog())
                .Calling(c => c.Post(id))
                .ShouldReturn()
                .RedirectToAction("Error", "Home");
 
-        [Fact]
-        public void AllSchouldReturnViewWithDiscussionEntities()
+        [Theory]
+        [InlineData(1)]
+        public void PostSchouldReturnViewWithCalledPostId(int id)
+          => MyMvc.Controller<BlogsController>()
+              .WithData(
+                GetUser(),
+                GetBlog())
+              .Calling(c => c.Post(id))
+              .ShouldReturn()
+              .View(v => v.WithModelOfType<BlogPostViewModel>(m => m.Id
+                    .ShouldBe(id)));
+
+        [Theory]
+        [InlineData(1)]
+        public void AllSchouldReturnViewWithDiscussionEntities(int count)
             => MyMvc.Controller<BlogsController>()
-                .WithData(GetBlog())
+                .WithData(
+                    GetUser(),
+                    GetBlog())
                 .Calling(c => c.All(1))
                 .ShouldReturn()
                 .View(view => view
-                    .WithModelOfType<AllBlogPostsViewModel>());
+                    .WithModelOfType<AllBlogPostsViewModel>(m => m.Posts.Count()
+                        .ShouldBe(count)));
     }
 }

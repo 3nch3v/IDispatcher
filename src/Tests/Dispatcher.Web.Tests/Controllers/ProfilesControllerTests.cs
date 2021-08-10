@@ -40,7 +40,7 @@
 
         [Theory]
         [InlineData("AnotherUser")]
-        public void Data(string anotherUser)
+        public void DataShouldReturnUnauthorizedWhenLoggedInUserIsDifferentAsCalledUsername(string anotherUser)
          => MyMvc.Controller<ProfilesController>()
              .WithUser(u => u.WithIdentifier(UserId))
              .WithData(GetUser())

@@ -16,7 +16,7 @@
                 .WithoutUser())
             .Calling(c => c.Index())
             .ShouldReturn()
-            .View(view => view.WithNoModel());
+            .View();
 
         [Fact]
         public void PrivacyShouldReturnViewWhenCollingIndexAction()
@@ -25,7 +25,7 @@
                 .WithoutUser())
             .Calling(c => c.Privacy())
             .ShouldReturn()
-            .View(view => view.WithNoModel());
+            .View();
 
         [Fact]
         public void ErrorShouldReturnViewWithBadRequestWhenCollingIndexActionWithError400()

@@ -1,10 +1,13 @@
 ﻿namespace Dispatcher.Web.Tests.Controllers
 {
+    using System.Linq;
+
     using Dispatcher.Web.Controllers;
     using Dispatcher.Web.ViewModels.JobModels;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using MyTested.AspNetCore.Mvc;
+    using Shouldly;
     using Xunit;
 
     using static Dispatcher.Web.Tests.Data;
@@ -12,7 +15,7 @@
     public class JobsControllerTests : BaseControllerTests
     {
         [Fact]
-        public void CreateShouldHaveAuthorizeAttributeAndReturnViewWithTheAdTypes()
+        public void CreateShouldHaveAuthorizeAttributeAndReturnView()
           => MyController<JobsController>
            .Instance()
            .WithUser(u => u.WithIdentifier(UserId))
@@ -82,12 +85,13 @@
               .AndAlso()
               .ShouldReturn()
               .View(v => v
-                  .WithModelOfType<EditJobInputModel>(m => m.Id == id));
+                  .WithModelOfType<EditJobInputModel>(m => m.Id
+                        .ShouldBe(id)));
 
         [Fact]
         public void EditShouldHaveAuthorizeAttributeAndShouldReturnUnauthorizedWhenUserIdNotOwner()
           => MyMvc.Controller<JobsController>()
-              .WithUser(u => u.WithUsername("Ivan"))
+              .WithUser()
               .WithData(
                   GetUserNotOwner(),
                   GetJob())
@@ -122,7 +126,8 @@
                .AndAlso()
                .ShouldReturn()
                .View(v => v
-                   .WithModelOfType<EditJobInputModel>(m => m.Id == id));
+                   .WithModelOfType<EditJobInputModel>(m => m.Id
+                        .ShouldBe(id)));
 
         [Fact]
         public void EditShouldHaveAuthorizeAndHttpPostAttributesAndShouldRedirectToTheJobWhenUserHasPermissionAndModelStateIsValid()
@@ -145,7 +150,7 @@
              .ValidModelState()
              .AndAlso()
              .ShouldReturn()
-             .RedirectToAction("Job");
+             .RedirectToAction("Job", new { GetJobEditInputModel().Id });
 
         [Theory]
         [InlineData(1)]
@@ -167,7 +172,7 @@
         [Theory]
         [InlineData(1)]
         public void DeleteShouldHaveAuthorizeAttributeAndShouldReturnUnauthorizedWhenUserHasNoPermissionsToDeleteJob(int id)
-           => MyController<AdsController>
+           => MyController<JobsController>
                .Instance()
                .WithUser()
                .WithData(
@@ -183,21 +188,37 @@
 
         [Theory]
         [InlineData(1)]
-        public void JobSchouldReturnErrorWhenTheJobIdIsNotCorrectOrMissing(int id)
+        public void JobSchouldReturnErrorWhenJobIdNotExist(int id)
            => MyMvc.Controller<JobsController>()
                .WithoutData()
                .Calling(c => c.Job(id))
                .ShouldReturn()
                .RedirectToAction("Error", "Home");
 
-        [Fact]
-        public void AllSchouldReturnViewWithTheDefaultEntitiesCountPerPage()
+        [Theory]
+        [InlineData(1)]
+        public void JobSchouldReturnViewWithTheRequetedJobId(int id)
+          => MyMvc.Controller<JobsController>()
+              .WithData(
+                    GetUser(),
+                    GetJob())
+              .Calling(c => c.Job(id))
+              .ShouldReturn()
+              .View(v => v.WithModelOfType<SigleJobViewModel>(m => m.Id
+                    .ShouldBe(id)));
+
+        [Theory]
+        [InlineData(1, 1)]
+        public void AllSchouldReturnViewWithTheDefaultEntitiesCountPerPage(int expectedCount, int page)
            => MyMvc.Controller<JobsController>()
-               .WithData(GetJob())
-               .Calling(c => c.All(1))
+               .WithData(
+                    GetUser(),
+                    GetJob())
+               .Calling(c => c.All(page))
                .ShouldReturn()
                .View(view => view
-                   .WithModelOfType<AllJobsViewModel>());
+                   .WithModelOfType<AllJobsViewModel>(m => m.Jobs.Count()
+                        .ShouldBe(expectedCount)));
 
         [Fact]
         public void SearchShouldRedirectToAllWhenSearchTermIsNull()
@@ -208,16 +229,19 @@
               .RedirectToAction("All");
 
         [Theory]
-        [InlineData("Id", 1)]
-        public void SearchShouldReturnViewWithJobsWhenSearchTermIsValid(string searchTerm, int id)
+        [InlineData("Test", 1, 1)]
+        public void SearchShouldReturnViewWithJobsWhenSearchTermIsValid(string searchTerm, int page, int expectedCount)
              => MyMvc.Controller<JobsController>()
-                   .WithData(GetJob())
-                   .Calling(c => c.Search(searchTerm, id))
+                   .WithData(
+                        GetJob(),
+                        GetUser())
+                   .Calling(c => c.Search(searchTerm, page))
                    .ShouldHave()
                    .TempData(t => t.Equals(searchTerm))
                    .AndAlso()
                    .ShouldReturn()
                    .View(v => v
-                        .WithModelOfType<AllJobsViewModel>());
+                         .WithModelOfType<AllJobsViewModel>(m => m.Jobs.Count()
+                        .ShouldBe(expectedCount)));
     }
 }
