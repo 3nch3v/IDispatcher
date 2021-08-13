@@ -69,3 +69,7 @@ The focus of the project is the ability to build a back-end project with the ASP
 - Admin (only for Admin users)
   - Administration (Admin Dashboard)
     - Data Access (all kinds of data)
+
+### === Unit Tests Coverage ===
+
+![alt text](https://user-images.githubusercontent.com/63471679/129382112-e7eb7eec-6459-4c5f-9f05-9afb2213bee6.JPG)
