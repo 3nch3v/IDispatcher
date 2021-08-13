@@ -64,6 +64,16 @@
         }
 
         [Fact]
+        public void GetDiscussionsCountShouldReturnDiscussionsCountBycategoryInDb()
+        {
+            var service = this.GetService(this.GetForumRepository());
+
+            var actualCount = service.GetDiscussionsCount("News");
+
+            Assert.Equal(3, actualCount);
+        }
+
+        [Fact]
         public void GetByIdShouldReturnCorrectEntityWithTheGivenDiscussionId()
         {
             var service = this.GetService(this.GetForumRepository());
@@ -74,13 +84,33 @@
         }
 
         [Fact]
-        public void GetAllShouldReturnAllDiscussionsInDb()
+        public void GetAllShouldReturnAllDiscussions()
         {
             var service = this.GetService(this.GetForumRepository());
 
             var actualDuscussions = service.GetAllForumDiscussions<DicussionDto>(1, 5, "All");
 
             Assert.Equal(4, actualDuscussions.Count());
+        }
+
+        [Fact]
+        public void GetAllUnsolvedShouldReturnUnsolvedDiscussions()
+        {
+            var service = this.GetService(this.GetForumRepository());
+
+            var actualDuscussions = service.GetAllForumDiscussions<DicussionDto>(1, 5, "Unsolved");
+
+            Assert.Equal(4, actualDuscussions.Count());
+        }
+
+        [Fact]
+        public void GetAllByCategoryShouldReturnDiscussionsFromTheRequestedCategory()
+        {
+            var service = this.GetService(this.GetForumRepository());
+
+            var actualDuscussions = service.GetAllForumDiscussions<DicussionDto>(1, 5, "News");
+
+            Assert.Equal(3, actualDuscussions.Count());
         }
 
         [Fact]

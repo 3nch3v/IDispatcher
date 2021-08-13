@@ -102,6 +102,27 @@
 
         [Theory]
         [InlineData(1)]
+        public void EditShouldHaveAuthorizeAndHttpPostAttributesAndShouldReturnUnauthorizedWhenUserIdNotOwner(int id)
+       => MyController<ProjectsController>
+          .Instance()
+          .WithUser(u => u.WithUsername("Ivan"))
+          .WithData(
+              GetUserNotOwner(),
+              GetProject())
+           .Calling(c => c.Edit(id, new ProjectInputmodel { }))
+            .ShouldHave()
+            .ActionAttributes(a => a
+                .ContainingAttributeOfType<AuthorizeAttribute>())
+            .AndAlso()
+            .ShouldHave()
+            .ActionAttributes(a => a.
+                ContainingAttributeOfType<HttpPostAttribute>())
+          .AndAlso()
+          .ShouldReturn()
+          .Unauthorized();
+
+        [Theory]
+        [InlineData(1)]
         public void EditShouldHaveAuthorizeAndHttpPostAttributesAndShouldReturnEditViewModelWhenThemodelStateIsInvalid(int id)
         => MyController<ProjectsController>
             .Instance()

@@ -107,6 +107,26 @@
                 .ShouldReturn()
                 .Unauthorized();
 
+        [Fact]
+        public void EditShouldHaveAuthorizeAndHttpPostAttributesAndShouldReturnUnauthorizedWhenUserIdNotOwner()
+            => MyController<AdsController>
+               .Instance()
+               .WithUser(u => u.WithUsername("Ivan"))
+               .WithData(
+                   GetUserNotOwner(),
+                   GetProject())
+                .Calling(c => c.Edit(new AdvertisementInputModel { }, default))
+                 .ShouldHave()
+                 .ActionAttributes(a => a
+                     .ContainingAttributeOfType<AuthorizeAttribute>())
+                 .AndAlso()
+                 .ShouldHave()
+                 .ActionAttributes(a => a.
+                     ContainingAttributeOfType<HttpPostAttribute>())
+               .AndAlso()
+               .ShouldReturn()
+               .Unauthorized();
+
         [Theory]
         [InlineData(1)]
         public void EditShouldHaveAuthorizeAndHttpPostAttributesAndShouldReturnBackInputViewWhenThemodelStateIsInvalid(int id)

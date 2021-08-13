@@ -175,6 +175,7 @@
             {
                 Title = "Input",
                 Body = "We Work Remotely is a niche job board for remote jobseekers. It’s the largest, most experienced and dedicated remote only job board ",
+                VideoLink = "https://www.youtube.com/watch?v=FMwz-YXAK_E&ab_channel=DeutschlernendurchH%C3%B6ren",
             };
         }
 
@@ -200,8 +201,6 @@
             public string Body { get; set; }
 
             public string VideoLink { get; set; }
-
-            public IFormFile Picture { get; set; }
         }
     }
 }

@@ -106,6 +106,26 @@
               .View(v => v
                   .WithModelOfType<EditDiscussionViewModel>(m => m.Id == id));
 
+        [Fact]
+        public void EditShouldHaveAuthorizeAndHttpPostAttributesAndShouldReturnUnauthorizedWhenUserIdNotOwner()
+         => MyController<ForumController>
+            .Instance()
+            .WithUser(u => u.WithUsername("Ivan"))
+            .WithData(
+                GetUserNotOwner(),
+                GetDiscussion())
+            .Calling(c => c.Edit(new DiscussionInputModel { }, 1))
+            .ShouldHave()
+              .ActionAttributes(a => a
+                  .ContainingAttributeOfType<AuthorizeAttribute>())
+              .AndAlso()
+              .ShouldHave()
+              .ActionAttributes(a => a.
+                  ContainingAttributeOfType<HttpPostAttribute>())
+            .AndAlso()
+            .ShouldReturn()
+            .Unauthorized();
+
         [Theory]
         [InlineData(1)]
         public void EditShouldHaveAuthorizeAndHttpPostAttributesAndShouldReturnInputViewWhenThemodelStateIsInvalid(int id)

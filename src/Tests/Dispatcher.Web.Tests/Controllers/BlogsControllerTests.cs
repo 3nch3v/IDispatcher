@@ -102,6 +102,26 @@
               .Unauthorized();
 
         [Fact]
+        public void EditShouldHaveAuthorizeAndHttpPostAttributesAndShouldReturnUnauthorizedWhenUserIdNotOwner()
+            => MyController<BlogsController>
+               .Instance()
+               .WithUser(u => u.WithUsername("Ivan"))
+               .WithData(
+                   GetUserNotOwner(),
+                   GetProject())
+                .Calling(c => c.Edit(new EditBlogPostInputmodel { }))
+                 .ShouldHave()
+                 .ActionAttributes(a => a
+                     .ContainingAttributeOfType<AuthorizeAttribute>())
+                 .AndAlso()
+                 .ShouldHave()
+                 .ActionAttributes(a => a.
+                     ContainingAttributeOfType<HttpPostAttribute>())
+               .AndAlso()
+               .ShouldReturn()
+               .Unauthorized();
+
+        [Fact]
         public void EditShouldHaveAuthorizeAndHttpPostAttributesAndShouldReturnInputViewWhenThemodelStateIsNotValid()
            => MyController<BlogsController>
                .Instance()

@@ -44,6 +44,18 @@
         }
 
         [Fact]
+        public async Task UpdateAsyncShouldChangeJobBody()
+        {
+            var service = this.GetService(this.GetJobsRepository());
+            var updateModel = this.GetInputModel();
+
+            await service.UpdateAsync<JobInputModel>(updateModel, 1);
+            var actualResult = service.GetById<JobDto>(1);
+
+            Assert.Equal(updateModel.JobBody, actualResult.JobBody);
+        }
+
+        [Fact]
         public async Task DeleteShouldWorkProperly()
         {
             var service = this.GetService(this.GetJobsRepository());
@@ -178,7 +190,7 @@
             return new JobInputModel()
             {
                 Title = "Input",
-                JobBody = "We Work Remotely is a niche job board for remote jobseekers. It’s the largest, most experienced and dedicated remote only job board ",
+                JobBody = "Edit We Work Remotely is a niche job board for remote jobseekers. It’s the largest, most experienced and dedicated remote only job board ",
                 CompanyName = "Bla-Bla",
                 Location = "Sofia, Razsadnika",
                 Contact = "fake@fake.bg",

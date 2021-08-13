@@ -103,6 +103,26 @@
               .ShouldReturn()
               .Unauthorized();
 
+        [Fact]
+        public void EditShouldHaveAuthorizeAndHttpPostAttributesAndShouldReturnUnauthorizedWhenUserIdNotOwner()
+            => MyController<JobsController>
+               .Instance()
+               .WithUser(u => u.WithUsername("Ivan"))
+               .WithData(
+                   GetUserNotOwner(),
+                   GetProject())
+                .Calling(c => c.Edit(new EditJobInputModel { }))
+                 .ShouldHave()
+                 .ActionAttributes(a => a
+                     .ContainingAttributeOfType<AuthorizeAttribute>())
+                 .AndAlso()
+                 .ShouldHave()
+                 .ActionAttributes(a => a.
+                     ContainingAttributeOfType<HttpPostAttribute>())
+               .AndAlso()
+               .ShouldReturn()
+               .Unauthorized();
+
         [Theory]
         [InlineData(1)]
         public void EditShouldHaveAuthorizeAndHttpPostAttributesAndShouldReturnkEditViewWhenThemodelStateIsInvalid(int id)

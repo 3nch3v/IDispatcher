@@ -44,6 +44,30 @@
         }
 
         [Fact]
+        public async Task UpdateAsyncShouldChangeAdTypeIdInDb()
+        {
+            var service = GetService(GetAdsRepository());
+            var updateModel = GetInputModel();
+
+            await service.UpdateAsync<AdInputModel>(updateModel, 1);
+            var actualResult = service.GetById<Ad>(1);
+
+            Assert.Equal(updateModel.AdvertisementTypeId, actualResult.AdvertisementTypeId);
+        }
+
+        [Fact]
+        public async Task UpdateAsyncShouldChangeAdPictureUrlInDb()
+        {
+            var service = GetService(GetAdsRepository());
+            var updateModel = GetInputModel();
+
+            await service.UpdateAsync<AdInputModel>(updateModel, 1);
+            var actualResult = service.GetById<Ad>(1);
+
+            Assert.Equal(updateModel.PictureUrl, actualResult.PictureUrl);
+        }
+
+        [Fact]
         public async Task DeleteShouldWorkProperly()
         {
             var service = GetService(GetAdsRepository());
@@ -131,11 +155,11 @@
         {
             return new AdInputModel()
             {
-                AdvertisementTypeId = 1,
+                AdvertisementTypeId = 2,
                 Title = "Input",
                 Description = "We Work Remotely is a niche job board for remote jobseekers. It’s the largest, most experienced and dedicated remote only job board ",
                 Compensation = "$400",
-                PictureUrl = "https://www.wpbeginner.com/wp-content/uploads/2021/05/webcomlogo.png",
+                PictureUrl = "https://www.wpbeginner.com/wp-content/uploads/2021/05/webcomlogoNew.png",
             };
         }
 

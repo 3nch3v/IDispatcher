@@ -63,6 +63,19 @@
         }
 
         [Fact]
+        public async Task UserMayChangeTheVoteForAGivenDiscussionIdFromDislikeToLikeAndTheVotesShouldBeIncreasedAndDecreasedProperly()
+        {
+            var service = this.GetService(this.GetDiscussionsVotesRepository());
+
+            await service.VoteDiscussionAsync(this.GetUserId(), 1, "Dislike");
+            await service.VoteDiscussionAsync(this.GetUserId(), 1, "Like");
+            var actualVoteResult = service.GetDiscussionVotes(1);
+
+            Assert.Equal(3, actualVoteResult.Likes);
+            Assert.Equal(1, actualVoteResult.Dislikes);
+        }
+
+        [Fact]
         public async Task VoteCommentAsyncShoulIncreaseTheLikesProperlyForAGivenCommentId()
         {
             var service = this.GetService(null, this.GetCommentVotesRepository());
