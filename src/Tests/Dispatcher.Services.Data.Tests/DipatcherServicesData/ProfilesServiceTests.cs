@@ -1,41 +1,29 @@
 ﻿namespace Dispatcher.Services.Data.Tests.DipatcherServicesData
 {
-    using System;
     using System.Linq;
     using System.Threading.Tasks;
 
-    using Dispatcher.Data;
-    using Dispatcher.Data.Common.Repositories;
-    using Dispatcher.Data.Models;
-    using Dispatcher.Data.Models.UserInfoModels;
-    using Dispatcher.Data.Repositories;
-    using Dispatcher.Services.Data.Contracts;
-    using Dispatcher.Services.Mapping;
+    using Dispatcher.Web.ViewModels.ProfileModels;
     using Xunit;
 
-    public class ProfilesServiceTests
+    public class ProfilesServiceTests : BaseServiceTests
     {
-        public ProfilesServiceTests()
-        {
-            AutoMapperConfig.RegisterMappings(typeof(ReviewDto).Assembly, typeof(CustomerReview).Assembly);
-        }
-
         [Fact]
         public void GetUserByIdShouldReturnTheCorrectUser()
         {
-            var service = this.GetService(this.GetUsersRepository());
+            var service = GetService(UsersRepository);
 
-            var user = service.GetUserById("27699db4d-e91c-4dcd-9672-7b88b8484930");
+            var user = service.GetUserById(UserId);
 
-            Assert.Equal("Mux", user.FirstName);
+            Assert.Equal(UserId, user.Id);
         }
 
         [Fact]
-        public void GetCommentsShouldReturnTheCommentForUserId()
+        public void GetCommentsShouldReturnAllCommentsForrequestedUserId()
         {
-            var service = this.GetService(null, this.GetCustomersReviewsRepository());
+            var service = GetService(null, CustomersReviewsRepository);
 
-            var user = service.GetComments<ReviewDto>(this.GetUserId());
+            var user = service.GetComments<CommentViewModel>(UserId);
 
             Assert.Equal(2, user.Count());
         }
@@ -43,27 +31,24 @@
         [Fact]
         public async Task CommentAsyncShouldAddCommentIntoDb()
         {
-            var repository = this.GetCustomersReviewsRepository();
-            var service = this.GetService(null, repository);
-            var comment = new ReviewDto
-            {
-                StarsCount = 5,
-                Comment = "No comment!",
-                UserId = this.GetUserId(),
-            };
+            var repository = CustomersReviewsRepository;
+            var service = GetService(null, repository);
+            var input = this.GetReviewInputModel();
+            string forUserId = "2" + UserId;
 
-            await service.CommentAsync<ReviewDto>("2" + this.GetUserId(), comment);
+            await service.CommentAsync<CommentInputModel>(forUserId, input);
             var actualResult = repository.All().Count();
 
-            Assert.Equal(3, actualResult);
+            int expextecCount = 3;
+            Assert.Equal(expextecCount, actualResult);
         }
 
         [Fact]
         public void GetProfilePicturePathShouldReturnPictureFullPathByUserId()
         {
-            var service = this.GetService(null, null, this.GetPicturesRepository());
+            var service = GetService(null, null, PicturesRepository);
 
-            var actualResult = service.GetProfilePicturePath(this.GetUserId());
+            var actualResult = service.GetProfilePicturePath(UserId);
 
             Assert.Equal($"/img/profile-pictures/mypic.jpg", actualResult);
         }
@@ -71,114 +56,11 @@
         [Fact]
         public void GetUserDataShouldReturnAllAvailableDataByUserId()
         {
-            var service = this.GetService(this.GetUsersRepository());
+            var service = GetService(UsersRepository);
 
-            var actualResult = service.GetUserData(this.GetUserId());
+            var actualResult = service.GetUserData(UserId);
 
-            Assert.Equal(this.GetUserId(), actualResult.Id);
-        }
-
-        private IProfilesService GetService(
-            IDeletableEntityRepository<ApplicationUser> usersRepository = null,
-            IDeletableEntityRepository<CustomerReview> commentsRepository = null,
-            IDeletableEntityRepository<ProfilePicture> profilePicturesRepository = null,
-            IFilesService filesService = null)
-        {
-            var service = new ProfilesService(
-                usersRepository,
-                commentsRepository,
-                profilePicturesRepository,
-                filesService);
-
-            return service;
-        }
-
-        private EfDeletableEntityRepository<ApplicationUser> GetUsersRepository()
-        {
-            var dbContext = this.PrepareDb().Result;
-            var repository = new EfDeletableEntityRepository<ApplicationUser>(dbContext);
-
-            return repository;
-        }
-
-        private EfDeletableEntityRepository<CustomerReview> GetCustomersReviewsRepository()
-        {
-            var dbContext = this.PrepareDb().Result;
-            var repository = new EfDeletableEntityRepository<CustomerReview>(dbContext);
-
-            return repository;
-        }
-
-        private EfDeletableEntityRepository<ProfilePicture> GetPicturesRepository()
-        {
-            var dbContext = this.PrepareDb().Result;
-            var repository = new EfDeletableEntityRepository<ProfilePicture>(dbContext);
-
-            return repository;
-        }
-
-        private async Task<ApplicationDbContext> PrepareDb()
-        {
-            var data = DataBaseMock.Instance;
-            data.Users.Add(new ApplicationUser()
-            {
-                Id = this.GetUserId(),
-                UserName = "Bratan",
-                Email = "brat@bratan.bg",
-                PasswordHash = Guid.NewGuid().ToString(),
-                ProfilePicture = new ProfilePicture
-                {
-                    Id = "mypic",
-                    Extension = ".jpg",
-                },
-            });
-
-            data.Users.Add(new ApplicationUser()
-            {
-                Id = "2" + this.GetUserId(),
-                UserName = "Jica",
-                Email = "jic@fake.bg",
-                PasswordHash = Guid.NewGuid().ToString(),
-                FirstName = "Mux",
-            });
-
-            data.CustomersReviews.Add(
-                new CustomerReview
-                {
-                    StarsCount = 5,
-                    Comment = "The best one!",
-                    UserId = this.GetUserId(),
-                    AppraiserId = "2" + this.GetUserId(),
-                });
-
-            data.CustomersReviews.Add(
-                new CustomerReview
-                {
-                    StarsCount = 3,
-                    Comment = "Not so good",
-                    UserId = this.GetUserId(),
-                    AppraiserId = "2" + this.GetUserId(),
-                });
-
-            await data.SaveChangesAsync();
-
-            return data;
-        }
-
-        private string GetUserId()
-        {
-            return "7699db4d-e91c-4dcd-9672-7b88b8484930";
-        }
-
-        public class ReviewDto : IMapFrom<CustomerReview>, IMapTo<CustomerReview>
-        {
-            public int StarsCount { get; set; }
-
-            public string Comment { get; set; }
-
-            public string UserId { get; set; }
-
-            public string AppraiserId { get; set; }
+            Assert.Equal(UserId, actualResult.Id);
         }
     }
 }

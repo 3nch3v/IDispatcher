@@ -3,287 +3,126 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    using Dispatcher.Data;
-    using Dispatcher.Data.Common.Repositories;
-    using Dispatcher.Data.Models.AdvertisementModels;
-    using Dispatcher.Data.Repositories;
-    using Dispatcher.Services.Data.Contracts;
-    using Dispatcher.Services.Mapping;
-    using Microsoft.Extensions.Caching.Memory;
+    using Dispatcher.Web.ViewModels.AdModels;
     using Xunit;
 
-    public class AdsServiceTests
+    public class AdsServiceTests : BaseServiceTests
     {
-        public AdsServiceTests()
-        {
-            AutoMapperConfig.RegisterMappings(typeof(Ad).Assembly, typeof(Advertisement).Assembly);
-        }
-
         [Fact]
-        public async Task CreateAsyncShouldAddNewAdInDb()
+        public async Task CreateAsyncShouldAddNewAdSuccessfully()
         {
-            var service = GetService(GetAdsRepository());
-            var newAd = GetInputModel();
+            var service = GetAdService(AdsRepository);
+            var input = GetAdInputModel();
 
-            await service.CreateAsync<AdInputModel>(newAd, GetUserId());
+            await service.CreateAsync<AdvertisementInputModel>(input, UserId);
             var actualCount = service.AdsCount();
 
             Assert.Equal(5, actualCount);
         }
 
-        [Fact]
-        public async Task UpdateAsyncShouldChangeAdInDb()
+        [Theory]
+        [InlineData(1)]
+        public async Task UpdateAsyncShouldModifyAdvertisementWhenDataInputIsDifferent(int adId)
         {
-            var service = GetService(GetAdsRepository());
-            var updateModel = GetInputModel();
+            var service = GetAdService(AdsRepository);
+            var input = GetAdInputModel();
 
-            await service.UpdateAsync<AdInputModel>(updateModel, 1);
-            var actualResult = service.GetById<Ad>(1);
+            await service.UpdateAsync<AdvertisementInputModel>(input, adId);
+            var actualResult = service.GetById<AdvertisementViewModel>(adId);
 
             Assert.Equal("Input", actualResult.Title);
+            Assert.Equal("$400", actualResult.Compensation);
+            Assert.Equal("https://www.wpbeginner.com/fake.png", actualResult.PictureUrl);
+            Assert.Equal("New We Work Remotely is a niche job board for remote jobseekers.", actualResult.Description);
         }
 
-        [Fact]
-        public async Task UpdateAsyncShouldChangeAdTypeIdInDb()
+        [Theory]
+        [InlineData(1)]
+        public async Task DeleteShouldWorkProperly(int adId)
         {
-            var service = GetService(GetAdsRepository());
-            var updateModel = GetInputModel();
+            var service = GetAdService(AdsRepository);
 
-            await service.UpdateAsync<AdInputModel>(updateModel, 1);
-            var actualResult = service.GetById<Ad>(1);
-
-            Assert.Equal(updateModel.AdvertisementTypeId, actualResult.AdvertisementTypeId);
-        }
-
-        [Fact]
-        public async Task UpdateAsyncShouldChangeAdPictureUrlInDb()
-        {
-            var service = GetService(GetAdsRepository());
-            var updateModel = GetInputModel();
-
-            await service.UpdateAsync<AdInputModel>(updateModel, 1);
-            var actualResult = service.GetById<Ad>(1);
-
-            Assert.Equal(updateModel.PictureUrl, actualResult.PictureUrl);
-        }
-
-        [Fact]
-        public async Task DeleteShouldWorkProperly()
-        {
-            var service = GetService(GetAdsRepository());
-
-            await service.DeleteAsync(1);
+            await service.DeleteAsync(adId);
             var actualCount = service.AdsCount();
 
-            Assert.Equal(3, actualCount);
+            int expectedResult = 3;
+            Assert.Equal(expectedResult, actualCount);
         }
 
         [Fact]
-        public void AdsCountShouldReturnAllAdsCountInDb()
+        public void AdsCountShouldReturnTheCountOfAds()
         {
-            var service = GetService(GetAdsRepository());
+            var service = GetAdService(AdsRepository);
 
             var actualCount = service.AdsCount();
 
-            Assert.Equal(4, actualCount);
+            int expectedResult = 4;
+            Assert.Equal(expectedResult, actualCount);
         }
 
-        [Fact]
-        public void GetByIdShouldReturnCorrectEntityWithTheGivenAdId()
+        [Theory]
+        [InlineData(2)]
+        public void GetByIdShouldReturnAdWithTheGivenId(int adId)
         {
-            var service = GetService(GetAdsRepository());
+            var service = GetAdService(AdsRepository);
 
-            var actualAd = service.GetById<Ad>(2);
+            var actualAd = service.GetById<AdvertisementViewModel>(adId);
 
+            Assert.Equal(adId, actualAd.Id);
             Assert.Equal("Test2", actualAd.Title);
+            Assert.Equal("100", actualAd.Compensation);
+            Assert.Equal("https://www.wpbeginner.com/fake.png", actualAd.PictureUrl);
+            Assert.Equal("2 We Work Remotely is a niche job board for remote jobseekers.", actualAd.Description);
+        }
+
+        [Theory]
+        [InlineData(1, 5)]
+        public void GetAllShouldReturnAllAdsInDb(int page, int entitiesCount)
+        {
+            var service = GetAdService(AdsRepository);
+
+            var actualAds = service.GetAll<AdvertisementViewModel>(page, entitiesCount);
+
+            int expectedResult = 4;
+            Assert.Equal(expectedResult, actualAds.Count());
+        }
+
+        [Theory]
+        [InlineData(1)]
+        public void GetCreatorShouldReturnCorrectUserId(int adId)
+        {
+            var service = GetAdService(AdsRepository);
+
+            var actualUserId = service.GetCreatorId(adId);
+
+            Assert.Equal(UserId, actualUserId);
         }
 
         [Fact]
-        public void GetAllShouldReturnAllAdsInDb()
+        public void GetAllAdTypesShouldReturnListWithAllAllowedAdTypes()
         {
-            var service = GetService(GetAdsRepository());
+            var service = GetAdService(null, AdTypesRepository);
 
-            var actualAds = service.GetAll<Ad>(1, 5);
+            var actualTypes = service.GetAllAdTypes<AdvertisementTypeViewModel>();
 
-            Assert.Equal(4, actualAds.Count());
+            int expectedResult = 3;
+            Assert.Equal(expectedResult, actualTypes.Count());
         }
 
-        [Fact]
-        public void GetCreatorShouldReturnCorrectUserId()
+        [Theory]
+        [InlineData(1, 5, "Test3")]
+        public void SearchShouldReturnAllAdsWithTheGivenTerms(int page, int entitiesCount, string searchTerm)
         {
-            var service = GetService(GetAdsRepository());
+            var service = GetAdService(AdsRepository);
 
-            var actualUserId = service.GetCreatorId(1);
-
-            Assert.Equal("7699db4d-e91c-4dcd-9672-7b88b8484930", actualUserId);
-        }
-
-        [Fact]
-        public void GetAllAdTypesShouldReturnListWithAllAllowedAdTypesInDb()
-        {
-            var service = GetService(null, GetAdTypesRepository());
-
-            var actualTypes = service.GetAllAdTypes<AdTypesViewModel>();
-
-            Assert.Equal(3, actualTypes.Count());
-        }
-
-        [Fact]
-        public void SearchShouldReturnAllAdsWithTheGivenTerms()
-        {
-            var service = GetService(GetAdsRepository());
-
-            var actualResult = service.SearchResult<Ad>(1, 5, "Test3");
+            var actualResult = service.SearchResult<AdvertisementViewModel>(page, entitiesCount, searchTerm);
             var actualSearchCount = service.SearchCount();
             var actualAd = actualResult.FirstOrDefault();
 
-            Assert.Equal(1, actualSearchCount);
-            Assert.Equal(3, actualAd.Id);
-        }
-
-        private static IAdsService GetService(
-          IDeletableEntityRepository<Advertisement> advertisementRepository = null,
-          IDeletableEntityRepository<AdvertisementType> adTypesRepository = null,
-          IMemoryCache memoryCache = null)
-        {
-            var service = new AdsService(advertisementRepository, adTypesRepository, memoryCache);
-
-            return service;
-        }
-
-        private static AdInputModel GetInputModel()
-        {
-            return new AdInputModel()
-            {
-                AdvertisementTypeId = 2,
-                Title = "Input",
-                Description = "We Work Remotely is a niche job board for remote jobseekers. It’s the largest, most experienced and dedicated remote only job board ",
-                Compensation = "$400",
-                PictureUrl = "https://www.wpbeginner.com/wp-content/uploads/2021/05/webcomlogoNew.png",
-            };
-        }
-
-        private static string GetUserId()
-        {
-            return "7699db4d-e91c-4dcd-9672-7b88b8484930";
-        }
-
-        private static async Task<ApplicationDbContext> PrepareDb()
-        {
-            var data = DataBaseMock.Instance;
-            data.Advertisements.Add(new Advertisement()
-            {
-                Id = 1,
-                AdvertisementTypeId = 1,
-                Title = "Test1",
-                Description = "We Work Remotely is a niche job board for remote jobseekers. It’s the largest, most experienced and dedicated remote only job board ",
-                Compensation = "200",
-                PictureUrl = "https://www.wpbeginner.com/wp-content/uploads/2021/05/webcomlogo.png",
-                UserId = "7699db4d-e91c-4dcd-9672-7b88b8484930",
-            });
-            data.Advertisements.Add(new Advertisement()
-            {
-                Id = 2,
-                AdvertisementTypeId = 2,
-                Title = "Test2",
-                Description = "We Work Remotely is a niche job board for remote jobseekers. It’s the largest, most experienced and dedicated remote only job board ",
-                Compensation = "100",
-                PictureUrl = "https://www.wpbeginner.com/wp-content/uploads/2021/05/webcomlogo.png",
-                UserId = "7699db4d-e91c-4dcd-9672-7b88b8484930",
-            });
-            data.Advertisements.Add(new Advertisement()
-            {
-                Id = 3,
-                AdvertisementTypeId = 3,
-                Title = "Test3",
-                Description = "We Work Remotely is a niche job board for remote jobseekers. It’s the largest, most experienced and dedicated remote only job board ",
-                Compensation = "400",
-                PictureUrl = "https://www.wpbeginner.com/wp-content/uploads/2021/05/webcomlogo.png",
-                UserId = "7699db4d-e91c-4dcd-9672-7b88b8484930",
-            });
-            data.Advertisements.Add(new Advertisement()
-            {
-                Id = 4,
-                AdvertisementTypeId = 4,
-                Title = "Test4",
-                Description = "We Work Remotely is a niche job board for remote jobseekers. It’s the largest, most experienced and dedicated remote only job board ",
-                Compensation = "300",
-                PictureUrl = "https://www.wpbeginner.com/wp-content/uploads/2021/05/webcomlogo.png",
-                UserId = "7699db4d-e91c-4dcd-9672-7b88b8484930",
-            });
-
-            data.AdvertisementTypes.Add(new AdvertisementType
-            {
-                Id = 1,
-                Type = "Ad",
-            });
-            data.AdvertisementTypes.Add(new AdvertisementType
-            {
-                Id = 2,
-                Type = "Free",
-            });
-            data.AdvertisementTypes.Add(new AdvertisementType
-            {
-                Id = 3,
-                Type = "MoneyMaker",
-            });
-
-            await data.SaveChangesAsync();
-
-            return data;
-        }
-
-        private static EfDeletableEntityRepository<Advertisement> GetAdsRepository()
-        {
-            var dbContext = PrepareDb().Result;
-            var repository = new EfDeletableEntityRepository<Advertisement>(dbContext);
-
-            return repository;
-        }
-
-        private static EfDeletableEntityRepository<AdvertisementType> GetAdTypesRepository()
-        {
-            var dbContext = PrepareDb().Result;
-            var repository = new EfDeletableEntityRepository<AdvertisementType>(dbContext);
-
-            return repository;
-        }
-
-        public class Ad : IMapFrom<Advertisement>
-        {
-            public int Id { get; set; }
-
-            public int AdvertisementTypeId { get; set; }
-
-            public string Title { get; set; }
-
-            public string Description { get; set; }
-
-            public string UserId { get; set; }
-
-            public string PictureUrl { get; set; }
-
-            public string Compensation { get; set; }
-        }
-
-        public class AdInputModel : IMapTo<Advertisement>
-        {
-            public int AdvertisementTypeId { get; set; }
-
-            public string Title { get; set; }
-
-            public string Description { get; set; }
-
-            public string PictureUrl { get; set; }
-
-            public string Compensation { get; set; }
-        }
-
-        public class AdTypesViewModel : IMapFrom<AdvertisementType>
-        {
-            public int Id { get; set; }
-
-            public string Type { get; set; }
+            int expectedCount = 1;
+            int expectedId = 3;
+            Assert.Equal(expectedCount, actualSearchCount);
+            Assert.Equal(expectedId, actualAd.Id);
         }
     }
 }

@@ -97,7 +97,8 @@
 
         public T GetById<T>(int id)
         {
-            var discussion = this.forumRepository.All()
+            var discussion = this.forumRepository
+                .All()
                 .Include(x => x.Votes)
                 .Where(d => d.Id == id)
                 .To<T>()

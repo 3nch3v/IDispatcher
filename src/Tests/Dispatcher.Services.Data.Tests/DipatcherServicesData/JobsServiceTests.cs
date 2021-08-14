@@ -3,233 +3,107 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    using Dispatcher.Data;
-    using Dispatcher.Data.Common.Repositories;
-    using Dispatcher.Data.Models.JobModels;
-    using Dispatcher.Data.Repositories;
-    using Dispatcher.Services.Data.Contracts;
-    using Dispatcher.Services.Mapping;
-    using Microsoft.Extensions.Caching.Memory;
+    using Dispatcher.Web.ViewModels.JobModels;
     using Xunit;
 
-    public class JobsServiceTests
+    public class JobsServiceTests : BaseServiceTests
     {
-        public JobsServiceTests()
-        {
-            AutoMapperConfig.RegisterMappings(typeof(JobDto).Assembly, typeof(Job).Assembly);
-        }
-
         [Fact]
         public async Task CreateAsyncShouldAddNewJobInDb()
         {
-            var service = this.GetService(this.GetJobsRepository());
-            var newAd = this.GetInputModel();
+            var service = GetService(JobsRepository);
+            var input = this.GetJobInputModel();
 
-            await service.CreateAsync<JobInputModel>(newAd, this.GetUserId());
+            await service.CreateAsync<JobInputModel>(input, UserId);
             var actualCount = service.JobsCount();
 
-            Assert.Equal(5, actualCount);
+            int expectedResult = 5;
+            Assert.Equal(expectedResult, actualCount);
         }
 
-        [Fact]
-        public async Task UpdateAsyncShouldChangeJobTitle()
+        [Theory]
+        [InlineData(1)]
+        public async Task UpdateAsyncShouldChangeJobTitle(int id)
         {
-            var service = this.GetService(this.GetJobsRepository());
-            var updateModel = this.GetInputModel();
+            var service = GetService(JobsRepository);
+            var input = this.GetJobInputModel();
 
-            await service.UpdateAsync<JobInputModel>(updateModel, 1);
-            var actualResult = service.GetById<JobDto>(1);
+            await service.UpdateAsync<JobInputModel>(input, id);
+            var actualResult = service.GetById<SigleJobViewModel>(id);
 
-            Assert.Equal("Input", actualResult.Title);
+            Assert.Equal(input.Title, actualResult.Title);
+            Assert.Equal(input.Location, actualResult.Location);
+            Assert.Equal(input.Contact, actualResult.Contact);
+            Assert.Equal(input.CompanyName, actualResult.CompanyName);
         }
 
-        [Fact]
-        public async Task UpdateAsyncShouldChangeJobBody()
+        [Theory]
+        [InlineData(1)]
+        public async Task DeleteShouldWorkProperly(int id)
         {
-            var service = this.GetService(this.GetJobsRepository());
-            var updateModel = this.GetInputModel();
+            var service = GetService(JobsRepository);
 
-            await service.UpdateAsync<JobInputModel>(updateModel, 1);
-            var actualResult = service.GetById<JobDto>(1);
-
-            Assert.Equal(updateModel.JobBody, actualResult.JobBody);
-        }
-
-        [Fact]
-        public async Task DeleteShouldWorkProperly()
-        {
-            var service = this.GetService(this.GetJobsRepository());
-
-            await service.DeleteAsync(1);
+            await service.DeleteAsync(id);
             var actualCount = service.JobsCount();
 
-            Assert.Equal(3, actualCount);
+            int expectedCount = 3;
+            Assert.Equal(expectedCount, actualCount);
         }
 
         [Fact]
         public void JobsCountShouldReturnAllJobsCountInDb()
         {
-            var service = this.GetService(this.GetJobsRepository());
+            var service = GetService(JobsRepository);
 
             var actualCount = service.JobsCount();
 
-            Assert.Equal(4, actualCount);
+            int expectedCount = 4;
+            Assert.Equal(expectedCount, actualCount);
         }
 
         [Fact]
         public void GetByIdShouldReturnCorrectEntityWithTheGivenJobId()
         {
-            var service = this.GetService(this.GetJobsRepository());
+            var service = GetService(JobsRepository);
 
-            var actualAd = service.GetById<JobDto>(2);
+            var result = service.GetById<SigleJobViewModel>(2);
 
-            Assert.Equal("Test2", actualAd.Title);
+            Assert.Equal("Test2", result.Title);
         }
 
-        [Fact]
-        public void GetAllShouldReturnCountEntitiesPerPageJobsInDb()
+        [Theory]
+        [InlineData(1, 5, 4)]
+        public void GetAllShouldReturnCountEntitiesPerPageJobsInDb(int page, int entities, int expectedCount)
         {
-            var service = this.GetService(this.GetJobsRepository());
+            var service = GetService(JobsRepository);
 
-            var actualAds = service.GetAll<JobDto>(1, 5);
+            var actualAds = service.GetAll<SigleJobViewModel>(page, entities);
 
-            Assert.Equal(4, actualAds.Count());
+            Assert.Equal(expectedCount, actualAds.Count());
         }
 
-        [Fact]
-        public void GetCreatorShouldReturnCorrectUserId()
+        [Theory]
+        [InlineData(1)]
+        public void GetCreatorShouldReturnCorrectUserId(int id)
         {
-            var service = this.GetService(this.GetJobsRepository());
+            var service = GetService(JobsRepository);
 
-            var actualUserId = service.GetCreatorId(1);
+            var actualUserId = service.GetCreatorId(id);
 
-            Assert.Equal("7699db4d-e91c-4dcd-9672-7b88b8484930", actualUserId);
+            Assert.Equal(UserId, actualUserId);
         }
 
-        [Fact]
-        public void SearchShouldReturnAllAdsWithTheGivenTerms()
+        [Theory]
+        [InlineData(1, 5, "Test3")]
+        public void SearchShouldReturnAllAdsWithTheGivenTerms(int page, int entities, string searchTerm)
         {
-            var service = this.GetService(this.GetJobsRepository());
+            var service = GetService(JobsRepository);
 
-            var actualResult = service.SearchResults<JobDto>(1, 5, "Test3");
-            var actualSearchCount = service.SearchCount();
-            var actualAd = actualResult.FirstOrDefault();
+            var actualResult = service.SearchResults<SigleJobViewModel>(page, entities, searchTerm);
+            var searchCountResult = service.SearchCount();
 
-            Assert.Equal(1, actualSearchCount);
-            Assert.Equal(3, actualAd.Id);
-        }
-
-        private IJobsService GetService(
-            IDeletableEntityRepository<Job> jobRepository = null,
-            IMemoryCache memoryCache = null)
-        {
-            var service = new JobsService(jobRepository, memoryCache);
-
-            return service;
-        }
-
-        private EfDeletableEntityRepository<Job> GetJobsRepository()
-        {
-            var dbContext = this.PrepareDb().Result;
-            var repository = new EfDeletableEntityRepository<Job>(dbContext);
-
-            return repository;
-        }
-
-        private async Task<ApplicationDbContext> PrepareDb()
-        {
-            var data = DataBaseMock.Instance;
-            data.Jobs.Add(new Job()
-            {
-                Id = 1,
-                Title = "Test1",
-                JobBody = "We Work Remotely is a niche job board for remote jobseekers. It’s the largest, most experienced and dedicated remote only job board ",
-                CompanyName = "Mercedes",
-                Location = "Stuttgart, DE",
-                LogoUrl = "https://www.wpbeginner.com/wp-content/uploads/2021/05/webcomlogo.png",
-                UserId = "7699db4d-e91c-4dcd-9672-7b88b8484930",
-            });
-            data.Jobs.Add(new Job()
-            {
-                Id = 2,
-                Title = "Test2",
-                JobBody = "We Work Remotely is a niche job board for remote jobseekers. It’s the largest, most experienced and dedicated remote only job board ",
-                CompanyName = "Audi",
-                Location = "Ingolstadt, DE",
-                LogoUrl = "https://www.wpbeginner.com/wp-content/uploads/2021/05/webcomlogo.png",
-                UserId = "7699db4d-e91c-4dcd-9672-7b88b8484930",
-            });
-            data.Jobs.Add(new Job()
-            {
-                Id = 3,
-                Title = "Test3",
-                JobBody = "We Work Remotely is a niche job board for remote jobseekers. It’s the largest, most experienced and dedicated remote only job board ",
-                CompanyName = "BMW",
-                Location = "Munich, DE",
-                LogoUrl = "https://www.wpbeginner.com/wp-content/uploads/2021/05/webcomlogo.png",
-                UserId = "7699db4d-e91c-4dcd-9672-7b88b8484930",
-            });
-            data.Jobs.Add(new Job()
-            {
-                Id = 4,
-                Title = "Test4",
-                JobBody = "We Work Remotely is a niche job board for remote jobseekers. It’s the largest, most experienced and dedicated remote only job board ",
-                CompanyName = "Mercedes",
-                Location = "Stuttgart, DE",
-                LogoUrl = "https://www.wpbeginner.com/wp-content/uploads/2021/05/webcomlogo.png",
-                UserId = "7699db4d-e91c-4dcd-9672-7b88b8484930",
-            });
-
-            await data.SaveChangesAsync();
-
-            return data;
-        }
-
-        private JobInputModel GetInputModel()
-        {
-            return new JobInputModel()
-            {
-                Title = "Input",
-                JobBody = "Edit We Work Remotely is a niche job board for remote jobseekers. It’s the largest, most experienced and dedicated remote only job board ",
-                CompanyName = "Bla-Bla",
-                Location = "Sofia, Razsadnika",
-                Contact = "fake@fake.bg",
-            };
-        }
-
-        private string GetUserId()
-        {
-            return "7699db4d-e91c-4dcd-9672-7b88b8484930";
-        }
-
-        public class JobDto : IMapFrom<Job>
-        {
-            public int Id { get; set; }
-
-            public string Title { get; set; }
-
-            public string JobBody { get; set; }
-
-            public string CompanyName { get; set; }
-
-            public string Location { get; set; }
-
-            public string Contact { get; set; }
-
-            public string UserId { get; set; }
-        }
-
-        public class JobInputModel : IMapTo<Job>
-        {
-            public string Title { get; set; }
-
-            public string JobBody { get; set; }
-
-            public string CompanyName { get; set; }
-
-            public string Location { get; set; }
-
-            public string Contact { get; set; }
+            Assert.Single(actualResult);
+            Assert.Equal(1, searchCountResult);
         }
     }
 }

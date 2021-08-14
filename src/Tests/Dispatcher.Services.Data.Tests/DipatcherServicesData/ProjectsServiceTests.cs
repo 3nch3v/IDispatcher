@@ -3,179 +3,72 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    using Dispatcher.Data;
-    using Dispatcher.Data.Common.Repositories;
-    using Dispatcher.Data.Models.UserInfoModels;
-    using Dispatcher.Data.Repositories;
-    using Dispatcher.Services.Data.Contracts;
-    using Dispatcher.Services.Mapping;
+    using Dispatcher.Web.ViewModels.ProjectModels;
     using Xunit;
 
-    public class ProjectsServiceTests
+    public class ProjectsServiceTests : BaseServiceTests
     {
-        public ProjectsServiceTests()
-        {
-            AutoMapperConfig.RegisterMappings(typeof(ProjectDto).Assembly, typeof(Project).Assembly);
-        }
-
         [Fact]
         public async Task CreateAsyncShouldAddNewProjectInDb()
         {
-            var repository = this.GetBlogsRepository();
-            var service = this.GetService(repository);
-            var newBlog = this.GetInputModel();
+            var repository = ProjectsRepository;
+            var service = GetService(repository);
+            var input = this.GetProjectInputModel();
 
-            await service.CreateAsync<ProjectInputModel>(newBlog, this.GetUserId());
+            await service.CreateAsync<ProjectInputmodel>(input, UserId);
             var actualCount = repository.All().Count();
 
-            Assert.Equal(5, actualCount);
+            int expectedCount = 5;
+            Assert.Equal(expectedCount, actualCount);
         }
 
-        [Fact]
-        public async Task UpdateAsyncShouldChangeTheProjectName()
+        [Theory]
+        [InlineData(2)]
+        public async Task UpdateAsyncShouldChangeTheProjectContainWhenTheInputDataIsDifferent(int id)
         {
-            var service = this.GetService(this.GetBlogsRepository());
-            var updateModel = this.GetInputModel();
+            var service = GetService(ProjectsRepository);
+            var input = this.GetProjectInputModel();
 
-            await service.UpdateAsync<ProjectInputModel>(updateModel, 2);
-            var actualResult = service.GetById<ProjectDto>(2);
+            await service.UpdateAsync<ProjectInputmodel>(input, id);
+            var actualResult = service.GetById<SingleProjectViewModel>(id);
 
             Assert.Equal("Input", actualResult.Name);
         }
 
-        [Fact]
-        public async Task DeleteShouldWorkProperly()
+        [Theory]
+        [InlineData(1)]
+        public async Task DeleteShouldWorkProperly(int id)
         {
-            var repository = this.GetBlogsRepository();
-            var service = this.GetService(repository);
+            var repository = ProjectsRepository;
+            var service = GetService(repository);
 
-            await service.DeleteAsync(1);
+            await service.DeleteAsync(id);
             var actualCount = repository.All().Count();
 
-            Assert.Equal(3, actualCount);
+            int expectedCount = 3;
+            Assert.Equal(expectedCount, actualCount);
         }
 
-        [Fact]
-        public void GetByIdShouldReturnCorrectEntityWithTheGivenProjectId()
+        [Theory]
+        [InlineData(3)]
+        public void GetByIdShouldReturnCorrectEntityWithTheGivenProjectId(int id)
         {
-            var service = this.GetService(this.GetBlogsRepository());
+            var service = GetService(ProjectsRepository);
 
-            var actualAd = service.GetById<ProjectDto>(3);
+            var actual = service.GetById<SingleProjectViewModel>(id);
 
-            Assert.Equal("Test3", actualAd.Name);
+            string expectedName = "Test3";
+            Assert.Equal(expectedName, actual.Name);
         }
 
         [Fact]
         public void GetCreatorShouldReturnCorrectUserId()
         {
-            var service = this.GetService(this.GetBlogsRepository());
+            var service = GetService(ProjectsRepository);
 
             var actualUserId = service.GetCreatorId(4);
 
-            Assert.Equal("17699db4d-e91c-4dcd-9672-7b88b8484930", actualUserId);
-        }
-
-        private IProjectsService GetService(IDeletableEntityRepository<Project> projectRepository)
-        {
-            var service = new ProjectsService(projectRepository);
-
-            return service;
-        }
-
-        private EfDeletableEntityRepository<Project> GetBlogsRepository()
-        {
-            var dbContext = this.PrepareDb().Result;
-            var repository = new EfDeletableEntityRepository<Project>(dbContext);
-
-            return repository;
-        }
-
-        private async Task<ApplicationDbContext> PrepareDb()
-        {
-            var data = DataBaseMock.Instance;
-            await data.Projects.AddAsync(
-                new Project
-                {
-                    Id = 1,
-                    Name = "Test1",
-                    Description = "1 We Work Remotely is a niche job board for remote jobseekers. It’s the largest, most experienced and dedicated remote only job board ",
-                    Url = "https://www.youtube.com/watch?v=9OD8i1PUyT8&t=2375s1",
-                    UserRole = "Teacher",
-                    UserId = this.GetUserId(),
-                });
-            await data.Projects.AddAsync(
-               new Project
-               {
-                   Id = 2,
-                   Name = "Test2",
-                   Description = "1 We Work Remotely is a niche job board for remote jobseekers. It’s the largest, most experienced and dedicated remote only job board ",
-                   Url = "https://www.youtube.com/watch?v=9OD8i1PUyT8&t=2375s1",
-                   UserRole = "Boss",
-                   UserId = this.GetUserId(),
-               });
-            await data.Projects.AddAsync(
-               new Project
-               {
-                   Id = 3,
-                   Name = "Test3",
-                   Description = "1 We Work Remotely is a niche job board for remote jobseekers. It’s the largest, most experienced and dedicated remote only job board ",
-                   Url = "https://www.youtube.com/watch?v=9OD8i1PUyT8&t=2375s1",
-                   UserRole = "President",
-                   UserId = this.GetUserId(),
-               });
-            await data.Projects.AddAsync(
-               new Project
-               {
-                   Id = 4,
-                   Name = "Test4",
-                   Description = "1 We Work Remotely is a niche job board for remote jobseekers. It’s the largest, most experienced and dedicated remote only job board ",
-                   Url = "https://www.youtube.com/watch?v=9OD8i1PUyT8&t=2375s1",
-                   UserRole = "Taxi Driver",
-                   UserId = "1" + this.GetUserId(),
-               });
-
-            await data.SaveChangesAsync();
-
-            return data;
-        }
-
-        private ProjectInputModel GetInputModel()
-        {
-            return new ProjectInputModel()
-            {
-                Name = "Input",
-                Description = "We Work Remotely is a niche job board for remote jobseekers. It’s the largest, most experienced and dedicated remote only job board ",
-                UserRole = "Hamalin",
-            };
-        }
-
-        private string GetUserId()
-        {
-            return "7699db4d-e91c-4dcd-9672-7b88b8484930";
-        }
-
-        public class ProjectDto : IMapFrom<Project>
-        {
-            public string Name { get; set; }
-
-            public string Url { get; set; }
-
-            public string UserRole { get; set; }
-
-            public string Description { get; set; }
-
-            public string UserId { get; set; }
-        }
-
-        public class ProjectInputModel : IMapTo<Project>
-        {
-            public string Name { get; set; }
-
-            public string Url { get; set; }
-
-            public string UserRole { get; set; }
-
-            public string Description { get; set; }
+            Assert.Equal(UserId, actualUserId);
         }
     }
 }
