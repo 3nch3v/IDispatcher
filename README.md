@@ -72,4 +72,4 @@ The focus of the project is the ability to build a back-end project with the ASP
 
 ### === Unit Tests Coverage ===
 
-![alt text](https://user-images.githubusercontent.com/63471679/129447137-6c80e754-b020-4e71-b008-3750459bbd54.JPG)
+![alt text](https://user-images.githubusercontent.com/63471679/129447283-21b6dfd8-d6d7-4efa-aafc-00d731cfccb1.JPG)
